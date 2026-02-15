@@ -1,0 +1,12 @@
+{
+  "/Users/jarl.l/Downloads/github/WODrounds/WODrounds/ContentView.swift" : {
+    "abi-baseline-json" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds.abi.json",
+    "const-values" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds-primary.swiftconstvalues",
+    "dependencies" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds-primary.d",
+    "diagnostics" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds-primary.dia",
+    "objc-header" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds-Swift.h",
+    "swiftdoc" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds.swiftdoc",
+    "swiftmodule" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds.swiftmodule",
+    "swiftsourceinfo" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds.swiftsourceinfo"
+  }
+}

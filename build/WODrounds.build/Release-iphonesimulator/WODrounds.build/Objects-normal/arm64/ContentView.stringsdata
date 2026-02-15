@@ -1,0 +1,136 @@
+{
+  "source": "/Users/jarl.l/Downloads/github/WODrounds/WODrounds/ContentView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Cancel workout?",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 132
+        }
+      },
+      {
+        "comment": "",
+        "key": "1:00 per round",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 91
+        }
+      },
+      {
+        "comment": "",
+        "key": "Total: %@",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 94
+        }
+      },
+      {
+        "comment": "",
+        "key": "Total: %@",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 99
+        }
+      },
+      {
+        "comment": "",
+        "key": "Work",
+        "location": {
+          "startingColumn": 55,
+          "startingLine": 104
+        }
+      },
+      {
+        "comment": "",
+        "key": "Rest",
+        "location": {
+          "startingColumn": 64,
+          "startingLine": 104
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel workout",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 133
+        }
+      },
+      {
+        "comment": "",
+        "key": "Keep going",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 138
+        }
+      },
+      {
+        "comment": "",
+        "key": "You’ll return to setup. Current progress will be lost.",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 140
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 192
+        }
+      },
+      {
+        "comment": "",
+        "key": "-",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 182
+        }
+      },
+      {
+        "comment": "",
+        "key": "+",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 197
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 214
+        }
+      },
+      {
+        "comment": "",
+        "key": "Rounds",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 244
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 250
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 315
+        }
+      }
+    ]
+  },
+  "version": 1
+}

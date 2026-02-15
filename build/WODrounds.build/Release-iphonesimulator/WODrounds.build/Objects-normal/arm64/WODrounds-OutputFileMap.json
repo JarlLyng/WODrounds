@@ -1,0 +1,36 @@
+{
+  "" : {
+    "const-values" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds-primary.swiftconstvalues",
+    "dependencies" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds-primary.d",
+    "diagnostics" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds-primary.dia",
+    "emit-module-dependencies" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds-primary-emit-module.dia",
+    "pch" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODrounds-primary.swiftdeps"
+  },
+  "/Users/jarl.l/Downloads/github/WODrounds/WODrounds/ContentView.swift" : {
+    "index-unit-output-path" : "/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/ContentView.o"
+  },
+  "/Users/jarl.l/Downloads/github/WODrounds/WODrounds/DesignTokens.swift" : {
+    "index-unit-output-path" : "/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/DesignTokens.o",
+    "llvm-bc" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/DesignTokens.bc",
+    "object" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/DesignTokens.o"
+  },
+  "/Users/jarl.l/Downloads/github/WODrounds/WODrounds/WODTimerEngine.swift" : {
+    "index-unit-output-path" : "/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODTimerEngine.o",
+    "llvm-bc" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODTimerEngine.bc",
+    "object" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODTimerEngine.o"
+  },
+  "/Users/jarl.l/Downloads/github/WODrounds/WODrounds/WODroundsApp.swift" : {
+    "index-unit-output-path" : "/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODroundsApp.o",
+    "llvm-bc" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODroundsApp.bc",
+    "object" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/WODroundsApp.o"
+  },
+  "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/jarl.l/Downloads/github/WODrounds/build/WODrounds.build/Release-iphonesimulator/WODrounds.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  }
+}
