@@ -1,0 +1,45 @@
+# Xcode
+build/
+DerivedData/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# Cursor / IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# CocoaPods (hvis du tilføjer senere)
+Pods/
+*.xcworkspace
+!*.xcodeproj/project.xcworkspace/
+
+# Fastlane, certificates (hvis relevant senere)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+*.cer
+*.p12
+*.mobileprovision
