@@ -122,7 +122,7 @@ Do not let these drive current architecture.
 ## Current Status
 
 - **Engine:** EMOM + Intervals, Date-based, start/pause/resume/reset/tick, snapshot with phase and remaining times.
-- **iOS/iPadOS:** Mode switch (EMOM / Intervals), Rounds selector (+/−, presets 10/12/20/30), Intervals (work/rest/rounds), primary button, Cancel with confirmation, all token-based, light + dark.
+- **iOS/iPadOS:** Mode switch (EMOM / Intervals), Rounds selector (+/−, presets 10/12/20/30), Intervals (work/rest/rounds), primary button, Cancel with confirmation, haptics (start, EMOM minutes, Intervals phase, finish), idle timer (screen-dimming prevention during workouts), all token-based, light + dark.
 - **Design:** IAMJARL tokens only in iOS UI; DesignTokens.swift present.
 - **Other platforms:** ContentView exists for watchOS, tvOS, macOS, visionOS; minimal or placeholder.
 

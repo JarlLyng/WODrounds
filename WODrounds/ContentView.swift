@@ -5,9 +5,25 @@
 
 import SwiftUI
 
+#if os(iOS)
+import UIKit
+#endif
+
 // MARK: - iOS / iPadOS (IAMJARL design tokens, light + dark)
 
 #if os(iOS)
+// MARK: - Haptics (iOS only; no third-party)
+private enum Haptics {
+    static func light() {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+    }
+    static func medium() {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    }
+    static func strong() {
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+    }
+}
 private let roundsRange = 1 ... 120
 private let roundsPresets = [10, 12, 20, 30]
 private let intervalsWorkRange = 5 ... 300
@@ -67,6 +83,9 @@ private struct iOSContent: View {
     @State private var repeatStartTime: Date?
     @State private var repeatCancelled = false
     @State private var showCancelConfirmation = false
+    @State private var lastHapticRound: Int = 0
+    @State private var lastHapticPhase: WODTimerPhase?
+    @State private var showAbout = false
 
     var body: some View {
         let snapshot = engine.snapshot(now: now)
@@ -74,6 +93,7 @@ private struct iOSContent: View {
         let showCancel = snapshot.state == .running || snapshot.state == .paused
         let totalRounds = engine.rounds
 
+        ZStack(alignment: .topTrailing) {
         VStack(spacing: DesignTokens.Spacing.xxxl) {
             Spacer()
 
@@ -129,6 +149,19 @@ private struct iOSContent: View {
 
             Spacer()
         }
+        Button {
+            showAbout = true
+        } label: {
+            Image(systemName: "info.circle")
+                .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.regular))
+                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+        }
+        .buttonStyle(.plain)
+        .padding(DesignTokens.Spacing.md)
+        }
+        .sheet(isPresented: $showAbout) {
+            AboutView()
+        }
         .confirmationDialog("Cancel workout?", isPresented: $showCancelConfirmation, titleVisibility: .visible) {
             Button("Cancel workout", role: .destructive) {
                 var e = engine
@@ -139,10 +172,47 @@ private struct iOSContent: View {
         } message: {
             Text("You’ll return to setup. Current progress will be lost.")
         }
+        .onAppear {
+            applyIdleTimer(engine.state)
+        }
+        .onChange(of: engine.state) { _, newState in
+            applyIdleTimer(newState)
+            switch newState {
+            case .running, .paused:
+                break
+            case .idle, .finished:
+                lastHapticRound = 0
+                lastHapticPhase = nil
+            }
+            if newState == .finished {
+                Haptics.strong()
+            }
+        }
+        .onChange(of: snapshot.currentRound) { _, newRound in
+            if (engine.state == .running || engine.state == .paused), timerMode == .emom, newRound > lastHapticRound {
+                Haptics.light()
+                lastHapticRound = newRound
+            }
+        }
+        .onChange(of: snapshot.currentPhase) { _, newPhase in
+            if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
+                Haptics.medium()
+                lastHapticPhase = newPhase
+            }
+        }
     }
 
     private func roundLabel(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> String {
         "Round \(snapshot.currentRound) / \(totalRounds) Rounds"
+    }
+
+    private func applyIdleTimer(_ state: WODTimerEngineState) {
+        switch state {
+        case .running, .paused:
+            UIApplication.shared.isIdleTimerDisabled = true
+        case .idle, .finished:
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
     }
 
     private var modeSwitch: some View {
@@ -328,7 +398,15 @@ private struct iOSContent: View {
 
     private func primaryButton(snapshot: WODTimerEngineSnapshot, now: Date) -> some View {
         let (title, action): (String, () -> Void) = switch snapshot.state {
-        case .idle: ("Start", { var e = engine; e.start(now: now); engine = e })
+        case .idle:
+            ("Start", {
+                Haptics.light()
+                lastHapticRound = 1
+                lastHapticPhase = .work
+                var e = engine
+                e.start(now: now)
+                engine = e
+            })
         case .running: ("Pause", { var e = engine; e.pause(now: now); engine = e })
         case .paused: ("Resume", { var e = engine; e.resume(now: now); engine = e })
         case .finished: ("Reset", { var e = engine; e.reset(); engine = e })
@@ -351,6 +429,70 @@ private struct iOSContent: View {
         let m = totalSeconds / 60
         let s = totalSeconds % 60
         return String(format: "%02d:%02d", m, s)
+    }
+}
+
+// MARK: - About (iOS/iPadOS)
+
+private struct AboutView: View {
+    @Environment(\.colorScheme) private var scheme
+    @Environment(\.dismiss) private var dismiss
+
+    private var appName: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? "WODrounds"
+    }
+    private var version: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
+    }
+    private var build: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "1"
+    }
+
+    var body: some View {
+        VStack(spacing: DesignTokens.Spacing.xxl) {
+            VStack(spacing: DesignTokens.Spacing.lg) {
+                Text(appName)
+                    .font(.system(size: DesignTokens.Typography.Size.xl, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                Text("Version \(version) (\(build))")
+                    .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+            }
+            .padding(.top, DesignTokens.Spacing.xxl)
+
+            Text("No data collected. No analytics.")
+                .font(.system(size: DesignTokens.Typography.Size.base, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
+                Text("Support: https://example.com/support")
+                    .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                Text("Privacy Policy: https://example.com/privacy")
+                    .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+            }
+            .padding(.horizontal)
+
+            Spacer()
+
+            Button("Done") {
+                dismiss()
+            }
+            .font(.system(size: DesignTokens.Typography.Size.base, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+            .foregroundStyle(DesignTokens.Common.onPrimary(scheme))
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, DesignTokens.Spacing.md)
+            .padding(.horizontal, DesignTokens.Spacing.xl)
+            .background(DesignTokens.Common.primary(scheme))
+            .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.md))
+            .buttonStyle(.plain)
+            .padding(.horizontal, DesignTokens.Spacing.lg)
+            .padding(.bottom, DesignTokens.Spacing.xxl)
+        }
+        .background(DesignTokens.Common.Background.app(scheme))
     }
 }
 #endif
