@@ -13,5 +13,8 @@ struct WODroundsApp: App {
         WindowGroup {
             ContentView()
         }
+        #if os(macOS)
+        .defaultSize(width: 340, height: 560)
+        #endif
     }
 }
