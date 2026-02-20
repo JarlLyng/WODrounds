@@ -3,10 +3,10 @@
 WODrounds is a minimal, native Apple platform interval timer built with SwiftUI.
 
 The goal is the simplest, most focused WOD timer experience across:
-- iPhone
-- iPad
+- iPhone & iPad
 - macOS
-- visionOS
+- Apple TV
+- Apple Watch
 
 No accounts. No analytics. No workout database. No noise.
 Only timing, rounds, and focus.
@@ -32,16 +32,18 @@ This is not a social app. This is not a tracking app. This is a tool.
 ## Supported Modes (v1)
 
 ### EMOM
-- Set number of rounds (1–120). Each round = 1 minute.
-- Fixed “1:00 per round”; total time = rounds × 1:00 (e.g. 30 rounds → 30:00).
+- Set number of rounds (1–120) with +/−. Each round = 1 minute.
+- Total time = rounds × 1:00 (e.g. 30 rounds → 30:00).
 - Round counter; Start / Pause / Resume / Reset; Cancel (with confirmation) during run/pause.
 
 ### Intervals
-- Work (seconds), rest (seconds), rounds.
+- Work (seconds), rest (seconds), rounds — each with +/− and label above value.
 - Total time = `rounds × work + (rounds − 1) × rest` (no rest after last work).
 - Phase display (Work / Rest); same Start / Pause / Resume / Reset / Cancel as EMOM.
 
 Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
+
+**In-app flow:** Choose EMOM or Intervals → set rounds (and for Intervals: work/rest) → Start → timer runs → Pause/Resume or Cancel → on completion, Done screen → Reset returns to setup.
 
 ---
 
@@ -52,7 +54,7 @@ Shared timer engine across platforms.
 **Core files:**
 - **WODTimerEngine.swift** — State machine for EMOM + Intervals. Date-based, deterministic. No UI, sound, or haptics.
 - **DesignTokens.swift** — IAMJARL design tokens (spacing, radius, typography, colors light/dark). Mapped from `tokens.json`.
-- **ContentView** — Per platform (`#if os(iOS)` etc.). iOS/iPadOS is the main implementation; macOS, visionOS, watchOS, tvOS have minimal or placeholder UIs.
+- **ContentView** — Per platform (`#if os(iOS)` etc.). iOS/iPadOS and macOS: full UI; tvOS: full UI (DesignTokens, same flow); watchOS: minimal timer + controls.
 - **WODroundsApp.swift** — App entry, `WindowGroup { ContentView() }`.
 
 **Engine behaviour:**
@@ -88,11 +90,28 @@ This app follows the IAMJARL design system. No hardcoded colors, spacing, radius
 Multiplatform SwiftUI; one app target, multiple destinations.
 
 - **Shared:** WODTimerEngine, DesignTokens, shared types.
-- **Per platform:** ContentView behind `#if os(iOS)` / `os(watchOS)` / `os(tvOS)` / `os(macOS)` / `os(visionOS)`.
+- **Per platform:** ContentView behind `#if os(iOS)` / `os(watchOS)` / `os(tvOS)` / `os(macOS)`.
 
-**Current build:** iOS, iPadOS, macOS, visionOS (SUPPORTED_PLATFORMS: iphoneos, iphonesimulator, macosx, xros, xrsimulator).
+**Current build:** One app target for iOS, iPadOS, macOS, tvOS, watchOS (`SUPPORTED_PLATFORMS`: iphoneos, iphonesimulator, macosx, appletvos, appletvsimulator, watchos, watchsimulator). No visionOS.
 
-**v1 priority:** iPhone → iPad → Apple Watch → Apple TV. iOS/iPadOS is full-featured (EMOM + Intervals, mode switch, cancel); other platforms minimal or placeholder.
+**v1 priority:** iPhone & iPad → macOS → tvOS (all full UI); watchOS (minimal timer + controls).
+
+---
+
+## App Icons & Asset Sizes
+
+**iOS / iPadOS** (AppIcon.appiconset):
+- **1024×1024** @1x — Standard, Dark, Tinted (`luminosity: dark` / `luminosity: tinted`).
+
+**watchOS** (samme AppIcon.appiconset):
+- **1024×1024** (watch-marketing, App Store).
+- Watch-roles: notificationCenter (24×24, 27.5×27.5), companionSettings (29×29), appLauncher (40×40, 44×44), longLook (44×44), quickLook (86×86, 98×98) — alle @2x, subtype 38mm/42mm hvor relevant.
+
+**tvOS** (AppIcon.brandassets):
+- **App Icon – Small:** **400×240** px (Home Screen). Image stack med 2 lag (Front + Back).
+- **App Icon – Large:** **1280×768** px (App Store). Samme opbygning.
+- **Top Shelf:** **1920×720** px og/eller **2320×720** px (16:9).
+- Hvert lag (Front/Back): **Light** og **Dark** i imageset (`luminosity: dark`). Tinted understøttes ikke i tvOS layer-imagesets (Xcode-validering).
 
 ---
 
@@ -100,7 +119,7 @@ Multiplatform SwiftUI; one app target, multiple destinations.
 
 - Keep logic deterministic and explicit; simple state machines.
 - Avoid overengineering and third-party libraries.
-- Target iOS 17+; SwiftUI only.
+- Deployment targets are set per platform in the project; SwiftUI only.
 - Timer updates from Date (e.g. `TimelineView(.periodic(from:by:))` + `snapshot(now:)` / `tick(now:)`).
 - New features: simple, clear, no UI noise. When in doubt, choose the simpler solution.
 
@@ -122,8 +141,10 @@ Do not let these drive current architecture.
 ## Current Status
 
 - **Engine:** EMOM + Intervals, Date-based, start/pause/resume/reset/tick, snapshot with phase and remaining times.
-- **iOS/iPadOS:** Mode switch (EMOM / Intervals), Rounds selector (+/−, presets 10/12/20/30), Intervals (work/rest/rounds), primary button, Cancel with confirmation, haptics (start, EMOM minutes, Intervals phase, finish), idle timer (screen-dimming prevention during workouts), all token-based, light + dark.
-- **Design:** IAMJARL tokens only in iOS UI; DesignTokens.swift present.
-- **Other platforms:** ContentView exists for watchOS, tvOS, macOS, visionOS; minimal or placeholder.
+- **iOS/iPadOS:** Mode switch (EMOM / Intervals) at top; short help text under mode; timer shown only after Start; Rounds or Intervals (work/rest/rounds) with +/−; primary button at bottom; Cancel with confirmation; Done screen on completion (checkmark + “You completed X rounds” + Reset); About (ⓘ) top-right; haptics (start, EMOM minutes, Intervals phase, finish); idle timer (screen-dimming off during workout); light transitions; all token-based, light + dark.
+- **macOS:** Samme feature set som iOS; kompakt vindue; DesignTokens.
+- **Design:** IAMJARL DesignTokens i iOS, macOS og tvOS; light/dark via system color scheme.
+- **tvOS:** Fuld UI (samme flow som iOS/macOS); DesignTokens; fokusbare knapper. **watchOS:** Minimal timer + Start/Pause/Resume/Reset.
+- **App Store:** Export compliance (ITSAppUsesNonExemptEncryption = NO); PrivacyPolicy.md, Support.md; About screen with version/build and privacy line.
 
 Build iteratively. Ship small. Stay focused.
