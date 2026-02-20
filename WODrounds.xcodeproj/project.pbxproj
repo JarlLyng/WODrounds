@@ -428,7 +428,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
 				TVOS_DEPLOYMENT_TARGET = 26.2;
 				WATCHOS_DEPLOYMENT_TARGET = 26.2;
-				};
+			};
 			name = Debug;
 		};
 		2FF204672F427AEA00AD0B00 /* Release */ = {
@@ -474,7 +474,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
 				TVOS_DEPLOYMENT_TARGET = 26.2;
 				WATCHOS_DEPLOYMENT_TARGET = 26.2;
-				};
+			};
 			name = Release;
 		};
 		2FF204692F427AEA00AD0B00 /* Debug */ = {

@@ -112,7 +112,12 @@ struct WODTimerEngine {
     }
 
     mutating func pause(now: Date) {
-        guard state == .running, startDate != nil else { return }
+        guard state == .running, let start = startDate else { return }
+        let elapsed = now.timeIntervalSince(start) - accumulatedPauseDuration
+        if elapsed >= totalDurationSeconds {
+            state = .finished
+            return
+        }
         pausedAt = now
         state = .paused
     }
@@ -146,6 +151,9 @@ struct WODTimerEngine {
             return snapshotForActive(elapsed: elapsed)
         case .paused:
             let elapsed = elapsedSeconds(now: now)
+            if elapsed >= totalDurationSeconds {
+                return makeFinishedSnapshot()
+            }
             return snapshotForPaused(elapsed: elapsed)
         case .finished:
             return makeFinishedSnapshot()
