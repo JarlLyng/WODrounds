@@ -115,6 +115,25 @@ Multiplatform SwiftUI; one app target, multiple destinations.
 
 ---
 
+## Signing & App Store Connect (ét-til-felts opsætning)
+
+For at kunne arkivere og uploade til TestFlight/App Store **uden hacks** skal teamet have mindst én enhed registreret. Det er Apples krav for automatisk signering (development-profiler); distribution bruges ved Archive og kræver ikke enheder.
+
+**Gør én gang:**
+
+1. **Tilføj én enhed** til teamet:
+   - Gå til [Certificates, Identifiers & Profiles → Devices](https://developer.apple.com/account/resources/devices/list).
+   - Klik **+** og tilføj din iPhone, iPad eller Apple TV (du behøver **UDID** – findes under Finder når enheden er tilsluttet, eller under Indstillinger → Generelt → Om).
+   - Eller: tilslut enheden til Mac, vælg den som destination i Xcode, og kør én gang – Xcode kan tilbyde at registrere enheden.
+
+2. **I Xcode:** Signing & Capabilities for target **WODrounds** – “Automatically manage signing” slået til, **Team** valgt (samme som i Developer account).
+
+3. **Ved arkiv:** Vælg destination **Any iOS Device** (eller **My Mac** / **Any tvOS Apple TV** for de andre platforme), derefter **Product → Archive**. Brug **Distribute App** og vælg App Store Connect.
+
+Efter step 1 kan Xcode oprette de nødvendige provisioning profiles; Archive bruger herefter distribution og behøver ikke fysisk enhed.
+
+---
+
 ## Development Rules for Cursor
 
 - Keep logic deterministic and explicit; simple state machines.
