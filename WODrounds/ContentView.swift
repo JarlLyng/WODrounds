@@ -382,13 +382,20 @@ private struct AboutView: View {
 struct ContentView: View {
     @State private var engine = WODTimerEngine(totalDurationMinutes: 10)
 
+    private func timeString(from interval: TimeInterval) -> String {
+        let totalSeconds = max(0, Int(ceil(interval)))
+        let m = totalSeconds / 60
+        let s = totalSeconds % 60
+        return String(format: "%02d:%02d", m, s)
+    }
+
     var body: some View {
         TimelineView(.periodic(from: Date(), by: 1.0)) { timeline in
             let now = timeline.date
             let snapshot = engine.snapshot(now: now)
 
             VStack(spacing: 8) {
-                Text(sharedTimeString(from: snapshot.remainingTime))
+                Text(timeString(from: snapshot.remainingTime))
                     .font(.system(.title2, design: .monospaced).monospacedDigit())
 
                 Text("R \(snapshot.currentRound)/\(engine.totalDurationMinutes)")
