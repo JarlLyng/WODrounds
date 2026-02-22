@@ -1,0 +1,21 @@
+/* Main app – English (development language). Keys match code; values here for completeness. */
+
+"Cancel workout?" = "Cancel workout?";
+"Cancel workout" = "Cancel workout";
+"Keep going" = "Keep going";
+"You'll return to setup. Current progress will be lost." = "You'll return to setup. Current progress will be lost.";
+"Start" = "Start";
+"Pause" = "Pause";
+"Resume" = "Resume";
+"Reset" = "Reset";
+"Done" = "Done";
+"Work" = "Work";
+"Rest" = "Rest";
+"Round" = "Round";
+"Rounds" = "Rounds";
+"Select the number of rounds. Each round is one minute." = "Select the number of rounds. Each round is one minute.";
+"Set work time, rest time, and number of rounds." = "Set work time, rest time, and number of rounds.";
+"EMOM" = "EMOM";
+"Intervals" = "Intervals";
+"About" = "About";
+"Privacy" = "Privacy";

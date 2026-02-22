@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2FF206072F427B0000AD0B00 /* WODrounds Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2FF206002F427B0000AD0B00 /* WODrounds Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		2FF204522F427AEA00AD0B00 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,12 +25,34 @@
 			remoteGlobalIDString = 2FF204432F427AE600AD0B00;
 			remoteInfo = WODrounds;
 		};
+		2FF2060A2F427B0000AD0B00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FF2043C2F427AE600AD0B00 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2FF206082F427B0000AD0B00;
+			remoteInfo = "WODrounds Watch";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2FF206062F427B0000AD0B00 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Watch;
+			dstSubfolderSpec = 1;
+			files = (
+				2FF206072F427B0000AD0B00 /* WODrounds Watch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2FF204442F427AE600AD0B00 /* WODrounds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WODrounds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FF204512F427AEA00AD0B00 /* WODroundsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WODroundsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FF2045B2F427AEA00AD0B00 /* WODroundsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WODroundsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FF206002F427B0000AD0B00 /* WODrounds Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WODrounds Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -43,6 +69,16 @@
 		2FF2045E2F427AEA00AD0B00 /* WODroundsUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = WODroundsUITests;
+			sourceTree = "<group>";
+		};
+		2FF206012F427B0000AD0B00 /* WODroundsWatch */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = WODroundsWatch;
+			sourceTree = "<group>";
+		};
+		2FF2060F2F427B0000AD0B00 /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,6 +105,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2FF206042F427B0000AD0B00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -76,6 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				2FF204462F427AE600AD0B00 /* WODrounds */,
+				2FF2060F2F427B0000AD0B00 /* Shared */,
+				2FF206012F427B0000AD0B00 /* WODroundsWatch */,
 				2FF204542F427AEA00AD0B00 /* WODroundsTests */,
 				2FF2045E2F427AEA00AD0B00 /* WODroundsUITests */,
 				2FF204452F427AE600AD0B00 /* Products */,
@@ -86,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				2FF204442F427AE600AD0B00 /* WODrounds.app */,
+				2FF206002F427B0000AD0B00 /* WODrounds Watch.app */,
 				2FF204512F427AEA00AD0B00 /* WODroundsTests.xctest */,
 				2FF2045B2F427AEA00AD0B00 /* WODroundsUITests.xctest */,
 			);
@@ -102,13 +148,16 @@
 				2FF204402F427AE600AD0B00 /* Sources */,
 				2FF204412F427AE600AD0B00 /* Frameworks */,
 				2FF204422F427AE600AD0B00 /* Resources */,
+				2FF206062F427B0000AD0B00 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				2FF206092F427B0000AD0B00 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				2FF204462F427AE600AD0B00 /* WODrounds */,
+				2FF2060F2F427B0000AD0B00 /* Shared */,
 			);
 			name = WODrounds;
 			packageProductDependencies = (
@@ -163,6 +212,29 @@
 			productReference = 2FF2045B2F427AEA00AD0B00 /* WODroundsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		2FF206082F427B0000AD0B00 /* WODrounds Watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2FF2060D2F427B0000AD0B00 /* Build configuration list for PBXNativeTarget "WODrounds Watch" */;
+			buildPhases = (
+				2FF206032F427B0000AD0B00 /* Sources */,
+				2FF206042F427B0000AD0B00 /* Frameworks */,
+				2FF206052F427B0000AD0B00 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2FF206012F427B0000AD0B00 /* WODroundsWatch */,
+				2FF2060F2F427B0000AD0B00 /* Shared */,
+			);
+			name = "WODrounds Watch";
+			packageProductDependencies = (
+			);
+			productName = "WODrounds Watch";
+			productReference = 2FF206002F427B0000AD0B00 /* WODrounds Watch.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +256,9 @@
 						CreatedOnToolsVersion = 26.2;
 						TestTargetID = 2FF204432F427AE600AD0B00;
 					};
+					2FF206082F427B0000AD0B00 = {
+						CreatedOnToolsVersion = 26.2;
+					};
 				};
 			};
 			buildConfigurationList = 2FF2043F2F427AE600AD0B00 /* Build configuration list for PBXProject "WODrounds" */;
@@ -192,6 +267,7 @@
 			knownRegions = (
 				en,
 				Base,
+				da,
 			);
 			mainGroup = 2FF2043B2F427AE600AD0B00;
 			minimizedProjectReferenceProxies = 1;
@@ -201,6 +277,7 @@
 			projectRoot = "";
 			targets = (
 				2FF204432F427AE600AD0B00 /* WODrounds */,
+				2FF206082F427B0000AD0B00 /* WODrounds Watch */,
 				2FF204502F427AEA00AD0B00 /* WODroundsTests */,
 				2FF2045A2F427AEA00AD0B00 /* WODroundsUITests */,
 			);
@@ -223,6 +300,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2FF204592F427AEA00AD0B00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2FF206052F427B0000AD0B00 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +337,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2FF206032F427B0000AD0B00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +356,11 @@
 			isa = PBXTargetDependency;
 			target = 2FF204432F427AE600AD0B00 /* WODrounds */;
 			targetProxy = 2FF2045C2F427AEA00AD0B00 /* PBXContainerItemProxy */;
+		};
+		2FF206092F427B0000AD0B00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2FF206082F427B0000AD0B00 /* WODrounds Watch */;
+			targetProxy = 2FF2060A2F427B0000AD0B00 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -390,6 +486,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WODrounds/WODrounds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KDWZ3WNLDK;
@@ -421,15 +518,14 @@
 				REGISTER_APP_GROUPS = NO;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx appletvos appletvsimulator watchos watchsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx appletvos appletvsimulator";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,3,4";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TVOS_DEPLOYMENT_TARGET = 17.0;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -438,6 +534,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WODrounds/WODrounds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KDWZ3WNLDK;
@@ -469,15 +566,14 @@
 				REGISTER_APP_GROUPS = NO;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx appletvos appletvsimulator watchos watchsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx appletvos appletvsimulator";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,3,4";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TVOS_DEPLOYMENT_TARGET = 17.0;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -579,6 +675,56 @@
 			};
 			name = Release;
 		};
+		2FF2060B2F427B0000AD0B00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WODroundsWatch/WODroundsWatch.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KDWZ3WNLDK;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.iamjarl.WODrounds;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iamjarl.WODrounds.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		2FF2060C2F427B0000AD0B00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WODroundsWatch/WODroundsWatch.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KDWZ3WNLDK;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.iamjarl.WODrounds;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iamjarl.WODrounds.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -614,6 +760,15 @@
 			buildConfigurations = (
 				2FF2046C2F427AEA00AD0B00 /* Debug */,
 				2FF2046D2F427AEA00AD0B00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2FF2060D2F427B0000AD0B00 /* Build configuration list for PBXNativeTarget "WODrounds Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2FF2060B2F427B0000AD0B00 /* Debug */,
+				2FF2060C2F427B0000AD0B00 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

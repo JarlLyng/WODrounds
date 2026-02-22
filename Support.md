@@ -9,4 +9,4 @@
 
 We do not collect data or use analytics, so we can’t access your usage. Please describe your device (e.g. iPhone 15, iOS 17) and what you were doing when the issue occurred.
 
-*Last updated: February 2025*
+*Last updated: February 2026*

@@ -15,7 +15,7 @@ struct WODroundsTests {
         // Placeholder for future tests.
     }
 
-    /// Pause at or after end: engine.state and snapshot must be .finished (REVIEW.md anbefaling 1).
+    /// Pause at or after end: engine.state and snapshot must be .finished.
     @Test func pauseAtEndSetsFinishedState() async throws {
         var engine = WODTimerEngine(totalDurationMinutes: 1)
         let start = Date()

@@ -2,7 +2,7 @@
 //  SharedTimerViews.swift
 //  WODrounds
 //
-//  Fælles komponenter for iOS, macOS og tvOS – reducerer duplikering (REVIEW.md).
+//  Fælles komponenter for iOS, macOS og tvOS – reducerer duplikering.
 //
 
 import SwiftUI

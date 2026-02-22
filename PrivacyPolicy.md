@@ -8,4 +8,6 @@
 
 Your workout settings and timer state exist only on your device and are not sent anywhere.
 
-*Last updated: February 2025*
+**Apple Health (iOS):** If you grant permission, the app can save completed workouts to the Health app (activity type: HIIT). This data stays in Health on your device and is not sent to us.
+
+*Last updated: February 2026*

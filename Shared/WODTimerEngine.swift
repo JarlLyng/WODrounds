@@ -1,6 +1,6 @@
 //
 //  WODTimerEngine.swift
-//  WODrounds
+//  Shared (WODrounds + WODrounds Watch)
 //
 //  EMOM + Intervals timer engine. Platform-agnostic, Date-based, no UI/sound/haptics.
 //
@@ -134,6 +134,12 @@ struct WODTimerEngine {
         startDate = nil
         accumulatedPauseDuration = 0
         pausedAt = nil
+    }
+
+    /// End date for a HealthKit workout so duration = active time (excludes pause). Nil if workout never started.
+    func effectiveWorkoutEndDate(now: Date) -> Date? {
+        guard startDate != nil else { return nil }
+        return Date(timeIntervalSinceReferenceDate: now.timeIntervalSinceReferenceDate - accumulatedPauseDuration)
     }
 
     // MARK: - Query (Date-based)
@@ -272,5 +278,42 @@ struct WODTimerEngine {
         }
         let restEnd = segmentStart + cycle
         return (roundIndex + 1, .rest, max(0, restEnd - elapsed))
+    }
+
+    // MARK: - Sync (iPhone → Watch via App Group)
+
+    /// Payload written to shared UserDefaults so Watch can show the same timer.
+    struct SyncPayload: Codable {
+        let state: String       // "idle" | "running" | "paused" | "finished"
+        let startDate: Date?
+        let accumulatedPauseDuration: TimeInterval
+        let pausedAt: Date?
+        let mode: String        // "emom" | "intervals"
+        let totalMinutes: Int
+        let workSeconds: Int?
+        let restSeconds: Int?
+        let rounds: Int?
+        let lastUpdated: Date
+    }
+
+    func syncPayload(now: Date) -> SyncPayload {
+        let (modeStr, totalMin, work, rest, rnds): (String, Int, Int?, Int?, Int?) = {
+            switch mode {
+            case .emom(let m): return ("emom", m, nil, nil, nil)
+            case .intervals(let w, let r, let n): return ("intervals", 0, w, r, n)
+            }
+        }()
+        return SyncPayload(
+            state: state == .idle ? "idle" : state == .running ? "running" : state == .paused ? "paused" : "finished",
+            startDate: startDate,
+            accumulatedPauseDuration: accumulatedPauseDuration,
+            pausedAt: pausedAt,
+            mode: modeStr,
+            totalMinutes: totalMin,
+            workSeconds: work,
+            restSeconds: rest,
+            rounds: rnds,
+            lastUpdated: now
+        )
     }
 }

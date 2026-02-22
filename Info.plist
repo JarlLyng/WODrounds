@@ -3,5 +3,9 @@
 <dict>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.healthcare-fitness</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>WODrounds læser ikke din sundhedsdata. Denne tilladelse vises af systemet ved HealthKit-tilgang.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>WODrounds gemmer dine træninger i Apple Health, så Fitness og Aktivitet viser, hvornår du træner.</string>
 </dict>
 </plist>

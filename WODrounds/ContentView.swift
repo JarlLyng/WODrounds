@@ -63,6 +63,7 @@ struct ContentView: View {
                     var e = engine
                     e.tick(now: newDate)
                     engine = e
+                    WODTimerSync.write(engine.syncPayload(now: newDate))
                 }
             }
         }
@@ -87,6 +88,7 @@ private struct iOSContent: View {
     @State private var lastHapticRound: Int = 0
     @State private var lastHapticPhase: WODTimerPhase?
     @State private var showAbout = false
+    @State private var countdownEndTime: Date? = nil
 
     private static let iosDoneTheme = DoneViewTheme(
         checkmarkSize: 64,
@@ -212,18 +214,56 @@ private struct iOSContent: View {
         .buttonStyle(.plain)
         .padding(DesignTokens.Spacing.md)
         }
+        .overlay {
+            if let end = countdownEndTime {
+                let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
+                if remaining > 0 {
+                    VStack(spacing: DesignTokens.Spacing.lg) {
+                        Text("Get ready")
+                            .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                            .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+                        Text("\(remaining)")
+                            .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                            .monospacedDigit()
+                            .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(DesignTokens.Common.Background.app(scheme))
+                }
+            }
+        }
+        .onChange(of: now) { _, newDate in
+            if let end = countdownEndTime, newDate >= end {
+                Haptics.light()
+                lastHapticRound = 1
+                lastHapticPhase = .work
+                var e = engine
+                e.start(now: end)
+                engine = e
+                countdownEndTime = nil
+                WODTimerSync.write(engine.syncPayload(now: end))
+                #if os(iOS)
+                HealthKitWorkoutController.shared.startWorkout(startDate: end)
+                #endif
+            }
+        }
         .sheet(isPresented: $showAbout) {
             AboutView()
         }
         .confirmationDialog("Cancel workout?", isPresented: $showCancelConfirmation, titleVisibility: .visible) {
             Button("Cancel workout", role: .destructive) {
+                let endDate = engine.effectiveWorkoutEndDate(now: Date()) ?? Date()
                 var e = engine
                 e.reset()
                 engine = e
+                WODTimerSync.write(engine.syncPayload(now: Date()))
+                #if os(iOS)
+                HealthKitWorkoutController.shared.endWorkout(endDate: endDate)
+                #endif
             }
             Button("Keep going", role: .cancel) {}
         } message: {
-            Text("You’ll return to setup. Current progress will be lost.")
+            Text("You'll return to setup. Current progress will be lost.")
         }
         .onAppear {
             applyIdleTimer(engine.state)
@@ -239,6 +279,9 @@ private struct iOSContent: View {
             }
             if newState == .finished {
                 Haptics.strong()
+                #if os(iOS)
+                HealthKitWorkoutController.shared.endWorkout(endDate: engine.effectiveWorkoutEndDate(now: Date()) ?? Date())
+                #endif
             }
         }
         .onChange(of: snapshot.currentRound) { _, newRound in
@@ -287,16 +330,26 @@ private struct iOSContent: View {
         let (title, action): (String, () -> Void) = switch snapshot.state {
         case .idle:
             ("Start", {
-                Haptics.light()
-                lastHapticRound = 1
-                lastHapticPhase = .work
-                var e = engine
-                e.start(now: now)
-                engine = e
+                #if os(iOS)
+                HealthKitWorkoutController.shared.requestAuthorizationIfNeeded { _ in
+                    countdownEndTime = Date().addingTimeInterval(10)
+                }
+                #else
+                countdownEndTime = now.addingTimeInterval(10)
+                #endif
             })
-        case .running: ("Pause", { var e = engine; e.pause(now: now); engine = e })
-        case .paused: ("Resume", { var e = engine; e.resume(now: now); engine = e })
-        case .finished: ("Reset", { var e = engine; e.reset(); engine = e })
+        case .running: ("Pause", { var e = engine; e.pause(now: now); engine = e; WODTimerSync.write(engine.syncPayload(now: now)) })
+        case .paused: ("Resume", { var e = engine; e.resume(now: now); engine = e; WODTimerSync.write(engine.syncPayload(now: now)) })
+        case .finished: ("Reset", {
+            let endDate = engine.effectiveWorkoutEndDate(now: now) ?? now
+            var e = engine
+            e.reset()
+            engine = e
+            WODTimerSync.write(engine.syncPayload(now: now))
+            #if os(iOS)
+            HealthKitWorkoutController.shared.endWorkout(endDate: endDate)
+            #endif
+        })
         }
         return SharedPrimaryButton(title: title, action: action, theme: Self.iosPrimaryTheme)
             .animation(.easeInOut(duration: 0.2), value: snapshot.state)
@@ -376,66 +429,6 @@ private struct AboutView: View {
 }
 #endif
 
-// MARK: - watchOS (minimal timer + controls)
-
-#if os(watchOS)
-struct ContentView: View {
-    @State private var engine = WODTimerEngine(totalDurationMinutes: 10)
-
-    private func timeString(from interval: TimeInterval) -> String {
-        let totalSeconds = max(0, Int(ceil(interval)))
-        let m = totalSeconds / 60
-        let s = totalSeconds % 60
-        return String(format: "%02d:%02d", m, s)
-    }
-
-    var body: some View {
-        TimelineView(.periodic(from: Date(), by: 1.0)) { timeline in
-            let now = timeline.date
-            let snapshot = engine.snapshot(now: now)
-
-            VStack(spacing: 8) {
-                Text(timeString(from: snapshot.remainingTime))
-                    .font(.system(.title2, design: .monospaced).monospacedDigit())
-
-                Text("R \(snapshot.currentRound)/\(engine.totalDurationMinutes)")
-                    .font(.caption)
-                    .opacity(0.8)
-
-                HStack(spacing: 6) {
-                    switch snapshot.state {
-                    case .idle:
-                        Button("Start") {
-                            engine.start(now: now)
-                        }
-                    case .running:
-                        Button("Pause") {
-                            engine.pause(now: now)
-                        }
-                    case .paused:
-                        Button("Resume") {
-                            engine.resume(now: now)
-                        }
-                    case .finished:
-                        Button("Reset") {
-                            engine.reset()
-                        }
-                    }
-                }
-            }
-            .onChange(of: timeline.date) { _, newDate in
-                if engine.state == .running {
-                    var e = engine
-                    e.tick(now: newDate)
-                    engine = e
-                }
-            }
-        }
-    }
-
-}
-#endif
-
 // MARK: - tvOS (full UI, DesignTokens, focusable controls)
 
 #if os(tvOS)
@@ -458,6 +451,7 @@ struct ContentView: View {
     @State private var engine = WODTimerEngine(totalDurationMinutes: 10)
     @State private var showCancelConfirmation = false
     @State private var showAbout = false
+    @State private var countdownEndTime: Date? = nil
 
     @Environment(\.colorScheme) private var scheme
 
@@ -514,9 +508,14 @@ struct ContentView: View {
         }
         .confirmationDialog("Cancel workout?", isPresented: $showCancelConfirmation, titleVisibility: .visible) {
             Button("Cancel workout", role: .destructive) {
+                let endDate = engine.effectiveWorkoutEndDate(now: Date()) ?? Date()
                 var e = engine
                 e.reset()
                 engine = e
+                WODTimerSync.write(engine.syncPayload(now: Date()))
+                #if os(iOS)
+                HealthKitWorkoutController.shared.endWorkout(endDate: endDate)
+                #endif
             }
             Button("Keep going", role: .cancel) {}
         } message: {
@@ -616,6 +615,32 @@ struct ContentView: View {
             .buttonStyle(.plain)
             .padding(DesignTokens.Spacing.lg)
         }
+        .overlay {
+            if let end = countdownEndTime {
+                let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
+                if remaining > 0 {
+                    VStack(spacing: DesignTokens.Spacing.lg) {
+                        Text("Get ready")
+                            .font(.system(size: TVOSTypography.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                            .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+                        Text("\(remaining)")
+                            .font(.system(size: TVOSTypography.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                            .monospacedDigit()
+                            .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(DesignTokens.Common.Background.app(scheme))
+                }
+            }
+        }
+        .onChange(of: now) { _, newDate in
+            if let end = countdownEndTime, newDate >= end {
+                var e = engine
+                e.start(now: end)
+                engine = e
+                countdownEndTime = nil
+            }
+        }
     }
 
     private var modeHelpText: String {
@@ -630,7 +655,7 @@ struct ContentView: View {
     private func tvOSPrimaryButton(snapshot: WODTimerEngineSnapshot, now: Date) -> some View {
         let (title, action): (String, () -> Void) = switch snapshot.state {
         case .idle:
-            ("Start", { var e = engine; e.start(now: now); engine = e })
+            ("Start", { countdownEndTime = now.addingTimeInterval(10) })
         case .running: ("Pause", { var e = engine; e.pause(now: now); engine = e })
         case .paused: ("Resume", { var e = engine; e.resume(now: now); engine = e })
         case .finished: ("Reset", { var e = engine; e.reset(); engine = e })
@@ -780,6 +805,7 @@ private struct MacContent: View {
 
     @State private var showCancelConfirmation = false
     @State private var showAbout = false
+    @State private var countdownEndTime: Date? = nil
 
     private static let macDoneTheme = DoneViewTheme(
         checkmarkSize: 64,
@@ -903,12 +929,43 @@ private struct MacContent: View {
             .buttonStyle(.plain)
             .padding(DesignTokens.Spacing.md)
         }
+        .overlay {
+            if let end = countdownEndTime {
+                let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
+                if remaining > 0 {
+                    VStack(spacing: DesignTokens.Spacing.lg) {
+                        Text("Get ready")
+                            .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                            .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+                        Text("\(remaining)")
+                            .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                            .monospacedDigit()
+                            .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(DesignTokens.Common.Background.app(scheme))
+                }
+            }
+        }
+        .onChange(of: now) { _, newDate in
+            if let end = countdownEndTime, newDate >= end {
+                var e = engine
+                e.start(now: end)
+                engine = e
+                countdownEndTime = nil
+            }
+        }
         .sheet(isPresented: $showAbout) { MacAboutView() }
         .confirmationDialog("Cancel workout?", isPresented: $showCancelConfirmation, titleVisibility: .visible) {
             Button("Cancel workout", role: .destructive) {
+                let endDate = engine.effectiveWorkoutEndDate(now: Date()) ?? Date()
                 var e = engine
                 e.reset()
                 engine = e
+                WODTimerSync.write(engine.syncPayload(now: Date()))
+                #if os(iOS)
+                HealthKitWorkoutController.shared.endWorkout(endDate: endDate)
+                #endif
             }
             Button("Keep going", role: .cancel) {}
         } message: {
@@ -925,7 +982,7 @@ private struct MacContent: View {
 
     private func macPrimaryButton(snapshot: WODTimerEngineSnapshot, now: Date) -> some View {
         let (title, action): (String, () -> Void) = switch snapshot.state {
-        case .idle: ("Start", { var e = engine; e.start(now: now); engine = e })
+        case .idle: ("Start", { countdownEndTime = now.addingTimeInterval(10) })
         case .running: ("Pause", { var e = engine; e.pause(now: now); engine = e })
         case .paused: ("Resume", { var e = engine; e.resume(now: now); engine = e })
         case .finished: ("Reset", { var e = engine; e.reset(); engine = e })
