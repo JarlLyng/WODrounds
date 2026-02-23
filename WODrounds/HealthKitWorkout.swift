@@ -27,7 +27,7 @@ final class HealthKitWorkoutController {
             return
         }
         let typesToShare: Set<HKSampleType> = [HKObjectType.workoutType()]
-        healthStore.requestAuthorization(toShare: typesToShare, read: nil) { [weak self] success, _ in
+        healthStore.requestAuthorization(toShare: typesToShare, read: nil) { success, _ in
             DispatchQueue.main.async {
                 completion(success)
             }

@@ -25,12 +25,16 @@ struct WatchContentView: View {
             let syncedPayload = WODTimerSync.read()
             let syncedSnapshot = syncedPayload.flatMap { WODTimerSync.snapshot(from: $0, now: now) }
             let useSynced = syncedSnapshot.map { $0.state == .running || $0.state == .paused } ?? false
-            let (remainingTime, currentRound, totalRounds, state): (TimeInterval, Int, Int, WODTimerEngineState) = {
-                if useSynced, let s = syncedSnapshot {
-                    return (s.remainingTime, s.currentRound, s.totalRounds, s.state)
+            let (displayTime, currentRound, totalRounds, state): (TimeInterval, Int, Int, WODTimerEngineState) = {
+                if useSynced, let s = syncedSnapshot, let payload = syncedPayload {
+                    let disp = payload.mode == "emom" ? s.remainingTimeInPhase : s.remainingTime
+                    return (disp, s.currentRound, s.totalRounds, s.state)
                 }
                 let local = engine.snapshot(now: now)
-                return (local.remainingTime, local.currentRound, engine.totalDurationMinutes, local.state)
+                let isLocalEmom: Bool
+                if case .emom = engine.mode { isLocalEmom = true } else { isLocalEmom = false }
+                let disp = isLocalEmom ? local.remainingTimeInPhase : local.remainingTime
+                return (disp, local.currentRound, engine.totalDurationMinutes, local.state)
             }()
 
             ZStack {
@@ -44,7 +48,7 @@ struct WatchContentView: View {
                             .foregroundStyle(WatchDesign.Colors.textTertiary(colorScheme))
                     }
 
-                    Text(timeString(from: remainingTime))
+                    Text(timeString(from: displayTime))
                         .font(.system(size: WatchDesign.timerFontSize, weight: .bold, design: .rounded))
                         .monospacedDigit()
                         .foregroundStyle(WatchDesign.Colors.textPrimary(colorScheme))

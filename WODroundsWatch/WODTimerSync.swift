@@ -77,16 +77,17 @@ enum WODTimerSync {
         let remainingTime: TimeInterval
         let currentRound: Int
         let totalRounds: Int
+        let remainingTimeInPhase: TimeInterval
     }
 
     static func snapshot(from payload: WODTimerSyncPayload, now: Date) -> SyncedSnapshot? {
         switch payload.state {
         case "idle":
             let total = payload.mode == "emom" ? payload.totalMinutes : (payload.rounds ?? 0)
-            return SyncedSnapshot(state: .idle, remainingTime: 0, currentRound: 0, totalRounds: max(1, total))
+            return SyncedSnapshot(state: .idle, remainingTime: 0, currentRound: 0, totalRounds: max(1, total), remainingTimeInPhase: 0)
         case "finished":
             let total = payload.mode == "emom" ? payload.totalMinutes : (payload.rounds ?? 0)
-            return SyncedSnapshot(state: .finished, remainingTime: 0, currentRound: max(1, total), totalRounds: max(1, total))
+            return SyncedSnapshot(state: .finished, remainingTime: 0, currentRound: max(1, total), totalRounds: max(1, total), remainingTimeInPhase: 0)
         case "running", "paused":
             guard payload.startDate != nil else { return nil }
             let totalSec = totalDurationSeconds(payload: payload)
@@ -94,15 +95,19 @@ enum WODTimerSync {
             let remaining = max(0, totalSec - elapsed)
             let totalRounds: Int = payload.mode == "emom" ? payload.totalMinutes : (payload.rounds ?? 1)
             let round: Int
+            let remainingTimeInPhase: TimeInterval
             if payload.mode == "emom" {
                 round = min(roundFromEMOM(elapsed: elapsed, totalMinutes: payload.totalMinutes), payload.totalMinutes)
+                let intoMinute = Int(elapsed.truncatingRemainder(dividingBy: 60))
+                remainingTimeInPhase = TimeInterval(60 - intoMinute)
             } else {
                 guard let w = payload.workSeconds, let r = payload.restSeconds, let n = payload.rounds, n > 0 else { return nil }
                 let cycle = TimeInterval(w + r)
                 round = totalSec <= 0 ? n : min(Int(elapsed / cycle), n - 1) + 1
+                remainingTimeInPhase = 0
             }
             let state: WODTimerEngineState = payload.state == "running" ? .running : .paused
-            return SyncedSnapshot(state: state, remainingTime: remaining, currentRound: round, totalRounds: totalRounds)
+            return SyncedSnapshot(state: state, remainingTime: remaining, currentRound: round, totalRounds: totalRounds, remainingTimeInPhase: remainingTimeInPhase)
         default:
             return nil
         }

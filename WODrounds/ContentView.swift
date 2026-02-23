@@ -153,7 +153,7 @@ private struct iOSContent: View {
                     .transition(.opacity)
             } else if !canEdit {
                 VStack(spacing: DesignTokens.Spacing.lg) {
-                    Text(sharedTimeString(from: snapshot.remainingTime))
+                    Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
                         .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                         .monospacedDigit()
                         .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
@@ -551,7 +551,7 @@ struct ContentView: View {
                         .transition(.opacity)
                 } else if !canEdit {
                     VStack(spacing: DesignTokens.Spacing.lg) {
-                        Text(sharedTimeString(from: snapshot.remainingTime))
+                        Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
                             .font(.system(size: TVOSTypography.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                             .monospacedDigit()
                             .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
@@ -869,7 +869,7 @@ private struct MacContent: View {
                         .transition(.opacity)
                 } else if snapshot.state == .running || snapshot.state == .paused {
                     VStack(spacing: DesignTokens.Spacing.lg) {
-                        Text(sharedTimeString(from: snapshot.remainingTime))
+                        Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
                             .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                             .monospacedDigit()
                             .foregroundStyle(DesignTokens.Common.Text.primary(scheme))

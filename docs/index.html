@@ -5,17 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WODrounds — Minimal interval timer for iPhone, Watch &amp; Apple</title>
   <meta name="description" content="Distraction-free EMOM and Intervals timer. Start on iPhone, follow on Watch. No accounts, no analytics. Just timing and focus.">
+  <link rel="canonical" href="https://jarllyng.github.io/WODrounds/">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jarllyng.github.io/WODrounds/">
+  <meta property="og:title" content="WODrounds — Minimal interval timer for iPhone &amp; Apple Watch">
+  <meta property="og:description" content="EMOM and Intervals timer. Start on iPhone, follow on Watch. No accounts, no analytics. Just timing and focus.">
+  <meta property="og:image" content="https://jarllyng.github.io/WODrounds/images/iphone.png">
+  <meta property="og:locale" content="en_US">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WODrounds — Interval timer for iPhone &amp; Apple Watch">
+  <meta name="twitter:description" content="EMOM and Intervals. Start on iPhone, follow on Watch. No accounts. Just timing and focus.">
+  <meta name="twitter:image" content="https://jarllyng.github.io/WODrounds/images/iphone.png">
+  <!-- App / SEO -->
+  <meta name="robots" content="index, follow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"WODrounds","applicationCategory":"HealthApplication","operatingSystem":"iOS, watchOS, macOS, tvOS","description":"Minimal EMOM and Intervals timer. Start on iPhone, follow on Apple Watch. No accounts, no analytics.","offers":{"@type":"Offer","price":"0"}}
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="wrap">
       <a href="index.html" class="logo">WODrounds</a>
       <nav class="nav">
-        <a href="https://github.com/JarlLyng/WODrounds">GitHub</a>
         <a href="privacy.html">Privacy</a>
         <a href="support.html">Support</a>
       </nav>
@@ -25,17 +42,33 @@
   <main>
     <section class="hero">
       <div class="wrap">
-        <p class="hero-label">Interval timer for iPhone &amp; Apple Watch</p>
-        <h1 class="hero-title">Timing.<br>Rounds.<br>Focus.</h1>
-        <p class="hero-lead">No accounts. No analytics. No noise. EMOM and Intervals, start on iPhone and follow on Watch. One workout, one state.</p>
-        <p class="hero-cta">
+        <p class="hero-label animate" style="--delay: 0ms">Interval timer for iPhone &amp; Apple Watch</p>
+        <h1 class="hero-title animate" style="--delay: 100ms">Timing.<br>Rounds.<br>Focus.</h1>
+        <p class="hero-lead animate" style="--delay: 250ms">No accounts. No analytics. No noise. EMOM and Intervals, start on iPhone and follow on Watch. One workout, one state.</p>
+        <p class="hero-cta animate" style="--delay: 450ms">
           <a href="https://apps.apple.com/app/wodrounds" class="btn btn-primary">Download on the App Store</a>
           <span class="cta-note">iPhone, iPad, Apple Watch, Mac, Apple TV</span>
         </p>
       </div>
     </section>
 
-    <section class="features">
+    <section class="app-showcase reveal">
+      <div class="wrap">
+        <h2 class="section-title">The app</h2>
+        <div class="app-shots">
+          <figure class="app-shot">
+            <img src="images/iphone.png" alt="WODrounds on iPhone — timer and rounds" width="280" height="606" loading="lazy">
+            <figcaption>iPhone — EMOM & Intervals</figcaption>
+          </figure>
+          <figure class="app-shot">
+            <img src="images/watch.png" alt="WODrounds on Apple Watch — synced timer" width="184" height="224" loading="lazy">
+            <figcaption>Apple Watch — follow iPhone or run locally</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="features reveal">
       <div class="wrap">
         <h2 class="section-title">Built for the workout</h2>
         <ul class="feature-grid">
@@ -63,7 +96,7 @@
       </div>
     </section>
 
-    <section class="principles">
+    <section class="principles reveal">
       <div class="wrap">
         <h2 class="section-title">A tool, not a feed</h2>
         <p class="principles-lead">WODrounds is for functional fitness, CrossFit-style WODs, HIIT and interval sessions. Ultra-minimal UI, date-based timing that works when the app is in the background, and a native Apple experience across devices.</p>
@@ -76,7 +109,7 @@
       </div>
     </section>
 
-    <section class="cta">
+    <section class="cta reveal">
       <div class="wrap">
         <h2 class="section-title">Get WODrounds</h2>
         <p class="cta-lead">Available on the App Store for iPhone, iPad, Apple Watch, Mac and Apple TV.</p>
@@ -89,12 +122,23 @@
     <div class="wrap">
       <p class="footer-logo">WODrounds</p>
       <p class="footer-links">
-        <a href="https://github.com/JarlLyng/WODrounds">GitHub</a>
         <a href="privacy.html">Privacy</a>
         <a href="support.html">Support</a>
       </p>
       <p class="footer-copy">No data collected. No analytics. Just a timer.</p>
     </div>
   </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var r = document.querySelectorAll('.reveal');
+      if (!r.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) { e.target.classList.add('in-view'); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
+      r.forEach(function(el) { io.observe(el); });
+    });
+  </script>
 </body>
 </html>

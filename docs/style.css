@@ -18,6 +18,57 @@
 html {
   font-size: 18px;
   -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+/* Animations — disabled when user prefers reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  .animate {
+    animation: fadeInUp 0.6s ease-out both;
+    animation-delay: var(--delay, 0ms);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .app-shot img {
+    transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
+  }
+
+  .app-showcase .app-shot img {
+    transform: scale(0.98);
+  }
+
+  .app-showcase.reveal.in-view .app-shot img {
+    transform: scale(1);
+  }
+
+  .btn {
+    transition: background 0.2s, color 0.2s, transform 0.2s ease-out;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 body {
@@ -139,6 +190,46 @@ body {
   margin-top: 0.75rem;
   font-size: 0.85rem;
   color: var(--text-muted);
+}
+
+/* App showcase */
+.app-showcase {
+  padding: 4rem 0;
+  background: var(--bg-soft);
+}
+
+.app-shots {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.app-shot {
+  margin: 0;
+  text-align: center;
+}
+
+.app-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 280px;
+  margin: 0 auto;
+  border-radius: 24px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+.app-shot figcaption {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* Slightly smaller Watch shot so they feel balanced */
+.app-shot:last-child img {
+  max-width: 184px;
 }
 
 /* Section titles */

@@ -89,7 +89,7 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 
 **Apple Health (iOS):**
 - **HealthKit** capability and usage strings in Info.plist (`NSHealthShareUsageDescription`, `NSHealthUpdateUsageDescription`).
-- **HealthKitWorkout.swift** — Starts an HK workout (HIIT) when the timer starts (after countdown), ends it on Finish / Reset / Cancel. Authorization is requested the first time the user taps Start; workouts appear in the Health app and in Activity.
+- **HealthKitWorkout.swift** — Starts an HK workout (HIIT) when the timer starts (after countdown), ends it on Finish / Reset / Cancel. Duration in Health = active time (pauses excluded, via `effectiveWorkoutEndDate`). Authorization on first Start; workouts appear in the Health app and in Activity.
 
 ---
 
@@ -177,8 +177,8 @@ Do not let these drive current architecture.
 
 ## Current Status
 
-- **Engine:** EMOM + Intervals, Date-based, start/pause/resume/reset/tick, snapshot with phase and remaining times. Shared logic; Watch has a copy for local-only use.
-- **iOS/iPadOS:** Full UI (mode switch, steppers, primary button, Cancel, Done, About). Writes sync state to App Group on every timer action and every second while running. **Apple Health:** HIIT workouts saved to Health when user grants permission (first Start); end on Finish / Reset / Cancel. Haptics, idle timer off during workout, DesignTokens, light/dark.
+- **Engine:** EMOM + Intervals, Date-based, start/pause/resume/reset/tick, snapshot with phase and remaining times. Single shared engine in `Shared/WODTimerEngine.swift`; both main app and Watch target use it.
+- **iOS/iPadOS:** Full UI (mode switch, steppers, primary button, Cancel, Done, About). Writes sync state to App Group on every timer action and every second while running. **Apple Health:** HIIT workouts saved to Health when user grants permission (first Start); duration = active time (pauses excluded). End on Finish / Reset / Cancel. Haptics, idle timer off during workout, DesignTokens, light/dark.
 - **Watch:** Embedded Watch App. Reads App Group; when iPhone has a running/paused workout, Watch shows same time and round (“Følger iPhone”). Otherwise local timer with Start/Pause/Resume/Reset. WatchDesign (green accent, light/dark). All required Watch icon roles for store validation.
 - **macOS:** Same feature set as iOS; compact window; DesignTokens.
 - **tvOS:** Full UI, DesignTokens, focusable controls.
@@ -213,4 +213,6 @@ A static marketing site lives in **`docs/`** (index.html + style.css) for use wi
 **Enable:** Repo → **Settings → Pages** → Source: **Deploy from a branch** → Branch: **main**, Folder: **/docs** → Save.  
 The site will be available at `https://<username>.github.io/WODrounds/` (e.g. `https://jarllyng.github.io/WODrounds/`).
 
-**Content:** Hero, EMOM/Intervals/Watch/Health features, principles (no accounts/analytics), CTA. Links to GitHub, PrivacyPolicy.md and Support.md. Replace the App Store URL in `docs/index.html` with your real App Store link when the app is published.
+**Content:** Hero, app screenshots (iPhone + Watch), features, principles, CTA. Privacy and Support are own pages; no public repo links. Add your screenshots as `docs/images/iphone.png` and `docs/images/watch.png` (see `docs/images/README.txt`). Replace the App Store URL in `docs/index.html` when the app is published.
+
+**SEO:** Canonical URLs, Open Graph and Twitter Card meta, `robots` index/follow, JSON-LD `SoftwareApplication` on the homepage. Update the base URL in meta tags if you use a custom domain. **Animationer:** Hero fade-in med stagger, sektioner fader ind ved scroll (Intersection Observer); respekterer `prefers-reduced-motion`.

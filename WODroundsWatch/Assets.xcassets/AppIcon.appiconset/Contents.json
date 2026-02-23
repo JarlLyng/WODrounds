@@ -61,13 +61,6 @@
       "subtype" : "40mm"
     },
     {
-      "filename" : "AppIcon44-long.png",
-      "idiom" : "watch",
-      "role" : "longLook",
-      "scale" : "2x",
-      "size" : "44x44"
-    },
-    {
       "filename" : "AppIcon46.png",
       "idiom" : "watch",
       "role" : "appLauncher",
@@ -79,14 +72,6 @@
       "filename" : "AppIcon50.png",
       "idiom" : "watch",
       "role" : "appLauncher",
-      "scale" : "2x",
-      "size" : "50x50",
-      "subtype" : "44mm"
-    },
-    {
-      "filename" : "AppIcon50-long.png",
-      "idiom" : "watch",
-      "role" : "longLook",
       "scale" : "2x",
       "size" : "50x50",
       "subtype" : "44mm"
