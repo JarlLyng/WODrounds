@@ -198,8 +198,19 @@ Build iteratively. Ship small. Stay focused.
 
 ## For reviewers
 
-- **Entry points:** `WODroundsApp.swift` (main), `ContentView.swift` (platform UI), `WODTimerEngine.swift` (core timer logic).
+- **Entry points:** `WODroundsApp.swift` (main), `ContentView.swift` (platform UI), `Shared/WODTimerEngine.swift` (core timer logic).
 - **Sync:** App Group key `group.com.iamjarl.WODrounds`; write in `WODTimerSync.swift` (iOS), read in `WODroundsWatch/WODTimerSync.swift`.
 - **Health:** `HealthKitWorkout.swift` (iOS only); authorization on first Start, workout start/end tied to timer in `ContentView.swift` (`#if os(iOS)`).
 - **Design:** `DesignTokens.swift` (main app), `WatchDesign.swift` (Watch); no hardcoded colors/spacing in UI.
 - **Docs:** This README; `PrivacyPolicy.md` and `Support.md` for store/support.
+
+---
+
+## Marketing site (GitHub Pages)
+
+A static marketing site lives in **`docs/`** (index.html + style.css) for use with GitHub Pages.
+
+**Enable:** Repo → **Settings → Pages** → Source: **Deploy from a branch** → Branch: **main**, Folder: **/docs** → Save.  
+The site will be available at `https://<username>.github.io/WODrounds/` (e.g. `https://jarllyng.github.io/WODrounds/`).
+
+**Content:** Hero, EMOM/Intervals/Watch/Health features, principles (no accounts/analytics), CTA. Links to GitHub, PrivacyPolicy.md and Support.md. Replace the App Store URL in `docs/index.html` with your real App Store link when the app is published.
