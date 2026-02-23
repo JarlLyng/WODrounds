@@ -1,38 +1,13 @@
 {
-  "images" : [
+  "images": [
     {
-      "filename" : "Layer.png",
-      "idiom" : "tv",
-      "scale" : "1x"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Layer-Dark.png",
-      "idiom" : "tv",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "tv",
-      "scale" : "2x"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "idiom" : "tv",
-      "scale" : "2x"
+      "filename": "topshelf.png",
+      "idiom": "tv",
+      "scale": "1x"
     }
   ],
-  "info" : {
-    "author" : "xcode",
-    "version" : 1
+  "info": {
+    "author": "xcode",
+    "version": 1
   }
 }
