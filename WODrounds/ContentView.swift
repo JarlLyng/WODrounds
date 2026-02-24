@@ -89,6 +89,7 @@ private struct iOSContent: View {
     @State private var lastHapticPhase: WODTimerPhase?
     @State private var showAbout = false
     @State private var countdownEndTime: Date? = nil
+    @State private var flashScreen = false
 
     private static let iosDoneTheme = DoneViewTheme(
         checkmarkSize: 64,
@@ -212,7 +213,13 @@ private struct iOSContent: View {
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
         }
         .buttonStyle(.plain)
+        }
         .padding(DesignTokens.Spacing.md)
+        .overlay {
+            DesignTokens.Common.Text.primary(scheme)
+                .ignoresSafeArea()
+                .opacity(flashScreen ? 0.85 : 0)
+                .animation(.easeInOut(duration: 0.35), value: flashScreen)
         }
         .overlay {
             if let end = countdownEndTime {
@@ -287,14 +294,23 @@ private struct iOSContent: View {
         .onChange(of: snapshot.currentRound) { _, newRound in
             if (engine.state == .running || engine.state == .paused), timerMode == .emom, newRound > lastHapticRound {
                 Haptics.light()
+                triggerFlash()
                 lastHapticRound = newRound
             }
         }
         .onChange(of: snapshot.currentPhase) { _, newPhase in
             if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
                 Haptics.medium()
+                triggerFlash()
                 lastHapticPhase = newPhase
             }
+        }
+    }
+
+    private func triggerFlash() {
+        flashScreen = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            flashScreen = false
         }
     }
 
@@ -452,6 +468,9 @@ struct ContentView: View {
     @State private var showCancelConfirmation = false
     @State private var showAbout = false
     @State private var countdownEndTime: Date? = nil
+    @State private var flashScreen = false
+    @State private var lastHapticRound = 0
+    @State private var lastHapticPhase: WODTimerPhase?
 
     @Environment(\.colorScheme) private var scheme
 
@@ -614,6 +633,12 @@ struct ContentView: View {
             }
             .buttonStyle(.plain)
             .padding(DesignTokens.Spacing.lg)
+            .overlay {
+                DesignTokens.Common.Text.primary(scheme)
+                    .ignoresSafeArea()
+                    .opacity(flashScreen ? 0.85 : 0)
+                    .animation(.easeInOut(duration: 0.35), value: flashScreen)
+            }
         }
         .overlay {
             if let end = countdownEndTime {
@@ -640,6 +665,25 @@ struct ContentView: View {
                 engine = e
                 countdownEndTime = nil
             }
+        }
+        .onChange(of: snapshot.currentRound) { _, newRound in
+            if (engine.state == .running || engine.state == .paused), timerMode == .emom, newRound > lastHapticRound {
+                triggerFlash()
+                lastHapticRound = newRound
+            }
+        }
+        .onChange(of: snapshot.currentPhase) { _, newPhase in
+            if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
+                triggerFlash()
+                lastHapticPhase = newPhase
+            }
+        }
+    }
+
+    private func triggerFlash() {
+        flashScreen = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+            flashScreen = false
         }
     }
 
@@ -806,6 +850,9 @@ private struct MacContent: View {
     @State private var showCancelConfirmation = false
     @State private var showAbout = false
     @State private var countdownEndTime: Date? = nil
+    @State private var flashScreen = false
+    @State private var lastHapticRound = 0
+    @State private var lastHapticPhase: WODTimerPhase?
 
     private static let macDoneTheme = DoneViewTheme(
         checkmarkSize: 64,
@@ -930,6 +977,12 @@ private struct MacContent: View {
             .padding(DesignTokens.Spacing.md)
         }
         .overlay {
+            DesignTokens.Common.Text.primary(scheme)
+                .ignoresSafeArea()
+                .opacity(flashScreen ? 0.85 : 0)
+                .animation(.easeInOut(duration: 0.15), value: flashScreen)
+        }
+        .overlay {
             if let end = countdownEndTime {
                 let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
                 if remaining > 0 {
@@ -953,6 +1006,18 @@ private struct MacContent: View {
                 e.start(now: end)
                 engine = e
                 countdownEndTime = nil
+            }
+        }
+        .onChange(of: snapshot.currentRound) { _, newRound in
+            if (engine.state == .running || engine.state == .paused), timerMode == .emom, newRound > lastHapticRound {
+                triggerFlash()
+                lastHapticRound = newRound
+            }
+        }
+        .onChange(of: snapshot.currentPhase) { _, newPhase in
+            if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
+                triggerFlash()
+                lastHapticPhase = newPhase
             }
         }
         .sheet(isPresented: $showAbout) { MacAboutView() }
@@ -997,6 +1062,13 @@ private struct MacContent: View {
         switch timerMode {
         case .emom: engine = WODTimerEngine(totalDurationMinutes: rounds)
         case .intervals: engine = WODTimerEngine(workSeconds: intervalsWork, restSeconds: intervalsRest, rounds: intervalsRounds)
+        }
+    }
+
+    private func triggerFlash() {
+        flashScreen = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+            flashScreen = false
         }
     }
 }

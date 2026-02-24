@@ -11,6 +11,8 @@ struct WatchContentView: View {
     @State private var engine = WODTimerEngine(totalDurationMinutes: 10)
     @State private var countdownEndTime: Date? = nil
     @Environment(\.colorScheme) private var colorScheme
+    @State private var flashScreen = false
+    @State private var lastFlashRound = 0
 
     private func timeString(from interval: TimeInterval) -> String {
         let totalSeconds = max(0, Int(ceil(interval)))
@@ -93,6 +95,12 @@ struct WatchContentView: View {
                 }
                 .padding(WatchDesign.Spacing.md)
                 .overlay {
+                    WatchDesign.Colors.textPrimary(colorScheme)
+                        .ignoresSafeArea()
+                        .opacity(flashScreen ? 0.85 : 0)
+                        .animation(.easeInOut(duration: 0.35), value: flashScreen)
+                }
+                .overlay {
                     if let end = countdownEndTime {
                         let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
                         if remaining > 0 {
@@ -122,7 +130,20 @@ struct WatchContentView: View {
                         engine = e
                     }
                 }
+                .onChange(of: currentRound) { _, newRound in
+                    if (state == .running || state == .paused), newRound > lastFlashRound {
+                        triggerFlash()
+                        lastFlashRound = newRound
+                    }
+                }
             }
+        }
+    }
+
+    private func triggerFlash() {
+        flashScreen = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            flashScreen = false
         }
     }
 }
