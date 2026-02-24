@@ -22,6 +22,12 @@ func sharedRoundLabel(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> Str
     "Round \(snapshot.currentRound) / \(totalRounds) Rounds"
 }
 
+func sharedFormatEmomLength(_ seconds: Int) -> String {
+    let m = seconds / 60
+    let s = seconds % 60
+    return String(format: "%02d:%02d", m, s)
+}
+
 // MARK: - Theme types (sizes/spacing; farver fra DesignTokens + scheme)
 
 struct DoneViewTheme {
@@ -92,6 +98,8 @@ struct SharedDoneView: View {
 struct SharedStepperView: View {
     @Binding var value: Int
     var range: ClosedRange<Int>
+    var step: Int = 1
+    var displayString: String? = nil
     var label: String
     var onChange: () -> Void
     var theme: StepperTheme
@@ -110,7 +118,7 @@ struct SharedStepperView: View {
 
             HStack(spacing: theme.stackSpacing) {
                 stepperButton(sign: -1)
-                Text("\(value)")
+                Text(displayString ?? "\(value)")
                     .font(.system(size: theme.valueFontSize, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                     .monospacedDigit()
                     .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
@@ -124,7 +132,7 @@ struct SharedStepperView: View {
     private func stepperButton(sign: Int) -> some View {
         let label = sign < 0 ? "−" : "+"
         return Button {
-            step(by: sign)
+            stepValue(by: sign)
         } label: {
             Text(label)
                 .font(.system(size: theme.valueFontSize * 0.75, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
@@ -137,12 +145,13 @@ struct SharedStepperView: View {
         .modifier(LongPressRepeatModifier(enabled: useLongPressRepeat, sign: sign, onPressStart: { startRepeat(by: $0) }, onPressEnd: stopRepeat))
     }
 
-    private func step(by delta: Int) {
+    private func stepValue(by direction: Int) {
+        let delta = direction * step
         value = max(range.lowerBound, min(range.upperBound, value + delta))
         onChange()
     }
 
-    private func startRepeat(by delta: Int) {
+    private func startRepeat(by direction: Int) {
         stopRepeat()
         repeatCancelled = false
         repeatStartTime = Date()
@@ -150,7 +159,7 @@ struct SharedStepperView: View {
             guard !repeatCancelled else { return }
             let item = DispatchWorkItem {
                 guard !repeatCancelled else { return }
-                step(by: delta)
+                stepValue(by: direction)
                 let elapsed = repeatStartTime.map { Date().timeIntervalSince($0) } ?? 0
                 let nextInterval: TimeInterval = elapsed > 0.8 ? 0.12 : 0.35
                 scheduleNext(interval: nextInterval)

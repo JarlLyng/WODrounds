@@ -33,9 +33,9 @@ This is not a social app. This is not a tracking app. This is a tool.
 ## Supported Modes (v1)
 
 ### EMOM
-- Set number of rounds (1–120) with +/−. Each round = 1 minute.
-- Total time = rounds × 1:00 (e.g. 30 rounds → 30:00).
-- Round counter; Start / Pause / Resume / Reset; Cancel (with confirmation) during run/pause.
+- Set number of rounds (1–120) and **custom round length** (0:30–9:30, 30s increments).
+- Total time = rounds × custom length (e.g. 10 rounds @ 1:30 → 15:00).
+- Round counter; per-round countdown; Start / Pause / Resume / Reset; Cancel during run/pause.
 
 ### Intervals
 - Work (seconds), rest (seconds), rounds — each with +/− and label above value.

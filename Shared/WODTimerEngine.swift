@@ -36,9 +36,9 @@ struct WODTimerEngineSnapshot {
     let remainingTimeInPhase: TimeInterval
 }
 
-/// Timer mode: EMOM (rounds = minutes) or Intervals (work/rest/rounds).
+/// Timer mode: EMOM (rounds, secondsPerRound) or Intervals (work/rest/rounds).
 enum WODTimerMode: Equatable {
-    case emom(totalMinutes: Int)
+    case emom(rounds: Int, secondsPerRound: Int)
     case intervals(workSeconds: Int, restSeconds: Int, rounds: Int)
 }
 
@@ -46,7 +46,7 @@ enum WODTimerMode: Equatable {
 struct WODTimerEngine {
 
     var state: WODTimerEngineState = .idle
-    var mode: WODTimerMode = .emom(totalMinutes: 1)
+    var mode: WODTimerMode = .emom(rounds: 1, secondsPerRound: 60)
 
     private var startDate: Date?
     private var accumulatedPauseDuration: TimeInterval = 0
@@ -56,13 +56,13 @@ struct WODTimerEngine {
 
     // MARK: - EMOM
 
-    init(totalDurationMinutes: Int = 1) {
-        self.mode = .emom(totalMinutes: max(1, totalDurationMinutes))
+    init(emomRounds: Int = 1, secondsPerRound: Int = 60) {
+        self.mode = .emom(rounds: max(1, emomRounds), secondsPerRound: max(30, secondsPerRound))
     }
 
-    /// Total minutes (EMOM) or 0 when Intervals.
+    /// Total minutes (historical compatibility wrapper, renamed correctly internally) or 0.
     var totalDurationMinutes: Int {
-        if case .emom(let m) = mode { return m }
+        if case .emom(let r, _) = mode { return r }
         return 0
     }
 
@@ -91,11 +91,11 @@ struct WODTimerEngine {
         return totalDurationMinutes
     }
 
-    /// Total duration in seconds (for display). EMOM: minutes * 60. Intervals: rounds * work + (rounds - 1) * rest.
+    /// Total duration in seconds (for display). EMOM: rounds * secondsPerRound. Intervals: rounds * work + (rounds - 1) * rest.
     var totalDurationSeconds: TimeInterval {
         switch mode {
-        case .emom(let m):
-            return TimeInterval(m) * secondsPerMinute
+        case .emom(let r, let spr):
+            return TimeInterval(r) * TimeInterval(spr)
         case .intervals(let w, let r, let n):
             return TimeInterval(n) * TimeInterval(w) + TimeInterval(n - 1) * TimeInterval(r)
         }
@@ -205,7 +205,7 @@ struct WODTimerEngine {
     private func makeFinishedSnapshot() -> WODTimerEngineSnapshot {
         let totalRounds: Int
         switch mode {
-        case .emom(let m): totalRounds = m
+        case .emom(let r, _): totalRounds = r
         case .intervals(_, _, let r): totalRounds = r
         }
         return makeSnapshot(state: .finished, remainingTime: 0, currentRound: totalRounds, secondsIntoCurrentMinute: 0, phase: .work, remainingTimeInPhase: 0)
@@ -213,13 +213,13 @@ struct WODTimerEngine {
 
     private func snapshotForActive(elapsed: TimeInterval) -> WODTimerEngineSnapshot {
         switch mode {
-        case .emom(let totalMinutes):
-            let total = TimeInterval(totalMinutes) * secondsPerMinute
+        case .emom(let rounds, let spr):
+            let total = TimeInterval(rounds) * TimeInterval(spr)
             let remaining = max(0, total - elapsed)
-            let round = min(roundFromEMOM(elapsed: elapsed), totalMinutes)
-            let intoMinute = elapsed >= total ? 0 : secondsIntoMinuteFrom(elapsed: elapsed)
-            let remainingTimeInPhase = TimeInterval(60 - intoMinute)
-            return makeSnapshot(state: .running, remainingTime: remaining, currentRound: round, secondsIntoCurrentMinute: intoMinute, phase: .work, remainingTimeInPhase: remainingTimeInPhase)
+            let round = min(roundFromEMOM(elapsed: elapsed), rounds)
+            let intoRound = elapsed >= total ? 0 : secondsIntoMinuteFrom(elapsed: elapsed)
+            let remainingTimeInPhase = TimeInterval(spr - intoRound)
+            return makeSnapshot(state: .running, remainingTime: remaining, currentRound: round, secondsIntoCurrentMinute: intoRound, phase: .work, remainingTimeInPhase: remainingTimeInPhase)
         case .intervals(let w, let r, let n):
             let total = totalDurationSeconds
             let remaining = max(0, total - elapsed)
@@ -230,13 +230,13 @@ struct WODTimerEngine {
 
     private func snapshotForPaused(elapsed: TimeInterval) -> WODTimerEngineSnapshot {
         switch mode {
-        case .emom(let totalMinutes):
-            let total = TimeInterval(totalMinutes) * secondsPerMinute
+        case .emom(let rounds, let spr):
+            let total = TimeInterval(rounds) * TimeInterval(spr)
             let remaining = max(0, total - elapsed)
             let round = roundFromEMOM(elapsed: elapsed)
-            let intoMinute = secondsIntoMinuteFrom(elapsed: elapsed)
-            let remainingTimeInPhase = TimeInterval(60 - intoMinute)
-            return makeSnapshot(state: .paused, remainingTime: remaining, currentRound: round, secondsIntoCurrentMinute: intoMinute, phase: .work, remainingTimeInPhase: remainingTimeInPhase)
+            let intoRound = secondsIntoMinuteFrom(elapsed: elapsed)
+            let remainingTimeInPhase = TimeInterval(spr - intoRound)
+            return makeSnapshot(state: .paused, remainingTime: remaining, currentRound: round, secondsIntoCurrentMinute: intoRound, phase: .work, remainingTimeInPhase: remainingTimeInPhase)
         case .intervals(let w, let r, let n):
             let total = totalDurationSeconds
             let remaining = max(0, total - elapsed)
@@ -246,14 +246,18 @@ struct WODTimerEngine {
     }
 
     private func roundFromEMOM(elapsed: TimeInterval) -> Int {
-        let minute = Int(elapsed / secondsPerMinute)
-        let totalMinutes: Int
-        if case .emom(let m) = mode { totalMinutes = m } else { totalMinutes = 1 }
-        return min(minute + 1, totalMinutes)
+        if case .emom(let rounds, let spr) = mode {
+            let current = Int(elapsed / TimeInterval(spr))
+            return min(current + 1, rounds)
+        }
+        return 1
     }
 
     private func secondsIntoMinuteFrom(elapsed: TimeInterval) -> Int {
-        Int(elapsed.truncatingRemainder(dividingBy: secondsPerMinute))
+        if case .emom(_, let spr) = mode {
+            return Int(elapsed.truncatingRemainder(dividingBy: TimeInterval(spr)))
+        }
+        return Int(elapsed.truncatingRemainder(dividingBy: 60))
     }
 
     /// Returns (currentRound 1-based, phase, remainingSecondsInPhase).
@@ -290,6 +294,7 @@ struct WODTimerEngine {
         let pausedAt: Date?
         let mode: String        // "emom" | "intervals"
         let totalMinutes: Int
+        let emomSecondsPerRound: Int?
         let workSeconds: Int?
         let restSeconds: Int?
         let rounds: Int?
@@ -297,10 +302,10 @@ struct WODTimerEngine {
     }
 
     func syncPayload(now: Date) -> SyncPayload {
-        let (modeStr, totalMin, work, rest, rnds): (String, Int, Int?, Int?, Int?) = {
+        let (modeStr, totalMin, spr, work, rest, rnds): (String, Int, Int?, Int?, Int?, Int?) = {
             switch mode {
-            case .emom(let m): return ("emom", m, nil, nil, nil)
-            case .intervals(let w, let r, let n): return ("intervals", 0, w, r, n)
+            case .emom(let m, let s): return ("emom", m, s, nil, nil, nil)
+            case .intervals(let w, let r, let n): return ("intervals", 0, nil, w, r, n)
             }
         }()
         return SyncPayload(
@@ -310,6 +315,7 @@ struct WODTimerEngine {
             pausedAt: pausedAt,
             mode: modeStr,
             totalMinutes: totalMin,
+            emomSecondsPerRound: spr,
             workSeconds: work,
             restSeconds: rest,
             rounds: rnds,

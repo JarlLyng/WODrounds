@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WatchContentView: View {
-    @State private var engine = WODTimerEngine(totalDurationMinutes: 10)
+    @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
     @State private var countdownEndTime: Date? = nil
     @Environment(\.colorScheme) private var colorScheme
     @State private var flashScreen = false

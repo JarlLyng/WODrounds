@@ -13,6 +13,7 @@ import UIKit
 
 #if os(iOS) || os(macOS) || os(tvOS)
 private let roundsRange = 1 ... 120
+private let emomLengthRange = 30 ... 570
 private let intervalsWorkRange = 5 ... 300
 private let intervalsRestRange = 0 ... 180
 private let intervalsRoundsRange = 1 ... 60
@@ -42,10 +43,11 @@ private enum Haptics {
 struct ContentView: View {
     @State private var timerMode: TimerUIMode = .emom
     @State private var rounds: Int = 10
+    @AppStorage("emomRoundLengthSeconds") private var emomRoundLengthSeconds: Int = 60
     @State private var intervalsWork: Int = 30
     @State private var intervalsRest: Int = 15
     @State private var intervalsRounds: Int = 8
-    @State private var engine = WODTimerEngine(totalDurationMinutes: 10)
+    @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
 
     var body: some View {
         TimelineView(.periodic(from: Date(), by: 1.0)) { timeline in
@@ -53,6 +55,7 @@ struct ContentView: View {
                 engine: $engine,
                 timerMode: $timerMode,
                 rounds: $rounds,
+                emomRoundLength: $emomRoundLengthSeconds,
                 intervalsWork: $intervalsWork,
                 intervalsRest: $intervalsRest,
                 intervalsRounds: $intervalsRounds,
@@ -78,6 +81,7 @@ private struct iOSContent: View {
     @Binding var engine: WODTimerEngine
     @Binding var timerMode: TimerUIMode
     @Binding var rounds: Int
+    @Binding var emomRoundLength: Int
     @Binding var intervalsWork: Int
     @Binding var intervalsRest: Int
     @Binding var intervalsRounds: Int
@@ -128,159 +132,21 @@ private struct iOSContent: View {
 
     var body: some View {
         let snapshot = engine.snapshot(now: now)
-        let canEdit = snapshot.state == .idle || snapshot.state == .finished
-        let isIdle = snapshot.state == .idle
-        let isFinished = snapshot.state == .finished
-        let showCancel = snapshot.state == .running || snapshot.state == .paused
         let totalRounds = engine.rounds
 
         ZStack(alignment: .topTrailing) {
-        VStack(spacing: DesignTokens.Spacing.xxxl) {
-            if isIdle {
-                SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(engine.state) }, theme: Self.iosModeSwitchTheme)
-                Text(modeHelpText)
-                    .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
-                    .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-                    .multilineTextAlignment(.center)
-                    .lineLimit(nil)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, DesignTokens.Spacing.xl)
-            }
-
-            Spacer()
-
-            if isFinished {
-                SharedDoneView(totalRounds: totalRounds, theme: Self.iosDoneTheme)
-                    .transition(.opacity)
-            } else if !canEdit {
-                VStack(spacing: DesignTokens.Spacing.lg) {
-                    Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
-                        .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
-                        .monospacedDigit()
-                        .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
-                        .frame(maxWidth: .infinity)
-
-                    Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
-                        .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                        .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
-
-                    if timerMode == .intervals {
-                        Text(snapshot.currentPhase == .work ? "Work" : "Rest")
-                            .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                            .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-                    }
-                }
-                .transition(.opacity)
-            }
-
-            Spacer()
-
-            if isIdle {
-                ZStack(alignment: .top) {
-                    SharedStepperView(value: $rounds, range: roundsRange, label: "Rounds", onChange: { syncEngineIfIdle(snapshot.state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
-                        .opacity(timerMode == .emom ? 1 : 0)
-                        .allowsHitTesting(timerMode == .emom)
-                    VStack(spacing: DesignTokens.Spacing.lg) {
-                        SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(snapshot.state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
-                        SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(snapshot.state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
-                        SharedStepperView(value: $intervalsRounds, range: intervalsRoundsRange, label: "Rounds", onChange: { syncEngineIfIdle(snapshot.state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
-                    }
-                    .opacity(timerMode == .intervals ? 1 : 0)
-                    .allowsHitTesting(timerMode == .intervals)
-                }
-                .animation(.easeInOut(duration: 0.25), value: timerMode)
-                .padding(.horizontal, DesignTokens.Spacing.lg)
-            }
-
-            Spacer()
-
-            VStack(spacing: DesignTokens.Spacing.lg) {
-                iosPrimaryButton(snapshot: snapshot, now: now)
-                if showCancel {
-                    SharedCancelButton(action: { showCancelConfirmation = true }, theme: Self.iosCancelTheme)
-                }
-            }
-            .padding(.horizontal, DesignTokens.Spacing.lg)
-            .padding(.bottom, DesignTokens.Spacing.xxl)
-        }
-        .animation(.easeInOut(duration: 0.25), value: snapshot.state)
-        .animation(.easeInOut(duration: 0.25), value: timerMode)
-        Button {
-            showAbout = true
-        } label: {
-            Image(systemName: "info.circle")
-                .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.regular))
-                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-        }
-        .buttonStyle(.plain)
+            mainVStack(snapshot: snapshot, totalRounds: totalRounds)
+            infoButton
         }
         .padding(DesignTokens.Spacing.md)
-        .overlay {
-            DesignTokens.Common.Text.primary(scheme)
-                .ignoresSafeArea()
-                .opacity(flashScreen ? 0.85 : 0)
-                .animation(.easeInOut(duration: 0.35), value: flashScreen)
-        }
-        .overlay {
-            if let end = countdownEndTime {
-                let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
-                if remaining > 0 {
-                    VStack(spacing: DesignTokens.Spacing.lg) {
-                        Text("Get ready")
-                            .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                            .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
-                        Text("\(remaining)")
-                            .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
-                            .monospacedDigit()
-                            .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(DesignTokens.Common.Background.app(scheme))
-                }
-            }
-        }
+        .overlay { flashOverlay }
+        .overlay { countdownOverlay }
         .onChange(of: now) { _, newDate in
-            if let end = countdownEndTime, newDate >= end {
-                Haptics.light()
-                lastHapticRound = 1
-                lastHapticPhase = .work
-                var e = engine
-                e.start(now: end)
-                engine = e
-                countdownEndTime = nil
-                WODTimerSync.write(engine.syncPayload(now: end))
-                #if os(iOS)
-                HealthKitWorkoutController.shared.startWorkout(startDate: end)
-                #endif
-            }
-        }
-        .sheet(isPresented: $showAbout) {
-            AboutView()
-        }
-        .confirmationDialog("Cancel workout?", isPresented: $showCancelConfirmation, titleVisibility: .visible) {
-            Button("Cancel workout", role: .destructive) {
-                let endDate = engine.effectiveWorkoutEndDate(now: Date()) ?? Date()
-                var e = engine
-                e.reset()
-                engine = e
-                WODTimerSync.write(engine.syncPayload(now: Date()))
-                #if os(iOS)
-                HealthKitWorkoutController.shared.endWorkout(endDate: endDate)
-                #endif
-            }
-            Button("Keep going", role: .cancel) {}
-        } message: {
-            Text("You'll return to setup. Current progress will be lost.")
-        }
-        .onAppear {
-            applyIdleTimer(engine.state)
+            handleDateChange(newDate)
         }
         .onChange(of: engine.state) { _, newState in
             applyIdleTimer(newState)
-            switch newState {
-            case .running, .paused:
-                break
-            case .idle, .finished:
+            if newState == .idle || newState == .finished {
                 lastHapticRound = 0
                 lastHapticPhase = nil
             }
@@ -305,6 +171,172 @@ private struct iOSContent: View {
                 lastHapticPhase = newPhase
             }
         }
+        .onAppear { applyIdleTimer(engine.state) }
+        .sheet(isPresented: $showAbout) { AboutView() }
+        .confirmationDialog("Cancel workout?", isPresented: $showCancelConfirmation, titleVisibility: .visible) {
+            cancelConfirmationContent
+        } message: {
+            Text("You'll return to setup. Current progress will be lost.")
+        }
+    }
+
+    @ViewBuilder
+    private func mainVStack(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
+        VStack(spacing: DesignTokens.Spacing.xxxl) {
+            if snapshot.state == .idle {
+                idleHeaderView
+            }
+
+            Spacer()
+
+            if snapshot.state == .finished {
+                SharedDoneView(totalRounds: totalRounds, theme: Self.iosDoneTheme)
+                    .transition(.opacity)
+            } else if snapshot.state == .running || snapshot.state == .paused {
+                activeTimerView(snapshot: snapshot, totalRounds: totalRounds)
+            }
+
+            Spacer()
+
+            if snapshot.state == .idle {
+                idleSettingsView(state: snapshot.state)
+            }
+
+            Spacer()
+
+            VStack(spacing: DesignTokens.Spacing.lg) {
+                iosPrimaryButton(snapshot: snapshot, now: now)
+                if snapshot.state == .running || snapshot.state == .paused {
+                    SharedCancelButton(action: { showCancelConfirmation = true }, theme: Self.iosCancelTheme)
+                }
+            }
+            .padding(.horizontal, DesignTokens.Spacing.lg)
+            .padding(.bottom, DesignTokens.Spacing.xxl)
+        }
+        .animation(.easeInOut(duration: 0.25), value: snapshot.state)
+        .animation(.easeInOut(duration: 0.25), value: timerMode)
+    }
+
+    private var idleHeaderView: some View {
+        VStack(spacing: DesignTokens.Spacing.md) {
+            SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(engine.state) }, theme: Self.iosModeSwitchTheme)
+            Text(modeHelpText)
+                .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                .multilineTextAlignment(.center)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, DesignTokens.Spacing.xl)
+        }
+    }
+
+    private func activeTimerView(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
+        VStack(spacing: DesignTokens.Spacing.lg) {
+            Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
+                .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                .monospacedDigit()
+                .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                .frame(maxWidth: .infinity)
+
+            Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
+                .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+
+            if timerMode == .intervals {
+                Text(snapshot.currentPhase == .work ? "Work" : "Rest")
+                    .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+            }
+        }
+        .transition(.opacity)
+    }
+
+    private func idleSettingsView(state: WODTimerEngineState) -> some View {
+        ZStack(alignment: .top) {
+            VStack(spacing: DesignTokens.Spacing.lg) {
+                SharedStepperView(value: $rounds, range: roundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
+                SharedStepperView(value: $emomRoundLength, range: emomLengthRange, step: 30, displayString: sharedFormatEmomLength(emomRoundLength), label: "Round length", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
+            }
+                .opacity(timerMode == .emom ? 1 : 0)
+                .allowsHitTesting(timerMode == .emom)
+            VStack(spacing: DesignTokens.Spacing.lg) {
+                SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
+                SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
+                SharedStepperView(value: $intervalsRounds, range: intervalsRoundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
+            }
+            .opacity(timerMode == .intervals ? 1 : 0)
+            .allowsHitTesting(timerMode == .intervals)
+        }
+    }
+
+    private var infoButton: some View {
+        Button {
+            showAbout = true
+        } label: {
+            Image(systemName: "info.circle")
+                .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.regular))
+                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var flashOverlay: some View {
+        DesignTokens.Common.Text.primary(scheme)
+            .ignoresSafeArea()
+            .opacity(flashScreen ? 0.85 : 0)
+            .animation(.easeInOut(duration: 0.35), value: flashScreen)
+    }
+
+    @ViewBuilder
+    private var countdownOverlay: some View {
+        if let end = countdownEndTime {
+            let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
+            if remaining > 0 {
+                VStack(spacing: DesignTokens.Spacing.lg) {
+                    Text("Get ready")
+                        .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                        .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+                    Text("\(remaining)")
+                        .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                        .monospacedDigit()
+                        .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(DesignTokens.Common.Background.app(scheme))
+                .transition(.opacity)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var cancelConfirmationContent: some View {
+        Button("Cancel workout", role: .destructive) {
+            let endDate = engine.effectiveWorkoutEndDate(now: Date()) ?? Date()
+            var e = engine
+            e.reset()
+            engine = e
+            WODTimerSync.write(engine.syncPayload(now: Date()))
+            #if os(iOS)
+            HealthKitWorkoutController.shared.endWorkout(endDate: endDate)
+            #endif
+        }
+        Button("Keep going", role: .cancel) {}
+    }
+
+    private func handleDateChange(_ newDate: Date) {
+        if let end = countdownEndTime, newDate >= end {
+            Haptics.light()
+            lastHapticRound = 1
+            lastHapticPhase = .work
+            var e = engine
+            e.start(now: end)
+            engine = e
+            countdownEndTime = nil
+            WODTimerSync.write(engine.syncPayload(now: end))
+            #if os(iOS)
+            HealthKitWorkoutController.shared.startWorkout(startDate: end)
+            #endif
+        }
     }
 
     private func triggerFlash() {
@@ -315,18 +347,20 @@ private struct iOSContent: View {
     }
 
     private func applyIdleTimer(_ state: WODTimerEngineState) {
+        #if os(iOS)
         switch state {
         case .running, .paused:
             UIApplication.shared.isIdleTimerDisabled = true
         case .idle, .finished:
             UIApplication.shared.isIdleTimerDisabled = false
         }
+        #endif
     }
 
     private var modeHelpText: String {
         switch timerMode {
         case .emom:
-            return "Select the number of rounds. Each round is one minute."
+            return "Select the number of rounds, and length of each round."
         case .intervals:
             return "Set work time, rest time, and number of rounds."
         }
@@ -336,11 +370,13 @@ private struct iOSContent: View {
         guard state == .idle || state == .finished else { return }
         switch timerMode {
         case .emom:
-            engine = WODTimerEngine(totalDurationMinutes: rounds)
+            engine = WODTimerEngine(emomRounds: rounds, secondsPerRound: emomRoundLength)
         case .intervals:
             engine = WODTimerEngine(workSeconds: intervalsWork, restSeconds: intervalsRest, rounds: intervalsRounds)
         }
     }
+
+
 
     private func iosPrimaryButton(snapshot: WODTimerEngineSnapshot, now: Date) -> some View {
         let (title, action): (String, () -> Void) = switch snapshot.state {
@@ -371,6 +407,8 @@ private struct iOSContent: View {
             .animation(.easeInOut(duration: 0.2), value: snapshot.state)
     }
 }
+
+
 
 // MARK: - About (iOS/iPadOS)
 
@@ -464,7 +502,8 @@ struct ContentView: View {
     @State private var intervalsWork: Int = 30
     @State private var intervalsRest: Int = 15
     @State private var intervalsRounds: Int = 8
-    @State private var engine = WODTimerEngine(totalDurationMinutes: 10)
+    @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
+    @AppStorage("emomRoundLengthSeconds") private var emomRoundLengthSeconds: Int = 60
     @State private var showCancelConfirmation = false
     @State private var showAbout = false
     @State private var countdownEndTime: Date? = nil
@@ -511,12 +550,31 @@ struct ContentView: View {
 
     var body: some View {
         TimelineView(.periodic(from: Date(), by: 1.0)) { timeline in
-            tvOSContent(now: timeline.date)
+            tvOSContent(now: timeline.date, rounds: $rounds, emomRoundLength: $emomRoundLengthSeconds, intervalsWork: $intervalsWork, intervalsRest: $intervalsRest, intervalsRounds: $intervalsRounds)
                 .onChange(of: timeline.date) { _, newDate in
                     if engine.state == .running {
                         var e = engine
                         e.tick(now: newDate)
                         engine = e
+                        WODTimerSync.write(engine.syncPayload(now: newDate))
+                    }
+                    if let end = countdownEndTime, newDate >= end {
+                        var e = engine
+                        e.start(now: end)
+                        engine = e
+                        countdownEndTime = nil
+                    }
+                }
+                .onChange(of: engine.snapshot(now: timeline.date).currentRound) { _, newRound in
+                    if (engine.state == .running || engine.state == .paused), timerMode == .emom, newRound > lastHapticRound {
+                        triggerFlash()
+                        lastHapticRound = newRound
+                    }
+                }
+                .onChange(of: engine.snapshot(now: timeline.date).currentPhase) { _, newPhase in
+                    if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
+                        triggerFlash()
+                        lastHapticPhase = newPhase
                     }
                 }
         }
@@ -542,105 +600,133 @@ struct ContentView: View {
         }
     }
 
-    private func tvOSContent(now: Date) -> some View {
+    private func tvOSContent(now: Date, rounds: Binding<Int>, emomRoundLength: Binding<Int>, intervalsWork: Binding<Int>, intervalsRest: Binding<Int>, intervalsRounds: Binding<Int>) -> some View {
         let snapshot = engine.snapshot(now: now)
-        let canEdit = snapshot.state == .idle || snapshot.state == .finished
-        let isIdle = snapshot.state == .idle
-        let isFinished = snapshot.state == .finished
-        let showCancel = snapshot.state == .running || snapshot.state == .paused
         let totalRounds = engine.rounds
 
         return ZStack(alignment: .topTrailing) {
-            VStack(spacing: DesignTokens.Spacing.xxxl) {
-                if isIdle {
-                    SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(engine.state) }, theme: Self.tvOSModeSwitchTheme)
-                    Text(modeHelpText)
-                        .font(.system(size: TVOSTypography.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
-                        .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-                        .multilineTextAlignment(.center)
-                        .lineLimit(nil)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, DesignTokens.Spacing.xxl)
-                }
+            tvOSMainVStack(snapshot: snapshot, totalRounds: totalRounds, now: now)
 
-                Spacer()
+            tvOSInfoButton
+        }
+        .overlay { tvOSFlashOverlay }
+        .overlay { tvOSCountdownOverlay(now: now) }
+    }
 
-                if isFinished {
-                    SharedDoneView(totalRounds: totalRounds, theme: Self.tvOSDoneTheme)
-                        .transition(.opacity)
-                } else if !canEdit {
-                    VStack(spacing: DesignTokens.Spacing.lg) {
-                        Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
-                            .font(.system(size: TVOSTypography.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
-                            .monospacedDigit()
-                            .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
-                            .frame(maxWidth: .infinity)
+    private func tvOSMainVStack(snapshot: WODTimerEngineSnapshot, totalRounds: Int, now: Date) -> some View {
+        let isIdle = snapshot.state == .idle
+        let showCancel = snapshot.state == .running || snapshot.state == .paused
 
-                        Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
-                            .font(.system(size: TVOSTypography.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                            .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
-
-                        if timerMode == .intervals {
-                            Text(snapshot.currentPhase == .work ? "Work" : "Rest")
-                                .font(.system(size: TVOSTypography.sm, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-                        }
-                    }
-                    .transition(.opacity)
-                }
-
-                Spacer()
-
-                if isIdle {
-                    ZStack(alignment: .top) {
-                        SharedStepperView(value: $rounds, range: roundsRange, label: "Rounds", onChange: { syncEngineIfIdle(engine.state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
-                            .opacity(timerMode == .emom ? 1 : 0)
-                            .allowsHitTesting(timerMode == .emom)
-                        VStack(spacing: DesignTokens.Spacing.xl) {
-                            SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(engine.state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
-                            SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(engine.state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
-                            SharedStepperView(value: $intervalsRounds, range: intervalsRoundsRange, label: "Rounds", onChange: { syncEngineIfIdle(engine.state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
-                        }
-                        .opacity(timerMode == .intervals ? 1 : 0)
-                        .allowsHitTesting(timerMode == .intervals)
-                    }
-                    .animation(.easeInOut(duration: 0.25), value: timerMode)
-                    .padding(.horizontal, DesignTokens.Spacing.xxl)
-                }
-
-                Spacer()
-
-                VStack(spacing: DesignTokens.Spacing.xl) {
-                    tvOSPrimaryButton(snapshot: snapshot, now: now)
-                    if showCancel {
-                        SharedCancelButton(action: { showCancelConfirmation = true }, theme: Self.tvOSCancelTheme)
-                            .buttonStyle(.card)
-                            .focusEffectDisabled()
-                    }
-                }
-                .padding(.horizontal, DesignTokens.Spacing.xxl)
-                .padding(.bottom, DesignTokens.Spacing.xxxl)
+        return VStack(spacing: DesignTokens.Spacing.xxxl) {
+            if isIdle {
+                tvOSIdleHeaderView(state: snapshot.state)
             }
-            .animation(.easeInOut(duration: 0.25), value: snapshot.state)
-            .animation(.easeInOut(duration: 0.25), value: timerMode)
 
-            Button {
-                showAbout = true
-            } label: {
-                Image(systemName: "info.circle")
-                    .font(.system(size: TVOSTypography.lg, weight: DesignTokens.Typography.Weight.regular))
+            Spacer()
+
+            if snapshot.state == .finished {
+                SharedDoneView(totalRounds: totalRounds, theme: Self.tvOSDoneTheme)
+                    .transition(.opacity)
+            } else if snapshot.state == .running || snapshot.state == .paused {
+                tvOSActiveTimerView(snapshot: snapshot, totalRounds: totalRounds)
+            }
+
+            Spacer()
+
+            if isIdle {
+                tvOSIdleSettingsView(state: snapshot.state)
+            }
+
+            Spacer()
+
+            VStack(spacing: DesignTokens.Spacing.xl) {
+                tvOSPrimaryButton(snapshot: snapshot, now: now)
+                if showCancel {
+                    SharedCancelButton(action: { showCancelConfirmation = true }, theme: Self.tvOSCancelTheme)
+                        .buttonStyle(.card)
+                        .focusEffectDisabled()
+                }
+            }
+            .padding(.horizontal, DesignTokens.Spacing.xxl)
+            .padding(.bottom, DesignTokens.Spacing.xxxl)
+        }
+        .animation(.easeInOut(duration: 0.25), value: snapshot.state)
+        .animation(.easeInOut(duration: 0.25), value: timerMode)
+    }
+
+    private func tvOSIdleHeaderView(state: WODTimerEngineState) -> some View {
+        VStack(spacing: DesignTokens.Spacing.lg) {
+            SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(state) }, theme: Self.tvOSModeSwitchTheme)
+            Text(modeHelpText)
+                .font(.system(size: TVOSTypography.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                .multilineTextAlignment(.center)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, DesignTokens.Spacing.xxl)
+        }
+    }
+
+    private func tvOSActiveTimerView(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
+        VStack(spacing: DesignTokens.Spacing.lg) {
+            Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
+                .font(.system(size: TVOSTypography.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                .monospacedDigit()
+                .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                .frame(maxWidth: .infinity)
+            Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
+                .font(.system(size: TVOSTypography.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+            if timerMode == .intervals {
+                Text(snapshot.currentPhase == .work ? "Work" : "Rest")
+                    .font(.system(size: TVOSTypography.sm, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                     .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
             }
-            .buttonStyle(.plain)
-            .padding(DesignTokens.Spacing.lg)
-            .overlay {
-                DesignTokens.Common.Text.primary(scheme)
-                    .ignoresSafeArea()
-                    .opacity(flashScreen ? 0.85 : 0)
-                    .animation(.easeInOut(duration: 0.35), value: flashScreen)
-            }
         }
-        .overlay {
+        .transition(.opacity)
+    }
+
+    private func tvOSIdleSettingsView(state: WODTimerEngineState) -> some View {
+        ZStack(alignment: .top) {
+            VStack(spacing: DesignTokens.Spacing.xl) {
+                SharedStepperView(value: $rounds, range: roundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
+                SharedStepperView(value: $emomRoundLength, range: emomLengthRange, step: 30, displayString: sharedFormatEmomLength(emomRoundLength), label: "Round length", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
+            }
+                .opacity(timerMode == .emom ? 1 : 0)
+                .allowsHitTesting(timerMode == .emom)
+            VStack(spacing: DesignTokens.Spacing.xl) {
+                SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
+                SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
+                SharedStepperView(value: $intervalsRounds, range: intervalsRoundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
+            }
+            .opacity(timerMode == .intervals ? 1 : 0)
+            .allowsHitTesting(timerMode == .intervals)
+        }
+        .animation(.easeInOut(duration: 0.25), value: timerMode)
+        .padding(.horizontal, DesignTokens.Spacing.xxl)
+    }
+
+    private var tvOSInfoButton: some View {
+        Button {
+            showAbout = true
+        } label: {
+            Image(systemName: "info.circle")
+                .font(.system(size: TVOSTypography.lg, weight: DesignTokens.Typography.Weight.regular))
+                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+        }
+        .buttonStyle(.plain)
+        .padding(DesignTokens.Spacing.lg)
+    }
+
+    private var tvOSFlashOverlay: some View {
+        DesignTokens.Common.Text.primary(scheme)
+            .ignoresSafeArea()
+            .opacity(flashScreen ? 0.85 : 0)
+            .animation(.easeInOut(duration: 0.35), value: flashScreen)
+    }
+
+    private func tvOSCountdownOverlay(now: Date) -> some View {
+        Group {
             if let end = countdownEndTime {
                 let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
                 if remaining > 0 {
@@ -658,31 +744,11 @@ struct ContentView: View {
                 }
             }
         }
-        .onChange(of: now) { _, newDate in
-            if let end = countdownEndTime, newDate >= end {
-                var e = engine
-                e.start(now: end)
-                engine = e
-                countdownEndTime = nil
-            }
-        }
-        .onChange(of: snapshot.currentRound) { _, newRound in
-            if (engine.state == .running || engine.state == .paused), timerMode == .emom, newRound > lastHapticRound {
-                triggerFlash()
-                lastHapticRound = newRound
-            }
-        }
-        .onChange(of: snapshot.currentPhase) { _, newPhase in
-            if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
-                triggerFlash()
-                lastHapticPhase = newPhase
-            }
-        }
     }
 
     private func triggerFlash() {
         flashScreen = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
             flashScreen = false
         }
     }
@@ -690,7 +756,7 @@ struct ContentView: View {
     private var modeHelpText: String {
         switch timerMode {
         case .emom:
-            return "Select the number of rounds. Each round is one minute."
+            return "Select the number of rounds, and length of each round."
         case .intervals:
             return "Set work time, rest time, and number of rounds."
         }
@@ -715,11 +781,13 @@ struct ContentView: View {
         guard state == .idle || state == .finished else { return }
         switch timerMode {
         case .emom:
-            engine = WODTimerEngine(totalDurationMinutes: rounds)
+            engine = WODTimerEngine(emomRounds: rounds, secondsPerRound: emomRoundLength)
         case .intervals:
             engine = WODTimerEngine(workSeconds: intervalsWork, restSeconds: intervalsRest, rounds: intervalsRounds)
         }
     }
+
+
 
 }
 
@@ -801,10 +869,11 @@ private struct tvOSAboutView: View {
 struct ContentView: View {
     @State private var timerMode: TimerUIMode = .emom
     @State private var rounds: Int = 10
+    @AppStorage("emomRoundLengthSeconds") private var emomRoundLengthSeconds: Int = 60
     @State private var intervalsWork: Int = 30
     @State private var intervalsRest: Int = 15
     @State private var intervalsRounds: Int = 8
-    @State private var engine = WODTimerEngine(totalDurationMinutes: 10)
+    @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
 
     @Environment(\.colorScheme) private var scheme
 
@@ -817,6 +886,7 @@ struct ContentView: View {
                 engine: $engine,
                 timerMode: $timerMode,
                 rounds: $rounds,
+                emomRoundLength: $emomRoundLengthSeconds,
                 intervalsWork: $intervalsWork,
                 intervalsRest: $intervalsRest,
                 intervalsRounds: $intervalsRounds,
@@ -841,6 +911,7 @@ private struct MacContent: View {
     @Binding var engine: WODTimerEngine
     @Binding var timerMode: TimerUIMode
     @Binding var rounds: Int
+    @Binding var emomRoundLength: Int
     @Binding var intervalsWork: Int
     @Binding var intervalsRest: Int
     @Binding var intervalsRounds: Int
@@ -891,115 +962,15 @@ private struct MacContent: View {
 
     var body: some View {
         let snapshot = engine.snapshot(now: now)
-        let isIdle = snapshot.state == .idle
-        let isFinished = snapshot.state == .finished
-        let showCancel = snapshot.state == .running || snapshot.state == .paused
         let totalRounds = engine.rounds
 
         ZStack(alignment: .topTrailing) {
-            VStack(spacing: DesignTokens.Spacing.xxxl) {
-                if isIdle {
-                    SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(engine.state) }, theme: Self.macModeSwitchTheme)
-                    Text(modeHelpText)
-                        .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
-                        .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-                        .multilineTextAlignment(.center)
-                        .lineLimit(nil)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, DesignTokens.Spacing.xl)
-                }
+            mainVStack(snapshot: snapshot, totalRounds: totalRounds, now: now)
 
-                Spacer()
-
-                if isFinished {
-                    SharedDoneView(totalRounds: totalRounds, theme: Self.macDoneTheme)
-                        .transition(.opacity)
-                } else if snapshot.state == .running || snapshot.state == .paused {
-                    VStack(spacing: DesignTokens.Spacing.lg) {
-                        Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
-                            .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
-                            .monospacedDigit()
-                            .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
-                            .frame(maxWidth: .infinity)
-                        Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
-                            .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                            .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
-                        if timerMode == .intervals {
-                            Text(snapshot.currentPhase == .work ? "Work" : "Rest")
-                                .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-                        }
-                    }
-                    .transition(.opacity)
-                }
-
-                Spacer()
-
-                if isIdle {
-                    ZStack(alignment: .top) {
-                        SharedStepperView(value: $rounds, range: roundsRange, label: "Rounds", onChange: { syncEngineIfIdle(engine.state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
-                            .opacity(timerMode == .emom ? 1 : 0)
-                            .allowsHitTesting(timerMode == .emom)
-                        VStack(spacing: DesignTokens.Spacing.lg) {
-                            SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(engine.state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
-                            SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(engine.state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
-                            SharedStepperView(value: $intervalsRounds, range: intervalsRoundsRange, label: "Rounds", onChange: { syncEngineIfIdle(engine.state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
-                        }
-                        .opacity(timerMode == .intervals ? 1 : 0)
-                        .allowsHitTesting(timerMode == .intervals)
-                    }
-                    .animation(.easeInOut(duration: 0.25), value: timerMode)
-                    .padding(.horizontal, DesignTokens.Spacing.lg)
-                }
-
-                Spacer()
-
-                VStack(spacing: DesignTokens.Spacing.lg) {
-                    macPrimaryButton(snapshot: snapshot, now: now)
-                    if showCancel {
-                        SharedCancelButton(action: { showCancelConfirmation = true }, theme: Self.macCancelTheme)
-                    }
-                }
-                .padding(.horizontal, DesignTokens.Spacing.lg)
-                .padding(.bottom, DesignTokens.Spacing.xxl)
-            }
-            .animation(.easeInOut(duration: 0.25), value: snapshot.state)
-            .animation(.easeInOut(duration: 0.25), value: timerMode)
-
-            Button {
-                showAbout = true
-            } label: {
-                Image(systemName: "info.circle")
-                    .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.regular))
-                    .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-            }
-            .buttonStyle(.plain)
-            .padding(DesignTokens.Spacing.md)
+            infoButton
         }
-        .overlay {
-            DesignTokens.Common.Text.primary(scheme)
-                .ignoresSafeArea()
-                .opacity(flashScreen ? 0.85 : 0)
-                .animation(.easeInOut(duration: 0.15), value: flashScreen)
-        }
-        .overlay {
-            if let end = countdownEndTime {
-                let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
-                if remaining > 0 {
-                    VStack(spacing: DesignTokens.Spacing.lg) {
-                        Text("Get ready")
-                            .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                            .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
-                        Text("\(remaining)")
-                            .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
-                            .monospacedDigit()
-                            .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(DesignTokens.Common.Background.app(scheme))
-                }
-            }
-        }
+        .overlay { flashOverlay }
+        .overlay { countdownOverlay(now: now) }
         .onChange(of: now) { _, newDate in
             if let end = countdownEndTime, newDate >= end {
                 var e = engine
@@ -1038,9 +1009,140 @@ private struct MacContent: View {
         }
     }
 
+    private func mainVStack(snapshot: WODTimerEngineSnapshot, totalRounds: Int, now: Date) -> some View {
+        let isIdle = snapshot.state == .idle
+        let showCancel = snapshot.state == .running || snapshot.state == .paused
+
+        return VStack(spacing: DesignTokens.Spacing.xxxl) {
+            if isIdle {
+                idleHeaderView(state: snapshot.state)
+            }
+
+            Spacer()
+
+            if snapshot.state == .finished {
+                SharedDoneView(totalRounds: totalRounds, theme: Self.macDoneTheme)
+                    .transition(.opacity)
+            } else if snapshot.state == .running || snapshot.state == .paused {
+                activeTimerView(snapshot: snapshot, totalRounds: totalRounds)
+            }
+
+            Spacer()
+
+            if isIdle {
+                idleSettingsView(state: snapshot.state)
+            }
+
+            Spacer()
+
+            VStack(spacing: DesignTokens.Spacing.lg) {
+                macPrimaryButton(snapshot: snapshot, now: now)
+                if showCancel {
+                    SharedCancelButton(action: { showCancelConfirmation = true }, theme: Self.macCancelTheme)
+                }
+            }
+            .padding(.horizontal, DesignTokens.Spacing.lg)
+            .padding(.bottom, DesignTokens.Spacing.xxl)
+        }
+        .animation(.easeInOut(duration: 0.25), value: snapshot.state)
+        .animation(.easeInOut(duration: 0.25), value: timerMode)
+    }
+
+    private func idleHeaderView(state: WODTimerEngineState) -> some View {
+        VStack(spacing: DesignTokens.Spacing.lg) {
+            SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(state) }, theme: Self.macModeSwitchTheme)
+            Text(modeHelpText)
+                .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                .multilineTextAlignment(.center)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, DesignTokens.Spacing.xl)
+        }
+    }
+
+    private func activeTimerView(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
+        VStack(spacing: DesignTokens.Spacing.lg) {
+            Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
+                .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                .monospacedDigit()
+                .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                .frame(maxWidth: .infinity)
+            Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
+                .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+            if timerMode == .intervals {
+                Text(snapshot.currentPhase == .work ? "Work" : "Rest")
+                    .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+            }
+        }
+        .transition(.opacity)
+    }
+
+    private func idleSettingsView(state: WODTimerEngineState) -> some View {
+        ZStack(alignment: .top) {
+            VStack(spacing: DesignTokens.Spacing.lg) {
+                SharedStepperView(value: $rounds, range: roundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
+                SharedStepperView(value: $emomRoundLength, range: emomLengthRange, step: 30, displayString: sharedFormatEmomLength(emomRoundLength), label: "Round length", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
+            }
+                .opacity(timerMode == .emom ? 1 : 0)
+                .allowsHitTesting(timerMode == .emom)
+            VStack(spacing: DesignTokens.Spacing.lg) {
+                SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
+                SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
+                SharedStepperView(value: $intervalsRounds, range: intervalsRoundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
+            }
+            .opacity(timerMode == .intervals ? 1 : 0)
+            .allowsHitTesting(timerMode == .intervals)
+        }
+        .animation(.easeInOut(duration: 0.25), value: timerMode)
+        .padding(.horizontal, DesignTokens.Spacing.lg)
+    }
+
+    private var infoButton: some View {
+        Button {
+            showAbout = true
+        } label: {
+            Image(systemName: "info.circle")
+                .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.regular))
+                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+        }
+        .buttonStyle(.plain)
+        .padding(DesignTokens.Spacing.md)
+    }
+
+    private var flashOverlay: some View {
+        DesignTokens.Common.Text.primary(scheme)
+            .ignoresSafeArea()
+            .opacity(flashScreen ? 0.85 : 0)
+            .animation(.easeInOut(duration: 0.15), value: flashScreen)
+    }
+
+    private func countdownOverlay(now: Date) -> some View {
+        Group {
+            if let end = countdownEndTime {
+                let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
+                if remaining > 0 {
+                    VStack(spacing: DesignTokens.Spacing.lg) {
+                        Text("Get ready")
+                            .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                            .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+                        Text("\(remaining)")
+                            .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                            .monospacedDigit()
+                            .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(DesignTokens.Common.Background.app(scheme))
+                }
+            }
+        }
+    }
+
     private var modeHelpText: String {
         switch timerMode {
-        case .emom: return "Select the number of rounds. Each round is one minute."
+        case .emom: return "Select the number of rounds, and length of each round."
         case .intervals: return "Set work time, rest time, and number of rounds."
         }
     }
@@ -1060,14 +1162,16 @@ private struct MacContent: View {
     private func syncEngineIfIdle(_ state: WODTimerEngineState) {
         guard state == .idle || state == .finished else { return }
         switch timerMode {
-        case .emom: engine = WODTimerEngine(totalDurationMinutes: rounds)
-        case .intervals: engine = WODTimerEngine(workSeconds: intervalsWork, restSeconds: intervalsRest, rounds: intervalsRounds)
+        case .emom:
+            engine = WODTimerEngine(emomRounds: rounds, secondsPerRound: emomRoundLength)
+        case .intervals:
+            engine = WODTimerEngine(workSeconds: intervalsWork, restSeconds: intervalsRest, rounds: intervalsRounds)
         }
     }
 
     private func triggerFlash() {
         flashScreen = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
             flashScreen = false
         }
     }

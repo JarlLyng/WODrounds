@@ -15,6 +15,7 @@ struct WODTimerSyncPayload: Codable {
     let pausedAt: Date?
     let mode: String
     let totalMinutes: Int
+    let emomSecondsPerRound: Int?
     let workSeconds: Int?
     let restSeconds: Int?
     let rounds: Int?
@@ -24,7 +25,6 @@ struct WODTimerSyncPayload: Codable {
 enum WODTimerSync {
     static let appGroupID = "group.com.iamjarl.WODrounds"
     static let key = "wodrounds.sync.payload"
-    private static let secondsPerMinute: TimeInterval = 60
 
     static var shared: UserDefaults? {
         UserDefaults(suiteName: appGroupID)
@@ -57,7 +57,8 @@ enum WODTimerSync {
     private static func totalDurationSeconds(payload: WODTimerSyncPayload) -> TimeInterval {
         switch payload.mode {
         case "emom":
-            return TimeInterval(payload.totalMinutes) * secondsPerMinute
+            let spr = payload.emomSecondsPerRound ?? 60
+            return TimeInterval(payload.totalMinutes) * TimeInterval(spr)
         case "intervals":
             guard let w = payload.workSeconds, let r = payload.restSeconds, let n = payload.rounds, n > 0 else { return 0 }
             return TimeInterval(n) * TimeInterval(w) + TimeInterval(n - 1) * TimeInterval(r)
@@ -66,9 +67,9 @@ enum WODTimerSync {
         }
     }
 
-    private static func roundFromEMOM(elapsed: TimeInterval, totalMinutes: Int) -> Int {
-        let minute = Int(elapsed / secondsPerMinute)
-        return min(minute + 1, totalMinutes)
+    private static func roundFromEMOM(elapsed: TimeInterval, totalMinutes: Int, secondsPerRound: Int) -> Int {
+        let current = Int(elapsed / TimeInterval(secondsPerRound))
+        return min(current + 1, totalMinutes)
     }
 
     /// Result to drive Watch UI when synced from iPhone.
@@ -97,9 +98,10 @@ enum WODTimerSync {
             let round: Int
             let remainingTimeInPhase: TimeInterval
             if payload.mode == "emom" {
-                round = min(roundFromEMOM(elapsed: elapsed, totalMinutes: payload.totalMinutes), payload.totalMinutes)
-                let intoMinute = Int(elapsed.truncatingRemainder(dividingBy: 60))
-                remainingTimeInPhase = TimeInterval(60 - intoMinute)
+                let spr = payload.emomSecondsPerRound ?? 60
+                round = min(roundFromEMOM(elapsed: elapsed, totalMinutes: payload.totalMinutes, secondsPerRound: spr), payload.totalMinutes)
+                let intoRound = Int(elapsed.truncatingRemainder(dividingBy: TimeInterval(spr)))
+                remainingTimeInPhase = TimeInterval(spr - intoRound)
             } else {
                 guard let w = payload.workSeconds, let r = payload.restSeconds, let n = payload.rounds, n > 0 else { return nil }
                 let cycle = TimeInterval(w + r)
