@@ -115,8 +115,8 @@ The main app follows the IAMJARL design system. No hardcoded colors, spacing, ra
 
 ## Platform Strategy
 
-- **WODrounds target:** iPhone, iPad, macOS, Apple TV. `SUPPORTED_PLATFORMS`: iphoneos, iphonesimulator, macosx, appletvos, appletvsimulator. No watchOS on this target.
-- **WODrounds Watch target:** watchOS only. Embedded in the iOS app via “Embed Watch Content” build phase; one iOS archive includes both iPhone and Watch app for TestFlight/App Store.
+- **WODrounds target:** iPhone, iPad, macOS, Apple TV. `SUPPORTED_PLATFORMS`: iphoneos, iphonesimulator, macosx, appletvos, appletvsimulator (no watchOS).
+- **WODrounds Watch target:** watchOS only. Embedded in the iOS app via “Embed Watch Content” build phase; one iOS archive includes both iPhone and Watch app for TestFlight/App Store. **Embed and Watch target dependency use `platformFilter = ios`** so Mac archives do not build or embed the Watch app (avoids CodeSign “unsealed contents” on macOS). See `docs/ARCHIVE.md` for details.
 
 **v1:** iPhone & iPad (full UI + sync to Watch) → Watch (synced + local timer) → macOS → tvOS (full UI). No visionOS.
 
@@ -145,10 +145,12 @@ The main app follows the IAMJARL design system. No hardcoded colors, spacing, ra
 
 **Apple Developer:** Ensure the App Group `group.com.iamjarl.WODrounds` exists under Identifiers → App Groups, and that it is enabled for both the main app’s App ID and the Watch app’s App ID. Xcode can add the App Group when you first build with the entitlements. Enable **HealthKit** for the main app's App ID if needed (Signing & Capabilities).
 
-**TestFlight / App Store:**
+**TestFlight / App Store (iOS + Watch):**
 1. Destination **Any iOS Device**.
 2. **Product → Archive**.
 3. **Distribute App** → App Store Connect. One archive contains both the iPhone app and the Watch app; TestFlight will offer the Watch build to testers with an Apple Watch.
+
+**Mac archive:** Use destination **Any Mac** to produce a macOS-only archive (no Watch app). Signing uses `WODrounds-Mac.entitlements`; Watch is not built or embedded for this destination.
 
 ---
 

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2FF206072F427B0000AD0B00 /* WODrounds Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2FF206002F427B0000AD0B00 /* WODrounds Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2FF206072F427B0000AD0B00 /* WODrounds Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2FF206002F427B0000AD0B00 /* WODrounds Watch.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -149,6 +149,7 @@
 				2FF204412F427AE600AD0B00 /* Frameworks */,
 				2FF204422F427AE600AD0B00 /* Resources */,
 				2FF206062F427B0000AD0B00 /* Embed Watch Content */,
+				2FF206112F427B0000AD0B00 /* Strip Watch for Mac */,
 			);
 			buildRules = (
 			);
@@ -219,6 +220,7 @@
 				2FF206032F427B0000AD0B00 /* Sources */,
 				2FF206042F427B0000AD0B00 /* Frameworks */,
 				2FF206052F427B0000AD0B00 /* Resources */,
+				2FF206132F427B0000AD0B00 /* Set Watch App Category */,
 			);
 			buildRules = (
 			);
@@ -247,6 +249,8 @@
 				TargetAttributes = {
 					2FF204432F427AE600AD0B00 = {
 						CreatedOnToolsVersion = 26.2;
+						DevelopmentTeam = KDWZ3WNLDK;
+						ProvisioningStyle = Automatic;
 					};
 					2FF204502F427AEA00AD0B00 = {
 						CreatedOnToolsVersion = 26.2;
@@ -258,6 +262,8 @@
 					};
 					2FF206082F427B0000AD0B00 = {
 						CreatedOnToolsVersion = 26.2;
+						DevelopmentTeam = KDWZ3WNLDK;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -315,6 +321,47 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2FF206112F427B0000AD0B00 /* Strip Watch for Mac */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Watch for Mac";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "case \"$SDK_NAME\" in macosx*) rm -rf \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Watch\" ;; esac\n";
+		};
+		2FF206132F427B0000AD0B00 /* Set Watch App Category */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${TARGET_BUILD_DIR}/${WRAPPER_NAME}/Info.plist",
+			);
+			name = "Set Watch App Category";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "PLIST=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}/Info.plist\"\nif [ -f \"$PLIST\" ]; then\n  /usr/libexec/PlistBuddy -c \"Add :LSApplicationCategory string public.app-category.healthcare-fitness\" \"$PLIST\" 2>/dev/null || /usr/libexec/PlistBuddy -c \"Set :LSApplicationCategory public.app-category.healthcare-fitness\" \"$PLIST\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		2FF204402F427AE600AD0B00 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -359,6 +406,7 @@
 		};
 		2FF206092F427B0000AD0B00 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 2FF206082F427B0000AD0B00 /* WODrounds Watch */;
 			targetProxy = 2FF2060A2F427B0000AD0B00 /* PBXContainerItemProxy */;
 		};
@@ -487,6 +535,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WODrounds/WODrounds.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "WODrounds/WODrounds-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KDWZ3WNLDK;
@@ -535,6 +584,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WODrounds/WODrounds.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "WODrounds/WODrounds-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KDWZ3WNLDK;
@@ -685,9 +735,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KDWZ3WNLDK;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "WODroundsWatch-Info.plist";
 				INFOPLIST_KEY_CFBundleIconName = AppIcon;
+				INFOPLIST_KEY_LSApplicationCategory = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.iamjarl.WODrounds;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iamjarl.WODrounds.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -711,9 +762,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KDWZ3WNLDK;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "WODroundsWatch-Info.plist";
 				INFOPLIST_KEY_CFBundleIconName = AppIcon;
+				INFOPLIST_KEY_LSApplicationCategory = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.iamjarl.WODrounds;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iamjarl.WODrounds.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
