@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.healthcare-fitness</string>
+	<key>LSApplicationCategory</key>
+	<string>public.app-category.healthcare-fitness</string>
+	<key>WKCompanionAppBundleIdentifier</key>
+	<string>com.iamjarl.WODrounds</string>
+</dict>
+</plist>
