@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wodrounds.iamjarl.com/sitemap.xml
