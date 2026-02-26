@@ -122,7 +122,10 @@ struct SharedStepperView: View {
                     .font(.system(size: theme.valueFontSize, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                     .monospacedDigit()
                     .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
-                    .frame(minWidth: theme.buttonSize * 2)
+                    .lineLimit(1)
+                    .fixedSize(horizontal: true, vertical: false)
+                    .frame(minWidth: displayString != nil ? max(theme.buttonSize * 2, theme.valueFontSize * 1.9) : theme.buttonSize * 2)
+                    .padding(.horizontal, displayString != nil ? DesignTokens.Spacing.lg : 0)
                 stepperButton(sign: 1)
             }
             .padding(.vertical, theme.verticalPadding)

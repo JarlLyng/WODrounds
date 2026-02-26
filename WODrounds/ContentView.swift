@@ -208,6 +208,11 @@ private struct iOSContent: View {
                 iosPrimaryButton(snapshot: snapshot, now: now)
                 if snapshot.state == .running || snapshot.state == .paused {
                     SharedCancelButton(action: { showCancelConfirmation = true }, theme: Self.iosCancelTheme)
+                    Text("Open WODrounds on your Apple Watch to see this workout.")
+                        .font(.system(size: DesignTokens.Typography.Size.xs, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                        .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
                 }
             }
             .padding(.horizontal, DesignTokens.Spacing.lg)
@@ -383,6 +388,8 @@ private struct iOSContent: View {
         case .idle:
             ("Start", {
                 #if os(iOS)
+                // Request Health permission first so the dialog appears before countdown.
+                // Countdown starts only after the user has responded; then startWorkout can save to Health.
                 HealthKitWorkoutController.shared.requestAuthorizationIfNeeded { _ in
                     countdownEndTime = Date().addingTimeInterval(10)
                 }
@@ -438,23 +445,23 @@ private struct AboutView: View {
             }
             .padding(.top, DesignTokens.Spacing.xxl)
 
-            Text("No data collected. No analytics.")
+            Text(String(localized: "No analytics or tracking. Crash reports are sent to Sentry to fix bugs."))
                 .font(.system(size: DesignTokens.Typography.Size.base, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
 
             VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
-                if let url = URL(string: "https://github.com/JarlLyng/WODrounds/blob/main/Support.md") {
+                if let url = URL(string: "https://wodrounds.iamjarl.com/support") {
                     Link(destination: url) {
-                        Text("Support: https://github.com/JarlLyng/WODrounds/blob/main/Support.md")
+                        Text("Support")
                             .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                             .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                     }
                 }
-                if let url = URL(string: "https://github.com/JarlLyng/WODrounds/blob/main/PrivacyPolicy.md") {
+                if let url = URL(string: "https://wodrounds.iamjarl.com/privacy") {
                     Link(destination: url) {
-                        Text("Privacy Policy: https://github.com/JarlLyng/WODrounds/blob/main/PrivacyPolicy.md")
+                        Text("Privacy Policy")
                             .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                             .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                     }
@@ -817,23 +824,23 @@ private struct tvOSAboutView: View {
             }
             .padding(.top, DesignTokens.Spacing.xxxl)
 
-            Text("No data collected. No analytics.")
+            Text(String(localized: "No analytics or tracking."))
                 .font(.system(size: TVOSTypography.base, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
 
             VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
-                if let url = URL(string: "https://github.com/JarlLyng/WODrounds/blob/main/Support.md") {
+                if let url = URL(string: "https://wodrounds.iamjarl.com/support") {
                     Link(destination: url) {
-                        Text("Support: https://github.com/JarlLyng/WODrounds/blob/main/Support.md")
+                        Text("Support")
                             .font(.system(size: TVOSTypography.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                             .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                     }
                 }
-                if let url = URL(string: "https://github.com/JarlLyng/WODrounds/blob/main/PrivacyPolicy.md") {
+                if let url = URL(string: "https://wodrounds.iamjarl.com/privacy") {
                     Link(destination: url) {
-                        Text("Privacy Policy: https://github.com/JarlLyng/WODrounds/blob/main/PrivacyPolicy.md")
+                        Text("Privacy Policy")
                             .font(.system(size: TVOSTypography.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                             .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                     }
@@ -1194,21 +1201,21 @@ private struct MacAboutView: View {
                     .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
             }
             .padding(.top, DesignTokens.Spacing.xxl)
-            Text("No data collected. No analytics.")
+            Text(String(localized: "No analytics or tracking."))
                 .font(.system(size: DesignTokens.Typography.Size.base, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
                 .multilineTextAlignment(.center)
             VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
-                if let url = URL(string: "https://github.com/JarlLyng/WODrounds/blob/main/Support.md") {
+                if let url = URL(string: "https://wodrounds.iamjarl.com/support") {
                     Link(destination: url) {
-                        Text("Support: https://github.com/JarlLyng/WODrounds/blob/main/Support.md")
+                        Text("Support")
                             .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                             .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                     }
                 }
-                if let url = URL(string: "https://github.com/JarlLyng/WODrounds/blob/main/PrivacyPolicy.md") {
+                if let url = URL(string: "https://wodrounds.iamjarl.com/privacy") {
                     Link(destination: url) {
-                        Text("Privacy Policy: https://github.com/JarlLyng/WODrounds/blob/main/PrivacyPolicy.md")
+                        Text("Privacy Policy")
                             .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                             .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                     }

@@ -41,11 +41,9 @@ final class HealthKitWorkoutController {
     }
 
     /// Call when the timer starts (after countdown). Begins collecting workout data.
-    /// Only starts if Health is available and app is authorized to share workout type (see Apple: "Check for authorization before saving data").
+    /// Requests authorization is done before countdown (in UI); we try to start and rely on beginCollection error if not authorized.
     func startWorkout(startDate: Date) {
         guard HKHealthStore.isHealthDataAvailable(), builder == nil else { return }
-        let workoutType = HKObjectType.workoutType()
-        guard healthStore.authorizationStatus(for: workoutType) == .sharingAuthorized else { return }
         let config = HKWorkoutConfiguration()
         config.activityType = activityType
         config.locationType = .indoor

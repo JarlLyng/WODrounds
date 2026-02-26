@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F647BBB2F50F6F900492039 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 2FF206162F427B0000AD0B00 /* Sentry */; };
 		2FF206072F427B0000AD0B00 /* WODrounds Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2FF206002F427B0000AD0B00 /* WODrounds Watch.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		2FF204512F427AEA00AD0B00 /* WODroundsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WODroundsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FF2045B2F427AEA00AD0B00 /* WODroundsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WODroundsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FF206002F427B0000AD0B00 /* WODrounds Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WODrounds Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FF206142F427B0000AD0B00 /* Sentry.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Sentry.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -88,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F647BBB2F50F6F900492039 /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +126,7 @@
 				2FF206012F427B0000AD0B00 /* WODroundsWatch */,
 				2FF204542F427AEA00AD0B00 /* WODroundsTests */,
 				2FF2045E2F427AEA00AD0B00 /* WODroundsUITests */,
+				2FF206142F427B0000AD0B00 /* Sentry.xcconfig */,
 				2FF204452F427AE600AD0B00 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -162,6 +166,7 @@
 			);
 			name = WODrounds;
 			packageProductDependencies = (
+				2FF206162F427B0000AD0B00 /* Sentry */,
 			);
 			productName = WODrounds;
 			productReference = 2FF204442F427AE600AD0B00 /* WODrounds.app */;
@@ -277,6 +282,9 @@
 			);
 			mainGroup = 2FF2043B2F427AE600AD0B00;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2FF206152F427B0000AD0B00 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2FF204452F427AE600AD0B00 /* Products */;
 			projectDirPath = "";
@@ -531,6 +539,7 @@
 		};
 		2FF204662F427AEA00AD0B00 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2FF206142F427B0000AD0B00 /* Sentry.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -547,6 +556,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "WODrounds læser ikke din sundhedsdata. Denne tilladelse vises af systemet ved HealthKit-tilgang.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "WODrounds gemmer dine træninger i Apple Health, så Fitness og Aktivitet viser, hvornår du træner.";
+				INFOPLIST_KEY_SentryDSN = "$(SENTRY_DSN)";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -555,8 +567,8 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -580,6 +592,7 @@
 		};
 		2FF204672F427AEA00AD0B00 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2FF206142F427B0000AD0B00 /* Sentry.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -596,6 +609,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "WODrounds læser ikke din sundhedsdata. Denne tilladelse vises af systemet ved HealthKit-tilgang.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "WODrounds gemmer dine træninger i Apple Health, så Fitness og Aktivitet viser, hvornår du træner.";
+				INFOPLIST_KEY_SentryDSN = "$(SENTRY_DSN)";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -604,8 +620,8 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -828,6 +844,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2FF206152F427B0000AD0B00 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2FF206162F427B0000AD0B00 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2FF206152F427B0000AD0B00 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2FF2043C2F427AE600AD0B00 /* Project object */;
 }

@@ -1,0 +1,3 @@
+// Kopiér til Sentry.xcconfig og indsæt din DSN fra Sentry → Project Settings → Client Keys (DSN).
+// Sentry.xcconfig er i .gitignore, så din DSN bliver ikke committet.
+SENTRY_DSN = https://examplePublicKey@o0.ingest.sentry.io/0

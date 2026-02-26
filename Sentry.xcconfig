@@ -1,0 +1,3 @@
+// Indsæt din DSN fra Sentry → Project Settings → Client Keys (DSN).
+// Se Sentry.xcconfig.example og docs/SENTRY.md.
+SENTRY_DSN = https://1657b464ab930aef7e51763548629bb3@o4510472891334656.ingest.de.sentry.io/4510954428956752

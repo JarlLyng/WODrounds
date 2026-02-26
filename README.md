@@ -150,6 +150,8 @@ The main app follows the IAMJARL design system. No hardcoded colors, spacing, ra
 2. **Product → Archive**.
 3. **Distribute App** → App Store Connect. One archive contains both the iPhone app and the Watch app; TestFlight will offer the Watch build to testers with an Apple Watch.
 
+**Før TestFlight:** DSN i `Sentry.xcconfig` (så arkiv får crash reporting); ingen test-knapper i UI. Privacy Policy og Support nævner Sentry. Se `docs/ARCHIVE.md` for arkiv-destinationer.
+
 **Mac archive:** Use destination **Any Mac** to produce a macOS-only archive (no Watch app). Signing uses `WODrounds-Mac.entitlements`; Watch is not built or embedded for this destination.
 
 ---
@@ -184,7 +186,7 @@ Do not let these drive current architecture.
 - **Watch:** Embedded Watch App. Reads App Group; when iPhone has a running/paused workout, Watch shows same time and round (“Følger iPhone”). Otherwise local timer with Start/Pause/Resume/Reset. WatchDesign (green accent, light/dark). All required Watch icon roles for store validation.
 - **macOS:** Same feature set as iOS; compact window; DesignTokens.
 - **tvOS:** Full UI, DesignTokens, focusable controls.
-- **App Store:** Export compliance (ITSAppUsesNonExemptEncryption = NO); PrivacyPolicy.md, Support.md; About screen with version/build and privacy line.
+- **App Store:** Export compliance (ITSAppUsesNonExemptEncryption = NO); PrivacyPolicy.md, Support.md; About screen with version/build and privacy line. **Sentry** for crash/error reporting on iOS only (DSN via `Sentry.xcconfig`; see `docs/SENTRY.md`). Klar til TestFlight.
 
 Build iteratively. Ship small. Stay focused.
 

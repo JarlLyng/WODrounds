@@ -19,3 +19,5 @@
 "Intervals" = "Intervals";
 "About" = "About";
 "Privacy" = "Privacy";
+"No analytics or tracking. Crash reports are sent to Sentry to fix bugs." = "No analytics or tracking. Crash reports are sent to Sentry to fix bugs.";
+"No analytics or tracking." = "No analytics or tracking.";
