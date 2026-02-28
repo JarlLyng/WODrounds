@@ -94,6 +94,8 @@ private struct iOSContent: View {
     @State private var showAbout = false
     @State private var countdownEndTime: Date? = nil
     @State private var flashScreen = false
+    @State private var last30SecondWarningRound: Int? = nil
+    @State private var last30SecondWarningPhase: WODTimerPhase? = nil
 
     private static let iosDoneTheme = DoneViewTheme(
         checkmarkSize: 64,
@@ -143,17 +145,21 @@ private struct iOSContent: View {
         .overlay { countdownOverlay }
         .onChange(of: now) { _, newDate in
             handleDateChange(newDate)
+            check30SecondsRemainingSound(now: newDate)
         }
         .onChange(of: engine.state) { _, newState in
             applyIdleTimer(newState)
             if newState == .idle || newState == .finished {
                 lastHapticRound = 0
                 lastHapticPhase = nil
+                last30SecondWarningRound = nil
+                last30SecondWarningPhase = nil
             }
             if newState == .finished {
                 Haptics.strong()
                 #if os(iOS)
                 HealthKitWorkoutController.shared.endWorkout(endDate: engine.effectiveWorkoutEndDate(now: Date()) ?? Date())
+                WorkoutSoundManager.playYouDidIt()
                 #endif
             }
         }
@@ -340,8 +346,22 @@ private struct iOSContent: View {
             WODTimerSync.write(engine.syncPayload(now: end))
             #if os(iOS)
             HealthKitWorkoutController.shared.startWorkout(startDate: end)
+            WorkoutSoundManager.playGetReadyStart()
             #endif
         }
+    }
+
+    private func check30SecondsRemainingSound(now: Date) {
+        #if os(iOS)
+        guard engine.state == .running else { return }
+        let snapshot = engine.snapshot(now: now)
+        let remaining = snapshot.remainingTimeInPhase
+        guard remaining >= 29.5, remaining <= 30.5 else { return }
+        if last30SecondWarningRound == snapshot.currentRound, last30SecondWarningPhase == snapshot.currentPhase { return }
+        last30SecondWarningRound = snapshot.currentRound
+        last30SecondWarningPhase = snapshot.currentPhase
+        WorkoutSoundManager.play30SecondsRemaining()
+        #endif
     }
 
     private func triggerFlash() {

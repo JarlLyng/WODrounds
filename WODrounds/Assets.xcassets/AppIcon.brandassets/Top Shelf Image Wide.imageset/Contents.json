@@ -15,6 +15,20 @@
       "filename" : "topshelf-wide-dark.png",
       "idiom" : "tv",
       "scale" : "1x"
+    },
+    {
+      "idiom" : "tv",
+      "scale" : "2x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "idiom" : "tv",
+      "scale" : "2x"
     }
   ],
   "info" : {

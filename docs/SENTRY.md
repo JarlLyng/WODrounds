@@ -30,7 +30,7 @@ Hvis du ikke har tilføjet pakken endnu:
 1. I Xcode: **File → Add Package Dependencies…**
 2. Angiv URL: `https://github.com/getsentry/sentry-cocoa.git`
 3. Vælg version (fx **Up to Next Major** med 9.0.0 eller nyere).
-4. Vælg produktet **Sentry** og tilknyt det til targetet **WODrounds**.
+4. Vælg produktet **Sentry** eller **Sentry-Dynamic** og tilknyt det til targetet **WODrounds**. (Projektet bruger Sentry-Dynamic for at undgå "Upload Symbols Failed"-advarslen ved arkiv.)
 5. Klik **Add Package**.
 
 Herefter bygger appen med Sentry, og ved kørsel på iOS med DSN sat i `Sentry.xcconfig` sendes crashes og fejl til dit Sentry-projekt.
@@ -41,7 +41,7 @@ Herefter bygger appen med Sentry, og ved kørsel på iOS med DSN sat i `Sentry.x
 
 ## "Upload Symbols Failed" ved archive / TestFlight
 
-Når du uploader et arkiv til App Store Connect, kan Xcode vise: **Upload Symbols Failed – The archive did not include a dSYM for the Sentry.framework**. Det er en **kendt advarsel** ved Sentry via Swift Package Manager (Sentry leveres som forhåndsbygget framework uden dSYM i arkivet). Uploadet er stadig gennemført – dialogen siger "Upload completed **with warnings**". Du kan trykke **Done**; buildet bør ligge på TestFlight. Crashes fra **din app-kode** kan Sentry stadig symbolikere, hvis dit eget app-dSYM uploades (fx via Sentry's eget upload-step eller sentry-cli). Advarslen påvirker ikke at TestFlight-buildet er brugbart.
+Når du uploader et arkiv til App Store Connect, kan Xcode vise: **Upload Symbols Failed – The archive did not include a dSYM for the Sentry.framework**. Det er en **kendt advarsel** ved Sentry via Swift Package Manager. Projektet bruger **Sentry-Dynamic** (dynamic framework) i stedet for Sentry (static) – det kan reducere eller fjerne advarslen, fordi dynamic frameworks nogle gange inkluderer dSYM. Hvis advarslen stadig vises: uploadet er gennemført ("Upload completed **with warnings**"). Tryk **Done**; buildet bør ligge på TestFlight. Crashes fra **din app-kode** kan Sentry stadig symbolikere via dit eget app-dSYM. Se også ReleaseReview.md.
 
 ## Privacy
 

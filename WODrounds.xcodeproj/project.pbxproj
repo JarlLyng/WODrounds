@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2F647BBB2F50F6F900492039 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 2FF206162F427B0000AD0B00 /* Sentry */; };
+		2F647BBB2F50F6F900492039 /* Sentry-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2FF206162F427B0000AD0B00 /* Sentry-Dynamic */; };
 		2FF206072F427B0000AD0B00 /* WODrounds Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2FF206002F427B0000AD0B00 /* WODrounds Watch.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -90,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F647BBB2F50F6F900492039 /* Sentry in Frameworks */,
+				2F647BBB2F50F6F900492039 /* Sentry-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,7 +166,7 @@
 			);
 			name = WODrounds;
 			packageProductDependencies = (
-				2FF206162F427B0000AD0B00 /* Sentry */,
+				2FF206162F427B0000AD0B00 /* Sentry-Dynamic */,
 			);
 			productName = WODrounds;
 			productReference = 2FF204442F427AE600AD0B00 /* WODrounds.app */;
@@ -857,10 +857,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2FF206162F427B0000AD0B00 /* Sentry */ = {
+		2FF206162F427B0000AD0B00 /* Sentry-Dynamic */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2FF206152F427B0000AD0B00 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
-			productName = Sentry;
+			productName = "Sentry-Dynamic";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
