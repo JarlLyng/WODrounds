@@ -13,6 +13,8 @@ Kort gennemgang af ikon-assets til WODrounds på tværs af platforme. Brug denne
 | AppIcon-Tinted.png | 1024×1024 | ✅ 1024×1024 |
 | AppIcon-Mac.png | 1024×1024 (512pt @2x) | ✅ 1024×1024 |
 
+**Mørkt ikon på home screen:** Apple viser kun den mørke variant (AppIcon-Dark) på **home screen fra iOS 18**. På iOS 17 og ældre bruges altid det lyse ikon (AppIcon-Any). Sørg for at køre iOS 18+ hvis du tester det mørke ikon. I Xcode skal App Icon for iOS være sat til **Single Size** (Inspectors → Attributes).
+
 **Konklusion:** iOS- og Mac-app-ikoner er på plads og i korrekt størrelse.
 
 ---

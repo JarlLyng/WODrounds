@@ -2,7 +2,7 @@
 //  WorkoutSoundManager.swift
 //  WODrounds
 //
-//  Afspiller countdown- og 30-sekunder-lyde. Kun iOS. Respekterer lydløs (ambient session).
+//  Afspiller countdown- og workout-lyde. Kun iOS. Bruger .playback så lyd høres også ved lydløs.
 //
 
 #if os(iOS)
@@ -10,6 +10,7 @@ import AVFoundation
 import Foundation
 
 enum WorkoutSoundManager {
+    private static var currentPlayer: AVAudioPlayer?
     private static let getReadyStartName = "getReadyStart"
     private static let thirtySecondsRemainingName = "30SecondsRemaining"
     private static let youDidItName = "youDidIt"
@@ -30,14 +31,16 @@ enum WorkoutSoundManager {
     }
 
     private static func play(name: String, ext: String) {
-        guard let url = Bundle.main.url(forResource: name, withExtension: ext, subdirectory: "Sounds")
-            ?? Bundle.main.url(forResource: name, withExtension: ext) else { return }
+        let url = Bundle.main.url(forResource: name, withExtension: ext, subdirectory: "Sounds")
+            ?? Bundle.main.url(forResource: name, withExtension: ext)
+        guard let url = url else { return }
         do {
-            try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default, options: [.mixWithOthers])
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
         } catch { return }
-        let player = try? AVAudioPlayer(contentsOf: url)
-        player?.play()
+        guard let player = try? AVAudioPlayer(contentsOf: url) else { return }
+        currentPlayer = player
+        player.play()
     }
 }
 #endif
