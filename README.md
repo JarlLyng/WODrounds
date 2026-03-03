@@ -113,7 +113,7 @@ The main app follows the IAMJARL design system. No hardcoded colors, spacing, ra
 - Primary for main actions; error for destructive (e.g. Cancel).
 - Buttons solid and tactile; timer dominates the screen.
 
-**Localization:** Main app and Watch have `en.lproj` and `da.lproj` with Localizable.strings. Development language is English; Danish translations for key UI strings (dialogs, buttons, "Following iPhone" on Watch).
+**Localization:** English only (`en.lproj/Localizable.strings`). All UI strings are in English across all platforms.
 
 ---
 

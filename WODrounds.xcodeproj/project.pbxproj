@@ -254,7 +254,6 @@
 				TargetAttributes = {
 					2FF204432F427AE600AD0B00 = {
 						CreatedOnToolsVersion = 26.2;
-						DevelopmentTeam = KDWZ3WNLDK;
 						ProvisioningStyle = Automatic;
 					};
 					2FF204502F427AEA00AD0B00 = {

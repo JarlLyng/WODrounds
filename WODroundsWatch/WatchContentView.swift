@@ -73,18 +73,21 @@ struct WatchContentView: View {
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .tint(WatchDesign.Colors.primary(colorScheme))
+                                .foregroundStyle(WatchDesign.Colors.onPrimary)
                             case .running:
                                 Button("Pause") {
                                     engine.pause(now: now)
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .tint(WatchDesign.Colors.primary(colorScheme))
+                                .foregroundStyle(WatchDesign.Colors.onPrimary)
                             case .paused:
                                 Button("Resume") {
                                     engine.resume(now: now)
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .tint(WatchDesign.Colors.primary(colorScheme))
+                                .foregroundStyle(WatchDesign.Colors.onPrimary)
                             case .finished:
                                 Button("Reset") {
                                     engine.reset()
@@ -100,6 +103,7 @@ struct WatchContentView: View {
                         .ignoresSafeArea()
                         .opacity(flashScreen ? 0.85 : 0)
                         .animation(.easeInOut(duration: 0.35), value: flashScreen)
+                        .accessibilityHidden(true)
                 }
                 .overlay {
                     if let end = countdownEndTime {
@@ -116,6 +120,8 @@ struct WatchContentView: View {
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .background(WatchDesign.Colors.background(colorScheme))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel("Countdown, \(remaining) seconds")
                         }
                     }
                 }

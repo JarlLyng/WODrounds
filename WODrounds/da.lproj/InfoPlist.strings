@@ -1,3 +1,0 @@
-/* HealthKit permission strings – Danish */
-"NSHealthShareUsageDescription" = "WODrounds læser ikke din sundhedsdata. Denne tilladelse vises af systemet ved HealthKit-tilgang.";
-"NSHealthUpdateUsageDescription" = "WODrounds gemmer dine træninger i Apple Health, så Fitness og Aktivitet viser, hvornår du træner.";

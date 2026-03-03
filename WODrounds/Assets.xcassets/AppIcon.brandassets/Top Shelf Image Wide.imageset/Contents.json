@@ -17,6 +17,7 @@
       "scale" : "1x"
     },
     {
+      "filename" : "topshelf-wide-light_2x.png",
       "idiom" : "tv",
       "scale" : "2x"
     },
@@ -27,6 +28,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "topshelf-wide-dark_2x.png",
       "idiom" : "tv",
       "scale" : "2x"
     }

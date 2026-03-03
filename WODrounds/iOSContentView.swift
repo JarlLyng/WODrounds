@@ -250,6 +250,7 @@ private struct iOSContent: View {
             }
                 .opacity(timerMode == .emom ? 1 : 0)
                 .allowsHitTesting(timerMode == .emom)
+                .accessibilityHidden(timerMode != .emom)
             VStack(spacing: DesignTokens.Spacing.lg) {
                 SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
                 SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
@@ -257,6 +258,7 @@ private struct iOSContent: View {
             }
             .opacity(timerMode == .intervals ? 1 : 0)
             .allowsHitTesting(timerMode == .intervals)
+            .accessibilityHidden(timerMode != .intervals)
         }
     }
 
@@ -269,6 +271,7 @@ private struct iOSContent: View {
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("About")
     }
 
     private var flashOverlay: some View {
@@ -276,6 +279,7 @@ private struct iOSContent: View {
             .ignoresSafeArea()
             .opacity(flashScreen ? 0.85 : 0)
             .animation(.easeInOut(duration: 0.35), value: flashScreen)
+            .accessibilityHidden(true)
     }
 
     @ViewBuilder
@@ -295,6 +299,8 @@ private struct iOSContent: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(DesignTokens.Common.Background.app(scheme))
                 .transition(.opacity)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Countdown, \(remaining) seconds")
             }
         }
     }

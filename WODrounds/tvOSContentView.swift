@@ -32,6 +32,8 @@ struct ContentView: View {
     @State private var flashScreen = false
     @State private var lastHapticRound = 0
     @State private var lastHapticPhase: WODTimerPhase?
+    @State private var last30SecondWarningRound: Int? = nil
+    @State private var last30SecondWarningPhase: WODTimerPhase? = nil
 
     @Environment(\.colorScheme) private var scheme
 
@@ -85,7 +87,9 @@ struct ContentView: View {
                         e.start(now: end)
                         engine = e
                         countdownEndTime = nil
+                        WorkoutSoundManager.playGetReadyStart()
                     }
+                    check30SecondsRemainingSound(now: newDate)
                 }
                 .onChange(of: engine.snapshot(now: timeline.date).currentRound) { _, newRound in
                     if (engine.state == .running || engine.state == .paused), timerMode == .emom, newRound > lastHapticRound {
@@ -97,6 +101,17 @@ struct ContentView: View {
                     if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
                         triggerFlash()
                         lastHapticPhase = newPhase
+                    }
+                }
+                .onChange(of: engine.state) { _, newState in
+                    if newState == .finished {
+                        WorkoutSoundManager.playYouDidIt()
+                    }
+                    if newState == .idle || newState == .finished {
+                        lastHapticRound = 0
+                        lastHapticPhase = nil
+                        last30SecondWarningRound = nil
+                        last30SecondWarningPhase = nil
                     }
                 }
         }
@@ -212,6 +227,7 @@ struct ContentView: View {
             }
                 .opacity(timerMode == .emom ? 1 : 0)
                 .allowsHitTesting(timerMode == .emom)
+                .accessibilityHidden(timerMode != .emom)
             VStack(spacing: DesignTokens.Spacing.xl) {
                 SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
                 SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
@@ -219,6 +235,7 @@ struct ContentView: View {
             }
             .opacity(timerMode == .intervals ? 1 : 0)
             .allowsHitTesting(timerMode == .intervals)
+            .accessibilityHidden(timerMode != .intervals)
         }
         .animation(.easeInOut(duration: 0.25), value: timerMode)
         .padding(.horizontal, DesignTokens.Spacing.xxl)
@@ -233,6 +250,7 @@ struct ContentView: View {
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("About")
         .padding(DesignTokens.Spacing.lg)
     }
 
@@ -241,6 +259,7 @@ struct ContentView: View {
             .ignoresSafeArea()
             .opacity(flashScreen ? 0.85 : 0)
             .animation(.easeInOut(duration: 0.35), value: flashScreen)
+            .accessibilityHidden(true)
     }
 
     private func tvOSCountdownOverlay(now: Date) -> some View {
@@ -259,6 +278,8 @@ struct ContentView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(DesignTokens.Common.Background.app(scheme))
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Countdown, \(remaining) seconds")
                 }
             }
         }
@@ -269,6 +290,17 @@ struct ContentView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
             flashScreen = false
         }
+    }
+
+    private func check30SecondsRemainingSound(now: Date) {
+        guard engine.state == .running else { return }
+        let snapshot = engine.snapshot(now: now)
+        let remaining = snapshot.remainingTimeInPhase
+        guard remaining >= 29.5, remaining <= 30.5 else { return }
+        if last30SecondWarningRound == snapshot.currentRound, last30SecondWarningPhase == snapshot.currentPhase { return }
+        last30SecondWarningRound = snapshot.currentRound
+        last30SecondWarningPhase = snapshot.currentPhase
+        WorkoutSoundManager.play30SecondsRemaining()
     }
 
     private var modeHelpText: String {

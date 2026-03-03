@@ -226,6 +226,7 @@ private struct MacContent: View {
             }
                 .opacity(timerMode == .emom ? 1 : 0)
                 .allowsHitTesting(timerMode == .emom)
+                .accessibilityHidden(timerMode != .emom)
             VStack(spacing: DesignTokens.Spacing.lg) {
                 SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
                 SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
@@ -233,6 +234,7 @@ private struct MacContent: View {
             }
             .opacity(timerMode == .intervals ? 1 : 0)
             .allowsHitTesting(timerMode == .intervals)
+            .accessibilityHidden(timerMode != .intervals)
         }
         .animation(.easeInOut(duration: 0.25), value: timerMode)
         .padding(.horizontal, DesignTokens.Spacing.lg)
@@ -247,6 +249,7 @@ private struct MacContent: View {
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("About")
         .padding(DesignTokens.Spacing.md)
     }
 
@@ -255,6 +258,7 @@ private struct MacContent: View {
             .ignoresSafeArea()
             .opacity(flashScreen ? 0.85 : 0)
             .animation(.easeInOut(duration: 0.15), value: flashScreen)
+            .accessibilityHidden(true)
     }
 
     private func countdownOverlay(now: Date) -> some View {
@@ -273,6 +277,8 @@ private struct MacContent: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(DesignTokens.Common.Background.app(scheme))
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Countdown, \(remaining) seconds")
                 }
             }
         }

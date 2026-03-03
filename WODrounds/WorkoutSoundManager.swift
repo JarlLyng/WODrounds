@@ -5,7 +5,7 @@
 //  Plays countdown and workout sounds. iOS only. Uses .playback so sounds are audible even in silent mode.
 //
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 import AVFoundation
 import Foundation
 

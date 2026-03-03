@@ -90,6 +90,7 @@ struct SharedDoneView: View {
                 .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
         }
         .padding(.vertical, theme.verticalSpacing)
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -126,6 +127,8 @@ struct SharedStepperView: View {
                     .fixedSize(horizontal: true, vertical: false)
                     .frame(minWidth: displayString != nil ? max(theme.buttonSize * 2, theme.valueFontSize * 1.9) : theme.buttonSize * 2)
                     .padding(.horizontal, displayString != nil ? DesignTokens.Spacing.lg : 0)
+                    .accessibilityLabel(label)
+                    .accessibilityValue(displayString ?? "\(value)")
                 stepperButton(sign: 1)
             }
             .padding(.vertical, theme.verticalPadding)
@@ -145,6 +148,7 @@ struct SharedStepperView: View {
                 .clipShape(RoundedRectangle(cornerRadius: theme.cornerRadius))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(sign < 0 ? "Decrease \(self.label)" : "Increase \(self.label)")
         .modifier(LongPressRepeatModifier(enabled: useLongPressRepeat, sign: sign, onPressStart: { startRepeat(by: $0) }, onPressEnd: stopRepeat))
     }
 
@@ -245,6 +249,7 @@ struct SharedCancelButton: View {
                 .clipShape(RoundedRectangle(cornerRadius: theme.cornerRadius))
         }
         .buttonStyle(.plain)
+        .accessibilityHint("Stops workout and returns to setup")
     }
 }
 
@@ -283,13 +288,16 @@ struct SharedModeSwitch: View {
             button
                 .buttonStyle(.card)
                 .focusEffectDisabled()
+                .accessibilityAddTraits(timerMode == mode ? .isSelected : [])
             #else
             button
                 .buttonStyle(.plain)
+                .accessibilityAddTraits(timerMode == mode ? .isSelected : [])
             #endif
         } else {
             button
                 .buttonStyle(.plain)
+                .accessibilityAddTraits(timerMode == mode ? .isSelected : [])
         }
     }
 }
