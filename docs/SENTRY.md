@@ -1,48 +1,48 @@
 # Sentry (iOS)
 
-Crash- og fejlrapportering for WODrounds bruger Sentry og er kun aktiveret på **iOS** (ikke macOS, tvOS eller Watch).
+Crash and error reporting for WODrounds uses Sentry and is only enabled on **iOS** (not macOS, tvOS, or Watch). The Sentry-Dynamic framework has `platformFilter = ios` in the project, so it is not bundled in Mac or tvOS builds.
 
-## DSN – hvor sættes den?
+## DSN – Where to Set It
 
-Appen læser DSN i denne rækkefølge: **1)** miljøvariablen `SENTRY_DSN` (fx fra Scheme), **2)** Info.plist-nøglen `SentryDSN` (fra `Sentry.xcconfig` ved build).
+The app reads the DSN in this order: **1)** environment variable `SENTRY_DSN` (e.g. from Scheme), **2)** Info.plist key `SentryDSN` (from `Sentry.xcconfig` at build time).
 
-### A) Miljøvariabel (anbefalet til lokal test)
+### A) Environment Variable (recommended for local testing)
 
-1. I Xcode: **Product → Scheme → Edit Scheme…** (eller **⌘<**).
-2. Vælg **Run** til venstre → fanen **Arguments**.
-3. Under **Environment Variables** klik **+** og tilføj:
+1. In Xcode: **Product → Scheme → Edit Scheme…** (or **⌘<**).
+2. Select **Run** on the left → **Arguments** tab.
+3. Under **Environment Variables** click **+** and add:
    - **Name:** `SENTRY_DSN`
-   - **Value:** din DSN-URL (fra Sentry → Project Settings → Client Keys (DSN)).
-4. Luk og kør appen på iOS (⌘R). DSN bruges nu ved kørsel fra Xcode.
+   - **Value:** your DSN URL (from Sentry → Project Settings → Client Keys (DSN)).
+4. Close and run the app on iOS (⌘R). The DSN is used when running from Xcode.
 
-### B) Sentry.xcconfig (til build/arkiv)
+### B) Sentry.xcconfig (for builds/archives)
 
-1. **Åbn `Sentry.xcconfig`** i projektroden.
-2. Sæt `SENTRY_DSN = https://din-key@o0.ingest.sentry.io/dit-projekt-id` (med mellemrum efter `=`).
-3. Ved build indsætter Xcode værdien i Info.plist som `SentryDSN`, så arkiv og kørsel uden scheme-env også får DSN.
+1. **Open `Sentry.xcconfig`** in the project root.
+2. Set `SENTRY_DSN = https://your-key@o0.ingest.sentry.io/your-project-id` (with a space after `=`).
+3. At build time, Xcode inserts the value into Info.plist as `SentryDSN`, so archives and runs without scheme-env also get the DSN.
 
-**Hvis Sentry stadig ikke modtager:** I Debug står der i Xcode-konsollen `[Sentry] No DSN: ...`, hvis ingen DSN blev fundet. Tjek at miljøvariablen er sat under Run, eller at `Sentry.xcconfig` er brugt som base config for WODrounds-targetet.
+**If Sentry still doesn't receive events:** In Debug, the Xcode console will show `[Sentry] No DSN: ...` if no DSN was found. Verify that the environment variable is set under Run, or that `Sentry.xcconfig` is used as base config for the WODrounds target.
 
-## Tilføj Sentry-pakken (Swift Package)
+## Adding the Sentry Package (Swift Package)
 
-Hvis du ikke har tilføjet pakken endnu:
+If you haven't added the package yet:
 
-1. I Xcode: **File → Add Package Dependencies…**
-2. Angiv URL: `https://github.com/getsentry/sentry-cocoa.git`
-3. Vælg version (fx **Up to Next Major** med 9.0.0 eller nyere).
-4. Vælg produktet **Sentry** eller **Sentry-Dynamic** og tilknyt det til targetet **WODrounds**. (Projektet bruger Sentry-Dynamic for at undgå "Upload Symbols Failed"-advarslen ved arkiv.)
-5. Klik **Add Package**.
+1. In Xcode: **File → Add Package Dependencies…**
+2. Enter URL: `https://github.com/getsentry/sentry-cocoa.git`
+3. Select version (e.g. **Up to Next Major** with 9.0.0 or newer).
+4. Select the product **Sentry-Dynamic** and link it to the target **WODrounds**. (The project uses Sentry-Dynamic to avoid the "Upload Symbols Failed" warning on archive.)
+5. Click **Add Package**.
 
-Herefter bygger appen med Sentry, og ved kørsel på iOS med DSN sat i `Sentry.xcconfig` sendes crashes og fejl til dit Sentry-projekt.
+The app will then build with Sentry, and when running on iOS with the DSN set in `Sentry.xcconfig`, crashes and errors are sent to your Sentry project.
 
-## Sentry MCP (valgfri)
+## Sentry MCP (optional)
 
-[Sentry MCP](https://docs.sentry.io/ai/mcp/) giver Cursor (eller andre AI-værktøjer) adgang til at læse issues og fejl fra Sentry. Det er **uafhængigt** af DSN i appen: DSN bruges kun i iOS-appen til at sende events; MCP bruger OAuth mod Sentry. Konfigurer MCP i Cursor efter [Sentry MCP-dokumentationen](https://docs.sentry.io/ai/mcp/).
+[Sentry MCP](https://docs.sentry.io/ai/mcp/) gives Cursor (or other AI tools) access to read issues and errors from Sentry. This is **independent** of the DSN in the app: the DSN is only used in the iOS app to send events; MCP uses OAuth with Sentry. Configure MCP in Cursor per the [Sentry MCP documentation](https://docs.sentry.io/ai/mcp/).
 
-## "Upload Symbols Failed" ved archive / TestFlight
+## "Upload Symbols Failed" on Archive / TestFlight
 
-Når du uploader et arkiv til App Store Connect, kan Xcode vise: **Upload Symbols Failed – The archive did not include a dSYM for the Sentry.framework**. Det er en **kendt advarsel** ved Sentry via Swift Package Manager. Projektet bruger **Sentry-Dynamic** (dynamic framework) i stedet for Sentry (static) – det kan reducere eller fjerne advarslen, fordi dynamic frameworks nogle gange inkluderer dSYM. Hvis advarslen stadig vises: uploadet er gennemført ("Upload completed **with warnings**"). Tryk **Done**; buildet bør ligge på TestFlight. Crashes fra **din app-kode** kan Sentry stadig symbolikere via dit eget app-dSYM. Se også ReleaseReview.md.
+When uploading an archive to App Store Connect, Xcode may show: **Upload Symbols Failed – The archive did not include a dSYM for the Sentry.framework**. This is a **known warning** with Sentry via Swift Package Manager. The project uses **Sentry-Dynamic** (dynamic framework) instead of Sentry (static) — this can reduce or eliminate the warning because dynamic frameworks sometimes include dSYM. If the warning still appears: the upload completed ("Upload completed **with warnings**"). Click **Done**; the build should appear on TestFlight. Crashes from **your app code** can still be symbolicated by Sentry via your own app dSYM. See also ReleaseReview.md.
 
 ## Privacy
 
-Opdater din **Privacy Policy** og App Store **Privacy-labels** med, at appen sender crash- og fejldata til Sentry (tredjepart). Se fx [Sentry privacy](https://docs.sentry.io/product/security/).
+The app's **Privacy Policy** and App Store **Privacy Labels** declare that crash and performance data is sent to Sentry (third party). See [Sentry privacy](https://docs.sentry.io/product/security/). The privacy manifest (`PrivacyInfo.xcprivacy`) also declares this data collection.

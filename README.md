@@ -61,7 +61,10 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 - **Shared/WODTimerEngine.swift** — Shared with Watch target. State machine for EMOM + Intervals; Date-based, deterministic; no UI/sound/haptics. effectiveWorkoutEndDate(now:) for HealthKit active-time.
 - **WODTimerSync.swift** — Sends timer state to Watch via WatchConnectivity so the Watch can display the same workout.
 - **DesignTokens.swift** — IAMJARL design tokens (spacing, radius, typography, colors light/dark).
-- **ContentView.swift** — Per platform (`#if os(iOS)` etc.). iOS/iPadOS and macOS: full UI; tvOS: full UI; **no watchOS block** (Watch has its own app).
+- **ContentView.swift** — Shared types (ranges, `TimerUIMode` enum) used by all platform views.
+- **iOSContentView.swift** — iOS/iPadOS UI: HealthKit, haptics, sounds, countdown, idle timer.
+- **macOSContentView.swift** — macOS UI: compact window (340×560), flash overlay.
+- **tvOSContentView.swift** — tvOS UI: focus-based navigation, `.buttonStyle(.card)`, large typography.
 - **SharedTimerViews.swift** — Shared UI components (stepper, primary button, done view, etc.).
 - **WODroundsApp.swift** — App entry, `WindowGroup { ContentView() }`.
 
@@ -141,10 +144,12 @@ The main app follows the IAMJARL design system. No hardcoded colors, spacing, ra
 
 **Automatic signing:** Signing & Capabilities for both **WODrounds** and **WODrounds Watch** with “Automatically manage signing” and the same Team. Each target has an entitlements file:
 
-- **WODrounds:** `WODrounds/WODrounds.entitlements` — HealthKit.
-- **WODrounds Watch:** `WODroundsWatch/WODroundsWatch.entitlements` — (empty; WatchConnectivity requires no entitlements).
+- **WODrounds (iOS):** `WODrounds/WODrounds.entitlements` — HealthKit.
+- **WODrounds (macOS):** `WODrounds/WODrounds-Mac.entitlements` — App Sandbox only (no HealthKit).
+- **WODrounds (tvOS):** `WODrounds/WODrounds-tvOS.entitlements` — Empty (no HealthKit, no sandbox).
+- **WODrounds Watch:** `WODroundsWatch/WODroundsWatch.entitlements` — Empty (WatchConnectivity requires no entitlements).
 
-**Apple Developer:** Enable **HealthKit** for the main app’s App ID if needed (Signing & Capabilities). iPhone ↔ Watch sync uses WatchConnectivity which requires no additional entitlements or App Group setup.
+**Apple Developer:** Enable **HealthKit** for the iOS App ID (Signing & Capabilities). iPhone ↔ Watch sync uses WatchConnectivity which requires no additional entitlements or App Group setup. macOS and tvOS do not use HealthKit.
 
 **TestFlight / App Store (iOS + Watch):**
 1. Destination **Any iOS Device**.
@@ -154,6 +159,8 @@ The main app follows the IAMJARL design system. No hardcoded colors, spacing, ra
 **Before TestFlight:** Set DSN in `Sentry.xcconfig` (so the archive gets crash reporting); no test buttons in UI. See `docs/ARCHIVE.md` for archive destinations.
 
 **Mac archive:** Use destination **Any Mac** to produce a macOS-only archive (no Watch app). Signing uses `WODrounds-Mac.entitlements`; Watch is not built or embedded for this destination.
+
+**tvOS archive:** Use destination **Any Apple TV** to produce a tvOS-only archive. Signing uses `WODrounds-tvOS.entitlements` (no HealthKit). No Watch or Sentry.
 
 ---
 
@@ -185,8 +192,8 @@ Do not let these drive current architecture.
 - **Engine:** EMOM + Intervals, Date-based, start/pause/resume/reset/tick, snapshot with phase and remaining times. Single shared engine in `Shared/WODTimerEngine.swift`; both main app and Watch target use it.
 - **iOS/iPadOS:** Full UI (mode switch, steppers, primary button, Cancel, Done, About). Sends sync state to Watch via WatchConnectivity on every timer action and every second while running. **Apple Health:** HIIT workouts saved to Health when user grants permission (first Start); duration = active time (pauses excluded). End on Finish / Reset / Cancel. Haptics, idle timer off during workout, DesignTokens, light/dark.
 - **Watch:** Embedded Watch App. Receives state from iPhone via WatchConnectivity; when iPhone has a running/paused workout, Watch shows same time and round (“Following iPhone”). Otherwise local timer with Start/Pause/Resume/Reset. WatchDesign (green accent, light/dark). All required Watch icon roles for store validation.
-- **macOS:** Same feature set as iOS; compact window; DesignTokens.
-- **tvOS:** Full UI, DesignTokens, focusable controls.
+- **macOS:** Timer UI with compact window (340×560); flash overlay instead of haptics; no HealthKit, no sounds, no Sentry. DesignTokens, light/dark.
+- **tvOS:** Full timer UI with focus-based navigation and `.buttonStyle(.card)`; large typography for TV screens; flash overlay; no HealthKit, no sounds, no Sentry. DesignTokens, light/dark.
 - **App Store:** Export compliance (ITSAppUsesNonExemptEncryption = NO); PrivacyPolicy.md, Support.md; About screen with version/build and privacy line. **Sentry** for crash/error reporting on iOS only (DSN via `Sentry.xcconfig`; see `docs/SENTRY.md`). Ready for TestFlight.
 
 Build iteratively. Ship small. Stay focused.
@@ -203,9 +210,9 @@ Build iteratively. Ship small. Stay focused.
 
 ## For reviewers
 
-- **Entry points:** `WODroundsApp.swift` (main), `ContentView.swift` (platform UI), `Shared/WODTimerEngine.swift` (core timer logic).
+- **Entry points:** `WODroundsApp.swift` (main), `iOSContentView.swift` / `macOSContentView.swift` / `tvOSContentView.swift` (platform UI), `Shared/WODTimerEngine.swift` (core timer logic).
 - **Sync:** WatchConnectivity `WCSession.updateApplicationContext`; send in `WODTimerSync.swift` (iOS), receive in `WatchSessionManager.swift` + `WODTimerSync.swift` (Watch).
-- **Health:** `HealthKitWorkout.swift` (iOS only); authorization on first Start, workout start/end tied to timer in `ContentView.swift` (`#if os(iOS)`).
+- **Health:** `HealthKitWorkout.swift` (iOS only); authorization on first Start, workout start/end tied to timer in `iOSContentView.swift`.
 - **Design:** `DesignTokens.swift` (main app), `WatchDesign.swift` (Watch); no hardcoded colors/spacing in UI.
 - **Docs:** This README; `PrivacyPolicy.md` and `Support.md` for store/support.
 
@@ -220,4 +227,4 @@ The site will be available at `https://<username>.github.io/WODrounds/` (e.g. `h
 
 **Content:** Hero, app screenshots (iPhone + Watch), features, principles, CTA. Privacy and Support are own pages; no public repo links. Add your screenshots as `docs/images/iphone.png` and `docs/images/watch.png` (see `docs/images/README.txt`). Replace the App Store URL in `docs/index.html` when the app is published.
 
-**SEO:** Canonical URLs, Open Graph and Twitter Card meta, `robots` index/follow, JSON-LD `SoftwareApplication` on the homepage. Update the base URL in meta tags if you use a custom domain. **Animationer:** Hero fade-in med stagger, sektioner fader ind ved scroll (Intersection Observer); respekterer `prefers-reduced-motion`.
+**SEO:** Canonical URLs, Open Graph and Twitter Card meta, `robots` index/follow, JSON-LD `SoftwareApplication` on the homepage. Update the base URL in meta tags if you use a custom domain. **Animations:** Hero fade-in with stagger, sections fade in on scroll (Intersection Observer); respects `prefers-reduced-motion`.

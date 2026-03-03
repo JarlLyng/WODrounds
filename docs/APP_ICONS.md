@@ -1,21 +1,21 @@
-# App-ikoner – status og krav
+# App Icons – Status and Requirements
 
-Kort gennemgang af ikon-assets til WODrounds på tværs af platforme. Brug denne ved opdatering af ikoner eller før App Store-upload.
+Overview of icon assets for WODrounds across all platforms. Use this when updating icons or before App Store upload.
 
 ---
 
 ## iOS / iPadOS (WODrounds/Assets.xcassets/AppIcon.appiconset)
 
-| Fil | Forventet | Status |
-|-----|-----------|--------|
+| File | Expected | Status |
+|------|----------|--------|
 | AppIcon-Any.png | 1024×1024 | ✅ 1024×1024 |
 | AppIcon-Dark.png | 1024×1024 | ✅ 1024×1024 |
 | AppIcon-Tinted.png | 1024×1024 | ✅ 1024×1024 |
 | AppIcon-Mac.png | 1024×1024 (512pt @2x) | ✅ 1024×1024 |
 
-**Mørkt ikon på home screen:** Apple viser kun den mørke variant (AppIcon-Dark) på **home screen fra iOS 18**. På iOS 17 og ældre bruges altid det lyse ikon (AppIcon-Any). Sørg for at køre iOS 18+ hvis du tester det mørke ikon. I Xcode skal App Icon for iOS være sat til **Single Size** (Inspectors → Attributes).
+**Dark icon on home screen:** Apple only shows the dark variant (AppIcon-Dark) on **home screen from iOS 18**. On iOS 17 and older, the light icon (AppIcon-Any) is always used. Make sure to run iOS 18+ if testing the dark icon. In Xcode, App Icon for iOS should be set to **Single Size** (Inspectors → Attributes).
 
-**Konklusion:** iOS- og Mac-app-ikoner er på plads og i korrekt størrelse.
+**Summary:** iOS and Mac app icons are complete and correctly sized.
 
 ---
 
@@ -23,35 +23,35 @@ Kort gennemgang af ikon-assets til WODrounds på tværs af platforme. Brug denne
 
 - **watch-marketing:** 1024×1024 ✅ (watch-1024.png)
 - **notificationCenter:** 24, 27.5, 33 pt @2x (watch-48, 55, 66) ✅
-- **companionSettings:** 29 @2x og @3x (watch-58, 87) ✅
+- **companionSettings:** 29 @2x and @3x (watch-58, 87) ✅
 - **appLauncher:** 40–54 pt @2x (watch-80, 88, 92, 100, 102, 108) ✅
 - **quickLook:** 86–129 pt @2x (watch-172, 196, 216, 234, 258) ✅
 
-Samtlige 17 filer fra Contents.json findes. longLook er ikke i cataloget og er ikke påkrævet til App Store.
+All 17 files from Contents.json are present. longLook is not in the catalog and is not required for App Store.
 
 ---
 
 ## tvOS (WODrounds/Assets.xcassets/AppIcon.brandassets)
 
-| Asset | Forventet | Status |
-|-------|-----------|--------|
+| Asset | Expected | Status |
+|-------|----------|--------|
 | App Icon – Small | 400×240 | ✅ front_small + back_small |
 | App Icon – Large | 1280×768 | ✅ front_large + back_large |
 | Top Shelf Image | (flex) | ✅ topshelf.png |
-| Top Shelf Image 1 | 1920×720 | ⚠️ Bruger topshelf.png (1920×720) – OK |
+| Top Shelf Image 1 | 1920×720 | ✅ topshelf.png (1920×720) |
 | Top Shelf Image Wide | 2320×720 | ✅ topshelf-wide-light.png + topshelf-wide-dark.png (light/dark) |
 
-**Bemærkning:** Top Shelf Image Wide bruger nu dedikerede 2320×720 ikoner med lys/mørk variant i `Top Shelf Image Wide.imageset`.
+**Note:** Top Shelf Image Wide uses dedicated 2320×720 icons with light/dark variants in `Top Shelf Image Wide.imageset`.
 
 ---
 
-## Hurtig tjekliste før release
+## Quick Checklist Before Release
 
-- [ ] iOS: 1024×1024 for alle varianter (Any, Dark, Tinted, Mac)
-- [ ] Watch: 17 ikoner + 1024×1024 marketing
-- [ ] tvOS: Small 400×240, Large 1280×768, Top Shelf (evt. 2320×720 til Wide)
-- [ ] Byg og tjek at ingen "Missing asset" eller CompileAssetCatalog-fejl opstår
+- [x] iOS: 1024×1024 for all variants (Any, Dark, Tinted, Mac)
+- [x] Watch: 17 icons + 1024×1024 marketing
+- [x] tvOS: Small 400×240, Large 1280×768, Top Shelf (incl. 2320×720 Wide)
+- [ ] Build and verify no "Missing asset" or CompileAssetCatalog errors appear
 
 ---
 
-*Sidst tjekket: efter commit med tvOS Top Shelf-fix og Sentry/HealthKit/Watch.*
+*Last checked: Mar 3, 2026 — all icons verified complete across all platforms.*

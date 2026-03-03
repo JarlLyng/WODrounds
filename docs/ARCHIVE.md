@@ -1,37 +1,60 @@
-# Arkiv og distribution (Archive)
+# Archive and Distribution
 
-Kort reference til hvordan arkiv fungerer for WODrounds og hvorfor Mac-arkiv ikke inkluderer Watch-appen.
-
----
-
-## Destinationer
-
-| Destination   | Indhold                          | Brug                    |
-|--------------|-----------------------------------|-------------------------|
-| **Any iOS**  | iPhone/iPad-app + Watch-app       | TestFlight, App Store  |
-| **Any Mac**  | Kun macOS-app (ingen Watch)       | Mac distribution        |
+Quick reference for how archiving works for WODrounds across all platforms.
 
 ---
 
-## Hvorfor Watch ikke er med i Mac-arkivet
+## Destinations
 
-Watch-appen er kun relevant sammen med iOS. For at Mac-arkiv skal bygge og signere uden fejl:
-
-1. **Embed Watch Content** — build-filen for `WODrounds Watch.app` har `platformFilter = ios`. Watch-appen indlejres kun ved iOS-build.
-2. **Watch target-afhængighed** — `PBXTargetDependency` fra WODrounds til WODrounds Watch har `platformFilter = ios`. Ved **Any Mac** bygges Watch-targetet ikke.
-3. **SUPPORTED_PLATFORMS** — WODrounds-targetet har ikke `watchos`/`watchsimulator`; kun iphoneos, iphonesimulator, macosx, appletvos, appletvsimulator.
-
-Resultat: Mac-arkiv indeholder ikke `WODrounds.app/Watch`, så der opstår ikke CodeSign-fejlen "unsealed contents present in the bundle root", og Watch-validering kører ikke under Mac-arkiv.
+| Destination       | Contents                          | Use                   |
+|-------------------|-----------------------------------|-----------------------|
+| **Any iOS Device** | iPhone/iPad app + Watch app       | TestFlight, App Store |
+| **Any Mac**        | macOS app only (no Watch)         | Mac App Store         |
+| **Any Apple TV**   | tvOS app only (no Watch)          | tvOS App Store        |
 
 ---
 
-## Tekniske steder i projektet
+## Why Watch Is Not Included in Mac/tvOS Archives
 
-- **project.pbxproj:**  
-  - `PBXBuildFile` for "WODrounds Watch.app in Embed Watch Content" → `platformFilter = ios`.  
-  - `PBXTargetDependency` (WODrounds → WODrounds Watch) → `platformFilter = ios`.  
-  - WODrounds target: `SUPPORTED_PLATFORMS` uden watchos/watchsimulator.
-- **Mac signering:** WODrounds-target bruger `WODrounds-Mac.entitlements` ved `sdk=macosx*` (kun App Sandbox; HealthKit er iOS-only).
+The Watch app is only relevant with iOS. To ensure Mac and tvOS archives build and sign without errors:
+
+1. **Embed Watch Content** — the build file for `WODrounds Watch.app` has `platformFilter = ios`. The Watch app is only embedded in iOS builds.
+2. **Watch target dependency** — `PBXTargetDependency` from WODrounds to WODrounds Watch has `platformFilter = ios`. When building for **Any Mac** or **Any Apple TV**, the Watch target is not built.
+3. **SUPPORTED_PLATFORMS** — the WODrounds target includes iphoneos, iphonesimulator, macosx, appletvos, appletvsimulator (no watchos/watchsimulator).
+
+Result: Mac and tvOS archives do not contain `WODrounds.app/Watch`, avoiding the CodeSign "unsealed contents present in the bundle root" error.
+
+---
+
+## Platform-Specific Entitlements
+
+Each platform uses a different entitlements file via SDK-conditional build settings:
+
+| Platform | Entitlements File | Contents |
+|----------|-------------------|----------|
+| **iOS** (default) | `WODrounds/WODrounds.entitlements` | HealthKit |
+| **macOS** (`sdk=macosx*`) | `WODrounds/WODrounds-Mac.entitlements` | App Sandbox only |
+| **tvOS** (`sdk=appletvos*`) | `WODrounds/WODrounds-tvOS.entitlements` | Empty (no HealthKit) |
+
+---
+
+## Sentry Platform Filtering
+
+Sentry-Dynamic has `platformFilter = ios` in the project — Mac and tvOS builds do **not** link or bundle the Sentry framework.
+
+---
+
+## Technical Locations in the Project
+
+- **project.pbxproj:**
+  - `PBXBuildFile` for "WODrounds Watch.app in Embed Watch Content" → `platformFilter = ios`.
+  - `PBXBuildFile` for "Sentry-Dynamic in Frameworks" → `platformFilter = ios`.
+  - `PBXTargetDependency` (WODrounds → WODrounds Watch) → `platformFilter = ios`.
+  - WODrounds target: `SUPPORTED_PLATFORMS` without watchos/watchsimulator.
+- **Entitlements:**
+  - `CODE_SIGN_ENTITLEMENTS = WODrounds/WODrounds.entitlements` (default, iOS)
+  - `CODE_SIGN_ENTITLEMENTS[sdk=macosx*] = WODrounds/WODrounds-Mac.entitlements`
+  - `CODE_SIGN_ENTITLEMENTS[sdk=appletvos*] = WODrounds/WODrounds-tvOS.entitlements`
 
 ---
 

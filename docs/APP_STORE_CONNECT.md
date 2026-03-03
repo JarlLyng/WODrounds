@@ -1,8 +1,8 @@
-# App Store Connect – tekster til "Prepare for Submission"
+# App Store Connect – Text for "Prepare for Submission"
 
-Kopier ind i de tilsvarende felter i App Store Connect. Under **Distribution** har du typisk **iOS App**, **Mac App** og **Apple TV App** (tvOS) – hver med egen version og metadata. Beskrivelserne her matcher appen: kun EMOM + Intervals-timer, ingen konti.
+Copy into the corresponding fields in App Store Connect. Under **Distribution** you typically have **iOS App**, **Mac App**, and **Apple TV App** (tvOS) — each with its own version and metadata. The descriptions here match the app: EMOM + Intervals timer only, no accounts.
 
-**SEO:** App Store indekserer appnavn, subtitle, keywords og description. Subtitle og første sætning i description er vigtigst; keyword-feltet max 100 tegn (komma mellem, ingen mellemrum). Gentag ikke ord der allerede står i appnavn/subtitle.
+**SEO:** App Store indexes app name, subtitle, keywords, and description. Subtitle and the first sentence of the description are most important; the keyword field is max 100 characters (comma-separated, no spaces). Do not repeat words already in the app name/subtitle.
 
 ---
 
@@ -10,21 +10,21 @@ Kopier ind i de tilsvarende felter i App Store Connect. Under **Distribution** h
 
 ---
 
-## Subtitle (obligatorisk, max 30 tegn)
+## Subtitle (required, max 30 characters)
 
-Står under appnavnet og bruges i søgning. Kort og søgbart.
+Shown under the app name and used in search. Keep it short and searchable.
 
 ```
 EMOM & Intervals Timer
 ```
 
-Alternativer: `Interval Timer • iPhone & Watch` (29) eller `WOD Timer for iPhone & Watch` (29).
+Alternatives: `Interval Timer • iPhone & Watch` (29) or `WOD Timer for iPhone & Watch` (29).
 
 ---
 
-## Promotional Text (valgfri, max 170 tegn)
+## Promotional Text (optional, max 170 characters)
 
-Kort linje øverst på produkt siden – kan opdateres uden ny version. Indehold søgeord og value proposition.
+Short line at the top of the product page — can be updated without a new version. Include keywords and value proposition.
 
 ```
 Interval & workout timer for EMOM, Tabata, HIIT. Start on iPhone, follow on Apple Watch. No sign-up – just time and focus.
@@ -32,9 +32,9 @@ Interval & workout timer for EMOM, Tabata, HIIT. Start on iPhone, follow on Appl
 
 ---
 
-## Description (obligatorisk)
+## Description (required)
 
-**Første 2–3 linjer** vises ofte i søgeresultat og forhåndsvisning – lad dem indeholde hovedord (interval timer, workout, EMOM, CrossFit). Derefter konkrete bullets.
+**First 2–3 lines** are often shown in search results and previews — make sure they contain key terms (interval timer, workout, EMOM, CrossFit). Then add concrete bullets.
 
 ```
 Interval timer and workout timer for EMOM, CrossFit, and HIIT. No accounts, no sign-up. Just time, rounds, and focus.
@@ -49,31 +49,31 @@ The simplest WOD timer: no database, no sharing. Just timer and rounds.
 
 ---
 
-## Keywords (obligatorisk, max 100 tegn inkl. komma)
+## Keywords (required, max 100 characters including commas)
 
-Søgeord brugerne kan søge på. **Gentag ikke ord fra appnavn eller subtitle** (Apple vægter dem mindre). Prioriter høj-intent ord; ét komma mellem hver, ingen mellemrum efter komma.
+Search terms users may search for. **Do not repeat words from the app name or subtitle** (Apple weights them lower). Prioritize high-intent words; one comma between each, no spaces after commas.
 
 ```
 interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Apple Watch
 ```
 
-(Omkring 65 tegn – der er plads til fx `stopwatch` eller `functional fitness` hvis du vil.)
+(About 65 characters — there's room for e.g. `stopwatch` or `functional fitness` if desired.)
 
 ---
 
-## Support URL (obligatorisk)
+## Support URL (required)
 
-Brug marketingdomænet (samme som i appen):
+Use the marketing domain (same as in the app):
 
 ```
 https://wodrounds.iamjarl.com/support
 ```
 
-(Hvis support-siden på sitet hedder support.html, prøv evt. `https://wodrounds.iamjarl.com/support.html`.)
+(If the support page on the site is support.html, try `https://wodrounds.iamjarl.com/support.html`.)
 
 ---
 
-## Marketing URL (valgfri)
+## Marketing URL (optional)
 
 ```
 https://wodrounds.iamjarl.com/
@@ -81,15 +81,15 @@ https://wodrounds.iamjarl.com/
 
 ---
 
-## Copyright (obligatorisk)
+## Copyright (required)
 
-**Ret "2" til år og evt. navn**, fx:
+**Update the year and optionally your name**, e.g.:
 
 ```
 2026 Jarl L
 ```
 
-eller kun:
+or just:
 
 ```
 2026
@@ -99,58 +99,58 @@ eller kun:
 
 ## Age Rating
 
-12+ er passende (fitness/træning, ingen indhold der kræver højere rating).
+12+ is appropriate (fitness/exercise, no content requiring a higher rating).
 
 ---
 
 ## Previews and Screenshots
 
-**iPhone (5,5" – påkrævet):** Mindst 3 screenshots. 1242 × 2208 px (portrait) eller 2208 × 1242 px (landscape).
+**iPhone (5.5" – required):** At least 3 screenshots. 1242 × 2208 px (portrait) or 2208 × 1242 px (landscape).
 
-Anbefaling: Tag skærmbilleder af (1) valg af EMOM/Intervals og indstillinger, (2) timer kører, (3) Done-skærm eller Apple Watch-sync. Brug simulator eller device; gem som PNG.
+Recommendation: Take screenshots of (1) EMOM/Intervals mode selection and settings, (2) timer running, (3) Done screen or Apple Watch sync. Use simulator or device; save as PNG.
 
-**iPad / Apple Watch:** Valgfrit, men godt til troværdighed hvis du har dem.
+**iPad / Apple Watch:** Optional, but good for credibility if you have them.
 
 ---
 
 ## Build
 
-Vælg **Add Build** og vælg det build du har uploadet fra Xcode (fra TestFlight-buildene). Uden et tilknyttet build kan du ikke sende til review.
+Select **Add Build** and choose the build you uploaded from Xcode (from TestFlight builds). Without an associated build, you cannot submit for review.
 
 ---
 
 ## App Review Information
 
-- **Notes:** Valgfrit. For en simpel timer kan du fx skrive: "WODrounds is a timer-only app. No login required. Test with EMOM (e.g. 5 rounds, 1 min) or Intervals (e.g. 20s work, 10s rest, 8 rounds)."
-- **Contact:** Tjek at e-mail og telefon er korrekte (contact@email.com ser ud til at være placeholder – brug en rigtig e-mail).
+- **Notes:** Optional. For a simple timer you can write: "WODrounds is a timer-only app. No login required. Test with EMOM (e.g. 5 rounds, 1 min) or Intervals (e.g. 20s work, 10s rest, 8 rounds)."
+- **Contact:** Verify that email and phone are correct (contact@email.com appears to be a placeholder — use a real email).
 
 ---
 
 ## Version Release
 
-Vælg om versionen skal udgives manuelt eller automatisk efter godkendelse – efter behag.
+Choose whether the version should be released manually or automatically after approval — your preference.
 
 ---
 
 # Mac App (macOS)
 
-I App Store Connect: **Distribution → Mac App → 1.0 Prepare for Submission**. Support URL og Marketing URL kan være de samme som for iOS.
+In App Store Connect: **Distribution → Mac App → 1.0 Prepare for Submission**. Support URL and Marketing URL can be the same as for iOS.
 
-## Subtitle (max 30 tegn)
+## Subtitle (max 30 characters)
 
 ```
 EMOM & Intervals Timer
 ```
 
-eller: `Interval Timer for Mac` (22).
+or: `Interval Timer for Mac` (22).
 
-## Promotional Text (valgfri, max 170 tegn)
+## Promotional Text (optional, max 170 characters)
 
 ```
 EMOM and Intervals timer on your Mac. Same app as on iPhone and Watch – no sign-up, just time and focus. Compact window, light and dark theme.
 ```
 
-## Description (obligatorisk)
+## Description (required)
 
 ```
 Interval timer and workout timer for EMOM, CrossFit, and HIIT on Mac. No accounts, no sign-up. Just time, rounds, and focus.
@@ -162,7 +162,7 @@ Interval timer and workout timer for EMOM, CrossFit, and HIIT on Mac. No account
 The same minimal WOD timer as on iPhone and Apple Watch – no database, no sharing. Just timer and rounds.
 ```
 
-## Keywords (max 100 tegn)
+## Keywords (max 100 characters)
 
 ```
 interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Mac
@@ -170,29 +170,29 @@ interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Mac
 
 ## Screenshots (Mac)
 
-Mac App Store kræver typisk screenshots (fx 1280 × 800 eller 1440 × 900). Tag fra Mac-build i simulator eller på maskine.
+Mac App Store typically requires screenshots (e.g. 1280 × 800 or 1440 × 900). Take from Mac build in simulator or on device.
 
 ---
 
 # Apple TV App (tvOS)
 
-I App Store Connect: **Distribution → Apple TV App → 1.0 Prepare for Submission**. Support URL og Marketing URL som ovenfor.
+In App Store Connect: **Distribution → Apple TV App → 1.0 Prepare for Submission**. Support URL and Marketing URL same as above.
 
-## Subtitle (max 30 tegn)
+## Subtitle (max 30 characters)
 
 ```
 EMOM & Intervals Timer
 ```
 
-eller: `Interval Timer for Apple TV` (28).
+or: `Interval Timer for Apple TV` (28).
 
-## Promotional Text (valgfri, max 170 tegn)
+## Promotional Text (optional, max 170 characters)
 
 ```
 EMOM and Intervals timer on the big screen. Use your Apple TV remote to start, pause, and reset. No sign-up – just time and focus for home workouts.
 ```
 
-## Description (obligatorisk)
+## Description (required)
 
 ```
 Interval timer and workout timer for EMOM, CrossFit, and HIIT on Apple TV. No accounts, no sign-up. Just time, rounds, and focus.
@@ -204,7 +204,7 @@ Interval timer and workout timer for EMOM, CrossFit, and HIIT on Apple TV. No ac
 The same minimal WOD timer as on iPhone, Watch, and Mac – no database, no sharing. Just timer and rounds.
 ```
 
-## Keywords (max 100 tegn)
+## Keywords (max 100 characters)
 
 ```
 interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,Apple TV,remote,home workout
@@ -212,4 +212,4 @@ interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,Apple TV,remote,home 
 
 ## Screenshots (Apple TV)
 
-tvOS kræver typisk screenshots (fx 1920 × 1080). Tag fra Apple TV-simulator eller device.
+tvOS typically requires screenshots (e.g. 1920 × 1080). Take from Apple TV simulator or device.

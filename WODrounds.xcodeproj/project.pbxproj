@@ -550,6 +550,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WODrounds/WODrounds.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=appletvos*]" = "WODrounds/WODrounds-tvOS.entitlements";
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "WODrounds/WODrounds-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -604,6 +605,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WODrounds/WODrounds.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=appletvos*]" = "WODrounds/WODrounds-tvOS.entitlements";
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "WODrounds/WODrounds-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
