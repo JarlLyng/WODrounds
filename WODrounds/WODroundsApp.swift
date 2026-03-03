@@ -14,6 +14,13 @@ import Sentry
 struct WODroundsApp: App {
     init() {
         #if os(iOS)
+        WODTimerSync.activate()
+        Self.initSentry()
+        #endif
+    }
+
+    #if os(iOS)
+    private static func initSentry() {
         let dsn = ProcessInfo.processInfo.environment["SENTRY_DSN"]
             ?? (Bundle.main.object(forInfoDictionaryKey: "SentryDSN") as? String)
         let dsnTrimmed = dsn?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -31,10 +38,11 @@ struct WODroundsApp: App {
             options.tracesSampleRate = 0.2
         }
         #if DEBUG
+        print("[Sentry] Initialised with DSN: \(dsnTrimmed.prefix(30))…")
         SentrySDK.capture(message: "WODrounds iOS – Sentry test (Debug build)")
         #endif
-        #endif
     }
+    #endif
 
     var body: some Scene {
         WindowGroup {

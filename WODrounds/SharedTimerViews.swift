@@ -2,7 +2,7 @@
 //  SharedTimerViews.swift
 //  WODrounds
 //
-//  Fælles komponenter for iOS, macOS og tvOS – reducerer duplikering.
+//  Shared components for iOS, macOS and tvOS – reduces duplication.
 //
 
 import SwiftUI
@@ -28,7 +28,7 @@ func sharedFormatEmomLength(_ seconds: Int) -> String {
     return String(format: "%02d:%02d", m, s)
 }
 
-// MARK: - Theme types (sizes/spacing; farver fra DesignTokens + scheme)
+// MARK: - Theme types (sizes/spacing; colours from DesignTokens + scheme)
 
 struct DoneViewTheme {
     var checkmarkSize: CGFloat
@@ -93,7 +93,7 @@ struct SharedDoneView: View {
     }
 }
 
-// MARK: - SharedStepperView (én værdi + −/+; valgfri long-press repeat på iOS)
+// MARK: - SharedStepperView (single value + −/+; optional long-press repeat on iOS)
 
 struct SharedStepperView: View {
     @Binding var value: Int
@@ -180,7 +180,7 @@ struct SharedStepperView: View {
     }
 }
 
-// Long-press modifier så tvOS/macOS ikke behøver repeat-logik i view
+// Long-press modifier so tvOS/macOS don't need repeat logic in view
 private struct LongPressRepeatModifier: ViewModifier {
     var enabled: Bool
     var sign: Int

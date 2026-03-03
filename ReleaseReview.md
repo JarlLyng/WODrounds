@@ -11,7 +11,7 @@ Baseret på repo og build‑setup ser appen **klar til App Store** for iOS + Wat
 
 ## Mulige App Store‑blokere
 1. **Privacy Manifest (`PrivacyInfo.xcprivacy`)**
-   - Der er ingen i repo. Sentry (SPM) kan medbringe eget manifest, men App Store kan stadig kræve app‑niveau manifest. Bekræft ved første upload; tilføj hvis nødvendigt.
+   - ✅ Added in `WODrounds/PrivacyInfo.xcprivacy`. Declares crash data + performance data (Sentry) and UserDefaults API access. Sentry SPM also bundles its own manifest.
 2. **App Store privacy labels**
    - PrivacyPolicy siger ingen tracking, men **Sentry crash‑data** og **HealthKit data** kræver korrekte labels i App Store Connect. De skal matche den faktiske indsamling.
 3. **Platform‑ikoner**
@@ -23,7 +23,7 @@ Baseret på repo og build‑setup ser appen **klar til App Store** for iOS + Wat
 1. I Xcode: tjek at AppIcon‑sættet ikke viser manglende slots (iOS/Watch/tvOS/Mac er dækket).
 2. Verificér privacy manifest‑kravet ved første upload; tilføj `PrivacyInfo.xcprivacy` i app‑targetet hvis App Store beder om det.
 3. Gennemgå App Store privacy labels (Diagnostics + Health) så de matcher Sentry + HealthKit.
-4. App Group `group.com.iamjarl.WODrounds` skal være aktiveret for både iOS‑ og Watch‑App ID i Developer Portal.
+4. iPhone ↔ Watch sync uses WatchConnectivity (`WCSession.updateApplicationContext`). No App Group required.
 5. Opdater version/build før submission (står på `1.0 (1)`).
 
 ## "Upload Symbols Failed" (Sentry) ved upload

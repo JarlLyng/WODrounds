@@ -50,7 +50,8 @@ final class HealthKitWorkoutController {
         let newBuilder = HKWorkoutBuilder(healthStore: healthStore, configuration: config, device: .local())
         builder = newBuilder
         newBuilder.beginCollection(withStart: startDate) { [weak self] _, error in
-            if error != nil {
+            if let error {
+                print("[HealthKit] beginCollection failed: \(error.localizedDescription)")
                 self?.builder = nil
             }
         }
@@ -64,6 +65,9 @@ final class HealthKitWorkoutController {
         }
         builder = nil
         currentBuilder.endCollection(withEnd: endDate) { [weak self, weak currentBuilder] _, error in
+            if let error {
+                print("[HealthKit] endCollection failed: \(error.localizedDescription)")
+            }
             guard error == nil, let b = currentBuilder, let self = self else {
                 DispatchQueue.main.async { completion?(false) }
                 return
@@ -81,13 +85,22 @@ final class HealthKitWorkoutController {
                 if totalKcal > 0, let energyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) {
                     let quantity = HKQuantity(unit: .kilocalorie(), doubleValue: totalKcal)
                     let sample = HKQuantitySample(type: energyType, quantity: quantity, start: startDate, end: endDate)
-                    b.add([sample]) { _, _ in
+                    b.add([sample]) { _, addError in
+                        if let addError {
+                            print("[HealthKit] add energy sample failed: \(addError.localizedDescription)")
+                        }
                         b.finishWorkout { _, finishError in
+                            if let finishError {
+                                print("[HealthKit] finishWorkout failed: \(finishError.localizedDescription)")
+                            }
                             DispatchQueue.main.async { completion?(finishError == nil) }
                         }
                     }
                 } else {
                     b.finishWorkout { _, finishError in
+                        if let finishError {
+                            print("[HealthKit] finishWorkout failed: \(finishError.localizedDescription)")
+                        }
                         DispatchQueue.main.async { completion?(finishError == nil) }
                     }
                 }

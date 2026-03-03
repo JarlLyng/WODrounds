@@ -2,7 +2,7 @@
 //  WorkoutSoundManager.swift
 //  WODrounds
 //
-//  Afspiller countdown- og workout-lyde. Kun iOS. Bruger .playback så lyd høres også ved lydløs.
+//  Plays countdown and workout sounds. iOS only. Uses .playback so sounds are audible even in silent mode.
 //
 
 #if os(iOS)
@@ -15,17 +15,17 @@ enum WorkoutSoundManager {
     private static let thirtySecondsRemainingName = "30SecondsRemaining"
     private static let youDidItName = "youDidIt"
 
-    /// Afspiller "get ready / start"-lyd når de 10 sekunder er talt ned til 0 (før workout).
+    /// Plays the "get ready / start" sound when the 10-second countdown reaches zero (before workout).
     static func playGetReadyStart() {
         play(name: getReadyStartName, ext: "mp3")
     }
 
-    /// Afspiller "30 sekunder tilbage"-lyd (én gang per fase, når der er 30 sek tilbage i runden/phasen).
+    /// Plays the "30 seconds remaining" sound (once per phase, when 30 seconds remain in the round/phase).
     static func play30SecondsRemaining() {
         play(name: thirtySecondsRemainingName, ext: "mp3")
     }
 
-    /// Afspiller "you did it"-lyd når workout er færdig.
+    /// Plays the "you did it" sound when the workout is complete.
     static func playYouDidIt() {
         play(name: youDidItName, ext: "mp3")
     }
@@ -33,14 +33,24 @@ enum WorkoutSoundManager {
     private static func play(name: String, ext: String) {
         let url = Bundle.main.url(forResource: name, withExtension: ext, subdirectory: "Sounds")
             ?? Bundle.main.url(forResource: name, withExtension: ext)
-        guard let url = url else { return }
+        guard let url = url else {
+            print("[Sound] File not found: \(name).\(ext)")
+            return
+        }
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
-        } catch { return }
-        guard let player = try? AVAudioPlayer(contentsOf: url) else { return }
-        currentPlayer = player
-        player.play()
+        } catch {
+            print("[Sound] Audio session setup failed: \(error.localizedDescription)")
+            return
+        }
+        do {
+            let player = try AVAudioPlayer(contentsOf: url)
+            currentPlayer = player
+            player.play()
+        } catch {
+            print("[Sound] Failed to play \(name).\(ext): \(error.localizedDescription)")
+        }
     }
 }
 #endif

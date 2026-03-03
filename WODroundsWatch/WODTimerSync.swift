@@ -2,12 +2,13 @@
 //  WODTimerSync.swift
 //  WODrounds Watch App
 //
-//  Reads timer state from App Group (written by iPhone) so Watch can show the same workout.
+//  Payload struct and snapshot computation for iPhone-synced timer state.
+//  Transport is WatchConnectivity (see WatchSessionManager.swift).
 //
 
 import Foundation
 
-/// Same shape as WODTimerEngine.SyncPayload on iOS – decode from shared UserDefaults.
+/// Same shape as WODTimerEngine.SyncPayload on iOS.
 struct WODTimerSyncPayload: Codable {
     let state: String
     let startDate: Date?
@@ -23,20 +24,6 @@ struct WODTimerSyncPayload: Codable {
 }
 
 enum WODTimerSync {
-    static let appGroupID = "group.com.iamjarl.WODrounds"
-    static let key = "wodrounds.sync.payload"
-
-    static var shared: UserDefaults? {
-        UserDefaults(suiteName: appGroupID)
-    }
-
-    static func read() -> WODTimerSyncPayload? {
-        guard let defaults = shared,
-              let data = defaults.data(forKey: key) else { return nil }
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        return try? decoder.decode(WODTimerSyncPayload.self, from: data)
-    }
 
     /// Compute elapsed seconds from payload and current date (same logic as engine).
     private static func elapsedSeconds(payload: WODTimerSyncPayload, now: Date) -> TimeInterval {

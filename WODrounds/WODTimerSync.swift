@@ -2,29 +2,65 @@
 //  WODTimerSync.swift
 //  WODrounds
 //
-//  Writes timer state to App Group so the Watch app can display the same workout.
+//  Sends timer state to Watch via WatchConnectivity (iOS).
+//  No-op on macOS and tvOS (WatchConnectivity not available).
 //
 
 import Foundation
+#if os(iOS)
+import WatchConnectivity
+#endif
 
 enum WODTimerSync {
-    static let appGroupID = "group.com.iamjarl.WODrounds"
-    static let key = "wodrounds.sync.payload"
 
-    static var shared: UserDefaults? {
-        UserDefaults(suiteName: appGroupID)
-    }
+    #if os(iOS)
 
-    static func write(_ payload: WODTimerEngine.SyncPayload) {
-        guard let defaults = shared else { return }
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
-        if let data = try? encoder.encode(payload) {
-            defaults.set(data, forKey: key)
+    /// Activate WCSession once at app launch. Safe to call multiple times.
+    static func activate() {
+        guard WCSession.isSupported() else { return }
+        let session = WCSession.default
+        if session.delegate == nil {
+            session.delegate = PhoneSideSessionDelegate.shared
+            session.activate()
         }
     }
 
-    static func clear() {
-        shared?.removeObject(forKey: key)
+    static func write(_ payload: WODTimerEngine.SyncPayload) {
+        guard WCSession.isSupported() else { return }
+        let session = WCSession.default
+        guard session.activationState == .activated else { return }
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        guard let data = try? encoder.encode(payload) else { return }
+        try? session.updateApplicationContext(["payload": data])
     }
+
+    static func clear() {
+        guard WCSession.isSupported() else { return }
+        let session = WCSession.default
+        guard session.activationState == .activated else { return }
+        try? session.updateApplicationContext(["payload": Data()])
+    }
+
+    /// Minimal delegate required by WCSession on the phone side.
+    private class PhoneSideSessionDelegate: NSObject, WCSessionDelegate {
+        static let shared = PhoneSideSessionDelegate()
+        func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+            if let error {
+                print("[WatchSync] Phone activation failed: \(error.localizedDescription)")
+            }
+        }
+        func sessionDidBecomeInactive(_ session: WCSession) {}
+        func sessionDidDeactivate(_ session: WCSession) {
+            // Re-activate for users who switch watches.
+            session.activate()
+        }
+    }
+
+    #else
+    // macOS and tvOS: no-ops (WatchConnectivity not available).
+    static func activate() {}
+    static func write(_ payload: WODTimerEngine.SyncPayload) {}
+    static func clear() {}
+    #endif
 }

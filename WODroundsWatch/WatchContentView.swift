@@ -13,6 +13,7 @@ struct WatchContentView: View {
     @Environment(\.colorScheme) private var colorScheme
     @State private var flashScreen = false
     @State private var lastFlashRound = 0
+    @StateObject private var sessionManager = WatchSessionManager.shared
 
     private func timeString(from interval: TimeInterval) -> String {
         let totalSeconds = max(0, Int(ceil(interval)))
@@ -24,7 +25,7 @@ struct WatchContentView: View {
     var body: some View {
         TimelineView(.periodic(from: Date(), by: 1.0)) { timeline in
             let now = timeline.date
-            let syncedPayload = WODTimerSync.read()
+            let syncedPayload = sessionManager.receivedPayload
             let syncedSnapshot = syncedPayload.flatMap { WODTimerSync.snapshot(from: $0, now: now) }
             let useSynced = syncedSnapshot.map { $0.state == .running || $0.state == .paused } ?? false
             let (displayTime, currentRound, totalRounds, state): (TimeInterval, Int, Int, WODTimerEngineState) = {
