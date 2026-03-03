@@ -59,7 +59,7 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 
 **Core files:**
 - **Shared/WODTimerEngine.swift** — Shared with Watch target. State machine for EMOM + Intervals; Date-based, deterministic; no UI/sound/haptics. effectiveWorkoutEndDate(now:) for HealthKit active-time.
-- **WODTimerSync.swift** — Writes timer state to App Group so the Watch can display the same workout.
+- **WODTimerSync.swift** — Sends timer state to Watch via WatchConnectivity so the Watch can display the same workout.
 - **DesignTokens.swift** — IAMJARL design tokens (spacing, radius, typography, colors light/dark).
 - **ContentView.swift** — Per platform (`#if os(iOS)` etc.). iOS/iPadOS and macOS: full UI; tvOS: full UI; **no watchOS block** (Watch has its own app).
 - **SharedTimerViews.swift** — Shared UI components (stepper, primary button, done view, etc.).
@@ -76,16 +76,17 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 **Folder:** `WODroundsWatch/`
 
 - **WODroundsWatchApp.swift** — Watch app entry (`@main`), `WindowGroup { WatchContentView() }`.
-- **WatchContentView.swift** — Timer UI: reads synced state from App Group when iPhone is running a workout; otherwise local timer with Start/Pause/Resume/Reset.
+- **WatchContentView.swift** — Timer UI: reads synced state from WatchConnectivity when iPhone is running a workout; otherwise local timer with Start/Pause/Resume/Reset.
 - **WatchDesign.swift** — Design tokens for Watch (colors, spacing, typography) aligned with main app (green accent, light/dark).
 - **Shared/** — WODTimerEngine is shared with the main app target; Watch uses it for local-only workouts.
-- **WODTimerSync.swift** — Reads shared state from App Group; computes remaining time and round from iPhone’s payload.
+- **WODTimerSync.swift** — Receives synced state from iPhone via WatchConnectivity; computes remaining time and round from iPhone’s payload.
 - **Assets.xcassets** — AppIcon (all watchOS roles) and AccentColor.
 
 **iPhone ↔ Watch sync:**
-- **App Group:** `group.com.iamjarl.WODrounds` (entitlements on both iOS and Watch targets).
-- **Flow:** User starts workout on iPhone → app writes state (startDate, pause, mode, rounds) to shared UserDefaults every second and on every action → Watch reads it and shows the same remaining time and round (“Følger iPhone”). Pause/Resume/Reset on iPhone updates the Watch immediately.
+- **WatchConnectivity:** `WCSession.updateApplicationContext` (iPhone → Watch). No App Group needed.
+- **Flow:** User starts workout on iPhone → app sends state (startDate, pause, mode, rounds) via `WCSession.updateApplicationContext` on every action and every second while running → Watch receives it and shows the same remaining time and round (“Following iPhone”). Pause/Resume/Reset on iPhone updates the Watch immediately.
 - **Watch-only:** If no synced state (or idle/finished), Watch shows its own timer; user can Start locally on the Watch.
+- **WatchSessionManager.swift** — `ObservableObject` + `WCSessionDelegate` on Watch side; decodes payload from `didReceiveApplicationContext` and publishes it.
 
 **Apple Health (iOS):**
 - **HealthKit** capability and usage strings in Info.plist (`NSHealthShareUsageDescription`, `NSHealthUpdateUsageDescription`).
@@ -140,17 +141,17 @@ The main app follows the IAMJARL design system. No hardcoded colors, spacing, ra
 
 **Automatic signing:** Signing & Capabilities for both **WODrounds** and **WODrounds Watch** with “Automatically manage signing” and the same Team. Each target has an entitlements file:
 
-- **WODrounds:** `WODrounds/WODrounds.entitlements` — App Group `group.com.iamjarl.WODrounds`, HealthKit.
-- **WODrounds Watch:** `WODroundsWatch/WODroundsWatch.entitlements` — same App Group.
+- **WODrounds:** `WODrounds/WODrounds.entitlements` — HealthKit.
+- **WODrounds Watch:** `WODroundsWatch/WODroundsWatch.entitlements` — (empty; WatchConnectivity requires no entitlements).
 
-**Apple Developer:** Ensure the App Group `group.com.iamjarl.WODrounds` exists under Identifiers → App Groups, and that it is enabled for both the main app’s App ID and the Watch app’s App ID. Xcode can add the App Group when you first build with the entitlements. Enable **HealthKit** for the main app's App ID if needed (Signing & Capabilities).
+**Apple Developer:** Enable **HealthKit** for the main app’s App ID if needed (Signing & Capabilities). iPhone ↔ Watch sync uses WatchConnectivity which requires no additional entitlements or App Group setup.
 
 **TestFlight / App Store (iOS + Watch):**
 1. Destination **Any iOS Device**.
 2. **Product → Archive**.
 3. **Distribute App** → App Store Connect. One archive contains both the iPhone app and the Watch app; TestFlight will offer the Watch build to testers with an Apple Watch.
 
-**Før TestFlight:** DSN i `Sentry.xcconfig` (så arkiv får crash reporting); ingen test-knapper i UI. Privacy Policy og Support nævner Sentry. Se `docs/ARCHIVE.md` for arkiv-destinationer.
+**Before TestFlight:** Set DSN in `Sentry.xcconfig` (so the archive gets crash reporting); no test buttons in UI. See `docs/ARCHIVE.md` for archive destinations.
 
 **Mac archive:** Use destination **Any Mac** to produce a macOS-only archive (no Watch app). Signing uses `WODrounds-Mac.entitlements`; Watch is not built or embedded for this destination.
 
@@ -182,11 +183,11 @@ Do not let these drive current architecture.
 ## Current Status
 
 - **Engine:** EMOM + Intervals, Date-based, start/pause/resume/reset/tick, snapshot with phase and remaining times. Single shared engine in `Shared/WODTimerEngine.swift`; both main app and Watch target use it.
-- **iOS/iPadOS:** Full UI (mode switch, steppers, primary button, Cancel, Done, About). Writes sync state to App Group on every timer action and every second while running. **Apple Health:** HIIT workouts saved to Health when user grants permission (first Start); duration = active time (pauses excluded). End on Finish / Reset / Cancel. Haptics, idle timer off during workout, DesignTokens, light/dark.
-- **Watch:** Embedded Watch App. Reads App Group; when iPhone has a running/paused workout, Watch shows same time and round (“Følger iPhone”). Otherwise local timer with Start/Pause/Resume/Reset. WatchDesign (green accent, light/dark). All required Watch icon roles for store validation.
+- **iOS/iPadOS:** Full UI (mode switch, steppers, primary button, Cancel, Done, About). Sends sync state to Watch via WatchConnectivity on every timer action and every second while running. **Apple Health:** HIIT workouts saved to Health when user grants permission (first Start); duration = active time (pauses excluded). End on Finish / Reset / Cancel. Haptics, idle timer off during workout, DesignTokens, light/dark.
+- **Watch:** Embedded Watch App. Receives state from iPhone via WatchConnectivity; when iPhone has a running/paused workout, Watch shows same time and round (“Following iPhone”). Otherwise local timer with Start/Pause/Resume/Reset. WatchDesign (green accent, light/dark). All required Watch icon roles for store validation.
 - **macOS:** Same feature set as iOS; compact window; DesignTokens.
 - **tvOS:** Full UI, DesignTokens, focusable controls.
-- **App Store:** Export compliance (ITSAppUsesNonExemptEncryption = NO); PrivacyPolicy.md, Support.md; About screen with version/build and privacy line. **Sentry** for crash/error reporting on iOS only (DSN via `Sentry.xcconfig`; see `docs/SENTRY.md`). Klar til TestFlight.
+- **App Store:** Export compliance (ITSAppUsesNonExemptEncryption = NO); PrivacyPolicy.md, Support.md; About screen with version/build and privacy line. **Sentry** for crash/error reporting on iOS only (DSN via `Sentry.xcconfig`; see `docs/SENTRY.md`). Ready for TestFlight.
 
 Build iteratively. Ship small. Stay focused.
 
@@ -203,7 +204,7 @@ Build iteratively. Ship small. Stay focused.
 ## For reviewers
 
 - **Entry points:** `WODroundsApp.swift` (main), `ContentView.swift` (platform UI), `Shared/WODTimerEngine.swift` (core timer logic).
-- **Sync:** App Group key `group.com.iamjarl.WODrounds`; write in `WODTimerSync.swift` (iOS), read in `WODroundsWatch/WODTimerSync.swift`.
+- **Sync:** WatchConnectivity `WCSession.updateApplicationContext`; send in `WODTimerSync.swift` (iOS), receive in `WatchSessionManager.swift` + `WODTimerSync.swift` (Watch).
 - **Health:** `HealthKitWorkout.swift` (iOS only); authorization on first Start, workout start/end tied to timer in `ContentView.swift` (`#if os(iOS)`).
 - **Design:** `DesignTokens.swift` (main app), `WatchDesign.swift` (Watch); no hardcoded colors/spacing in UI.
 - **Docs:** This README; `PrivacyPolicy.md` and `Support.md` for store/support.

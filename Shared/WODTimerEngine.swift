@@ -284,9 +284,9 @@ struct WODTimerEngine {
         return (roundIndex + 1, .rest, max(0, restEnd - elapsed))
     }
 
-    // MARK: - Sync (iPhone → Watch via App Group)
+    // MARK: - Sync (iPhone → Watch via WatchConnectivity)
 
-    /// Payload written to shared UserDefaults so Watch can show the same timer.
+    /// Payload sent to Watch via WCSession.updateApplicationContext so Watch can show the same timer.
     struct SyncPayload: Codable {
         let state: String       // "idle" | "running" | "paused" | "finished"
         let startDate: Date?

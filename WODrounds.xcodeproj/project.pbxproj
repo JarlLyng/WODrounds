@@ -7,11 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2F647BBB2F50F6F900492039 /* Sentry-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2FF206162F427B0000AD0B00 /* Sentry-Dynamic */; };
+		2F647BBB2F50F6F900492039 /* Sentry-Dynamic in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 2FF206162F427B0000AD0B00 /* Sentry-Dynamic */; };
 		2FF206072F427B0000AD0B00 /* WODrounds Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2FF206002F427B0000AD0B00 /* WODrounds Watch.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		2FF206202F427B1000AD0B00 /* getReadyStart.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2FF206232F427B1000AD0B00 /* getReadyStart.mp3 */; };
-		2FF206212F427B1000AD0B01 /* 30SecondsRemaining.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2FF206242F427B1000AD0B00 /* 30SecondsRemaining.mp3 */; };
-		2FF206222F427B1000AD0B02 /* youDidIt.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2FF206252F427B1000AD0B00 /* youDidIt.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,9 +55,6 @@
 		2FF2045B2F427AEA00AD0B00 /* WODroundsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WODroundsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FF206002F427B0000AD0B00 /* WODrounds Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WODrounds Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FF206142F427B0000AD0B00 /* Sentry.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Sentry.xcconfig; sourceTree = "<group>"; };
-		2FF206232F427B1000AD0B00 /* getReadyStart.mp3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WODrounds/Sounds/getReadyStart.mp3"; sourceTree = "<group>"; };
-		2FF206242F427B1000AD0B00 /* 30SecondsRemaining.mp3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WODrounds/Sounds/30SecondsRemaining.mp3"; sourceTree = "<group>"; };
-		2FF206252F427B1000AD0B00 /* youDidIt.mp3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WODrounds/Sounds/youDidIt.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -309,9 +303,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2FF206202F427B1000AD0B00 /* getReadyStart.mp3 in Resources */,
-				2FF206212F427B1000AD0B01 /* 30SecondsRemaining.mp3 in Resources */,
-				2FF206222F427B1000AD0B02 /* youDidIt.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,6 +363,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${WRAPPER_NAME}/Info.plist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
