@@ -106,6 +106,15 @@ body {
   color: var(--text);
   text-decoration: none;
   letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-icon {
+  display: block;
+  width: 28px;
+  height: 28px;
 }
 
 .nav {
@@ -461,6 +470,39 @@ body {
   height: 6px;
   border-radius: 50%;
   background: var(--accent);
+}
+
+/* FAQ */
+.faq {
+  padding: 4rem 0;
+}
+
+.faq-list {
+  margin: 0;
+  padding: 0;
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 0;
+}
+
+.faq-item:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.faq-item dt {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+}
+
+.faq-item dd {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 /* CTA block */
