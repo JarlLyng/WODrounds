@@ -561,10 +561,10 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Info.plist;
+				"INFOPLIST_FILE[sdk=appletvos*]" = "Info-tvOS.plist";
+				"INFOPLIST_FILE[sdk=appletvsimulator*]" = "Info-tvOS.plist";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "WODrounds does not read your health data. This permission is shown by the system for HealthKit access.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "WODrounds saves your workouts to Apple Health so Fitness and Activity show when you train.";
 				INFOPLIST_KEY_SentryDSN = "$(SENTRY_DSN)";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -616,10 +616,10 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Info.plist;
+				"INFOPLIST_FILE[sdk=appletvos*]" = "Info-tvOS.plist";
+				"INFOPLIST_FILE[sdk=appletvsimulator*]" = "Info-tvOS.plist";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "WODrounds does not read your health data. This permission is shown by the system for HealthKit access.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "WODrounds saves your workouts to Apple Health so Fitness and Activity show when you train.";
 				INFOPLIST_KEY_SentryDSN = "$(SENTRY_DSN)";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
