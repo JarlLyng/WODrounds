@@ -56,9 +56,3 @@ Sentry-Dynamic has `platformFilter = ios` in the project — Mac and tvOS builds
   - `CODE_SIGN_ENTITLEMENTS[sdk=macosx*] = WODrounds/WODrounds-Mac.entitlements`
   - `CODE_SIGN_ENTITLEMENTS[sdk=appletvos*] = WODrounds/WODrounds-tvOS.entitlements`
 
----
-
-## Reference
-
-- README: **Platform Strategy**, **Signing & Distribution**.
-- Xcode: WODrounds target → Build Phases → Embed Watch Content; Build Settings → Supported Platforms.

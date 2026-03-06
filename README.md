@@ -2,7 +2,7 @@
 
 A minimal workout timer for CrossFit, EMOM, Tabata and interval training. Built with SwiftUI for iPhone, iPad, Apple Watch, Mac and Apple TV.
 
-No accounts. No analytics. No ads. No subscription. Just a timer.
+No accounts. No ads. No subscription. Just a timer.
 
 **[wodrounds.iamjarl.com](https://wodrounds.iamjarl.com)** · [App Store](https://apps.apple.com/app/wodrounds/id6759229877)
 
@@ -25,7 +25,7 @@ This is not a social app. This is not a tracking app. This is a tool.
 
 ---
 
-## Supported Modes (v1)
+## Supported Modes
 
 ### EMOM
 - Set number of rounds (1–120) and **custom round length** (0:30–9:30, 30s increments).
@@ -48,19 +48,21 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 ### Targets
 
 - **WODrounds** — Main app: iOS, iPadOS, macOS, tvOS. One target, multiple destinations.
-- **WODrounds Watch** — Embedded Watch App (watchOS). Separate target; bundled inside the iOS app for distribution and TestFlight.
+- **WODrounds Watch** — Embedded Watch App (watchOS). Separate target; bundled inside the iOS app for distribution.
 
 ### Main app (WODrounds)
 
 **Core files:**
-- **Shared/WODTimerEngine.swift** — Shared with Watch target. State machine for EMOM + Intervals; Date-based, deterministic; no UI/sound/haptics. effectiveWorkoutEndDate(now:) for HealthKit active-time.
-- **WODTimerSync.swift** — Sends timer state to Watch via WatchConnectivity so the Watch can display the same workout.
+- **Shared/WODTimerEngine.swift** — Shared with Watch target. State machine for EMOM + Intervals; Date-based, deterministic; no UI/sound/haptics. `effectiveWorkoutEndDate(now:)` for HealthKit active-time.
+- **WODTimerSync.swift** — Sends timer state to Watch via WatchConnectivity.
 - **DesignTokens.swift** — IAMJARL design tokens (spacing, radius, typography, colors light/dark).
 - **ContentView.swift** — Shared types (ranges, `TimerUIMode` enum) used by all platform views.
 - **iOSContentView.swift** — iOS/iPadOS UI: HealthKit, haptics, sounds, countdown, idle timer.
 - **macOSContentView.swift** — macOS UI: compact window (340×560), flash overlay.
-- **tvOSContentView.swift** — tvOS UI: focus-based navigation, `.buttonStyle(.card)`, large typography.
+- **tvOSContentView.swift** — tvOS UI: focus-based navigation, `.buttonStyle(.card)`, large typography, sounds.
 - **SharedTimerViews.swift** — Shared UI components (stepper, primary button, done view, etc.).
+- **WorkoutSoundManager.swift** — Sound cues for round transitions, 30-second warning, and completion (iOS + tvOS).
+- **HealthKitWorkout.swift** — Saves completed workouts to Apple Health as HIIT sessions (iOS only).
 - **WODroundsApp.swift** — App entry, `WindowGroup { ContentView() }`.
 
 **Engine behaviour:**
@@ -73,22 +75,21 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 
 **Folder:** `WODroundsWatch/`
 
-- **WODroundsWatchApp.swift** — Watch app entry (`@main`), `WindowGroup { WatchContentView() }`.
-- **WatchContentView.swift** — Timer UI: reads synced state from WatchConnectivity when iPhone is running a workout; otherwise local timer with Start/Pause/Resume/Reset.
-- **WatchDesign.swift** — Design tokens for Watch (colors, spacing, typography) aligned with main app (green accent, light/dark).
-- **Shared/** — WODTimerEngine is shared with the main app target; Watch uses it for local-only workouts.
-- **WODTimerSync.swift** — Receives synced state from iPhone via WatchConnectivity; computes remaining time and round from iPhone’s payload.
-- **Assets.xcassets** — AppIcon (all watchOS roles) and AccentColor.
+- **WODroundsWatchApp.swift** — Watch app entry (`@main`).
+- **WatchContentView.swift** — Timer UI: reads synced state from WatchConnectivity when iPhone is running a workout; otherwise local timer.
+- **WatchDesign.swift** — Design tokens for Watch (colors, spacing, typography).
+- **Shared/** — WODTimerEngine shared with the main app target for local-only workouts.
+- **WODTimerSync.swift** — Receives synced state from iPhone via WatchConnectivity.
+- **WatchSessionManager.swift** — `ObservableObject` + `WCSessionDelegate`; decodes payload from `didReceiveApplicationContext`.
 
-**iPhone ↔ Watch sync:**
-- **WatchConnectivity:** `WCSession.updateApplicationContext` (iPhone → Watch). No App Group needed.
-- **Flow:** User starts workout on iPhone → app sends state (startDate, pause, mode, rounds) via `WCSession.updateApplicationContext` on every action and every second while running → Watch receives it and shows the same remaining time and round (“Following iPhone”). Pause/Resume/Reset on iPhone updates the Watch immediately.
-- **Watch-only:** If no synced state (or idle/finished), Watch shows its own timer; user can Start locally on the Watch.
-- **WatchSessionManager.swift** — `ObservableObject` + `WCSessionDelegate` on Watch side; decodes payload from `didReceiveApplicationContext` and publishes it.
+**iPhone → Watch sync:**
+- `WCSession.updateApplicationContext` (iPhone → Watch). No App Group needed.
+- iPhone sends state (startDate, pause, mode, rounds) on every action and every second while running → Watch shows the same remaining time and round.
+- When no synced state, Watch runs its own local timer.
 
 **Apple Health (iOS):**
-- **HealthKit** capability and usage strings in Info.plist (`NSHealthShareUsageDescription`, `NSHealthUpdateUsageDescription`).
-- **HealthKitWorkout.swift** — Starts an HK workout (HIIT) when the timer starts (after countdown), ends it on Finish / Reset / Cancel. Duration in Health = active time (pauses excluded, via `effectiveWorkoutEndDate`). Authorization on first Start; workouts appear in the Health app and in Activity.
+- HealthKit capability and usage strings in Info.plist.
+- Starts an HK workout (HIIT) when the timer starts (after countdown), ends it on Finish / Reset / Cancel. Duration = active time (pauses excluded). Authorization on first Start.
 
 ---
 
@@ -101,65 +102,26 @@ The main app follows the IAMJARL design system. No hardcoded colors, spacing, ra
 - Tokens (JSON): https://jarllyng.github.io/iamjarl-design/tokens.json
 - SwiftUI template: https://github.com/JarlLyng/iamjarl-design/tree/main/templates/swiftui
 
-**Local mapping:** `DesignTokens.swift` in the main app (spacing, radius, typography, colors for light/dark via `DesignTokens.Common.*(scheme)`). The Watch app uses `WatchDesign.swift` with the same color semantics (primary green, background, text hierarchy).
+**Local mapping:** `DesignTokens.swift` in the main app; `WatchDesign.swift` on Watch. Same color semantics (primary green, background, text hierarchy).
 
 **Guidelines:**
 - Heavy whitespace; large monospaced numbers; clear hierarchy; minimal color; dark-first.
 - Primary for main actions; error for destructive (e.g. Cancel).
 - Buttons solid and tactile; timer dominates the screen.
 
-**Localization:** English only (`en.lproj/Localizable.strings`). All UI strings are in English across all platforms.
+**Localization:** English only.
 
 ---
 
-## Platform Strategy
+## Build & run
 
-- **WODrounds target:** iPhone, iPad, macOS, Apple TV. `SUPPORTED_PLATFORMS`: iphoneos, iphonesimulator, macosx, appletvos, appletvsimulator (no watchOS).
-- **WODrounds Watch target:** watchOS only. Embedded in the iOS app via “Embed Watch Content” build phase; one iOS archive includes both iPhone and Watch app for TestFlight/App Store. **Embed and Watch target dependency use `platformFilter = ios`** so Mac archives do not build or embed the Watch app (avoids CodeSign “unsealed contents” on macOS). See `docs/ARCHIVE.md` for details.
-
-**v1:** iPhone & iPad (full UI + sync to Watch) → Watch (synced + local timer) → macOS → tvOS (full UI). No visionOS.
-
----
-
-## App Icons & Asset Sizes
-
-**iOS / iPadOS** (WODrounds/Assets.xcassets/AppIcon.appiconset):
-- 1024×1024 @1x — Standard, Dark, Tinted.
-
-**Watch** (WODroundsWatch/Assets.xcassets/AppIcon.appiconset):
-- 1024×1024 (watch-marketing).
-- All roles: notificationCenter (24, 27.5, 33), companionSettings (29 @2x/@3x), appLauncher (40–54), longLook (44, 50), quickLook (86–129). Required for App Store validation.
-
-**tvOS** (WODrounds/Assets.xcassets/AppIcon.brandassets):
-- App Icon – Small: 400×240 px. App Icon – Large: 1280×768 px. Top Shelf: 1920×720 / 2320×720 px. Layer images: Light + Dark.
+- **Xcode:** Open `WODrounds.xcodeproj`. Select scheme **WODrounds** (iOS) or **WODrounds Watch** (watchOS). Build and run on simulator or device.
+- **iOS + Watch:** Use "Any iOS Device" (or a physical iPhone) to run the main app; the Watch app is embedded and installs with the iOS app.
+- **Tests:** `WODroundsTests` uses Swift Testing; run tests via **Product → Test** or `⌘U`.
 
 ---
 
-## Signing & Distribution
-
-**Automatic signing:** Signing & Capabilities for both **WODrounds** and **WODrounds Watch** with “Automatically manage signing” and the same Team. Each target has an entitlements file:
-
-- **WODrounds (iOS):** `WODrounds/WODrounds.entitlements` — HealthKit.
-- **WODrounds (macOS):** `WODrounds/WODrounds-Mac.entitlements` — App Sandbox only (no HealthKit).
-- **WODrounds (tvOS):** `WODrounds/WODrounds-tvOS.entitlements` — Empty (no HealthKit, no sandbox).
-- **WODrounds Watch:** `WODroundsWatch/WODroundsWatch.entitlements` — Empty (WatchConnectivity requires no entitlements).
-
-**Apple Developer:** Enable **HealthKit** for the iOS App ID (Signing & Capabilities). iPhone ↔ Watch sync uses WatchConnectivity which requires no additional entitlements or App Group setup. macOS and tvOS do not use HealthKit.
-
-**TestFlight / App Store (iOS + Watch):**
-1. Destination **Any iOS Device**.
-2. **Product → Archive**.
-3. **Distribute App** → App Store Connect. One archive contains both the iPhone app and the Watch app; TestFlight will offer the Watch build to testers with an Apple Watch.
-
-**Before TestFlight:** Set DSN in `Sentry.xcconfig` (so the archive gets crash reporting); no test buttons in UI. See `docs/ARCHIVE.md` for archive destinations.
-
-**Mac archive:** Use destination **Any Mac** to produce a macOS-only archive (no Watch app). Signing uses `WODrounds-Mac.entitlements`; Watch is not built or embedded for this destination.
-
-**tvOS archive:** Use destination **Any Apple TV** to produce a tvOS-only archive. Signing uses `WODrounds-tvOS.entitlements` (no HealthKit). No Watch or Sentry.
-
----
-
-## Development Rules for Cursor
+## Development Rules
 
 - Keep logic deterministic and explicit; simple state machines.
 - Avoid overengineering and third-party libraries.
@@ -169,57 +131,43 @@ The main app follows the IAMJARL design system. No hardcoded colors, spacing, ra
 
 ---
 
-## Future Considerations (Not v1)
+## Future Considerations
 
-- Notifications (local reminders)
-- Sound + haptic cues
 - Live Activities / Dynamic Island
 - Apple Watch complication
 - Presets library
-- Paid “Pro” version
 
 Do not let these drive current architecture.
 
 ---
 
-## Current Status
+## Documentation
 
-- **Engine:** EMOM + Intervals, Date-based, start/pause/resume/reset/tick, snapshot with phase and remaining times. Single shared engine in `Shared/WODTimerEngine.swift`; both main app and Watch target use it.
-- **iOS/iPadOS:** Full UI (mode switch, steppers, primary button, Cancel, Done, About). Sends sync state to Watch via WatchConnectivity on every timer action and every second while running. **Apple Health:** HIIT workouts saved to Health when user grants permission (first Start); duration = active time (pauses excluded). End on Finish / Reset / Cancel. Haptics, idle timer off during workout, DesignTokens, light/dark.
-- **Watch:** Embedded Watch App. Receives state from iPhone via WatchConnectivity; when iPhone has a running/paused workout, Watch shows same time and round (“Following iPhone”). Otherwise local timer with Start/Pause/Resume/Reset. WatchDesign (green accent, light/dark). All required Watch icon roles for store validation.
-- **macOS:** Timer UI with compact window (340×560); flash overlay instead of haptics; no HealthKit, no sounds, no Sentry. DesignTokens, light/dark.
-- **tvOS:** Full timer UI with focus-based navigation and `.buttonStyle(.card)`; large typography for TV screens; flash overlay; no HealthKit, no sounds, no Sentry. DesignTokens, light/dark.
-- **App Store:** Export compliance (ITSAppUsesNonExemptEncryption = NO); PrivacyPolicy.md, Support.md; About screen with version/build and privacy line. **Sentry** for crash/error reporting on iOS only (DSN via `Sentry.xcconfig`; see `docs/SENTRY.md`). Ready for TestFlight.
+Detailed reference docs live in `docs/`:
 
-Build iteratively. Ship small. Stay focused.
+| File | Description |
+|------|-------------|
+| [ARCHIVE.md](docs/ARCHIVE.md) | Archive destinations, platform filtering, entitlements |
+| [APP_ICONS.md](docs/APP_ICONS.md) | Icon asset checklist for all platforms |
+| [APP_STORE_CONNECT.md](docs/APP_STORE_CONNECT.md) | App Store text (subtitle, description, keywords) for iOS, Mac, tvOS |
+| [SENTRY.md](docs/SENTRY.md) | Crash reporting setup (iOS only) |
+| [SEO_STRATEGY.md](docs/SEO_STRATEGY.md) | Marketing site SEO strategy and roadmap |
 
----
+Other root-level docs:
 
-## Build & run
-
-- **Xcode:** Open `WODrounds.xcodeproj`. Select scheme **WODrounds** (iOS) or **WODrounds Watch** (watchOS). Build and run on simulator or device.
-- **iOS + Watch:** Use “Any iOS Device” (or a physical iPhone) to run the main app; the Watch app is embedded and installs with the iOS app. For Watch-only runs, choose the Watch scheme and a watchOS simulator/device.
-- **Tests:** `WODroundsTests` uses Swift Testing; run tests via **Product → Test** or `⌘U`.
-
----
-
-## For reviewers
-
-- **Entry points:** `WODroundsApp.swift` (main), `iOSContentView.swift` / `macOSContentView.swift` / `tvOSContentView.swift` (platform UI), `Shared/WODTimerEngine.swift` (core timer logic).
-- **Sync:** WatchConnectivity `WCSession.updateApplicationContext`; send in `WODTimerSync.swift` (iOS), receive in `WatchSessionManager.swift` + `WODTimerSync.swift` (Watch).
-- **Health:** `HealthKitWorkout.swift` (iOS only); authorization on first Start, workout start/end tied to timer in `iOSContentView.swift`.
-- **Design:** `DesignTokens.swift` (main app), `WatchDesign.swift` (Watch); no hardcoded colors/spacing in UI.
-- **Docs:** This README; `PrivacyPolicy.md` and `Support.md` for store/support.
+| File | Description |
+|------|-------------|
+| [PrivacyPolicy.md](PrivacyPolicy.md) | Privacy policy (linked from App Store and in-app) |
+| [Support.md](Support.md) | Support page (linked from App Store and in-app) |
 
 ---
 
-## Marketing site (GitHub Pages)
+## Marketing Site
 
-A static marketing site lives in **`docs/`** (index.html + style.css) for use with GitHub Pages.
+A static marketing site lives in `docs/` and is deployed via GitHub Pages at **[wodrounds.iamjarl.com](https://wodrounds.iamjarl.com)**.
 
-**Enable:** Repo → **Settings → Pages** → Source: **Deploy from a branch** → Branch: **main**, Folder: **/docs** → Save.  
-The site will be available at `https://<username>.github.io/WODrounds/` (e.g. `https://jarllyng.github.io/WODrounds/`).
+**Pages:** Homepage, EMOM timer, Interval timer, Tabata timer, Apple Watch timer, comparison article, workout examples (EMOM, Tabata, 10-minute HIIT), guide, privacy, support.
 
-**Content:** Hero, app screenshots (iPhone + Watch), features, principles, CTA. Privacy and Support are own pages; no public repo links. Add your screenshots as `docs/images/iphone.png` and `docs/images/watch.png` (see `docs/images/README.txt`). Replace the App Store URL in `docs/index.html` when the app is published.
+**Setup:** Repo → Settings → Pages → Source: Deploy from branch → main, /docs.
 
-**SEO:** Canonical URLs, Open Graph and Twitter Card meta, `robots` index/follow, JSON-LD `SoftwareApplication` on the homepage. Update the base URL in meta tags if you use a custom domain. **Animations:** Hero fade-in with stagger, sections fade in on scroll (Intersection Observer); respects `prefers-reduced-motion`.
+**Analytics:** Umami (self-hosted). **SEO:** Canonical URLs, Open Graph, Twitter Card, JSON-LD structured data, sitemap.xml.
