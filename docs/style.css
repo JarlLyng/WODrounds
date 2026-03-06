@@ -613,6 +613,23 @@ body {
   text-decoration: underline;
 }
 
+.page-content .btn {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page-content .btn:hover {
+  text-decoration: none;
+}
+
+.page-content .btn-primary {
+  color: var(--bg);
+}
+
+.page-content .btn-primary:hover {
+  color: var(--bg);
+}
+
 .page-meta {
   margin-top: 2rem !important;
   font-size: 0.9rem;
