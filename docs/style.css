@@ -773,6 +773,26 @@ body {
   background: var(--accent);
 }
 
+.workout-card p {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.workout-card h2 {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+  color: var(--text);
+}
+
+.workout-examples--list {
+  grid-template-columns: 1fr;
+  max-width: 640px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .platform-row {
