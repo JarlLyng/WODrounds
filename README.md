@@ -1,21 +1,16 @@
-# WODrounds
+# WODrounds — EMOM & Interval Timer for CrossFit and HIIT
 
-WODrounds is a minimal, native Apple platform interval timer built with SwiftUI.
+A minimal workout timer for CrossFit, EMOM, Tabata and interval training. Built with SwiftUI for iPhone, iPad, Apple Watch, Mac and Apple TV.
 
-The goal is the simplest, most focused WOD timer experience across:
-- **iPhone & iPad**
-- **macOS**
-- **Apple TV**
-- **Apple Watch** (companion app, synced with iPhone)
+No accounts. No analytics. No ads. No subscription. Just a timer.
 
-No accounts. No analytics. No workout database. No noise.  
-Only timing, rounds, and focus.
+**[wodrounds.iamjarl.com](https://wodrounds.iamjarl.com)** · [App Store](https://apps.apple.com/app/wodrounds/id6759229877)
 
 ---
 
-## Product Vision
+## What is WODrounds?
 
-Distraction-free workout timer for functional fitness, CrossFit-style training, HIIT, EMOM, and interval sessions.
+WODrounds is a simple, focused WOD timer for functional fitness, CrossFit-style training, HIIT, EMOM, and interval sessions.
 
 Core principles:
 

@@ -13,6 +13,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://wodrounds.iamjarl.com/emom-timer.html</loc>
+    <lastmod>2026-03-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wodrounds.iamjarl.com/tabata-timer.html</loc>
+    <lastmod>2026-03-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wodrounds.iamjarl.com/interval-timer.html</loc>
+    <lastmod>2026-03-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://wodrounds.iamjarl.com/privacy.html</loc>
     <lastmod>2026-03-05</lastmod>
     <changefreq>yearly</changefreq>
