@@ -556,6 +556,18 @@ body {
   margin: 0;
 }
 
+.footer-author {
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 2px;
+}
+
+.footer-author:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
 /* Inner pages (Privacy, Support) */
 .page-content {
   padding: 3rem 0 4rem;
