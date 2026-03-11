@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "docs",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/jarl.l/Downloads/github/WODrounds/docs", "-l", "3000"],
+      "port": 3000
+    }
+  ]
+}
