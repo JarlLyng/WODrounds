@@ -7,6 +7,7 @@
 
 #if os(iOS)
 import SwiftUI
+import StoreKit
 import UIKit
 
 // MARK: - Haptics (iOS only; no third-party)
@@ -78,6 +79,8 @@ private struct iOSContent: View {
     @State private var flashScreen = false
     @State private var last30SecondWarningRound: Int? = nil
     @State private var last30SecondWarningPhase: WODTimerPhase? = nil
+    @AppStorage("completedWorkoutCount") private var completedWorkoutCount: Int = 0
+    @Environment(\.requestReview) private var requestReview
 
     private static let iosDoneTheme = DoneViewTheme(
         checkmarkSize: 64,
@@ -141,6 +144,13 @@ private struct iOSContent: View {
                 Haptics.strong()
                 HealthKitWorkoutController.shared.endWorkout(endDate: engine.effectiveWorkoutEndDate(now: Date()) ?? Date())
                 WorkoutSoundManager.playYouDidIt()
+                completedWorkoutCount += 1
+                if completedWorkoutCount == 5 || completedWorkoutCount == 15 || completedWorkoutCount == 50 {
+                    // Delay so the Done screen is visible before the system dialog appears.
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        requestReview()
+                    }
+                }
             }
         }
         .onChange(of: snapshot.currentRound) { _, newRound in
