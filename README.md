@@ -55,7 +55,7 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 **Core files:**
 - **Shared/WODTimerEngine.swift** — Shared with Watch target. State machine for EMOM + Intervals; Date-based, deterministic; no UI/sound/haptics. `effectiveWorkoutEndDate(now:)` for HealthKit active-time.
 - **WODTimerSync.swift** — Sends timer state to Watch via WatchConnectivity.
-- **DesignTokens.swift** — IAMJARL design tokens (spacing, radius, typography, colors light/dark).
+- **DesignTokens.swift** — Re-exports IAMJARL design tokens from SPM package; adds app-specific font sizes.
 - **ContentView.swift** — Shared types (ranges, `TimerUIMode` enum) used by all platform views.
 - **iOSContentView.swift** — iOS/iPadOS UI: HealthKit, haptics, sounds, countdown, idle timer.
 - **macOSContentView.swift** — macOS UI: compact window (340×560), flash overlay.
@@ -77,7 +77,7 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 
 - **WODroundsWatchApp.swift** — Watch app entry (`@main`).
 - **WatchContentView.swift** — Timer UI: reads synced state from WatchConnectivity when iPhone is running a workout; otherwise local timer.
-- **WatchDesign.swift** — Design tokens for Watch (colors, spacing, typography).
+- **WatchDesign.swift** — Imports colors from IAMJARL package; Watch-scaled spacing and typography.
 - **Shared/** — WODTimerEngine shared with the main app target for local-only workouts.
 - **WODTimerSync.swift** — Receives synced state from iPhone via WatchConnectivity.
 - **WatchSessionManager.swift** — `ObservableObject` + `WCSessionDelegate`; decodes payload from `didReceiveApplicationContext`.
@@ -95,14 +95,14 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 
 ## Design System (IAMJARL)
 
-The main app follows the IAMJARL design system. No hardcoded colors, spacing, radius, or typography in UI.
+The app follows the IAMJARL design system via SPM package ([iamjarl-design](https://github.com/jarllyng/iamjarl-design)). No hardcoded colors, spacing, radius, or typography in UI.
 
 **Source of truth:**
 - Design rules: https://jarllyng.github.io/iamjarl-design/design.md
 - Tokens (JSON): https://jarllyng.github.io/iamjarl-design/tokens.json
-- SwiftUI template: https://github.com/JarlLyng/iamjarl-design/tree/main/templates/swiftui
+- SPM package: `https://github.com/jarllyng/iamjarl-design.git` (added to both WODrounds and Watch targets)
 
-**Local mapping:** `DesignTokens.swift` in the main app; `WatchDesign.swift` on Watch. Same color semantics (primary green, background, text hierarchy).
+**Local mapping:** `DesignTokens.swift` re-exports the package via `@_exported import` and adds app-specific font sizes. `WatchDesign.swift` imports colors from the package and defines Watch-scaled spacing/typography.
 
 **Guidelines:**
 - Heavy whitespace; large monospaced numbers; clear hierarchy; minimal color; dark-first.
