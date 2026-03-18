@@ -82,7 +82,7 @@ enum DesignTokens {
         }
 
         enum Light {
-            static let primary = Color(hex: "#00FF7B")
+            static let primary = Color(hex: "#CE63FF")
             static let onPrimary = Color(hex: "#000000")
             enum Text {
                 static let primary = Color(hex: "#000000")

@@ -29,7 +29,7 @@ enum WatchDesign {
     static let countdownNumberFontSize: CGFloat = 28
 
     enum Colors {
-        static let primaryLight = Color(red: 0, green: 1, blue: 0.48)      // #00FF7B
+        static let primaryLight = Color(red: 0.808, green: 0.388, blue: 1.0) // #CE63FF
         static let primaryDark = Color(red: 0.82, green: 1, blue: 0)       // #D0FF00
         static let onPrimary = Color.black
         static let textPrimaryLight = Color.black
