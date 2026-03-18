@@ -9,6 +9,15 @@
 import SwiftUI
 @_exported import IAMJARLDesignTokens
 
+// MARK: - App-Specific Convenience Accessors
+
+extension DesignTokens.Common {
+    /// Shorthand for `OnPrimary.text(scheme)` — matches the API the app uses.
+    static func onPrimary(_ scheme: ColorScheme) -> Color {
+        OnPrimary.text(scheme)
+    }
+}
+
 // MARK: - App-Specific Typography Extensions
 
 extension DesignTokens.Typography.Size {
