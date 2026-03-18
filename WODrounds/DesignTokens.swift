@@ -6,6 +6,7 @@
 //  Package: https://github.com/jarllyng/iamjarl-design
 //
 
+import SwiftUI
 @_exported import IAMJARLDesignTokens
 
 // MARK: - App-Specific Typography Extensions
