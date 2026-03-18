@@ -64,18 +64,18 @@ final class HealthKitWorkoutController {
             return
         }
         builder = nil
-        currentBuilder.endCollection(withEnd: endDate) { [weak self, weak currentBuilder] _, error in
+        currentBuilder.endCollection(withEnd: endDate) { [weak self] _, error in
             if let error {
                 print("[HealthKit] endCollection failed: \(error.localizedDescription)")
             }
-            guard error == nil, let b = currentBuilder, let self = self else {
+            guard error == nil, let self = self else {
                 DispatchQueue.main.async { completion?(false) }
                 return
             }
 
             self.fetchLatestBodyMass { weightInKg in
                 let mass = weightInKg ?? 75.0 // Fallback to 75kg if no weight permission/data
-                let startDate = b.startDate ?? endDate
+                let startDate = currentBuilder.startDate ?? endDate
                 let durationMinutes = max(0, endDate.timeIntervalSince(startDate)) / 60.0
 
                 // HIIT MET value is generally defined around 8.0 by standard compendiums
@@ -85,11 +85,11 @@ final class HealthKitWorkoutController {
                 if totalKcal > 0, let energyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) {
                     let quantity = HKQuantity(unit: .kilocalorie(), doubleValue: totalKcal)
                     let sample = HKQuantitySample(type: energyType, quantity: quantity, start: startDate, end: endDate)
-                    b.add([sample]) { _, addError in
+                    currentBuilder.add([sample]) { _, addError in
                         if let addError {
                             print("[HealthKit] add energy sample failed: \(addError.localizedDescription)")
                         }
-                        b.finishWorkout { _, finishError in
+                        currentBuilder.finishWorkout { _, finishError in
                             if let finishError {
                                 print("[HealthKit] finishWorkout failed: \(finishError.localizedDescription)")
                             }
@@ -97,7 +97,7 @@ final class HealthKitWorkoutController {
                         }
                     }
                 } else {
-                    b.finishWorkout { _, finishError in
+                    currentBuilder.finishWorkout { _, finishError in
                         if let finishError {
                             print("[HealthKit] finishWorkout failed: \(finishError.localizedDescription)")
                         }

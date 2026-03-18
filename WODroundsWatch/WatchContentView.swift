@@ -6,6 +6,35 @@
 //
 
 import SwiftUI
+import WatchKit
+
+// MARK: - Extended Runtime Session (keeps app active during workout)
+
+private final class ExtendedSessionController: NSObject, ObservableObject, WKExtendedRuntimeSessionDelegate {
+    private var session: WKExtendedRuntimeSession?
+
+    func startIfNeeded() {
+        guard session == nil || session?.state == .invalid else { return }
+        let s = WKExtendedRuntimeSession()
+        s.delegate = self
+        s.start()
+        session = s
+    }
+
+    func stop() {
+        guard let s = session, s.state == .running else { return }
+        s.invalidate()
+        session = nil
+    }
+
+    func extendedRuntimeSessionDidStart(_ session: WKExtendedRuntimeSession) {}
+    func extendedRuntimeSessionWillExpire(_ session: WKExtendedRuntimeSession) {}
+    func extendedRuntimeSession(_ session: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: (any Error)?) {
+        self.session = nil
+    }
+}
+
+// MARK: - Watch Content View
 
 struct WatchContentView: View {
     @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
@@ -14,6 +43,8 @@ struct WatchContentView: View {
     @State private var flashScreen = false
     @State private var lastFlashRound = 0
     @StateObject private var sessionManager = WatchSessionManager.shared
+    @StateObject private var extendedSession = ExtendedSessionController()
+    @State private var wasWorkoutActive = false
 
     private func timeString(from interval: TimeInterval) -> String {
         let totalSeconds = max(0, Int(ceil(interval)))
@@ -39,6 +70,7 @@ struct WatchContentView: View {
                 let disp = isLocalEmom ? local.remainingTimeInPhase : local.remainingTime
                 return (disp, local.currentRound, engine.totalDurationMinutes, local.state)
             }()
+            let workoutActive = useSynced || engine.state == .running || engine.state == .paused
 
             ZStack {
                 WatchDesign.Colors.background(colorScheme)
@@ -141,6 +173,13 @@ struct WatchContentView: View {
                     if (state == .running || state == .paused), newRound > lastFlashRound {
                         triggerFlash()
                         lastFlashRound = newRound
+                    }
+                }
+                .onChange(of: workoutActive) { _, isActive in
+                    if isActive {
+                        extendedSession.startIfNeeded()
+                    } else {
+                        extendedSession.stop()
                     }
                 }
             }
