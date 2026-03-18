@@ -37,7 +37,7 @@ enum WatchDesign {
             DesignTokens.Common.primary(scheme)
         }
         static var onPrimary: Color {
-            DesignTokens.ColorToken.Static.black
+            Color.black
         }
         static func textPrimary(_ scheme: ColorScheme) -> Color {
             DesignTokens.Common.Text.primary(scheme)
