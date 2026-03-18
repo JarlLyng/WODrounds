@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2F647BBB2F50F6F900492039 /* Sentry-Dynamic in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 2FF206162F427B0000AD0B00 /* Sentry-Dynamic */; };
+		2FA1B2C42F60000000000004 /* IAMJARLDesignTokens in Frameworks */ = {isa = PBXBuildFile; productRef = 2FA1B2C42F60000000000002 /* IAMJARLDesignTokens */; };
+		2FA1B2C42F60000000000005 /* IAMJARLDesignTokens in Frameworks */ = {isa = PBXBuildFile; productRef = 2FA1B2C42F60000000000003 /* IAMJARLDesignTokens */; };
 		2FF206072F427B0000AD0B00 /* WODrounds Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2FF206002F427B0000AD0B00 /* WODrounds Watch.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -91,6 +93,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F647BBB2F50F6F900492039 /* Sentry-Dynamic in Frameworks */,
+				2FA1B2C42F60000000000004 /* IAMJARLDesignTokens in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FA1B2C42F60000000000005 /* IAMJARLDesignTokens in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +171,7 @@
 			name = WODrounds;
 			packageProductDependencies = (
 				2FF206162F427B0000AD0B00 /* Sentry-Dynamic */,
+				2FA1B2C42F60000000000002 /* IAMJARLDesignTokens */,
 			);
 			productName = WODrounds;
 			productReference = 2FF204442F427AE600AD0B00 /* WODrounds.app */;
@@ -237,6 +242,7 @@
 			);
 			name = "WODrounds Watch";
 			packageProductDependencies = (
+				2FA1B2C42F60000000000003 /* IAMJARLDesignTokens */,
 			);
 			productName = "WODrounds Watch";
 			productReference = 2FF206002F427B0000AD0B00 /* WODrounds Watch.app */;
@@ -283,6 +289,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				2FF206152F427B0000AD0B00 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+				2FA1B2C42F60000000000001 /* XCRemoteSwiftPackageReference "iamjarl-design" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2FF204452F427AE600AD0B00 /* Products */;
@@ -859,6 +866,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2FA1B2C42F60000000000001 /* XCRemoteSwiftPackageReference "iamjarl-design" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jarllyng/iamjarl-design.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
+			};
+		};
 		2FF206152F427B0000AD0B00 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/getsentry/sentry-cocoa";
@@ -870,6 +885,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2FA1B2C42F60000000000002 /* IAMJARLDesignTokens */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2FA1B2C42F60000000000001 /* XCRemoteSwiftPackageReference "iamjarl-design" */;
+			productName = IAMJARLDesignTokens;
+		};
+		2FA1B2C42F60000000000003 /* IAMJARLDesignTokens */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2FA1B2C42F60000000000001 /* XCRemoteSwiftPackageReference "iamjarl-design" */;
+			productName = IAMJARLDesignTokens;
+		};
 		2FF206162F427B0000AD0B00 /* Sentry-Dynamic */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2FF206152F427B0000AD0B00 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;

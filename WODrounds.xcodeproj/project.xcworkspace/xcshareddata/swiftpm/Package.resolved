@@ -1,6 +1,15 @@
 {
-  "originHash" : "a72b37d142139a9f8de021ec1a2d4e7ec2a7ffc9ebc87493f58bac80a85691cb",
+  "originHash" : "702d04793790e5ce38ad74daef0ec14b2e1ebca27f976f1c2168e3d208ea5de2",
   "pins" : [
+    {
+      "identity" : "iamjarl-design",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jarllyng/iamjarl-design.git",
+      "state" : {
+        "revision" : "a9eed5c5450a60ff3d3e1c5eb87af93071de10b3",
+        "version" : "0.1.3"
+      }
+    },
     {
       "identity" : "sentry-cocoa",
       "kind" : "remoteSourceControl",
