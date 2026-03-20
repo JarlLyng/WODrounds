@@ -158,6 +158,7 @@ private struct iOSContent: View {
                 Haptics.light()
                 triggerFlash()
                 lastHapticRound = newRound
+                WorkoutSoundManager.checkRoundsRemaining(currentRound: newRound, totalRounds: rounds)
             }
         }
         .onChange(of: snapshot.currentPhase) { _, newPhase in
@@ -165,6 +166,7 @@ private struct iOSContent: View {
                 Haptics.medium()
                 triggerFlash()
                 lastHapticPhase = newPhase
+                WorkoutSoundManager.checkRoundsRemaining(currentRound: snapshot.currentRound, totalRounds: intervalsRounds)
             }
         }
         .onAppear { applyIdleTimer(engine.state) }

@@ -95,12 +95,14 @@ struct ContentView: View {
                     if (engine.state == .running || engine.state == .paused), timerMode == .emom, newRound > lastHapticRound {
                         triggerFlash()
                         lastHapticRound = newRound
+                        WorkoutSoundManager.checkRoundsRemaining(currentRound: newRound, totalRounds: rounds)
                     }
                 }
                 .onChange(of: engine.snapshot(now: timeline.date).currentPhase) { _, newPhase in
                     if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
                         triggerFlash()
                         lastHapticPhase = newPhase
+                        WorkoutSoundManager.checkRoundsRemaining(currentRound: engine.snapshot(now: timeline.date).currentRound, totalRounds: intervalsRounds)
                     }
                 }
                 .onChange(of: engine.state) { _, newState in

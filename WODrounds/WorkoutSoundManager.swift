@@ -2,7 +2,7 @@
 //  WorkoutSoundManager.swift
 //  WODrounds
 //
-//  Plays countdown and workout sounds. iOS only. Uses .playback so sounds are audible even in silent mode.
+//  Plays countdown and workout sounds. iOS and tvOS only. Uses .playback so sounds are audible even in silent mode.
 //
 
 #if os(iOS) || os(tvOS)
@@ -11,23 +11,53 @@ import Foundation
 
 enum WorkoutSoundManager {
     private static var currentPlayer: AVAudioPlayer?
-    private static let getReadyStartName = "getReadyStart"
-    private static let thirtySecondsRemainingName = "30SecondsRemaining"
-    private static let youDidItName = "youDidIt"
 
     /// Plays the "get ready / start" sound when the 10-second countdown reaches zero (before workout).
     static func playGetReadyStart() {
-        play(name: getReadyStartName, ext: "mp3")
+        play(name: "getReadyStart", ext: "mp3")
     }
 
     /// Plays the "30 seconds remaining" sound (once per phase, when 30 seconds remain in the round/phase).
     static func play30SecondsRemaining() {
-        play(name: thirtySecondsRemainingName, ext: "mp3")
+        play(name: "30SecondsRemaining", ext: "mp3")
     }
 
-    /// Plays the "you did it" sound when the workout is complete.
+    /// Plays a random "you did it" sound when the workout is complete.
     static func playYouDidIt() {
-        play(name: youDidItName, ext: "mp3")
+        let variants = ["youDidIt", "youDidIt2", "youDidIt3"]
+        let name = variants.randomElement()!
+        play(name: name, ext: "mp3")
+    }
+
+    /// Plays "10 rounds left" announcement.
+    static func playTenRoundsLeft() {
+        play(name: "tenRoundsLeft", ext: "mp3")
+    }
+
+    /// Plays "5 rounds left" announcement.
+    static func playFiveRoundsLeft() {
+        play(name: "fiveRoundsLeft", ext: "mp3")
+    }
+
+    /// Plays "2 rounds left" announcement.
+    static func playTwoRoundsLeft() {
+        play(name: "twoRoundsLeft", ext: "mp3")
+    }
+
+    /// Checks if a rounds-remaining sound should play and plays it.
+    /// Call this when `currentRound` changes. `totalRounds` is the total number of rounds in the workout.
+    static func checkRoundsRemaining(currentRound: Int, totalRounds: Int) {
+        let roundsLeft = totalRounds - currentRound
+        switch roundsLeft {
+        case 10 where totalRounds > 10:
+            playTenRoundsLeft()
+        case 5 where totalRounds > 5:
+            playFiveRoundsLeft()
+        case 2:
+            playTwoRoundsLeft()
+        default:
+            break
+        }
     }
 
     private static func play(name: String, ext: String) {
