@@ -6,6 +6,8 @@ No accounts. No ads. No subscription. Just a timer.
 
 **[wodrounds.iamjarl.com](https://wodrounds.iamjarl.com)** · [App Store](https://apps.apple.com/app/wodrounds/id6759229877)
 
+![Co-created with AI](https://madebyhuman.iamjarl.com/badges/co-created-white.svg)
+
 ---
 
 ## What is WODrounds?
