@@ -34,8 +34,13 @@ struct WODroundsApp: App {
             options.dsn = dsnTrimmed
             #if DEBUG
             options.debug = true
-            #endif
+            options.tracesSampleRate = 1.0
+            #else
             options.tracesSampleRate = 0.2
+            #endif
+            options.enableAutoSessionTracking = true
+            options.attachScreenshot = true
+            options.enableMetricKit = true
         }
         #if DEBUG
         print("[Sentry] Initialised with DSN: \(dsnTrimmed.prefix(30))…")
