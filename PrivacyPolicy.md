@@ -2,13 +2,19 @@
 
 **WODrounds** is a simple workout timer app.
 
-- **No analytics or tracking.** We do not use analytics or advertising tracking.
-- **No accounts.** There are no sign-in or user accounts. All use is local on your device.
+## The app
 
-Your workout settings and timer state exist only on your device and are not sent anywhere.
+- **No accounts.** There are no sign-in or user accounts. Timer settings and state stay on your device; they are not sent to us.
+- **No marketing analytics in the app.** We do not use advertising trackers or product analytics inside the app.
+- **Crash and error reporting (iOS only):** To improve stability, the iOS app may send crash reports and technical diagnostics to **Sentry** (a third-party service). This can include device type, OS version, and app state at the time of a crash. It does **not** include your workout programming or personal identity. See [Sentry’s privacy policy](https://sentry.io/privacy/).
 
-**Crash and error reporting (iOS):** To improve stability, the iOS app may send crash reports and error details to **Sentry** (a third-party service). This can include information such as device type, OS version, and the state of the app at the time of a crash. No personal data or workout content is included. Sentry processes data in accordance with its [privacy policy](https://sentry.io/privacy/).
+## This website (wodrounds.iamjarl.com)
 
-**Apple Health (iOS):** If you grant permission, the app can save completed workouts to the Health app (activity type: HIIT). This data stays in Health on your device and is not sent to us.
+- **Visit statistics:** Pages may load **Umami** analytics (hosted on our infrastructure) to collect **aggregate** visit data (e.g. which pages are viewed). This is used to understand traffic, not to sell data or run targeted ads. Umami is designed for privacy-friendly, first-party analytics.
+- **No workout data:** The website does not access or receive anything from the WODrounds app.
 
-*Last updated: March 2026*
+## Apple Health (iOS)
+
+If you grant permission, the app can save completed workouts to the Health app (activity type: HIIT). That data stays in Health on your device and is not sent to us.
+
+*Last updated: April 2026*

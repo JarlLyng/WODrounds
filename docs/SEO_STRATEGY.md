@@ -12,10 +12,11 @@ Goal: Generate organic traffic from people searching for workout timers and conv
 The following items from this strategy are already live on the site:
 
 - Structured data (SoftwareApplication, FAQPage, BreadcrumbList, Article)
-- FAQ section on the homepage
+- FAQ section on the homepage (including privacy / tracking)
 - Guide page (`/guide.html`) covering EMOM, Tabata and interval formats
 - Keyword‑rich meta tags on pages (title, description, OG)
 - Internal linking between pages
+- Privacy copy aligned with actual data practices (Sentry on iOS, Umami on the site) — see `privacy.html` and root `PrivacyPolicy.md`
 
 ---
 
@@ -50,7 +51,7 @@ WODrounds — EMOM & Interval Timer for CrossFit and HIIT
 Example meta description:
 
 ```
-Simple WOD timer for CrossFit, EMOM, Tabata and HIIT workouts. iPhone, Apple Watch, Mac and Apple TV. No accounts, no tracking.
+Simple WOD timer for CrossFit, EMOM, Tabata and HIIT workouts. iPhone, Apple Watch, Mac and Apple TV. No accounts or ads. Privacy Policy covers optional iOS crash reporting and site analytics.
 ```
 
 ---
@@ -139,25 +140,13 @@ Focus on honest comparison rather than aggressive "alternative" pages.
 
 ---
 
-# App Store SEO (ASO)
+# 5. App Store SEO (ASO)
 
 App Store optimization also influences web visibility because App Store pages often rank in Google results.
 
-Important elements to optimize:
+**Canonical copy** for subtitles, descriptions, and keywords lives in [APP_STORE_CONNECT.md](APP_STORE_CONNECT.md). The examples below are strategic guidance only.
 
-App name:
-
-```
-WODrounds — CrossFit & EMOM Timer
-```
-
-Subtitle example:
-
-```
-Simple EMOM, Tabata and HIIT workout timer
-```
-
-Keywords to include in the App Store keyword field:
+Suggested emphasis in keyword field:
 
 - crossfit timer
 - emom timer
@@ -165,11 +154,11 @@ Keywords to include in the App Store keyword field:
 - hiit timer
 - workout timer
 
-The App Store description should naturally include these keywords because Apple app pages frequently appear in Google search results.
+The App Store description should naturally include these terms because Apple app pages frequently appear in Google search results.
 
 ---
 
-# 5. Educational Content
+# 6. Educational Content
 
 Expand on the existing guide or create separate articles.
 
@@ -187,11 +176,11 @@ Example CTA:
 
 "Start your workout with WODrounds"
 
-> **Note:** Do not create a "what is AMRAP" page — the app does not support AMRAP timing.
+> **Note:** Do not create a "what is AMRAP" page — the app does not support AMRAP timing. Do not use AMRAP as a primary keyword for WODrounds-owned pages (comparison articles may mention competitors’ AMRAP support).
 
 ---
 
-# 5b. Programmatic Content Cluster (Workout Examples)
+# 7. Programmatic Content Cluster (Workout Examples)
 
 In addition to static landing pages, WODrounds can generate **programmatic content pages** that target many long‑tail workout searches.
 
@@ -272,7 +261,7 @@ This approach can gradually grow into a large content cluster without needing co
 
 ---
 
-# Prioritised Roadmap
+# 8. Prioritised Roadmap
 
 | Priority | Task | Status |
 |----------|------|--------|

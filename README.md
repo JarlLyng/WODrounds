@@ -1,29 +1,12 @@
 # WODrounds — EMOM & Interval Timer for CrossFit and HIIT
 
-A minimal workout timer for CrossFit, EMOM, Tabata and interval training. Built with SwiftUI for iPhone, iPad, Apple Watch, Mac and Apple TV.
-
-No accounts. No ads. No subscription. Just a timer.
+Minimal SwiftUI timer for CrossFit, EMOM, Tabata and intervals on iPhone, iPad, Apple Watch, Mac and Apple TV. No accounts, no ads, no subscription — a single-purpose tool (not social, not workout tracking).
 
 **[wodrounds.iamjarl.com](https://wodrounds.iamjarl.com)** · [App Store](https://apps.apple.com/app/wodrounds/id6759229877)
 
 ![Co-created with AI](https://madebyhuman.iamjarl.com/badges/co-created-white.svg)
 
----
-
-## What is WODrounds?
-
-WODrounds is a simple, focused WOD timer for functional fitness, CrossFit-style training, HIIT, EMOM, and interval sessions.
-
-Core principles:
-
-1. Ultra-minimal interface
-2. Large typography
-3. One-handed gym usability
-4. Reliable timing (Date-based, works when backgrounded)
-5. Native-first Apple experience
-6. **Start on iPhone, follow on Watch** — one workout, one state
-
-This is not a social app. This is not a tracking app. This is a tool.
+**Principles:** ultra-minimal UI; large type; one-handed use; Date-based timing (reliable when backgrounded); native Apple stack; **start on iPhone, follow on Watch** (one workout, one synced state).
 
 ---
 
@@ -159,8 +142,8 @@ Other root-level docs:
 
 | File | Description |
 |------|-------------|
-| [PrivacyPolicy.md](PrivacyPolicy.md) | Privacy policy (linked from App Store and in-app) |
-| [Support.md](Support.md) | Support page (linked from App Store and in-app) |
+| [PrivacyPolicy.md](PrivacyPolicy.md) | Privacy policy for App Store / in-app — **keep in sync** with `docs/privacy.html` |
+| [Support.md](Support.md) | Support copy for App Store / in-app — **keep in sync** with `docs/support.html` |
 
 ---
 
@@ -172,4 +155,4 @@ A static marketing site lives in `docs/` and is deployed via GitHub Pages at **[
 
 **Setup:** Repo → Settings → Pages → Source: Deploy from branch → main, /docs.
 
-**Analytics:** Umami (self-hosted). **SEO:** Canonical URLs, Open Graph, Twitter Card, JSON-LD structured data, sitemap.xml.
+**Analytics (site only):** [Umami](https://umami.is/) for aggregate page views (script loaded from our Vercel-hosted instance). The app does not use marketing analytics; iOS uses Sentry for crashes — see [PrivacyPolicy.md](PrivacyPolicy.md). **SEO:** Canonical URLs, Open Graph, Twitter Card, JSON-LD, sitemap.xml.

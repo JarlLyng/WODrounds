@@ -40,7 +40,7 @@ Each platform uses a different entitlements file via SDK-conditional build setti
 
 ## Sentry Platform Filtering
 
-Sentry-Dynamic has `platformFilter = ios` in the project — Mac and tvOS builds do **not** link or bundle the Sentry framework.
+Sentry-Dynamic has `platformFilter = ios` in the project — Mac and tvOS builds do **not** link or bundle the Sentry framework. Operational setup (DSN, Xcode) is in [SENTRY.md](SENTRY.md).
 
 ---
 

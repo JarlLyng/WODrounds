@@ -1,6 +1,6 @@
 # Sentry (iOS)
 
-Crash and error reporting for WODrounds uses Sentry and is only enabled on **iOS** (not macOS, tvOS, or Watch). The Sentry-Dynamic framework has `platformFilter = ios` in the project, so it is not bundled in Mac or tvOS builds.
+Crash and error reporting uses **Sentry on iOS only** (not macOS, tvOS, or Watch). How the target links `Sentry-Dynamic` and platform filters are documented in [ARCHIVE.md](ARCHIVE.md).
 
 ## DSN – Where to Set It
 
@@ -41,7 +41,7 @@ The app will then build with Sentry, and when running on iOS with the DSN set in
 
 ## "Upload Symbols Failed" on Archive / TestFlight
 
-When uploading an archive to App Store Connect, Xcode may show: **Upload Symbols Failed – The archive did not include a dSYM for the Sentry.framework**. This is a **known warning** with Sentry via Swift Package Manager. The project uses **Sentry-Dynamic** (dynamic framework) instead of Sentry (static) — this can reduce or eliminate the warning because dynamic frameworks sometimes include dSYM. If the warning still appears: the upload completed ("Upload completed **with warnings**"). Click **Done**; the build should appear on TestFlight. Crashes from **your app code** can still be symbolicated by Sentry via your own app dSYM. See also ReleaseReview.md.
+When uploading an archive to App Store Connect, Xcode may show: **Upload Symbols Failed – The archive did not include a dSYM for the Sentry.framework**. This is a **known warning** with Sentry via Swift Package Manager. The project uses **Sentry-Dynamic** (dynamic framework) instead of Sentry (static) — this can reduce or eliminate the warning because dynamic frameworks sometimes include dSYM. If the warning still appears: the upload completed ("Upload completed **with warnings**"). Click **Done**; the build should appear on TestFlight. Crashes from **your app code** can still be symbolicated by Sentry via your own app dSYM. See [ARCHIVE.md](ARCHIVE.md) for platform filtering (Sentry is iOS-only in this project).
 
 ## Privacy
 

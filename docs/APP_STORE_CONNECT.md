@@ -63,13 +63,13 @@ interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Apple Watch
 
 ## Support URL (required)
 
-Use the marketing domain (same as in the app):
+Use the same URL as in the app’s About screen (both paths return the same page):
 
 ```
 https://wodrounds.iamjarl.com/support
 ```
 
-(If the support page on the site is support.html, try `https://wodrounds.iamjarl.com/support.html`.)
+(`https://wodrounds.iamjarl.com/support.html` is equivalent; the sitemap lists the `.html` form.)
 
 ---
 
@@ -122,7 +122,7 @@ Select **Add Build** and choose the build you uploaded from Xcode (from TestFlig
 ## App Review Information
 
 - **Notes:** Optional. For a simple timer you can write: "WODrounds is a timer-only app. No login required. Test with EMOM (e.g. 5 rounds, 1 min) or Intervals (e.g. 20s work, 10s rest, 8 rounds)."
-- **Contact:** Verify that email and phone are correct (contact@email.com appears to be a placeholder — use a real email).
+- **Contact:** Use the email and phone you monitor (e.g. the address on the [Support](https://wodrounds.iamjarl.com/support) page).
 
 ---
 
