@@ -7,16 +7,53 @@ Goal: Generate organic traffic from people searching for workout timers and conv
 
 ---
 
-# Status: Already Implemented
+# Status: Implemented
 
-The following items from this strategy are already live on the site:
+## Content pages (15 total)
 
-- Structured data (SoftwareApplication, FAQPage, BreadcrumbList, Article)
-- FAQ section on the homepage (including privacy / tracking)
-- Guide page (`/guide.html`) covering EMOM, Tabata and interval formats
-- Keyword‑rich meta tags on pages (title, description, OG)
-- Internal linking between pages
-- Privacy copy aligned with actual data practices (Sentry on iOS, Umami on the site) — see `privacy.html` and root `PrivacyPolicy.md`
+| Page | Target keywords | Status |
+|------|----------------|--------|
+| `/` (homepage) | crossfit timer, wod timer, emom timer | Live |
+| `/guide.html` | emom guide, tabata guide, interval timer guide | Live |
+| `/emom-timer.html` | emom timer, emom timer app, crossfit emom timer | Live |
+| `/tabata-timer.html` | tabata timer, tabata timer app, 20/10 timer | Live |
+| `/interval-timer.html` | interval timer, hiit timer, work rest timer | Live |
+| `/apple-watch-timer.html` | apple watch workout timer, apple watch emom | Live |
+| `/best-crossfit-timer-apps.html` | best crossfit timer app, smartwod vs wodrounds | Live |
+| `/emom-workout-examples.html` | emom workout examples, emom workouts | Live |
+| `/tabata-workout-examples.html` | tabata workout examples, tabata workouts | Live |
+| `/10-minute-hiit-workout.html` | 10 minute hiit workout, quick hiit | Live |
+| `/20-minute-hiit-workout.html` | 20 minute hiit workout, 20 min workout | Live |
+| `/beginner-hiit-workout.html` | beginner hiit workout, easy hiit, hiit for beginners | Live |
+| `/home-gym-hiit-workout.html` | home gym workout, garage gym hiit, home hiit | Live |
+| `/privacy.html` | — | Live |
+| `/support.html` | — | Live |
+
+## Technical SEO (all done)
+
+- Google Search Console: connected and verified
+- Structured data: SoftwareApplication, FAQPage, BreadcrumbList, Article, HowTo
+- HowTo JSON-LD schemas on emom-timer, tabata-timer, interval-timer
+- Article JSON-LD with author (Jarl Lyng) on all article pages
+- Open Graph tags (type, url, title, description, image, image:width, image:height) on all pages
+- Twitter Card tags (card, title, description, image) on all pages
+- Apple Smart App Banner (`apple-itunes-app` meta) on all pages
+- `theme-color` meta on all pages
+- Non-render-blocking Google Fonts (`media="print" onload`) on all pages
+- Canonical URLs on all pages
+- `robots: index, follow` on all pages
+- Sitemap.xml with all 15 pages
+- Internal linking between all content pages
+- Mobile-responsive CSS (header, hero, titles, buttons)
+- "By IAMJARL" bylines on all article pages (EEAT signal)
+- Author name (Jarl Lyng) in hidden JSON-LD only — not shown on site
+- Global link styling (no browser-default blue links)
+
+## Off-site
+
+- Product Hunt: launched
+- Reddit r/crossfit: pending
+- Reddit r/AppleWatch: pending
 
 ---
 
@@ -51,7 +88,7 @@ WODrounds — EMOM & Interval Timer for CrossFit and HIIT
 Example meta description:
 
 ```
-Simple WOD timer for CrossFit, EMOM, Tabata and HIIT workouts. iPhone, Apple Watch, Mac and Apple TV. No accounts or ads. Privacy Policy covers optional iOS crash reporting and site analytics.
+Simple WOD timer for CrossFit, EMOM, Tabata and HIIT workouts. iPhone, Apple Watch, Mac and Apple TV. No accounts or ads. See our Privacy Policy for crash reporting (iOS) and site analytics.
 ```
 
 ---
@@ -89,52 +126,42 @@ Important keywords to include naturally:
 
 ---
 
-# 3. Workout‑Specific Landing Pages
+# 3. Workout-Specific Landing Pages
 
 Create additional pages targeting specific timer formats.
 
-Priority pages:
+Priority pages (all live):
 
 ```
-/emom-timer
-/tabata-timer
-/interval-timer
+/emom-timer.html
+/tabata-timer.html
+/interval-timer.html
+/apple-watch-timer.html
 ```
 
-Each page should include:
+Each page includes:
 
 - explanation of the workout format
-- how to run it using WODrounds
+- how to run it using WODrounds (with HowTo schema)
 - example workouts
 - App Store download CTA
 - links to related pages
-
-Example title:
-
-```
-EMOM Timer for CrossFit — WODrounds
-```
-
-These pages capture long‑tail traffic from people searching for specific timer types.
 
 ---
 
 # 4. Comparison Content
 
-A neutral comparison article can capture high‑intent users evaluating timer apps.
+A neutral comparison article captures high-intent users evaluating timer apps.
 
-Suggested page:
+Live page: `/best-crossfit-timer-apps.html`
 
-```
-/best-crossfit-timer-apps
-```
-
-Include:
+Covers:
 
 - WODrounds
 - SmartWOD
 - Seconds
-- other popular timers
+- Box Timer
+- others
 
 Focus on honest comparison rather than aggressive "alternative" pages.
 
@@ -142,11 +169,11 @@ Focus on honest comparison rather than aggressive "alternative" pages.
 
 # 5. App Store SEO (ASO)
 
-App Store optimization also influences web visibility because App Store pages often rank in Google results.
+App Store optimization influences web visibility because App Store pages often rank in Google results.
 
-**Canonical copy** for subtitles, descriptions, and keywords lives in [APP_STORE_CONNECT.md](APP_STORE_CONNECT.md). The examples below are strategic guidance only.
+**Canonical copy** for subtitles, descriptions, and keywords lives in [APP_STORE_CONNECT.md](APP_STORE_CONNECT.md).
 
-Suggested emphasis in keyword field:
+Keyword emphasis:
 
 - crossfit timer
 - emom timer
@@ -154,77 +181,42 @@ Suggested emphasis in keyword field:
 - hiit timer
 - workout timer
 
-The App Store description should naturally include these terms because Apple app pages frequently appear in Google search results.
-
 ---
 
 # 6. Educational Content
 
-Expand on the existing guide or create separate articles.
+The guide page covers EMOM, Tabata and intervals in depth. Separate articles are not needed unless targeting a very specific long-tail keyword not covered by the guide.
 
-Priority topics:
-
-```
-/how-to-do-emom-workouts
-/how-to-run-a-tabata-workout
-/hiit-workout-timer-guide
-```
-
-Each article should link to the App Store download.
-
-Example CTA:
-
-"Start your workout with WODrounds"
-
-> **Note:** Do not create a "what is AMRAP" page — the app does not support AMRAP timing. Do not use AMRAP as a primary keyword for WODrounds-owned pages (comparison articles may mention competitors’ AMRAP support).
+> **Note:** Do not create a "what is AMRAP" page — the app does not support AMRAP timing. Do not use AMRAP as a primary keyword for WODrounds-owned pages (comparison articles may mention competitors' AMRAP support).
 
 ---
 
 # 7. Programmatic Content Cluster (Workout Examples)
-
-In addition to static landing pages, WODrounds can generate **programmatic content pages** that target many long‑tail workout searches.
 
 These pages combine two intents:
 
 1. People looking for workout ideas
 2. People looking for a timer
 
-Example page structure:
+### Live pages
 
 ```
-/emom-workout-examples
-/tabata-workout-examples
-/10-minute-hiit-workout
-/20-minute-hiit-workout
-/garage-gym-hiit-workout
+/emom-workout-examples.html
+/tabata-workout-examples.html
+/10-minute-hiit-workout.html
+/20-minute-hiit-workout.html
+/beginner-hiit-workout.html
+/home-gym-hiit-workout.html
 ```
 
-Each page should include:
-
-- short explanation of the workout format
-- 3–5 example workouts
-- explanation of how to run it using the WODrounds timer
-- CTA to start the workout in the app
-
-Example content block:
+### Potential expansion (create if existing pages gain traction)
 
 ```
-## 12 Minute EMOM Workout
-
-Minute 1: 12 kettlebell swings
-Minute 2: 10 push‑ups
-Minute 3: 14 air squats
-
-Repeat for 4 rounds.
+/15-minute-hiit-workout.html
+/30-minute-hiit-workout.html
+/bodyweight-hiit-workout.html
+/crossfit-wod-of-the-day.html
 ```
-
-These pages work well because they target searches like:
-
-- "10 minute hiit workout"
-- "emom workout examples"
-- "quick hiit workout"
-
-Most timer apps do **not** create this type of content, so competition is relatively low.
 
 ### SEO benefit
 
@@ -233,46 +225,77 @@ This cluster expands topical authority from just "timers" into:
 - CrossFit workouts
 - HIIT workouts
 - EMOM programming
+- Home gym training
 
 This increases the total number of keywords the site can rank for.
 
-### Implementation approach
+---
 
-Start with a small set of pages:
+# 8. Backlink Strategy
 
-```
-/emom-workout-examples
-/tabata-workout-examples
-/10-minute-hiit-workout
-```
+### Done
 
-If they generate traffic, expand into more durations and workout types.
+- Product Hunt launch
 
-Example expansion:
+### Pending
 
-```
-/15-minute-hiit-workout
-/20-minute-hiit-workout
-/beginner-hiit-workout
-/home-gym-hiit-workout
-```
+- Reddit r/crossfit — genuine value post, not self-promotion
+- Reddit r/AppleWatch — "I built a WOD timer for Apple Watch" angle
 
-This approach can gradually grow into a large content cluster without needing complex tooling.
+### Future opportunities
+
+- Guest posts on CrossFit / fitness blogs
+- YouTube: short demo video (app walkthrough, 60-90 seconds)
+- HARO / journalist outreach (fitness tech angle)
+- CrossFit box partnerships (local gyms in Copenhagen)
+- Open-source or developer community posts (SwiftUI, multi-platform)
 
 ---
 
-# 8. Prioritised Roadmap
+# 9. Monitoring
+
+### Google Search Console
+
+- Connected and verified
+- Check weekly: impressions, clicks, average position
+- Watch for: crawl errors, indexing issues, Core Web Vitals flags
+
+### Umami Analytics
+
+- Site analytics at umami-iamjarl.vercel.app
+- Track: page views, referral sources, top pages
+
+### Key metrics to watch
+
+- Which content pages drive the most organic impressions
+- Click-through rate on workout example pages vs. timer pages
+- Whether new pages get indexed within 1-2 weeks
+- Backlink acquisition from Reddit / Product Hunt
+
+---
+
+# 10. Prioritised Roadmap
 
 | Priority | Task | Status |
 |----------|------|--------|
-| 1 | Update GitHub README with SEO keywords and topics | Done |
+| 1 | Update GitHub README with SEO keywords | Done |
 | 2 | Create /emom-timer landing page | Done |
 | 3 | Create /tabata-timer landing page | Done |
 | 4 | Create /interval-timer landing page | Done |
-| 5 | Create /emom-workout-examples page | Done |
-| 6 | Create /tabata-workout-examples page | Done |
-| 7 | Create /10-minute-hiit-workout page | Done |
-| 8 | Expand guide with more example workouts | Done |
-| 9 | Create "Apple Watch workout timer" landing page | Done |
-| 10 | Write "best CrossFit timer apps" comparison | Done |
-| 11 | Post on Reddit / Product Hunt for backlinks | Todo |
+| 5 | Create /apple-watch-timer landing page | Done |
+| 6 | Create /emom-workout-examples page | Done |
+| 7 | Create /tabata-workout-examples page | Done |
+| 8 | Create /10-minute-hiit-workout page | Done |
+| 9 | Create /20-minute-hiit-workout page | Done |
+| 10 | Create /beginner-hiit-workout page | Done |
+| 11 | Create /home-gym-hiit-workout page | Done |
+| 12 | Write "best CrossFit timer apps" comparison | Done |
+| 13 | Expand guide with more example workouts | Done |
+| 14 | Complete technical SEO (meta tags, schemas, fonts) | Done |
+| 15 | Mobile-optimize site | Done |
+| 16 | Connect Google Search Console | Done |
+| 17 | Post on Product Hunt | Done |
+| 18 | Post on Reddit r/crossfit | Todo |
+| 19 | Post on Reddit r/AppleWatch | Todo |
+| 20 | Expand content cluster based on GSC data | Todo |
+| 21 | Create short YouTube demo video | Todo |
