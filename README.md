@@ -116,6 +116,14 @@ The app follows the IAMJARL design system via SPM package ([iamjarl-design](http
 
 ---
 
+## Task Management
+
+All tasks, bugs and feature requests are tracked as **GitHub Issues** on this repo. Labels: `bug`, `ASO`, `SEO`, `content`, `marketing`.
+
+Do not create task-tracking `.md` files — use Issues instead.
+
+---
+
 ## Future Considerations
 
 - Live Activities / Dynamic Island
@@ -151,7 +159,7 @@ Other root-level docs:
 
 A static marketing site lives in `docs/` and is deployed via GitHub Pages at **[wodrounds.iamjarl.com](https://wodrounds.iamjarl.com)**.
 
-**Pages:** Homepage, EMOM timer, Interval timer, Tabata timer, Apple Watch timer, comparison article, workout examples (EMOM, Tabata, 10-minute HIIT), guide, privacy, support.
+**Pages (15):** Homepage, EMOM timer, Interval timer, Tabata timer, Apple Watch timer, comparison article, workout examples (EMOM, Tabata, 10-min HIIT, 20-min HIIT, beginner HIIT, home gym HIIT), guide, privacy, support.
 
 **Setup:** Repo → Settings → Pages → Source: Deploy from branch → main, /docs.
 
