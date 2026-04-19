@@ -45,6 +45,12 @@ final class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
         decodeAndPublish(applicationContext)
     }
 
+    /// Handle sendMessage for immediate delivery when Watch is reachable.
+    func session(_ session: WCSession,
+                 didReceiveMessage message: [String: Any]) {
+        decodeAndPublish(message)
+    }
+
     // MARK: - Private
 
     private func decodeAndPublish(_ context: [String: Any]) {

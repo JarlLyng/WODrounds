@@ -6,5 +6,9 @@
 	<string>public.app-category.healthcare-fitness</string>
 	<key>WKCompanionAppBundleIdentifier</key>
 	<string>com.iamjarl.WODrounds</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>WODrounds does not read your health data. This permission is shown by the system for HealthKit access.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>WODrounds saves your workouts to Apple Health so Fitness and Activity show when you train.</string>
 </dict>
 </plist>

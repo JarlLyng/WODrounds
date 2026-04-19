@@ -32,14 +32,26 @@ enum WODTimerSync {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         guard let data = try? encoder.encode(payload) else { return }
-        try? session.updateApplicationContext(["payload": data])
+        let message = ["payload": data]
+        // Always update application context so the Watch has latest state when it opens.
+        try? session.updateApplicationContext(message)
+        // Also send via sendMessage for immediate delivery if Watch is reachable.
+        if session.isReachable {
+            session.sendMessage(message, replyHandler: nil) { _ in
+                // Silently ignore — applicationContext is the fallback.
+            }
+        }
     }
 
     static func clear() {
         guard WCSession.isSupported() else { return }
         let session = WCSession.default
         guard session.activationState == .activated else { return }
-        try? session.updateApplicationContext(["payload": Data()])
+        let message = ["payload": Data()]
+        try? session.updateApplicationContext(message)
+        if session.isReachable {
+            session.sendMessage(message, replyHandler: nil) { _ in }
+        }
     }
 
     /// Minimal delegate required by WCSession on the phone side.

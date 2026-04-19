@@ -11,6 +11,7 @@ import SwiftUI
 struct WODroundsWatchApp: App {
     init() {
         WatchSessionManager.shared.activate()
+        WatchWorkoutSession.shared.requestAuthorizationIfNeeded()
     }
 
     var body: some Scene {
