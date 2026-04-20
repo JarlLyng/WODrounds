@@ -4,7 +4,7 @@ Minimal SwiftUI timer for CrossFit, EMOM, Tabata and intervals on iPhone, iPad, 
 
 **[wodrounds.iamjarl.com](https://wodrounds.iamjarl.com)** · [App Store](https://apps.apple.com/app/wodrounds/id6759229877)
 
-![Co-created with AI](https://madebyhuman.iamjarl.com/badges/co-created-white.svg)
+[![Co-created with AI](https://madebyhuman.iamjarl.com/badges/co-created-white.svg)](https://madebyhuman.iamjarl.com)
 
 **Principles:** ultra-minimal UI; large type; one-handed use; Date-based timing (reliable when backgrounded); native Apple stack; **start on iPhone, follow on Watch** (one workout, one synced state).
 
