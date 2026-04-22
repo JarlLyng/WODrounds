@@ -1,250 +1,223 @@
-# SEO, ASO & GEO Strategy — WODrounds
+# WODrounds — SEO & ASO Strategy
 
-Site: https://wodrounds.iamjarl.com  
-App Store: https://apps.apple.com/app/wodrounds/id6759229877  
-Google Search Console: Connected  
-Umami Analytics: Connected  
-Last updated: 2026-04-15
+**Last Updated:** April 2026
+**Owner:** Jarl Lyng / IAMJARL
+**App:** Minimal EMOM + interval timer for iPhone, iPad, Apple Watch, Mac, Apple TV
 
 ---
 
-## 1. Product positioning
+## 1. Positioning
 
-WODrounds er en minimal EMOM- og interval-timer til CrossFit, HIIT og Tabata. Gratis, native på iPhone, iPad, Apple Watch, Mac og Apple TV. Ingen konti, ingen reklamer, ingen abonnementer.
+**One sentence:** The minimal Apple-first EMOM and interval timer for CrossFit, HIIT and Tabata — no account, no subscription, no ads.
 
-SEO positioning: **den multi-platform WOD timer** — differentierer fra SmartWOD, Seconds, Box Timer via Apple TV + Mac support, nul-konto design og Apple Watch-sync.
+**The wedge we own:**
+- "minimal, private, Apple-first timer" — narrow, defensible
+- Multi-platform (5 Apple platforms) — hard to replicate
+- No-subscription is rare in fitness category — signals trust
 
----
+**What we don't compete on:**
+- Feature breadth (SmartWOD has AMRAP, For Time, more)
+- Cross-platform (no Android, no web app)
+- Community features (no social, no leaderboards)
 
-## 2. Hvad der allerede er på plads
-
-### Website technical SEO (done)
-
-- [x] Statisk HTML, GitHub Pages
-- [x] `robots.txt` + `sitemap.xml` (15 URL'er, manuelt vedligeholdt)
-- [x] `SoftwareApplication` + `FAQPage` JSON-LD på homepage
-- [x] OG tags, Twitter cards, canonical URL'er, `apple-itunes-app` meta — alle sider
-- [x] `meta name="keywords"` med relevante søgeord per side
-- [x] Google Fonts med `preconnect` + non-render-blocking load
-- [x] Scroll reveal med `prefers-reduced-motion` respekt
-- [x] Google Search Console connected
-- [x] Umami analytics
-
-### Homepage (done)
-
-- [x] H1: "The only WOD timer you need."
-- [x] 7-item FAQ med FAQPage JSON-LD
-- [x] Feature-sektion, multi-platform showcase, principper-sektion
-- [x] Hero screenshot + App Store CTA
-
-### SEO landing pages — 15 sider (done)
-
-| Side | Schema(er) |
-|------|-----------|
-| `emom-timer.html` | BreadcrumbList + HowTo |
-| `interval-timer.html` | BreadcrumbList + HowTo |
-| `tabata-timer.html` | BreadcrumbList + HowTo |
-| `guide.html` | BreadcrumbList + Article + HowTo |
-| `20-minute-hiit-workout.html` | BreadcrumbList + Article |
-| `beginner-hiit-workout.html` | BreadcrumbList + Article |
-| `home-gym-hiit-workout.html` | BreadcrumbList + Article |
-| `emom-workout-examples.html` | BreadcrumbList |
-| `tabata-workout-examples.html` | BreadcrumbList |
-| `10-minute-hiit-workout.html` | BreadcrumbList |
-| `apple-watch-timer.html` | BreadcrumbList |
-| `best-crossfit-timer-apps.html` | BreadcrumbList |
-
-### Off-site (done)
-
-- [x] Product Hunt lanceret
+Adding breadth weakens the wedge. When in doubt: stay narrow.
 
 ---
 
-## 3. DU SKAL: Ret fejl i koden
+## 2. Platforms & Build Status
 
-Se `RETTELSER.md` i projektets rod. Opsummering:
-
-1. **SoftwareApplication JSON-LD pris** → `"price": ""` er ugyldig. Ret til `"price": "0"` i `index.html`
-2. **App Store URL** → Hero og bund-CTA bruger `https://apps.apple.com/app/wodrounds` uden app-ID. Ret til `https://apps.apple.com/app/wodrounds/id6759229877`
-3. **Article-schema mangler på 5 ældre sider** → Tilføj Article JSON-LD til: `10-minute-hiit-workout.html`, `emom-workout-examples.html`, `tabata-workout-examples.html`, `apple-watch-timer.html`, `best-crossfit-timer-apps.html`
-
----
-
-## 4. ASO — App Store Optimization
-
-### Nuværende metadata (fra APP_STORE_CONNECT.md)
-
-**App name:** WODrounds  
-**Subtitle:** `EMOM & Intervals Timer` (22 tegn)  
-**Keywords iOS:** 65/100 tegn brugt  
-
-### DU SKAL: Udvid keyword-felter
-
-**iOS (anbefalet — ~99 tegn):**
-```
-interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Apple Watch,functional,WOD,fit
-```
-
-**Mac (anbefalet — ~98 tegn):**
-```
-interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Mac,desktop timer,WOD,fitness
-```
-
-**Apple TV** er allerede 90 tegn — OK som den er.
-
-### DU SKAL: Tilføj skandinaviske keyword-felter
-
-**Dansk (DK):**
-```
-trænings timer,interval timer,EMOM,Tabata,HIIT,CrossFit,WOD,Apple Watch,træningstimer,funktionel
-```
-
-**Svensk (SE):**
-```
-tränings timer,intervall timer,EMOM,Tabata,HIIT,CrossFit,WOD,Apple Watch,träningstimer,funktionell
-```
-
-**Norsk (NO):**
-```
-trenings timer,intervall timer,EMOM,Tabata,HIIT,CrossFit,WOD,Apple Watch,treningstimer,funksjonell
-```
-
-### Screenshots-strategi
-
-Apple's AI-genererede Tags læser metadata + screenshots. Anbefalede captions:
-
-- Screenshot 1: "EMOM timer — set rounds and round length"
-- Screenshot 2: "Interval timer — work, rest, rounds"
-- Screenshot 3: "Start on iPhone, follow on Apple Watch"
-- Screenshot 4: "Native on Mac and Apple TV"
-- Screenshot 5: "No accounts. No ads. Just timer."
+| Platform | Status | Min Version |
+|---|---|---|
+| iPhone | Live | iOS 17+ |
+| iPad | Live | iPadOS 17+ |
+| Apple Watch | Live (synced + simple standalone) | watchOS 10+ |
+| Mac | Live | macOS 14+ |
+| Apple TV | Live | tvOS 17+ |
 
 ---
 
-## 5. Keyword-strategi
+## 3. Keywords
 
-### Tier 1 — Højeste relevans
+### Primary (App Store + web)
+- CrossFit timer
+- EMOM timer
+- interval timer
+- Tabata timer
+- HIIT timer
+- Apple Watch workout timer
+- workout timer app
 
-- emom timer app
-- interval timer app / workout interval timer
-- crossfit timer app / wod timer
-- tabata timer app
+### Long-tail (already target specific landing pages)
+- "best crossfit timer app 2026" — `best-crossfit-timer-apps.html`
+- "emom workout examples" — `emom-workout-examples.html`
+- "tabata workout examples" — `tabata-workout-examples.html`
+- "10 minute hiit workout" — `10-minute-hiit-workout.html`
+- "20 minute hiit workout" — `20-minute-hiit-workout.html`
+- "beginner hiit workout" — `beginner-hiit-workout.html`
+- "home gym hiit workout" — `home-gym-hiit-workout.html`
 
-### Tier 2 — Informationelle (dækket af landing pages)
-
-- emom workout examples
-- tabata workout examples
-- 10/20 minute hiit workout
-- best crossfit timer apps
-- apple watch workout timer
-- beginner hiit workout
-
-### Tier 3 — Differentiering
-
-- free crossfit timer no subscription
-- emom timer apple tv
-- workout timer no account
-- interval timer mac
-
-### Tier 4 — Skandinavisk (lav konkurrence)
-
-- crossfit timer app (DA/SV/NO)
-- træningstimer / träningstimer / trenings timer
-- emom timer (søges på alle tre sprog)
+### App Store Keyword Field (100 chars max, iOS)
+```
+emom,tabata,hiit,crossfit,interval,workout,timer,wod,functional,home gym,apple watch,fitness
+```
 
 ---
 
-## 6. DU SKAL: Udvid cross-linking
+## 4. App Store Metadata
 
-### Footer-links til andre IAMJARL-projekter
+### iOS / iPadOS
+- **Title (30 chars):** `WODrounds – Interval Timer`
+- **Subtitle (30 chars):** `EMOM & HIIT, No Signup`
+- **Promotional Text (170 chars):** `Minimal EMOM, Tabata and HIIT timer for Apple Watch, iPhone, iPad, Mac and Apple TV. No account, no ads, no subscription. Works offline.`
 
-Tilføj på alle sider:
+### Mac (same title, separate listing)
+- Emphasize big-screen gym-clock use case in description
 
-- [Wean Nicotine](https://weannicotine.iamjarl.com) — relateret sundhedsapp
-- [Made by Human](https://madebyhuman.iamjarl.com) — IAMJARL brand
-- [iamjarl.com](https://iamjarl.com) — allerede til stede
+### tvOS (separate listing)
+- Emphasize garage-gym / box timer use case on a TV
 
-### Intern cross-linking
+### App Store Description (core template)
+```
+WODrounds is the timer you need, stripped of everything you don't.
 
-Siderne mangler "Related articles"-links. Tilføj i bunden af hver landing page:
+FOR:
+• EMOM (Every Minute on the Minute)
+• Tabata intervals (20s on, 10s off)
+• HIIT and interval training
+• CrossFit sessions
+• Home gym workouts
 
-- `emom-timer.html` → `emom-workout-examples.html`, `guide.html`
-- `tabata-timer.html` → `tabata-workout-examples.html`, `interval-timer.html`
-- `10-minute-hiit-workout.html` → `20-minute-hiit-workout.html`, `beginner-hiit-workout.html`
-- `best-crossfit-timer-apps.html` → `emom-timer.html`, `interval-timer.html`
-- Workout-eksempler → relaterede timer-sider
+FEATURES:
+• Minimal UI designed for one-handed use between rounds
+• Works offline. No account required.
+• Native on iPhone, iPad, Apple Watch, Mac and Apple TV
+• Apple Watch syncs with iPhone via WatchConnectivity
+• Haptic feedback at round transitions on Watch
+• Saves completed workouts to Apple Health (iOS, optional)
+• Dark-first design, works in any lighting
 
----
+WHY:
+• No subscription, no ads, no in-app purchases
+• No login, no account
+• No marketing trackers (optional iOS crash reporting via Sentry)
 
-## 7. GEO — Generative Engine Optimization
+Built solo in Copenhagen by an indie developer who trains CrossFit.
+```
 
-### Hvad der er på plads
-
-Homepage FAQ er velstruktureret til AI-ekstraktion (7 spørgsmål med direkte svar, FAQPage JSON-LD). HowTo-schema på timer-siderne giver step-by-step indhold til AI-motorer.
-
-### DU SKAL: Optimér for AI-passage-ekstraktion
-
-Hver landing page bør have:
-
-1. En direkte, faktuel åbningssætning (svarer på søgeforespørgslen)
-2. Selvstændige sektioner
-3. Mindst ét konkret datapunkt per sektion
-
-**Target queries for AI-citation:**
-
-- "What is the best EMOM timer app?" → `emom-timer.html`
-- "Best free CrossFit timer app" → `best-crossfit-timer-apps.html`
-- "How do I do a Tabata workout?" → `tabata-timer.html`
-- "Apple Watch workout timer" → `apple-watch-timer.html`
-
-### DU SKAL: Tilføj konkrete datapunkter
-
-- "WODrounds supports 1–120 rounds with round lengths from 30 seconds to 9 minutes 30 seconds"
-- "Available on 5 Apple platforms: iPhone, iPad, Apple Watch, Mac, and Apple TV"
-- "Tabata protocol: 20 seconds work, 10 seconds rest, 8 rounds — developed by Dr. Izumi Tabata in 1996"
-- "No subscription, no in-app purchases, no account required"
+### Scandinavian localizations (track in #3)
+See open issue [#3](https://github.com/JarlLyng/WODrounds/issues/3) for Danish, Swedish, Norwegian metadata.
 
 ---
 
-## 8. Indhold der stadig mangler
+## 5. Marketing Site Structure
 
-### P2 — Denne måned
+The site at `wodrounds.iamjarl.com` is served as static HTML via GitHub Pages (`docs/` folder).
 
-- **Skandinaviske landing pages**: `da/`, `sv/`, `no/` versioner af emom-timer og interval-timer. Lavt konkurrence-marked, høj intent. Kræver hreflang-tags.
-- **AMRAP timer landing page**: Populært CrossFit-format. Bemærk: eksisterende strategi siger "do not create AMRAP page" — men en informationel side om AMRAP-formatet der linker til intervaltimeren kan stadig fange søgninger.
+### Core pages (all live)
+- `index.html` — Hero, features, screenshots, FAQ
+- `emom-timer.html` — Intent: "emom timer"
+- `tabata-timer.html` — Intent: "tabata timer"
+- `interval-timer.html` — Intent: "interval timer"
+- `apple-watch-timer.html` — Intent: "apple watch workout timer"
+- `best-crossfit-timer-apps.html` — Intent: "best crossfit timer app"
+- `guide.html` — When to use EMOM vs intervals vs Tabata
 
-### P3 — Nice to have
+### Workout example pages (all live)
+- `emom-workout-examples.html`
+- `tabata-workout-examples.html`
+- `10-minute-hiit-workout.html`
+- `20-minute-hiit-workout.html`
+- `beginner-hiit-workout.html`
+- `home-gym-hiit-workout.html`
 
-- **"For Time" timer page**: Endnu et CrossFit-format.
-- **Comparison pages**: WODrounds vs. SmartWOD, WODrounds vs. Seconds — high intent.
-- **YouTube demo video**: 60-90 sekunders app walkthrough.
-- **Yderligere workout-sider** (baseret på GSC-data): 15/30-minute HIIT, bodyweight HIIT.
+### Supporting pages
+- `privacy.html`, `support.html`
 
----
-
-## 9. Where to make noise
-
-### Reddit
-
-- **r/crossfit** (~400k) — svar på timer-tråde
-- **r/HIIT** (~100k) — Tabata og interval-indhold
-- **r/homegym** (~600k) — "what timer do you use" tråde
-- **r/AppleWatch** (~500k) — workout-apps for Watch
-- **r/SideProject** — indie dev-vinkel
-
-### Andre kanaler
-
-- **Product Hunt** — allerede lanceret
-- **Indie Hackers** — "how I built a multi-platform SwiftUI app"
-- **Hacker News** — Show HN: SwiftUI on 5 Apple platforms
-- **AlternativeTo.com** — alternativ til SmartWOD Timer, Seconds, Box Timer
-- **CrossFit-forummer og Facebook-grupper** — timer-anbefalinger
-- **Twitter/X** — #buildinpublic, #indiedev, #crossfit, #swiftui
+All pages have: canonical URLs, Open Graph, Twitter Cards, JSON-LD (Article / BreadcrumbList / SoftwareApplication / FAQPage / HowTo where relevant), non-render-blocking fonts.
 
 ---
 
-## 10. Monitoring
+## 6. Content Principles
 
-- **Google Search Console**: Tjek ugentligt — impressions, clicks, average position, crawl errors
-- **Umami Analytics**: Sidevisninger, referral sources, top sider
-- **Nøgletal**: Hvilke indholdssider driver mest organisk trafik, CTR på workout-sider vs. timer-sider, indekseringstid for nye sider
+### What Google actually asks for
+Google explicitly says there are no special technical requirements or markup for inclusion in AI features ([source](https://developers.google.com/search/docs/appearance/ai-features)). That means the path to citability is the same as good SEO: **people-first content that matches the product**.
+
+The principles that guide our content:
+
+1. **First-hand experience** — describe what's actually in the app. No invented features. No aspirational claims.
+2. **Specific over generic** — "1–120 rounds" beats "many rounds". "0:30–9:30 round length" beats "customizable".
+3. **Structured data must match visible content 1:1** — no schema-only tricks. If the page says X, the schema says X, and the app does X.
+4. **Author clarity** — each article-type page has a visible "By IAMJARL" byline and JSON-LD `author: Jarl Lyng` for E-E-A-T signals.
+5. **Content depth over breadth** — strengthen the existing 13 pages before adding new ones.
+
+### What we don't do
+- ❌ Special "AI markup" beyond standard schema.org
+- ❌ Content for content's sake
+- ❌ Generic "fitness content farm" pages unrelated to the app
+- ❌ Claims that contradict code or App Store description
+
+---
+
+## 7. Outreach & Link Building
+
+Active issues track the outreach pipeline:
+
+- [#4](https://github.com/JarlLyng/WODrounds/issues/4) — Reddit (r/crossfit, r/hiit, r/homegym, r/SideProject, others)
+- [#17](https://github.com/JarlLyng/WODrounds/issues/17) — Launch platforms (Show HN, Indie Hackers, Betalist, AlternativeTo, Slant)
+- [#18](https://github.com/JarlLyng/WODrounds/issues/18) — Apple blogs (MacStories, The Sweet Setup, iOS Dev Weekly)
+- [#19](https://github.com/JarlLyng/WODrounds/issues/19) — CrossFit media (BoxRox, Morning Chalk Up)
+- [#12](https://github.com/JarlLyng/WODrounds/issues/12) — YouTube demo video
+
+All have ready-to-use copy posted as comments.
+
+### Cross-linking approach
+- Homepage + guide page: keep "More from IAMJARL" footer cross-links (portfolio signal)
+- Other pages: remove cross-links (keeps product domain focused, see #31)
+- Every page: "Built by IAMJARL" copyright text with link (E-E-A-T signal, no visual noise)
+
+---
+
+## 8. Measurement
+
+### Tools
+- **Google Search Console** — organic queries, clicks, impressions, CWV
+- **Bing Webmaster Tools** — secondary index, Bing-specific queries
+- **Umami** — aggregate page views (wodrounds.iamjarl.com only, no user tracking)
+
+### Metrics we watch
+- Organic clicks per week (target: grow month-over-month for first 6 months)
+- Top queries driving clicks (informs keyword decisions)
+- Pages with 0 impressions (candidates for removal or rewrite)
+- Core Web Vitals on all landing pages
+- App Store conversions from web (track via utm params on App Store links)
+
+### Metrics we don't chase
+- Vanity DA/PA scores (not meaningful for a single-product site)
+- Absolute traffic numbers (narrow wedge means small but qualified audience)
+- Ranking positions (volatile; focus on clicks)
+
+---
+
+## 9. Roadmap — Deprioritized
+
+We used to have a 90-day roadmap here. It's been superseded by GitHub Issues:
+
+- Open SEO issues: https://github.com/JarlLyng/WODrounds/issues?q=is%3Aissue+is%3Aopen+label%3ASEO
+- Open content issues: https://github.com/JarlLyng/WODrounds/issues?q=is%3Aissue+is%3Aopen+label%3Acontent
+- Open ASO issues: https://github.com/JarlLyng/WODrounds/issues?q=is%3Aissue+is%3Aopen+label%3AASO
+
+The issue tracker is the single source of truth.
+
+---
+
+## 10. Future Considerations
+
+Not part of current scope — tracked as roadmap, not implemented:
+
+- Apple Watch complications
+- Live Activities / Dynamic Island
+- Multi-stage intervals
+- AMRAP / For Time timer modes
+- Siri Shortcuts integration
+
+None of these exist today. Don't write marketing copy that claims they do.

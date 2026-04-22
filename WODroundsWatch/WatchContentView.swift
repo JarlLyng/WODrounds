@@ -42,7 +42,9 @@ struct WatchContentView: View {
                 let isLocalEmom: Bool
                 if case .emom = engine.mode { isLocalEmom = true } else { isLocalEmom = false }
                 let disp = isLocalEmom ? local.remainingTimeInPhase : local.remainingTime
-                return (disp, local.currentRound, engine.totalDurationMinutes, local.state)
+                // Use engine.rounds (handles both EMOM and Intervals) instead of totalDurationMinutes
+                // which returns 0 for intervals. Prevents "R x/0" bug when Watch gains local interval config.
+                return (disp, local.currentRound, engine.rounds, local.state)
             }()
             let workoutActive = useSynced || engine.state == .running || engine.state == .paused
 
