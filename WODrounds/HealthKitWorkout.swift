@@ -29,6 +29,7 @@ final class HealthKitWorkoutController {
     }
 
     /// Call once (e.g. when app launches or before first workout). Requests permission to save workouts.
+    /// Only requests write permission — no read permissions, to keep the privacy footprint minimal.
     func requestAuthorizationIfNeeded(completion: @escaping (Bool) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
             completion(false)
@@ -38,10 +39,7 @@ final class HealthKitWorkoutController {
             HKObjectType.workoutType(),
             HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
         ]
-        let typesToRead: Set<HKObjectType> = [
-            HKQuantityType.quantityType(forIdentifier: .bodyMass)!
-        ]
-        healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { success, error in
+        healthStore.requestAuthorization(toShare: typesToShare, read: []) { success, error in
             if let error {
                 print("[HealthKit] Authorization error: \(error.localizedDescription)")
             }
@@ -103,26 +101,27 @@ final class HealthKitWorkoutController {
                 return
             }
 
-            self.fetchLatestBodyMass { weightInKg in
-                let mass = weightInKg ?? 75.0 // Fallback to 75kg if no weight permission/data
-                let durationMinutes = max(0, safeEndDate.timeIntervalSince(startDate)) / 60.0
+            // Use a constant reference weight (75kg) to avoid requesting read permission
+            // for bodyMass. Keeps permission footprint minimal. Kcal estimate will be
+            // within ~10-15% of exact for most users — good enough for Activity rings.
+            let mass: Double = 75.0
+            let durationMinutes = max(0, safeEndDate.timeIntervalSince(startDate)) / 60.0
 
-                // HIIT MET value is generally defined around 8.0 by standard compendiums
-                let met: Double = 8.0
-                let totalKcal = (met * 3.5 * mass / 200.0) * durationMinutes
+            // HIIT MET value is generally defined around 8.0 by standard compendiums
+            let met: Double = 8.0
+            let totalKcal = (met * 3.5 * mass / 200.0) * durationMinutes
 
-                if totalKcal > 0, let energyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) {
-                    let quantity = HKQuantity(unit: .kilocalorie(), doubleValue: totalKcal)
-                    let sample = HKQuantitySample(type: energyType, quantity: quantity, start: startDate, end: safeEndDate)
-                    currentBuilder.add([sample]) { _, addError in
-                        if let addError {
-                            print("[HealthKit] add energy sample failed: \(addError.localizedDescription)")
-                        }
-                        self.finishBuilder(currentBuilder, completion: completion)
+            if totalKcal > 0, let energyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) {
+                let quantity = HKQuantity(unit: .kilocalorie(), doubleValue: totalKcal)
+                let sample = HKQuantitySample(type: energyType, quantity: quantity, start: startDate, end: safeEndDate)
+                currentBuilder.add([sample]) { _, addError in
+                    if let addError {
+                        print("[HealthKit] add energy sample failed: \(addError.localizedDescription)")
                     }
-                } else {
                     self.finishBuilder(currentBuilder, completion: completion)
                 }
+            } else {
+                self.finishBuilder(currentBuilder, completion: completion)
             }
         }
     }
@@ -137,23 +136,6 @@ final class HealthKitWorkoutController {
             }
             DispatchQueue.main.async { completion?(error == nil) }
         }
-    }
-
-    private func fetchLatestBodyMass(completion: @escaping (Double?) -> Void) {
-        guard let massType = HKQuantityType.quantityType(forIdentifier: .bodyMass) else {
-            completion(nil)
-            return
-        }
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
-        let query = HKSampleQuery(sampleType: massType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { _, samples, _ in
-            guard let sample = samples?.first as? HKQuantitySample else {
-                completion(nil)
-                return
-            }
-            let weightInKg = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))
-            completion(weightInKg)
-        }
-        healthStore.execute(query)
     }
 
     /// Call if the user cancels before any real workout (e.g. countdown aborted). No-op if no workout was started.

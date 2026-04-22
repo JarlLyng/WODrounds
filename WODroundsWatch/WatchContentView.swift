@@ -137,6 +137,7 @@ struct WatchContentView: View {
                         e.start(now: end)
                         engine = e
                         countdownEndTime = nil
+                        WKInterfaceDevice.current().play(.start)
                     } else if engine.state == .running {
                         var e = engine
                         e.tick(now: newDate)
@@ -146,7 +147,13 @@ struct WatchContentView: View {
                 .onChange(of: currentRound) { _, newRound in
                     if (state == .running || state == .paused), newRound > lastFlashRound {
                         triggerFlash()
+                        WKInterfaceDevice.current().play(.notification)
                         lastFlashRound = newRound
+                    }
+                }
+                .onChange(of: state) { _, newState in
+                    if newState == .finished {
+                        WKInterfaceDevice.current().play(.success)
                     }
                 }
                 .onChange(of: workoutActive) { _, isActive in
