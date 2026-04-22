@@ -103,6 +103,7 @@ The app follows the IAMJARL design system via SPM package ([iamjarl-design](http
 - **Xcode:** Open `WODrounds.xcodeproj`. Select scheme **WODrounds** (iOS) or **WODrounds Watch** (watchOS). Build and run on simulator or device.
 - **iOS + Watch:** Use "Any iOS Device" (or a physical iPhone) to run the main app; the Watch app is embedded and installs with the iOS app.
 - **Tests:** `WODroundsTests` uses Swift Testing; run tests via **Product → Test** or `⌘U`.
+- **Docs validation:** Run `python3 scripts/validate_docs.py` before committing docs changes. Also runs automatically on every push to `main` via `.github/workflows/docs.yml`. Checks image references, App Store URLs, JSON-LD validity, sitemap integrity, and canonical URLs.
 
 ---
 
