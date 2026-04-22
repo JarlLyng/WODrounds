@@ -75,7 +75,7 @@ struct ContentView: View {
     var body: some View {
         TimelineView(.periodic(from: Date(), by: 1.0)) { timeline in
             tvOSContent(now: timeline.date, rounds: $rounds, emomRoundLength: $emomRoundLengthSeconds, intervalsWork: $intervalsWork, intervalsRest: $intervalsRest, intervalsRounds: $intervalsRounds)
-                .onChange(of: timeline.date) { _, newDate in
+                .onChange(of: timeline.date) { newDate in
                     if engine.state == .running {
                         var e = engine
                         e.tick(now: newDate)
@@ -91,21 +91,21 @@ struct ContentView: View {
                     }
                     check30SecondsRemainingSound(now: newDate)
                 }
-                .onChange(of: engine.snapshot(now: timeline.date).currentRound) { _, newRound in
+                .onChange(of: engine.snapshot(now: timeline.date).currentRound) { newRound in
                     if (engine.state == .running || engine.state == .paused), timerMode == .emom, newRound > lastHapticRound {
                         triggerFlash()
                         lastHapticRound = newRound
                         WorkoutSoundManager.checkRoundsRemaining(currentRound: newRound, totalRounds: rounds)
                     }
                 }
-                .onChange(of: engine.snapshot(now: timeline.date).currentPhase) { _, newPhase in
+                .onChange(of: engine.snapshot(now: timeline.date).currentPhase) { newPhase in
                     if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
                         triggerFlash()
                         lastHapticPhase = newPhase
                         WorkoutSoundManager.checkRoundsRemaining(currentRound: engine.snapshot(now: timeline.date).currentRound, totalRounds: intervalsRounds)
                     }
                 }
-                .onChange(of: engine.state) { _, newState in
+                .onChange(of: engine.state) { newState in
                     if newState == .finished {
                         WorkoutSoundManager.playYouDidIt()
                     }

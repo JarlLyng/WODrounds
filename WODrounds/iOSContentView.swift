@@ -44,7 +44,7 @@ struct ContentView: View {
                 intervalsRounds: $intervalsRounds,
                 now: timeline.date
             )
-            .onChange(of: timeline.date) { _, newDate in
+            .onChange(of: timeline.date) { newDate in
                 if engine.state == .running {
                     var e = engine
                     e.tick(now: newDate)
@@ -128,11 +128,11 @@ private struct iOSContent: View {
         .padding(DesignTokens.Spacing.md)
         .overlay { flashOverlay }
         .overlay { countdownOverlay }
-        .onChange(of: now) { _, newDate in
+        .onChange(of: now) { newDate in
             handleDateChange(newDate)
             check30SecondsRemainingSound(now: newDate)
         }
-        .onChange(of: engine.state) { _, newState in
+        .onChange(of: engine.state) { newState in
             applyIdleTimer(newState)
             if newState == .idle || newState == .finished {
                 lastHapticRound = 0
@@ -153,7 +153,7 @@ private struct iOSContent: View {
                 }
             }
         }
-        .onChange(of: snapshot.currentRound) { _, newRound in
+        .onChange(of: snapshot.currentRound) { newRound in
             if (engine.state == .running || engine.state == .paused), timerMode == .emom, newRound > lastHapticRound {
                 Haptics.light()
                 triggerFlash()
@@ -161,7 +161,7 @@ private struct iOSContent: View {
                 WorkoutSoundManager.checkRoundsRemaining(currentRound: newRound, totalRounds: rounds)
             }
         }
-        .onChange(of: snapshot.currentPhase) { _, newPhase in
+        .onChange(of: snapshot.currentPhase) { newPhase in
             if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
                 Haptics.medium()
                 triggerFlash()

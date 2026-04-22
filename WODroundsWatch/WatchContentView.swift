@@ -133,7 +133,7 @@ struct WatchContentView: View {
                         }
                     }
                 }
-                .onChange(of: timeline.date) { _, newDate in
+                .onChange(of: timeline.date) { newDate in
                     if let end = countdownEndTime, newDate >= end {
                         var e = engine
                         e.start(now: end)
@@ -146,19 +146,19 @@ struct WatchContentView: View {
                         engine = e
                     }
                 }
-                .onChange(of: currentRound) { _, newRound in
+                .onChange(of: currentRound) { newRound in
                     if (state == .running || state == .paused), newRound > lastFlashRound {
                         triggerFlash()
                         WKInterfaceDevice.current().play(.notification)
                         lastFlashRound = newRound
                     }
                 }
-                .onChange(of: state) { _, newState in
+                .onChange(of: state) { newState in
                     if newState == .finished {
                         WKInterfaceDevice.current().play(.success)
                     }
                 }
-                .onChange(of: workoutActive) { _, isActive in
+                .onChange(of: workoutActive) { isActive in
                     if isActive {
                         workoutSession.startIfNeeded()
                     } else {

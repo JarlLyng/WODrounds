@@ -28,11 +28,11 @@ Adding breadth weakens the wedge. When in doubt: stay narrow.
 
 | Platform | Status | Min Version |
 |---|---|---|
-| iPhone | Live | iOS 17+ |
-| iPad | Live | iPadOS 17+ |
-| Apple Watch | Live (synced + simple standalone) | watchOS 10+ |
-| Mac | Live | macOS 14+ |
-| Apple TV | Live | tvOS 17+ |
+| iPhone | Live | iOS 16+ |
+| iPad | Live | iPadOS 16+ |
+| Apple Watch | Live (synced + simple standalone) | watchOS 9+ |
+| Mac | Live | macOS 13+ (Ventura) |
+| Apple TV | Live | tvOS 16+ |
 
 ---
 

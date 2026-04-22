@@ -34,7 +34,7 @@ struct ContentView: View {
                 intervalsRounds: $intervalsRounds,
                 now: timeline.date
             )
-            .onChange(of: timeline.date) { _, newDate in
+            .onChange(of: timeline.date) { newDate in
                 if engine.state == .running {
                     var e = engine
                     e.tick(now: newDate)
@@ -113,7 +113,7 @@ private struct MacContent: View {
         }
         .overlay { flashOverlay }
         .overlay { countdownOverlay(now: now) }
-        .onChange(of: now) { _, newDate in
+        .onChange(of: now) { newDate in
             if let end = countdownEndTime, newDate >= end {
                 var e = engine
                 e.start(now: end)
@@ -121,13 +121,13 @@ private struct MacContent: View {
                 countdownEndTime = nil
             }
         }
-        .onChange(of: snapshot.currentRound) { _, newRound in
+        .onChange(of: snapshot.currentRound) { newRound in
             if (engine.state == .running || engine.state == .paused), timerMode == .emom, newRound > lastHapticRound {
                 triggerFlash()
                 lastHapticRound = newRound
             }
         }
-        .onChange(of: snapshot.currentPhase) { _, newPhase in
+        .onChange(of: snapshot.currentPhase) { newPhase in
             if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
                 triggerFlash()
                 lastHapticPhase = newPhase
