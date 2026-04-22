@@ -179,7 +179,7 @@ struct ContentView: View {
                 if showCancel {
                     SharedCancelButton(action: { showCancelConfirmation = true }, theme: Self.tvOSCancelTheme)
                         .buttonStyle(.card)
-                        .focusEffectDisabled()
+                        .focusEffectDisabledCompat()
                 }
             }
             .padding(.horizontal, DesignTokens.Spacing.xxl)
@@ -323,9 +323,9 @@ struct ContentView: View {
         case .finished: ("Reset", { var e = engine; e.reset(); engine = e })
         }
         return SharedPrimaryButton(title: title, action: action, theme: Self.tvOSPrimaryTheme)
-            .contentTransition(.interpolate)
+            .contentTransitionInterpolateCompat()
             .buttonStyle(.card)
-            .focusEffectDisabled()
+            .focusEffectDisabledCompat()
             .animation(.easeInOut(duration: 0.2), value: snapshot.state)
     }
 
@@ -405,7 +405,7 @@ private struct tvOSAboutView: View {
             .background(DesignTokens.Common.primary(scheme))
             .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.md))
             .buttonStyle(.card)
-            .focusEffectDisabled()
+            .focusEffectDisabledCompat()
             .padding(.horizontal, DesignTokens.Spacing.xxl)
             .padding(.bottom, DesignTokens.Spacing.xxxl)
         }

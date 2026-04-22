@@ -9,6 +9,36 @@ import SwiftUI
 
 #if os(iOS) || os(macOS) || os(tvOS)
 
+// MARK: - Compatibility shims
+
+extension View {
+    /// Applies `focusEffectDisabled()` on tvOS 17+. On tvOS 16, the system focus
+    /// indicator remains visible (acceptable fallback). No-op on non-tvOS platforms.
+    @ViewBuilder
+    func focusEffectDisabledCompat() -> some View {
+        #if os(tvOS)
+        if #available(tvOS 17.0, *) {
+            self.focusEffectDisabled()
+        } else {
+            self
+        }
+        #else
+        self
+        #endif
+    }
+
+    /// Applies `contentTransition(.interpolate)` on iOS 17+ / macOS 14+ / tvOS 17+.
+    /// On older OSes, text content changes cut directly (no interpolation).
+    @ViewBuilder
+    func contentTransitionInterpolateCompat() -> some View {
+        if #available(iOS 17.0, macOS 14.0, tvOS 17.0, *) {
+            self.contentTransition(.interpolate)
+        } else {
+            self
+        }
+    }
+}
+
 // MARK: - Shared helpers
 
 func sharedTimeString(from interval: TimeInterval) -> String {
@@ -220,7 +250,7 @@ struct SharedPrimaryButton: View {
             Text(title)
                 .font(.system(size: theme.titleSize, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.onPrimary(scheme))
-                .contentTransition(.interpolate)
+                .contentTransitionInterpolateCompat()
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, theme.verticalPadding)
                 .padding(.horizontal, theme.horizontalPadding)
@@ -287,7 +317,7 @@ struct SharedModeSwitch: View {
             #if os(tvOS)
             button
                 .buttonStyle(.card)
-                .focusEffectDisabled()
+                .focusEffectDisabledCompat()
                 .accessibilityAddTraits(timerMode == mode ? .isSelected : [])
             #else
             button

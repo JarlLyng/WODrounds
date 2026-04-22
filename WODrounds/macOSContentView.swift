@@ -299,7 +299,7 @@ private struct MacContent: View {
         case .finished: ("Reset", { var e = engine; e.reset(); engine = e })
         }
         return SharedPrimaryButton(title: title, action: action, theme: Self.macPrimaryTheme)
-            .contentTransition(.interpolate)
+            .contentTransitionInterpolateCompat()
             .animation(.easeInOut(duration: 0.2), value: snapshot.state)
     }
 
