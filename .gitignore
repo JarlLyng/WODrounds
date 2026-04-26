@@ -43,3 +43,7 @@ fastlane/screenshots/
 *.cer
 *.p12
 *.mobileprovision
+
+# Sentry — DSN is technically a public client credential, but we don't
+# commit it. Use Sentry.xcconfig.example as a template.
+Sentry.xcconfig

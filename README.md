@@ -151,6 +151,10 @@ Other root-level docs:
 
 | File | Description |
 |------|-------------|
+| [LICENSE](LICENSE) | MIT license — see file for full terms |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute, what's in/out of scope |
+| [SECURITY.md](SECURITY.md) | Reporting security issues |
+| [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | Project Code of Conduct |
 | [PrivacyPolicy.md](PrivacyPolicy.md) | Privacy policy for App Store / in-app — **keep in sync** with `docs/privacy.html` |
 | [Support.md](Support.md) | Support copy for App Store / in-app — **keep in sync** with `docs/support.html` |
 
