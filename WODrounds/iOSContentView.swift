@@ -70,6 +70,8 @@ private struct iOSContent: View {
     @Binding var intervalsRounds: Int
     let now: Date
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
     @State private var showCancelConfirmation = false
     @State private var lastHapticRound: Int = 0
@@ -82,47 +84,75 @@ private struct iOSContent: View {
     @AppStorage("completedWorkoutCount") private var completedWorkoutCount: Int = 0
     @Environment(\.requestReview) private var requestReview
 
-    private static let iosDoneTheme = DoneViewTheme(
-        checkmarkSize: 64,
-        titleSize: DesignTokens.Typography.Size.xxl,
-        bodySize: DesignTokens.Typography.Size.base,
-        verticalSpacing: DesignTokens.Spacing.xxl
-    )
-    private static let iosStepperTheme = StepperTheme(
-        labelFontSize: DesignTokens.Typography.Size.sm,
-        valueFontSize: DesignTokens.Typography.Size.title,
-        buttonSize: DesignTokens.Spacing.xxxl * 2,
-        cornerRadius: DesignTokens.Radius.md,
-        stackSpacing: DesignTokens.Spacing.lg,
-        verticalPadding: DesignTokens.Spacing.sm
-    )
-    private static let iosPrimaryTheme = PrimaryButtonTheme(
-        titleSize: DesignTokens.Typography.Size.xxl,
-        verticalPadding: DesignTokens.Spacing.md,
-        horizontalPadding: DesignTokens.Spacing.xl,
-        cornerRadius: DesignTokens.Radius.md
-    )
-    private static let iosCancelTheme = CancelButtonTheme(
-        titleSize: DesignTokens.Typography.Size.lg,
-        verticalPadding: DesignTokens.Spacing.sm,
-        horizontalPadding: DesignTokens.Spacing.xl,
-        cornerRadius: DesignTokens.Radius.sm
-    )
-    private static let iosModeSwitchTheme = ModeSwitchTheme(
-        fontSize: DesignTokens.Typography.Size.base,
-        horizontalPadding: DesignTokens.Spacing.md,
-        verticalPadding: DesignTokens.Spacing.sm,
-        spacing: DesignTokens.Spacing.sm,
-        cornerRadius: DesignTokens.Radius.sm,
-        useCardStyle: false
-    )
+    // MARK: - iPad adaptation
+    // iPad has both size classes regular. iPhone in landscape has horizontal=regular but
+    // vertical=compact, so requiring both prevents iPhone Plus models from getting iPad styling.
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular && verticalSizeClass == .regular
+    }
+    private var fontScale: CGFloat { isIPad ? 1.5 : 1.0 }
+    private var spacingScale: CGFloat { isIPad ? 1.3 : 1.0 }
+    /// Max content width on iPad keeps stepper +/- buttons within reach. nil = unconstrained on iPhone.
+    private var maxContentWidth: CGFloat? { isIPad ? 600 : nil }
+
+    private var doneTheme: DoneViewTheme {
+        DoneViewTheme(
+            checkmarkSize: 64 * fontScale,
+            titleSize: DesignTokens.Typography.Size.xxl * fontScale,
+            bodySize: DesignTokens.Typography.Size.base * fontScale,
+            verticalSpacing: DesignTokens.Spacing.xxl * spacingScale
+        )
+    }
+    private var stepperTheme: StepperTheme {
+        StepperTheme(
+            labelFontSize: DesignTokens.Typography.Size.sm * fontScale,
+            valueFontSize: DesignTokens.Typography.Size.title * fontScale,
+            buttonSize: DesignTokens.Spacing.xxxl * 2 * spacingScale,
+            cornerRadius: DesignTokens.Radius.md,
+            stackSpacing: DesignTokens.Spacing.lg * spacingScale,
+            verticalPadding: DesignTokens.Spacing.sm
+        )
+    }
+    private var primaryTheme: PrimaryButtonTheme {
+        PrimaryButtonTheme(
+            titleSize: DesignTokens.Typography.Size.xxl * fontScale,
+            verticalPadding: DesignTokens.Spacing.md * spacingScale,
+            horizontalPadding: DesignTokens.Spacing.xl,
+            cornerRadius: DesignTokens.Radius.md
+        )
+    }
+    private var cancelTheme: CancelButtonTheme {
+        CancelButtonTheme(
+            titleSize: DesignTokens.Typography.Size.lg * fontScale,
+            verticalPadding: DesignTokens.Spacing.sm * spacingScale,
+            horizontalPadding: DesignTokens.Spacing.xl,
+            cornerRadius: DesignTokens.Radius.sm
+        )
+    }
+    private var modeSwitchTheme: ModeSwitchTheme {
+        ModeSwitchTheme(
+            fontSize: DesignTokens.Typography.Size.base * fontScale,
+            horizontalPadding: DesignTokens.Spacing.md * spacingScale,
+            verticalPadding: DesignTokens.Spacing.sm,
+            spacing: DesignTokens.Spacing.sm,
+            cornerRadius: DesignTokens.Radius.sm,
+            useCardStyle: false
+        )
+    }
 
     var body: some View {
         let snapshot = engine.snapshot(now: now)
         let totalRounds = engine.rounds
 
         ZStack(alignment: .topTrailing) {
-            mainVStack(snapshot: snapshot, totalRounds: totalRounds)
+            // Wrap in HStack with spacers so iPad gets centered max-600pt content
+            // while iPhone uses full width (maxContentWidth = nil → no constraint).
+            HStack(spacing: 0) {
+                Spacer(minLength: 0)
+                mainVStack(snapshot: snapshot, totalRounds: totalRounds)
+                    .frame(maxWidth: maxContentWidth)
+                Spacer(minLength: 0)
+            }
             infoButton
         }
         .padding(DesignTokens.Spacing.md)
@@ -180,7 +210,7 @@ private struct iOSContent: View {
 
     @ViewBuilder
     private func mainVStack(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
-        VStack(spacing: DesignTokens.Spacing.xxxl) {
+        VStack(spacing: DesignTokens.Spacing.xxxl * spacingScale) {
             if snapshot.state == .idle {
                 idleHeaderView
             }
@@ -188,7 +218,7 @@ private struct iOSContent: View {
             Spacer()
 
             if snapshot.state == .finished {
-                SharedDoneView(totalRounds: totalRounds, theme: Self.iosDoneTheme)
+                SharedDoneView(totalRounds: totalRounds, theme: doneTheme)
                     .transition(.opacity)
             } else if snapshot.state == .running || snapshot.state == .paused {
                 activeTimerView(snapshot: snapshot, totalRounds: totalRounds)
@@ -202,29 +232,29 @@ private struct iOSContent: View {
 
             Spacer()
 
-            VStack(spacing: DesignTokens.Spacing.lg) {
+            VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
                 iosPrimaryButton(snapshot: snapshot, now: now)
                 if snapshot.state == .running || snapshot.state == .paused {
-                    SharedCancelButton(action: { showCancelConfirmation = true }, theme: Self.iosCancelTheme)
+                    SharedCancelButton(action: { showCancelConfirmation = true }, theme: cancelTheme)
                     Text("Open WODrounds on your Apple Watch to see this workout.")
-                        .font(.system(size: DesignTokens.Typography.Size.xs, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                        .font(.system(size: DesignTokens.Typography.Size.xs * fontScale, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                         .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                 }
             }
             .padding(.horizontal, DesignTokens.Spacing.lg)
-            .padding(.bottom, DesignTokens.Spacing.xxl)
+            .padding(.bottom, DesignTokens.Spacing.xxl * spacingScale)
         }
         .animation(.easeInOut(duration: 0.25), value: snapshot.state)
         .animation(.easeInOut(duration: 0.25), value: timerMode)
     }
 
     private var idleHeaderView: some View {
-        VStack(spacing: DesignTokens.Spacing.md) {
-            SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(engine.state) }, theme: Self.iosModeSwitchTheme)
+        VStack(spacing: DesignTokens.Spacing.md * spacingScale) {
+            SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(engine.state) }, theme: modeSwitchTheme)
             Text(modeHelpText)
-                .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                .font(.system(size: DesignTokens.Typography.Size.sm * fontScale, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                 .multilineTextAlignment(.center)
                 .lineLimit(nil)
@@ -234,20 +264,20 @@ private struct iOSContent: View {
     }
 
     private func activeTimerView(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
-        VStack(spacing: DesignTokens.Spacing.lg) {
+        VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
             Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
-                .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                .font(.system(size: DesignTokens.Typography.Size.display * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                 .monospacedDigit()
                 .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
                 .frame(maxWidth: .infinity)
 
             Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
-                .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
 
             if timerMode == .intervals {
                 Text(snapshot.currentPhase == .work ? "Work" : "Rest")
-                    .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                    .font(.system(size: DesignTokens.Typography.Size.sm * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                     .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
             }
         }
@@ -256,17 +286,17 @@ private struct iOSContent: View {
 
     private func idleSettingsView(state: WODTimerEngineState) -> some View {
         ZStack(alignment: .top) {
-            VStack(spacing: DesignTokens.Spacing.lg) {
-                SharedStepperView(value: $rounds, range: roundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
-                SharedStepperView(value: $emomRoundLength, range: emomLengthRange, step: 30, displayString: sharedFormatEmomLength(emomRoundLength), label: "Round length", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
+            VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
+                SharedStepperView(value: $rounds, range: roundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: stepperTheme, useLongPressRepeat: true)
+                SharedStepperView(value: $emomRoundLength, range: emomLengthRange, step: 30, displayString: sharedFormatEmomLength(emomRoundLength), label: "Round length", onChange: { syncEngineIfIdle(state) }, theme: stepperTheme, useLongPressRepeat: true)
             }
                 .opacity(timerMode == .emom ? 1 : 0)
                 .allowsHitTesting(timerMode == .emom)
                 .accessibilityHidden(timerMode != .emom)
-            VStack(spacing: DesignTokens.Spacing.lg) {
-                SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
-                SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
-                SharedStepperView(value: $intervalsRounds, range: intervalsRoundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.iosStepperTheme, useLongPressRepeat: true)
+            VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
+                SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(state) }, theme: stepperTheme, useLongPressRepeat: true)
+                SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(state) }, theme: stepperTheme, useLongPressRepeat: true)
+                SharedStepperView(value: $intervalsRounds, range: intervalsRoundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: stepperTheme, useLongPressRepeat: true)
             }
             .opacity(timerMode == .intervals ? 1 : 0)
             .allowsHitTesting(timerMode == .intervals)
@@ -299,12 +329,12 @@ private struct iOSContent: View {
         if let end = countdownEndTime {
             let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
             if remaining > 0 {
-                VStack(spacing: DesignTokens.Spacing.lg) {
+                VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
                     Text("Get ready")
-                        .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                        .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                         .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
                     Text("\(remaining)")
-                        .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                        .font(.system(size: DesignTokens.Typography.Size.display * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                         .monospacedDigit()
                         .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
                 }
@@ -412,7 +442,7 @@ private struct iOSContent: View {
             HealthKitWorkoutController.shared.endWorkout(endDate: endDate)
         })
         }
-        return SharedPrimaryButton(title: title, action: action, theme: Self.iosPrimaryTheme)
+        return SharedPrimaryButton(title: title, action: action, theme: primaryTheme)
             .animation(.easeInOut(duration: 0.2), value: snapshot.state)
     }
 }
