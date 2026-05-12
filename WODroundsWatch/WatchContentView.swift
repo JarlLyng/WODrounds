@@ -78,6 +78,11 @@ struct WatchContentView: View {
                             case .idle:
                                 Button("Start") {
                                     countdownEndTime = now.addingTimeInterval(10)
+                                    // Bug fix: start HKWorkoutSession immediately on Start so the
+                                    // app stays alive during the 10s countdown (previously the
+                                    // session only started when engine.state became .running,
+                                    // leaving a window where the Watch could be suspended).
+                                    workoutSession.startIfNeeded()
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .tint(WatchDesign.Colors.primary(colorScheme))
@@ -106,64 +111,79 @@ struct WatchContentView: View {
                     }
                 }
                 .padding(WatchDesign.Spacing.md)
-                .overlay {
-                    WatchDesign.Colors.textPrimary(colorScheme)
-                        .ignoresSafeArea()
-                        .opacity(flashScreen ? 0.85 : 0)
-                        .animation(.easeInOut(duration: 0.35), value: flashScreen)
-                        .accessibilityHidden(true)
-                }
-                .overlay {
-                    if let end = countdownEndTime {
-                        let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
-                        if remaining > 0 {
-                            VStack(spacing: WatchDesign.Spacing.sm) {
-                                Text("Get ready")
-                                    .font(.system(size: WatchDesign.countdownTitleFontSize, weight: .semibold, design: .rounded))
-                                    .foregroundStyle(WatchDesign.Colors.textSecondary(colorScheme))
-                                Text("\(remaining)")
-                                    .font(.system(size: WatchDesign.countdownNumberFontSize, weight: .bold, design: .rounded))
-                                    .monospacedDigit()
-                                    .foregroundStyle(WatchDesign.Colors.textPrimary(colorScheme))
-                            }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(WatchDesign.Colors.background(colorScheme))
-                            .accessibilityElement(children: .ignore)
-                            .accessibilityLabel("Countdown, \(remaining) seconds")
+
+                // Full-screen flash overlay (placed at ZStack level so it covers the entire
+                // screen — previously it was attached to the padded VStack and only covered
+                // the content area).
+                WatchDesign.Colors.textPrimary(colorScheme)
+                    .ignoresSafeArea()
+                    .opacity(flashScreen ? 0.85 : 0)
+                    .animation(.easeInOut(duration: 0.35), value: flashScreen)
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+
+                // Full-screen countdown overlay
+                if let end = countdownEndTime {
+                    let remaining = max(0, Int(ceil(end.timeIntervalSince(now))))
+                    if remaining > 0 {
+                        VStack(spacing: WatchDesign.Spacing.sm) {
+                            Text("Get ready")
+                                .font(.system(size: WatchDesign.countdownTitleFontSize, weight: .semibold, design: .rounded))
+                                .foregroundStyle(WatchDesign.Colors.textSecondary(colorScheme))
+                            Text("\(remaining)")
+                                .font(.system(size: WatchDesign.countdownNumberFontSize, weight: .bold, design: .rounded))
+                                .monospacedDigit()
+                                .foregroundStyle(WatchDesign.Colors.textPrimary(colorScheme))
                         }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(WatchDesign.Colors.background(colorScheme))
+                        .ignoresSafeArea()
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Countdown, \(remaining) seconds")
                     }
                 }
-                .onChange(of: timeline.date) { newDate in
-                    if let end = countdownEndTime, newDate >= end {
-                        var e = engine
-                        e.start(now: end)
-                        engine = e
-                        countdownEndTime = nil
-                        WKInterfaceDevice.current().play(.start)
-                    } else if engine.state == .running {
-                        var e = engine
-                        e.tick(now: newDate)
-                        engine = e
-                    }
+            }
+            .onChange(of: timeline.date) { newDate in
+                if let end = countdownEndTime, newDate >= end {
+                    var e = engine
+                    e.start(now: end)
+                    engine = e
+                    countdownEndTime = nil
+                    WKInterfaceDevice.current().play(.start)
+                } else if engine.state == .running {
+                    var e = engine
+                    e.tick(now: newDate)
+                    engine = e
                 }
-                .onChange(of: currentRound) { newRound in
-                    if (state == .running || state == .paused), newRound > lastFlashRound {
-                        triggerFlash()
-                        WKInterfaceDevice.current().play(.notification)
-                        lastFlashRound = newRound
-                    }
+            }
+            .onChange(of: useSynced) { _ in
+                // When sync state toggles (iPhone connects/disconnects mid-workout), the
+                // displayed currentRound may jump (e.g., from local 0 to synced 5). Reset
+                // the haptic baseline so we don't fire a spurious notification haptic for
+                // a jump that isn't a real round transition.
+                lastFlashRound = currentRound
+            }
+            .onChange(of: currentRound) { newRound in
+                if (state == .running || state == .paused), newRound > lastFlashRound {
+                    triggerFlash()
+                    WKInterfaceDevice.current().play(.notification)
+                    lastFlashRound = newRound
                 }
-                .onChange(of: state) { newState in
-                    if newState == .finished {
-                        WKInterfaceDevice.current().play(.success)
-                    }
+            }
+            .onChange(of: state) { newState in
+                if newState == .finished {
+                    WKInterfaceDevice.current().play(.success)
                 }
-                .onChange(of: workoutActive) { isActive in
-                    if isActive {
-                        workoutSession.startIfNeeded()
-                    } else {
-                        workoutSession.stop()
-                    }
+                if newState == .idle {
+                    // Reset baseline so next workout starts fresh
+                    lastFlashRound = 0
+                }
+            }
+            .onChange(of: workoutActive) { isActive in
+                if isActive {
+                    workoutSession.startIfNeeded()
+                } else {
+                    workoutSession.stop()
                 }
             }
         }
