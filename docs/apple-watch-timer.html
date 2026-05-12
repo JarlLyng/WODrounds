@@ -59,7 +59,39 @@
     "datePublished": "2026-03-01",
     "dateModified": "2026-04-15"
   }
+  </script>  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does the Apple Watch app work without an iPhone?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, the Watch app has a standalone mode that runs a 10-round EMOM directly on the Watch when no iPhone is connected. For full configuration (custom rounds, intervals mode, custom work/rest times), start the workout on iPhone and the Watch follows automatically via WatchConnectivity."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can the timer keep running when my wrist is down?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. WODrounds uses an HKWorkoutSession on the Watch to keep the app active throughout the workout. The screen may dim when your wrist is down (Apple's standard behavior), but the timer keeps running and resumes immediately when you raise your wrist. Round-transition haptics fire regardless of screen state."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it save workouts to Apple Health?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Completed workouts save to Apple Health as HIIT sessions on iPhone, with active time excluding paused periods. The first time you start a workout, the app requests write-only HealthKit permission. No health data is read from your device — the app uses a constant reference weight to estimate active energy."
+        }
+      }
+    ]
+  }
   </script>
+
   <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="7a65d61a-b231-4611-b514-3c6cd0a5b7b3"></script>
 </head>
 <body>
