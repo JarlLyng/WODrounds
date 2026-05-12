@@ -82,6 +82,7 @@ private struct iOSContent: View {
     @State private var last30SecondWarningRound: Int? = nil
     @State private var last30SecondWarningPhase: WODTimerPhase? = nil
     @AppStorage("completedWorkoutCount") private var completedWorkoutCount: Int = 0
+    @AppStorage("soundEnabled") private var soundEnabled: Bool = true
     @Environment(\.requestReview) private var requestReview
 
     // MARK: - iPad adaptation
@@ -153,7 +154,7 @@ private struct iOSContent: View {
                     .frame(maxWidth: maxContentWidth)
                 Spacer(minLength: 0)
             }
-            infoButton
+            topRightControls
         }
         .padding(DesignTokens.Spacing.md)
         .overlay { flashOverlay }
@@ -304,6 +305,29 @@ private struct iOSContent: View {
         }
     }
 
+    private var topRightControls: some View {
+        HStack(spacing: DesignTokens.Spacing.md) {
+            soundToggleButton
+            infoButton
+        }
+    }
+
+    private var soundToggleButton: some View {
+        Button {
+            soundEnabled.toggle()
+            // Brief haptic confirms the toggle was registered.
+            Haptics.light()
+        } label: {
+            Image(systemName: soundEnabled ? "speaker.wave.2" : "speaker.slash")
+                .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.regular))
+                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                .contentTransitionInterpolateCompat()
+                .frame(minWidth: 44, minHeight: 44)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(soundEnabled ? "Mute sound" : "Unmute sound")
+    }
+
     private var infoButton: some View {
         Button {
             showAbout = true
@@ -311,6 +335,7 @@ private struct iOSContent: View {
             Image(systemName: "info.circle")
                 .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.regular))
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                .frame(minWidth: 44, minHeight: 44)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("About")

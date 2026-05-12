@@ -12,6 +12,15 @@ import Foundation
 enum WorkoutSoundManager {
     private static var currentPlayer: AVAudioPlayer?
 
+    /// User-controlled sound on/off. Defaults to `true` (sounds enabled). Read directly from
+    /// UserDefaults so non-View contexts can check it. Mirrors `@AppStorage("soundEnabled")`
+    /// in the SwiftUI views.
+    static var isSoundEnabled: Bool {
+        // Treat missing key as "enabled" (sound on by default).
+        guard UserDefaults.standard.object(forKey: "soundEnabled") != nil else { return true }
+        return UserDefaults.standard.bool(forKey: "soundEnabled")
+    }
+
     /// Plays the "get ready / start" sound when the 10-second countdown reaches zero (before workout).
     static func playGetReadyStart() {
         play(name: "getReadyStart", ext: "mp3")
@@ -61,6 +70,8 @@ enum WorkoutSoundManager {
     }
 
     private static func play(name: String, ext: String) {
+        // Respect the user's sound on/off preference (toggle in the main UI).
+        guard isSoundEnabled else { return }
         let url = Bundle.main.url(forResource: name, withExtension: ext, subdirectory: "Sounds")
             ?? Bundle.main.url(forResource: name, withExtension: ext)
         guard let url = url else {

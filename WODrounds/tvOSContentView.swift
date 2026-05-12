@@ -32,6 +32,7 @@ struct ContentView: View {
     @State private var flashScreen = false
     @State private var lastHapticRound = 0
     @State private var lastHapticPhase: WODTimerPhase?
+    @AppStorage("soundEnabled") private var soundEnabled: Bool = true
     @State private var last30SecondWarningRound: Int? = nil
     @State private var last30SecondWarningPhase: WODTimerPhase? = nil
 
@@ -142,7 +143,7 @@ struct ContentView: View {
         return ZStack(alignment: .topTrailing) {
             tvOSMainVStack(snapshot: snapshot, totalRounds: totalRounds, now: now)
 
-            tvOSInfoButton
+            tvOSTopRightControls
         }
         .overlay { tvOSFlashOverlay }
         .overlay { tvOSCountdownOverlay(now: now) }
@@ -243,6 +244,27 @@ struct ContentView: View {
         .padding(.horizontal, DesignTokens.Spacing.xxl)
     }
 
+    private var tvOSTopRightControls: some View {
+        HStack(spacing: DesignTokens.Spacing.lg) {
+            tvOSSoundToggleButton
+            tvOSInfoButton
+        }
+        .padding(DesignTokens.Spacing.lg)
+    }
+
+    private var tvOSSoundToggleButton: some View {
+        Button {
+            soundEnabled.toggle()
+        } label: {
+            Image(systemName: soundEnabled ? "speaker.wave.2" : "speaker.slash")
+                .font(.system(size: TVOSTypography.lg, weight: DesignTokens.Typography.Weight.regular))
+                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                .contentTransitionInterpolateCompat()
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(soundEnabled ? "Mute sound" : "Unmute sound")
+    }
+
     private var tvOSInfoButton: some View {
         Button {
             showAbout = true
@@ -253,7 +275,6 @@ struct ContentView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("About")
-        .padding(DesignTokens.Spacing.lg)
     }
 
     private var tvOSFlashOverlay: some View {

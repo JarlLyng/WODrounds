@@ -66,6 +66,7 @@ private struct MacContent: View {
     @State private var flashScreen = false
     @State private var lastHapticRound = 0
     @State private var lastHapticPhase: WODTimerPhase?
+    @AppStorage("soundEnabled") private var soundEnabled: Bool = true
 
     private static let macDoneTheme = DoneViewTheme(
         checkmarkSize: 64,
@@ -109,7 +110,7 @@ private struct MacContent: View {
         ZStack(alignment: .topTrailing) {
             mainVStack(snapshot: snapshot, totalRounds: totalRounds, now: now)
 
-            infoButton
+            topRightControls
         }
         .overlay { flashOverlay }
         .overlay { countdownOverlay(now: now) }
@@ -240,6 +241,27 @@ private struct MacContent: View {
         .padding(.horizontal, DesignTokens.Spacing.lg)
     }
 
+    private var topRightControls: some View {
+        HStack(spacing: DesignTokens.Spacing.sm) {
+            soundToggleButton
+            infoButton
+        }
+        .padding(DesignTokens.Spacing.md)
+    }
+
+    private var soundToggleButton: some View {
+        Button {
+            soundEnabled.toggle()
+        } label: {
+            Image(systemName: soundEnabled ? "speaker.wave.2" : "speaker.slash")
+                .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.regular))
+                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                .contentTransitionInterpolateCompat()
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(soundEnabled ? "Mute sound" : "Unmute sound")
+    }
+
     private var infoButton: some View {
         Button {
             showAbout = true
@@ -250,7 +272,6 @@ private struct MacContent: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("About")
-        .padding(DesignTokens.Spacing.md)
     }
 
     private var flashOverlay: some View {
