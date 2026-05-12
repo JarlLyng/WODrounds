@@ -7,10 +7,12 @@
 
 #if os(iOS) || os(tvOS)
 import AVFoundation
+import AudioToolbox
 import Foundation
 
 enum WorkoutSoundManager {
     private static var currentPlayer: AVAudioPlayer?
+    private static let synthesizer = AVSpeechSynthesizer()
 
     /// User-controlled sound on/off. Defaults to `true` (sounds enabled). Read directly from
     /// UserDefaults so non-View contexts can check it. Mirrors `@AppStorage("soundEnabled")`
@@ -19,6 +21,46 @@ enum WorkoutSoundManager {
         // Treat missing key as "enabled" (sound on by default).
         guard UserDefaults.standard.object(forKey: "soundEnabled") != nil else { return true }
         return UserDefaults.standard.bool(forKey: "soundEnabled")
+    }
+
+    // MARK: - Voice cues (TTS)
+
+    /// "Halfway" voice cue — fires when half of the current round/phase is left.
+    static func speakHalfway() {
+        speak("halfway")
+    }
+
+    /// "Ten seconds" voice cue — fires at 10 seconds left in the round/phase.
+    static func speakTenSecondsLeft() {
+        speak("ten seconds")
+    }
+
+    private static func speak(_ text: String) {
+        guard isSoundEnabled else { return }
+        configureAudioSession()
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+        synthesizer.speak(utterance)
+    }
+
+    // MARK: - 3-2-1 countdown beep
+
+    /// Short beep used for the 3-2-1 ramp at the end of each round/phase.
+    static func playCountdownBeep() {
+        guard isSoundEnabled else { return }
+        configureAudioSession()
+        // System sound 1057 is a short "tink" — quick enough to fire 3 times in 3 seconds.
+        AudioServicesPlaySystemSound(1057)
+    }
+
+    private static func configureAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("[Sound] Audio session setup failed: \(error.localizedDescription)")
+        }
     }
 
     /// Plays the "get ready / start" sound when the 10-second countdown reaches zero (before workout).

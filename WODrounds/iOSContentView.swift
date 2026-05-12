@@ -79,8 +79,14 @@ private struct iOSContent: View {
     @State private var showAbout = false
     @State private var countdownEndTime: Date? = nil
     @State private var flashScreen = false
-    @State private var last30SecondWarningRound: Int? = nil
-    @State private var last30SecondWarningPhase: WODTimerPhase? = nil
+    // In-round cue state — tracks which cues have fired this (round, phase) so each fires once.
+    @State private var lastHalfwayRound: Int? = nil
+    @State private var lastHalfwayPhase: WODTimerPhase? = nil
+    @State private var lastTenSecondsRound: Int? = nil
+    @State private var lastTenSecondsPhase: WODTimerPhase? = nil
+    @State private var lastBeepSecond: Int = -1
+    @State private var lastBeepRound: Int? = nil
+    @State private var lastBeepPhase: WODTimerPhase? = nil
     @AppStorage("completedWorkoutCount") private var completedWorkoutCount: Int = 0
     @AppStorage("soundEnabled") private var soundEnabled: Bool = true
     @Environment(\.requestReview) private var requestReview
@@ -161,15 +167,14 @@ private struct iOSContent: View {
         .overlay { countdownOverlay }
         .onChange(of: now) { newDate in
             handleDateChange(newDate)
-            check30SecondsRemainingSound(now: newDate)
+            checkInRoundCues(now: newDate)
         }
         .onChange(of: engine.state) { newState in
             applyIdleTimer(newState)
             if newState == .idle || newState == .finished {
                 lastHapticRound = 0
                 lastHapticPhase = nil
-                last30SecondWarningRound = nil
-                last30SecondWarningPhase = nil
+                resetInRoundCueState()
             }
             if newState == .finished {
                 Haptics.strong()
@@ -400,15 +405,70 @@ private struct iOSContent: View {
         }
     }
 
-    private func check30SecondsRemainingSound(now: Date) {
+    /// In-round audio cues that fire during a running phase:
+    /// - **Halfway**: voice "halfway" when half of the phase is left (only if phase > 40s)
+    /// - **Ten seconds**: voice "ten seconds" at 10s left (only if phase > 15s)
+    /// - **3-2-1 countdown**: short beep at 3, 2, 1 seconds left (always)
+    ///
+    /// Idempotent — each cue fires at most once per (round, phase) tuple.
+    private func checkInRoundCues(now: Date) {
         guard engine.state == .running else { return }
         let snapshot = engine.snapshot(now: now)
         let remaining = snapshot.remainingTimeInPhase
-        guard remaining >= 29.5, remaining <= 30.5 else { return }
-        if last30SecondWarningRound == snapshot.currentRound, last30SecondWarningPhase == snapshot.currentPhase { return }
-        last30SecondWarningRound = snapshot.currentRound
-        last30SecondWarningPhase = snapshot.currentPhase
-        WorkoutSoundManager.play30SecondsRemaining()
+        let round = snapshot.currentRound
+        let phase = snapshot.currentPhase
+
+        // Phase duration depends on mode
+        let phaseDuration: TimeInterval = {
+            switch engine.mode {
+            case .emom(_, let spr):
+                return TimeInterval(spr)
+            case .intervals(let w, let r, _):
+                return TimeInterval(phase == .work ? w : r)
+            }
+        }()
+
+        // Halfway voice cue — only on phases long enough to keep cues separated.
+        if phaseDuration > 40 {
+            let halfTime = phaseDuration / 2
+            if remaining >= halfTime - 0.5, remaining <= halfTime + 0.5,
+               !(lastHalfwayRound == round && lastHalfwayPhase == phase) {
+                lastHalfwayRound = round
+                lastHalfwayPhase = phase
+                WorkoutSoundManager.speakHalfway()
+            }
+        }
+
+        // Ten-seconds voice cue
+        if phaseDuration > 15,
+           remaining >= 9.5, remaining <= 10.5,
+           !(lastTenSecondsRound == round && lastTenSecondsPhase == phase) {
+            lastTenSecondsRound = round
+            lastTenSecondsPhase = phase
+            WorkoutSoundManager.speakTenSecondsLeft()
+        }
+
+        // 3-2-1 countdown beep — fires at 3, 2, 1 seconds left in any phase.
+        let secInt = Int(remaining.rounded())
+        if (1...3).contains(secInt) {
+            let isSameTrigger = lastBeepSecond == secInt && lastBeepRound == round && lastBeepPhase == phase
+            if !isSameTrigger {
+                lastBeepSecond = secInt
+                lastBeepRound = round
+                lastBeepPhase = phase
+                WorkoutSoundManager.playCountdownBeep()
+            }
+        }
+    }
+
+    private func resetInRoundCueState() {
+        lastHalfwayRound = nil
+        lastHalfwayPhase = nil
+        lastTenSecondsRound = nil
+        lastTenSecondsPhase = nil
+        lastBeepSecond = -1
+        lastBeepRound = nil
+        lastBeepPhase = nil
     }
 
     private func triggerFlash() {
