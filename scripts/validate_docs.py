@@ -44,14 +44,17 @@ class Failures:
 
 
 def check_image_references(failures: Failures) -> None:
-    """All images/*.ext referenced in HTML must exist as files."""
+    """All images/*.ext referenced in HTML must exist as files.
+    Handles both top-level (`images/...`) and subdirectory (`../images/...`) refs.
+    """
     print("→ Checking image references...")
-    # Match: src="images/foo.png", "images/foo.png", or full URL
+    # Match: src="(../)images/foo.png", or full URL with images/
     pattern = re.compile(
-        r'(?:src=|url\(|"|\')(?:https://wodrounds\.iamjarl\.com/)?(images/[A-Za-z0-9_\-./]+\.(?:png|jpg|jpeg|svg|webp|gif))'
+        r'(?:src=|url\(|"|\')(?:https://wodrounds\.iamjarl\.com/|\.\./)?'
+        r'(images/[A-Za-z0-9_\-./]+\.(?:png|jpg|jpeg|svg|webp|gif))'
     )
     references: set[tuple[str, Path]] = set()
-    for html in DOCS.glob("*.html"):
+    for html in DOCS.rglob("*.html"):
         content = html.read_text()
         for match in pattern.finditer(content):
             references.add((match.group(1), html))
@@ -72,7 +75,7 @@ def check_app_store_urls(failures: Failures) -> None:
     print("→ Checking App Store URLs...")
     url_pattern = re.compile(r"https://apps\.apple\.com/[^\"'\s)]+")
     id_pattern = re.compile(r"/id\d+")
-    for html in DOCS.glob("*.html"):
+    for html in DOCS.rglob("*.html"):
         content = html.read_text()
         for match in url_pattern.finditer(content):
             url = match.group(0)
@@ -99,7 +102,7 @@ def check_json_ld(failures: Failures) -> None:
         r'<script type="application/ld\+json">\s*(.*?)\s*</script>',
         re.DOTALL,
     )
-    for html in DOCS.glob("*.html"):
+    for html in DOCS.rglob("*.html"):
         content = html.read_text()
         for idx, match in enumerate(pattern.finditer(content), start=1):
             block = match.group(1)
@@ -148,24 +151,28 @@ def check_sitemap(failures: Failures) -> None:
 
 
 def check_canonical_urls(failures: Failures) -> None:
-    """Each HTML file's canonical URL must match its on-disk path."""
+    """Each HTML file's canonical URL must match its on-disk path.
+    Handles subdirectories (e.g. da/emom-timer.html → /da/emom-timer.html).
+    """
     print("→ Checking canonical URLs...")
     pattern = re.compile(r'rel="canonical"\s+href="([^"]+)"')
-    for html in DOCS.glob("*.html"):
+    for html in DOCS.rglob("*.html"):
         content = html.read_text()
         match = pattern.search(content)
         if not match:
             continue  # Not every page needs canonical (e.g. error pages)
         canonical = match.group(1)
 
-        name = html.name
-        if name == "index.html":
+        rel = html.relative_to(DOCS)
+        if rel.name == "index.html" and rel.parent == Path("."):
             expected_options = {
                 f"{SITE_URL}/",
                 f"{SITE_URL}/index.html",
             }
         else:
-            expected_options = {f"{SITE_URL}/{name}"}
+            # Use forward slashes for URL paths (works on Windows too).
+            url_path = "/".join(rel.parts)
+            expected_options = {f"{SITE_URL}/{url_path}"}
 
         if canonical not in expected_options:
             failures.error(
