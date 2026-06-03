@@ -1,0 +1,20 @@
+# Changelog
+
+All notable user-facing changes to WODrounds. Newest first.
+
+## 1.4 (build 11)
+
+**What's New (App Store copy):**
+
+> • Cancel the countdown before a workout starts — no more waiting out the 10-second "Get ready" if you tapped Start by mistake.
+> • More accurate workout duration in Apple Health: paused time is no longer counted as active.
+> • Fixed a doubled audio announcement during interval workouts.
+> • Small fixes and polish.
+
+**Details:**
+
+- **Added:** Cancel button during the 10-second count-in on iPhone, iPad, Mac and Apple TV (#38).
+- **Fixed:** HealthKit workout duration was inflated when a workout ended or was cancelled while paused — an in-progress pause is now excluded from active time (#34).
+- **Fixed:** "X rounds left" voice cues played twice per round in Intervals mode; they now fire once per round (#35).
+- **Changed:** Removed the non-functional sound toggle on macOS (macOS has no audio cues) (#37).
+- **Internal:** Removed dead code (#36); added unit + UI test coverage; fixed and hardened CI (CodeQL build, Node 24 action upgrades, unit-test workflow) (#39, #43, #44).
