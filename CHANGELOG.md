@@ -17,4 +17,5 @@ All notable user-facing changes to WODrounds. Newest first.
 - **Fixed:** HealthKit workout duration was inflated when a workout ended or was cancelled while paused — an in-progress pause is now excluded from active time (#34).
 - **Fixed:** "X rounds left" voice cues played twice per round in Intervals mode; they now fire once per round (#35).
 - **Changed:** Removed the non-functional sound toggle on macOS (macOS has no audio cues) (#37).
+- **Fixed:** macOS — the mode switch and Start button were clipped at the default window size; the window now opens tall enough to show the full layout (#47).
 - **Internal:** Removed dead code (#36); added unit + UI test coverage; fixed and hardened CI (CodeQL build, Node 24 action upgrades, unit-test workflow) (#39, #43, #44).
