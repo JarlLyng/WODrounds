@@ -32,7 +32,7 @@ Adding breadth weakens the wedge. When in doubt: stay narrow.
 | iPad | Live | iPadOS 16+ |
 | Apple Watch | Live (synced + simple standalone) | watchOS 9+ |
 | Mac | Live | macOS 13+ (Ventura) |
-| Apple TV | Live | tvOS 16+ |
+| Apple TV | Live | tvOS 17+ |
 
 ---
 
