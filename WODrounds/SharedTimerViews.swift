@@ -39,6 +39,36 @@ extension View {
     }
 }
 
+// MARK: - tvOS focus styling
+
+#if os(tvOS)
+/// Calm, consistent tvOS focus treatment. The default `.plain` focus effect draws
+/// a large white "focus plate" behind the button, which is jarring on the dark
+/// theme with bright buttons. Pair this style with `focusEffectDisabledCompat()`
+/// to suppress that plate; this adds a subtle lift (gentle scale + soft shadow)
+/// so focus is still clearly visible without being loud.
+struct TVCalmFocusStyle: ButtonStyle {
+    @Environment(\.isFocused) private var isFocused
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 1.02 : (isFocused ? 1.08 : 1.0))
+            .shadow(color: Color.black.opacity(isFocused ? 0.35 : 0),
+                    radius: isFocused ? 12 : 0, x: 0, y: isFocused ? 6 : 0)
+            .animation(.easeOut(duration: 0.18), value: isFocused)
+            .animation(.easeOut(duration: 0.10), value: configuration.isPressed)
+    }
+}
+
+extension View {
+    /// On tvOS, apply the calm focus style + suppress the default focus plate.
+    /// On other platforms, fall back to `.plain`.
+    @ViewBuilder
+    func tvCalmButtonStyle() -> some View {
+        self.buttonStyle(TVCalmFocusStyle()).focusEffectDisabledCompat()
+    }
+}
+#endif
+
 // MARK: - Shared helpers
 
 func sharedTimeString(from interval: TimeInterval) -> String {
@@ -177,7 +207,11 @@ struct SharedStepperView: View {
                 .background(DesignTokens.Common.primary(scheme))
                 .clipShape(RoundedRectangle(cornerRadius: theme.cornerRadius))
         }
+        #if os(tvOS)
+        .tvCalmButtonStyle()
+        #else
         .buttonStyle(.plain)
+        #endif
         .accessibilityLabel(sign < 0 ? "Decrease \(self.label)" : "Increase \(self.label)")
         .modifier(LongPressRepeatModifier(enabled: useLongPressRepeat, sign: sign, onPressStart: { startRepeat(by: $0) }, onPressEnd: stopRepeat))
     }
@@ -257,7 +291,11 @@ struct SharedPrimaryButton: View {
                 .background(DesignTokens.Common.primary(scheme))
                 .clipShape(RoundedRectangle(cornerRadius: theme.cornerRadius))
         }
+        #if os(tvOS)
+        .tvCalmButtonStyle()
+        #else
         .buttonStyle(.plain)
+        #endif
     }
 }
 
@@ -278,7 +316,11 @@ struct SharedCancelButton: View {
                 .background(DesignTokens.ColorToken.State.error)
                 .clipShape(RoundedRectangle(cornerRadius: theme.cornerRadius))
         }
+        #if os(tvOS)
+        .tvCalmButtonStyle()
+        #else
         .buttonStyle(.plain)
+        #endif
         .accessibilityHint("Stops workout and returns to setup")
     }
 }
@@ -316,8 +358,7 @@ struct SharedModeSwitch: View {
         if theme.useCardStyle {
             #if os(tvOS)
             button
-                .buttonStyle(.card)
-                .focusEffectDisabledCompat()
+                .tvCalmButtonStyle()
                 .accessibilityAddTraits(timerMode == mode ? .isSelected : [])
             #else
             button
