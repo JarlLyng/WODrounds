@@ -25,7 +25,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      # Sentry.xcconfig is gitignored (it holds the DSN); the project's base
+      # configuration references it, so the build (and thus CodeQL analysis)
+      # fails on a clean checkout without it. Provide the placeholder template.
+      - name: Provide Sentry config
+        run: |
+          if [ ! -f Sentry.xcconfig ]; then
+            cp Sentry.xcconfig.example Sentry.xcconfig
+          fi
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
