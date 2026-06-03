@@ -194,8 +194,6 @@ struct ContentView: View {
                 tvOSPrimaryButton(snapshot: snapshot, now: now)
                 if showCancel {
                     SharedCancelButton(action: { showCancelConfirmation = true }, theme: Self.tvOSCancelTheme)
-                        .buttonStyle(.card)
-                        .focusEffectDisabledCompat()
                 }
             }
             .padding(.horizontal, DesignTokens.Spacing.xxl)
@@ -274,7 +272,7 @@ struct ContentView: View {
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                 .contentTransitionInterpolateCompat()
         }
-        .buttonStyle(.plain)
+        .tvCalmButtonStyle()
         .accessibilityLabel(soundEnabled ? "Mute sound" : "Unmute sound")
     }
 
@@ -286,7 +284,7 @@ struct ContentView: View {
                 .font(.system(size: TVOSTypography.lg, weight: DesignTokens.Typography.Weight.regular))
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
         }
-        .buttonStyle(.plain)
+        .tvCalmButtonStyle()
         .accessibilityLabel("About")
     }
 
@@ -408,8 +406,6 @@ struct ContentView: View {
         }
         return SharedPrimaryButton(title: title, action: action, theme: Self.tvOSPrimaryTheme)
             .contentTransitionInterpolateCompat()
-            .buttonStyle(.card)
-            .focusEffectDisabledCompat()
             .animation(.easeInOut(duration: 0.2), value: snapshot.state)
     }
 
@@ -488,8 +484,7 @@ private struct tvOSAboutView: View {
             .padding(.horizontal, DesignTokens.Spacing.xxl)
             .background(DesignTokens.Common.primary(scheme))
             .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.md))
-            .buttonStyle(.card)
-            .focusEffectDisabledCompat()
+            .tvCalmButtonStyle()
             .padding(.horizontal, DesignTokens.Spacing.xxl)
             .padding(.bottom, DesignTokens.Spacing.xxxl)
         }
