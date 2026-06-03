@@ -160,6 +160,12 @@ struct ContentView: View {
 
             tvOSTopRightControls
         }
+        // During the count-in, the overlay covers the idle controls but they'd
+        // otherwise stay in the focus engine — the Siri Remote could land on the
+        // hidden mode switch / steppers / Start behind the overlay. Disabling the
+        // underlying content (before the overlay) removes them from focus, leaving
+        // only the count-in's Cancel button focusable.
+        .disabled(countdownEndTime != nil)
         .overlay { tvOSFlashOverlay }
         .overlay { tvOSCountdownOverlay(now: now) }
     }
