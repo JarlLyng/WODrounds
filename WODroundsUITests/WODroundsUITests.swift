@@ -31,6 +31,36 @@ final class WODroundsUITests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
+    /// Smoke test for the count-in Cancel feature (#38): Start → "Get ready"
+    /// count-in shows a Cancel button → tapping it returns to setup.
+    @MainActor
+    func testCountInCancelReturnsToSetup() throws {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Dismiss the HealthKit authorization sheet if it appears on first Start.
+        addUIInterruptionMonitor(withDescription: "Health Access") { element in
+            for label in ["Allow", "Don't Allow", "Turn On All", "OK", "Dismiss"] {
+                let button = element.buttons[label]
+                if button.exists { button.tap(); return true }
+            }
+            return false
+        }
+
+        let start = app.buttons["Start"]
+        XCTAssertTrue(start.waitForExistence(timeout: 5), "Start button should exist on the idle screen")
+        start.tap()
+        app.tap() // Nudge so the interruption monitor handles the Health sheet.
+
+        // The count-in overlay must expose a Cancel button (the #38 feature).
+        let cancel = app.buttons["Cancel countdown"]
+        XCTAssertTrue(cancel.waitForExistence(timeout: 8), "Count-in should show a Cancel button (#38)")
+        cancel.tap()
+
+        // Cancelling the count-in returns to setup.
+        XCTAssertTrue(start.waitForExistence(timeout: 5), "Cancelling the count-in should return to the setup screen")
+    }
+
     @MainActor
     func testLaunchPerformance() throws {
         // This measures how long it takes to launch your application.
