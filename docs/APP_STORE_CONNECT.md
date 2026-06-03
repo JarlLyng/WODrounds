@@ -42,10 +42,26 @@ Interval timer and workout timer for EMOM, CrossFit, and HIIT. No accounts, no s
 • EMOM: Set rounds (1–120) and round length (0:30–9:30). Start, pause, resume, reset.
 • Intervals: Work, rest, rounds. Perfect for Tabata (20/10 × 8) and any interval workout.
 • Apple Watch: Start on iPhone – watch shows same time and round. Or run the timer on the watch only.
+• Audio cues: "Get ready", halfway and ten-seconds voice cues, a 3-2-1 countdown, rounds remaining (10, 5, 2), and randomized completion sounds.
 • Large type, one-handed use, runs in background. Light and dark theme.
 
 The simplest WOD timer: no database, no sharing. Just timer and rounds.
 ```
+
+---
+
+## What's New in This Version (release notes)
+
+Update per release. Current — **1.4**:
+
+```
+• Cancel the countdown before a workout starts — tapped Start by mistake? Just back out.
+• More accurate workout duration in Apple Health: paused time no longer counts as active.
+• Fixed a doubled voice announcement during interval workouts.
+• Small fixes and polish throughout.
+```
+
+Mac variant (drop the Health line; add the layout note): "Cancel the countdown before a workout starts. · Tidier setup screen. · Small fixes and polish." tvOS variant: "Cancel the countdown before a workout starts. · Smoother remote navigation with a calmer focus highlight. · Small fixes and polish."
 
 ---
 
@@ -213,3 +229,54 @@ interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,Apple TV,remote,home 
 ## Screenshots (Apple TV)
 
 tvOS typically requires screenshots (e.g. 1920 × 1080). Take from Apple TV simulator or device.
+
+---
+
+# Spanish (es-MX) — iOS
+
+Localization: **Spanish (Mexico)** (serves Latin America + most Spanish-speaking storefronts, incl. US Hispanic). Neutral LatAm vocabulary (e.g. "cuenta regresiva", not the peninsular "cuenta atrás"). App name stays **WODrounds**. In-app strings/audio are still English — this localizes the App Store listing only.
+
+## Subtitle (max 30 characters)
+
+```
+Temporizador HIIT y Tabata
+```
+
+## Promotional Text (max 170 characters)
+
+```
+Temporizador de intervalos para EMOM, Tabata y HIIT. Empieza en el iPhone y sigue en el Apple Watch. Sin registro: solo tiempo, rondas y enfoque.
+```
+
+## Description
+
+```
+Temporizador de intervalos y de entrenamiento para EMOM, CrossFit y HIIT. Sin cuentas, sin registro. Solo tiempo, rondas y enfoque.
+
+• EMOM: define las rondas (1–120) y la duración de cada ronda (0:30–9:30). Inicia, pausa, reanuda y reinicia.
+• Intervalos: trabajo, descanso y rondas. Perfecto para Tabata (20/10 × 8) y cualquier entrenamiento por intervalos.
+• Apple Watch: empieza en el iPhone y el reloj muestra el mismo tiempo y ronda. O usa el temporizador solo en el reloj.
+• Señales de audio: "Get ready", avisos de voz a la mitad y a los diez segundos, cuenta 3-2-1, rondas restantes (10, 5, 2) y sonidos de finalización aleatorios.
+• Texto grande, uso con una mano, funciona en segundo plano. Tema claro y oscuro.
+
+El temporizador WOD más simple: sin base de datos, sin compartir. Solo cronómetro y rondas.
+```
+
+## Keywords (max 100 characters)
+
+Single words, comma-separated, no spaces; excludes terms already in the subtitle (Temporizador/HIIT/Tabata).
+
+```
+intervalos,entrenamiento,EMOM,CrossFit,gimnasio,cronómetro,cuenta,regresiva,WOD,rondas,ejercicio
+```
+
+## What's New in This Version (1.4)
+
+```
+• Cancela la cuenta regresiva antes de empezar: ¿pulsaste Iniciar sin querer? Solo retrocede.
+• Duración del entrenamiento más precisa en la app Salud: el tiempo en pausa ya no cuenta como activo.
+• Se corrigió un anuncio de voz duplicado durante los entrenamientos por intervalos.
+• Pequeñas correcciones y mejoras.
+```
+
+(Mac/tvOS Spanish variants: drop the Apple Watch / Health lines as for English. Add Spanish (Spain) / es-ES later only if Spain shows traction.)

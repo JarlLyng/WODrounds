@@ -46,7 +46,7 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 - **macOSContentView.swift** — macOS UI: compact window (340×560), flash overlay.
 - **tvOSContentView.swift** — tvOS UI: focus-based navigation, `.buttonStyle(.card)`, large typography, sounds.
 - **SharedTimerViews.swift** — Shared UI components (stepper, primary button, done view, etc.).
-- **WorkoutSoundManager.swift** — Sound cues for round transitions, 30-second warning, and completion (iOS + tvOS).
+- **WorkoutSoundManager.swift** — Sound cues: count-in start, halfway and ten-seconds voice cues, a 3-2-1 countdown, rounds-remaining announcements (10/5/2), and randomized completion (iOS + tvOS).
 - **HealthKitWorkout.swift** — Saves completed workouts to Apple Health as HIIT sessions (iOS only).
 - **WODroundsApp.swift** — App entry, `WindowGroup { ContentView() }`.
 
