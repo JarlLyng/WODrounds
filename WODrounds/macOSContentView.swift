@@ -20,9 +20,9 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var scheme
 
     private let maxContentWidth: CGFloat = 320
-    // Must accommodate the full idle layout so the mode switch (top) and Start
-    // button (bottom) aren't clipped at the default window size. See issue #47.
-    private let maxContentHeight: CGFloat = 700
+    // Tall enough to contain the taller Intervals layout (3 steppers) without
+    // clipping; the shorter EMOM layout centres within it. See issue #47.
+    private let maxContentHeight: CGFloat = 720
 
     var body: some View {
         TimelineView(.periodic(from: Date(), by: 1.0)) { timeline in
@@ -153,12 +153,16 @@ private struct MacContent: View {
         let isIdle = snapshot.state == .idle
         let showCancel = snapshot.state == .running || snapshot.state == .paused
 
-        return VStack(spacing: DesignTokens.Spacing.xxxl) {
+        // One vertically-centred cluster (top/bottom spacers balance it) rather
+        // than three expanding spacers stretching the content across the window.
+        // Tighter inter-element spacing (xl, not xxxl) keeps the macOS layout
+        // compact instead of spread thin across a large window.
+        return VStack(spacing: DesignTokens.Spacing.xl) {
+            Spacer(minLength: 0)
+
             if isIdle {
                 idleHeaderView(state: snapshot.state)
             }
-
-            Spacer()
 
             if snapshot.state == .finished {
                 SharedDoneView(totalRounds: totalRounds, theme: Self.macDoneTheme)
@@ -167,13 +171,9 @@ private struct MacContent: View {
                 activeTimerView(snapshot: snapshot, totalRounds: totalRounds)
             }
 
-            Spacer()
-
             if isIdle {
                 idleSettingsView(state: snapshot.state)
             }
-
-            Spacer()
 
             VStack(spacing: DesignTokens.Spacing.lg) {
                 macPrimaryButton(snapshot: snapshot, now: now)
@@ -182,7 +182,9 @@ private struct MacContent: View {
                 }
             }
             .padding(.horizontal, DesignTokens.Spacing.lg)
-            .padding(.bottom, DesignTokens.Spacing.xxl)
+            .padding(.top, DesignTokens.Spacing.md)
+
+            Spacer(minLength: 0)
         }
         .animation(.easeInOut(duration: 0.25), value: snapshot.state)
         .animation(.easeInOut(duration: 0.25), value: timerMode)
@@ -221,22 +223,17 @@ private struct MacContent: View {
     }
 
     private func idleSettingsView(state: WODTimerEngineState) -> some View {
-        ZStack(alignment: .top) {
-            VStack(spacing: DesignTokens.Spacing.lg) {
+        // Render only the active mode's steppers. Overlaying both in a ZStack made
+        // EMOM reserve height for Intervals' 3rd stepper, leaving an empty gap.
+        VStack(spacing: DesignTokens.Spacing.lg) {
+            if timerMode == .emom {
                 SharedStepperView(value: $rounds, range: roundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
                 SharedStepperView(value: $emomRoundLength, range: emomLengthRange, step: 30, displayString: sharedFormatEmomLength(emomRoundLength), label: "Round length", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
-            }
-                .opacity(timerMode == .emom ? 1 : 0)
-                .allowsHitTesting(timerMode == .emom)
-                .accessibilityHidden(timerMode != .emom)
-            VStack(spacing: DesignTokens.Spacing.lg) {
+            } else {
                 SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
                 SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
                 SharedStepperView(value: $intervalsRounds, range: intervalsRoundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.macStepperTheme, useLongPressRepeat: true)
             }
-            .opacity(timerMode == .intervals ? 1 : 0)
-            .allowsHitTesting(timerMode == .intervals)
-            .accessibilityHidden(timerMode != .intervals)
         }
         .animation(.easeInOut(duration: 0.25), value: timerMode)
         .padding(.horizontal, DesignTokens.Spacing.lg)
@@ -379,13 +376,15 @@ private struct MacAboutView: View {
                 .foregroundStyle(DesignTokens.Common.onPrimary(scheme))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, DesignTokens.Spacing.md)
-                .padding(.horizontal, DesignTokens.Spacing.xl)
                 .background(DesignTokens.Common.primary(scheme))
                 .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.md))
                 .buttonStyle(.plain)
-                .padding(.bottom, DesignTokens.Spacing.xxl)
+                // Inset from the sheet edges so the rounded button doesn't clash
+                // with the sheet's own rounded corners.
+                .padding(.horizontal, DesignTokens.Spacing.xl)
+                .padding(.bottom, DesignTokens.Spacing.xl)
         }
-        .frame(minWidth: 320, minHeight: 380)
+        .frame(minWidth: 320, minHeight: 360)
         .background(DesignTokens.Common.Background.app(scheme))
     }
 }

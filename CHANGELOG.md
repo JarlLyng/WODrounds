@@ -2,7 +2,7 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
-## 1.4 (build 11)
+## 1.4 (build 12)
 
 **What's New (App Store copy):**
 
@@ -18,4 +18,5 @@ All notable user-facing changes to WODrounds. Newest first.
 - **Fixed:** "X rounds left" voice cues played twice per round in Intervals mode; they now fire once per round (#35).
 - **Changed:** Removed the non-functional sound toggle on macOS (macOS has no audio cues) (#37).
 - **Fixed:** macOS — the mode switch and Start button were clipped at the default window size; the window now opens tall enough to show the full layout (#47).
+- **Changed:** macOS — tidier idle layout: the setup controls are a compact, vertically-centred cluster (only the active mode's steppers render, so EMOM no longer leaves an empty gap reserved for Intervals' third stepper), and the About sheet's Done button is inset from the sheet edges.
 - **Internal:** Removed dead code (#36); added unit + UI test coverage; fixed and hardened CI (CodeQL build, Node 24 action upgrades, unit-test workflow) (#39, #43, #44). Sentry no longer reports under XCTest, and debug/simulator events are tagged with their own environment so they don't appear as production.

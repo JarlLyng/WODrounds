@@ -70,9 +70,10 @@ struct WODroundsApp: App {
             ContentView()
         }
         #if os(macOS)
-        // Tall enough for the full idle layout (mode switch + steppers + Start)
-        // so nothing is clipped at the default size. See issue #47.
-        .defaultSize(width: 340, height: 720)
+        // Fits the taller Intervals idle layout (3 steppers); EMOM centres within
+        // it. contentMinSize stops the user shrinking it small enough to clip.
+        .defaultSize(width: 360, height: 740)
+        .windowResizability(.contentMinSize)
         #endif
     }
 }
