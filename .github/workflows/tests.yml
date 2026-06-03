@@ -29,11 +29,7 @@ jobs:
       - name: Select an available iPhone simulator
         id: sim
         run: |
-          UDID=$(xcrun simctl list devices available --json \
-            | python3 -c "import sys, json; \
-devices = json.load(sys.stdin)['devices']; \
-ids = [d['udid'] for rt, devs in devices.items() if 'iOS' in rt for d in devs if d['name'].startswith('iPhone')]; \
-print(ids[0] if ids else '')")
+          UDID=$(xcrun simctl list devices available --json | python3 -c "import sys, json; d = json.load(sys.stdin)['devices']; ids = [x['udid'] for rt, devs in d.items() if 'iOS' in rt for x in devs if x['name'].startswith('iPhone')]; print(ids[0] if ids else '')")
           if [ -z "$UDID" ]; then
             echo "No iOS Simulator available on this runner" >&2
             exit 1
