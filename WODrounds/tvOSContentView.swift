@@ -238,22 +238,20 @@ struct ContentView: View {
     }
 
     private func tvOSIdleSettingsView(state: WODTimerEngineState) -> some View {
-        ZStack(alignment: .top) {
-            VStack(spacing: DesignTokens.Spacing.xl) {
+        // Render only the active mode's steppers. The previous ZStack overlay kept
+        // the inactive mode's steppers in the view at opacity 0 — but opacity /
+        // allowsHitTesting / accessibilityHidden do NOT remove them from the tvOS
+        // focus engine, so the Siri Remote could move focus into invisible buttons
+        // and get stuck. Conditional rendering removes them entirely.
+        VStack(spacing: DesignTokens.Spacing.xl) {
+            if timerMode == .emom {
                 SharedStepperView(value: $rounds, range: roundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
                 SharedStepperView(value: $emomRoundLengthSeconds, range: emomLengthRange, step: 30, displayString: sharedFormatEmomLength(emomRoundLengthSeconds), label: "Round length", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
-            }
-                .opacity(timerMode == .emom ? 1 : 0)
-                .allowsHitTesting(timerMode == .emom)
-                .accessibilityHidden(timerMode != .emom)
-            VStack(spacing: DesignTokens.Spacing.xl) {
+            } else {
                 SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
                 SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
                 SharedStepperView(value: $intervalsRounds, range: intervalsRoundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
             }
-            .opacity(timerMode == .intervals ? 1 : 0)
-            .allowsHitTesting(timerMode == .intervals)
-            .accessibilityHidden(timerMode != .intervals)
         }
         .animation(.easeInOut(duration: 0.25), value: timerMode)
         .padding(.horizontal, DesignTokens.Spacing.xxl)
