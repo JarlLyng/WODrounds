@@ -19,4 +19,5 @@ All notable user-facing changes to WODrounds. Newest first.
 - **Changed:** Removed the non-functional sound toggle on macOS (macOS has no audio cues) (#37).
 - **Fixed:** macOS — the mode switch and Start button were clipped at the default window size; the window now opens tall enough to show the full layout (#47).
 - **Changed:** macOS — tidier idle layout: the setup controls are a compact, vertically-centred cluster (only the active mode's steppers render, so EMOM no longer leaves an empty gap reserved for Intervals' third stepper), and the About sheet's Done button is inset from the sheet edges.
+- **Fixed:** tvOS — remote focus could get stuck and the buttons became unreachable. The inactive mode's steppers were hidden with opacity but stayed in the focus engine; they're now only rendered for the active mode, so focus navigation works.
 - **Internal:** Removed dead code (#36); added unit + UI test coverage; fixed and hardened CI (CodeQL build, Node 24 action upgrades, unit-test workflow) (#39, #43, #44). Sentry no longer reports under XCTest, and debug/simulator events are tagged with their own environment so they don't appear as production.
