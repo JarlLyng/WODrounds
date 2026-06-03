@@ -68,11 +68,6 @@ enum WorkoutSoundManager {
         play(name: "getReadyStart", ext: "mp3")
     }
 
-    /// Plays the "30 seconds remaining" sound (once per phase, when 30 seconds remain in the round/phase).
-    static func play30SecondsRemaining() {
-        play(name: "30SecondsRemaining", ext: "mp3")
-    }
-
     /// Plays a random "you did it" sound when the workout is complete.
     static func playYouDidIt() {
         let variants = ["youDidIt", "youDidIt2", "youDidIt3"]

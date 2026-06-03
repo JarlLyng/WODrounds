@@ -390,6 +390,22 @@ struct WODroundsTests {
         #expect(diff < 0.001)
     }
 
+    @Test func effectiveEndDateExcludesInProgressPause() {
+        var engine = WODTimerEngine(emomRounds: 5, secondsPerRound: 60)
+        let start = Date()
+        engine.start(now: start)
+        // Run 30s, then pause and stay paused (no resume).
+        engine.pause(now: start.addingTimeInterval(30))
+        // Ask for the end date 25s into the still-open pause.
+        let now = start.addingTimeInterval(55)
+        let endDate = engine.effectiveWorkoutEndDate(now: now)
+        #expect(endDate != nil)
+        // Active time is only the 30s before pausing; the open 25s pause must be excluded.
+        let expectedEnd = Date(timeIntervalSinceReferenceDate: now.timeIntervalSinceReferenceDate - 25)
+        let diff = abs(endDate!.timeIntervalSince(expectedEnd))
+        #expect(diff < 0.001)
+    }
+
     // MARK: - totalDurationSeconds
 
     @Test func emomTotalDuration() {

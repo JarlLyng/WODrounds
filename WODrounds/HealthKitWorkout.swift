@@ -15,7 +15,6 @@ final class HealthKitWorkoutController {
     private let healthStore = HKHealthStore()
     private var builder: HKWorkoutBuilder?
     private var workoutStartDate: Date?
-    private var collectionReady = false
     private let activityType: HKWorkoutActivityType = .highIntensityIntervalTraining
 
     static let shared = HealthKitWorkoutController()
@@ -62,17 +61,12 @@ final class HealthKitWorkoutController {
         let newBuilder = HKWorkoutBuilder(healthStore: healthStore, configuration: config, device: .local())
         builder = newBuilder
         workoutStartDate = startDate
-        collectionReady = false
         newBuilder.beginCollection(withStart: startDate) { [weak self] _, error in
             if let error {
                 print("[HealthKit] beginCollection failed: \(error.localizedDescription)")
                 DispatchQueue.main.async {
                     self?.builder = nil
                     self?.workoutStartDate = nil
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self?.collectionReady = true
                 }
             }
         }
@@ -86,7 +80,6 @@ final class HealthKitWorkoutController {
         }
         builder = nil
         workoutStartDate = nil
-        collectionReady = false
 
         // Ensure end date is after start date.
         let safeEndDate = max(endDate, startDate.addingTimeInterval(1))
@@ -143,7 +136,6 @@ final class HealthKitWorkoutController {
         builder?.discardWorkout()
         builder = nil
         workoutStartDate = nil
-        collectionReady = false
     }
 }
 #endif
