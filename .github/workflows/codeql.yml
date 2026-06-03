@@ -37,9 +37,20 @@ jobs:
           fi
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: swift
+
+      # Cache the cloned SwiftPM package sources (not build artifacts — caching
+      # DerivedData would skip compilation and starve CodeQL's tracer). Speeds up
+      # dependency resolution while still compiling everything under CodeQL.
+      - name: Cache SwiftPM packages
+        uses: actions/cache@v4
+        with:
+          path: .spm-cache
+          key: spm-${{ runner.os }}-${{ hashFiles('WODrounds.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            spm-${{ runner.os }}-
 
       - name: Build for CodeQL
         run: |
@@ -47,8 +58,9 @@ jobs:
             -scheme WODrounds \
             -configuration Debug \
             -destination 'generic/platform=iOS Simulator' \
+            -clonedSourcePackagesDirPath .spm-cache \
             CODE_SIGNING_ALLOWED=NO \
             build
 
       - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
