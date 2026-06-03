@@ -313,10 +313,14 @@ struct ContentView: View {
                             .font(.system(size: TVOSTypography.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                             .monospacedDigit()
                             .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                        SharedCancelButton(action: { countdownEndTime = nil }, theme: Self.tvOSCancelTheme)
+                            .frame(maxWidth: 600)
+                            .padding(.top, DesignTokens.Spacing.xl)
+                            .accessibilityLabel("Cancel countdown")
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(DesignTokens.Common.Background.app(scheme))
-                    .accessibilityElement(children: .ignore)
+                    .accessibilityElement(children: .contain)
                     .accessibilityLabel("Countdown, \(remaining) seconds")
                 }
             }

@@ -376,11 +376,19 @@ private struct iOSContent: View {
                         .font(.system(size: DesignTokens.Typography.Size.display * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                         .monospacedDigit()
                         .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                    SharedCancelButton(action: {
+                        countdownEndTime = nil
+                        Haptics.light()
+                    }, theme: cancelTheme)
+                    .frame(maxWidth: maxContentWidth)
+                    .padding(.top, DesignTokens.Spacing.xl * spacingScale)
+                    .padding(.horizontal, DesignTokens.Spacing.xxxl)
+                    .accessibilityLabel("Cancel countdown")
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(DesignTokens.Common.Background.app(scheme))
                 .transition(.opacity)
-                .accessibilityElement(children: .ignore)
+                .accessibilityElement(children: .contain)
                 .accessibilityLabel("Countdown, \(remaining) seconds")
             }
         }

@@ -66,7 +66,6 @@ private struct MacContent: View {
     @State private var flashScreen = false
     @State private var lastHapticRound = 0
     @State private var lastHapticPhase: WODTimerPhase?
-    @AppStorage("soundEnabled") private var soundEnabled: Bool = true
 
     private static let macDoneTheme = DoneViewTheme(
         checkmarkSize: 64,
@@ -241,25 +240,12 @@ private struct MacContent: View {
         .padding(.horizontal, DesignTokens.Spacing.lg)
     }
 
+    // macOS has no audio cues (WorkoutSoundManager is iOS/tvOS only), so no sound toggle is shown.
     private var topRightControls: some View {
         HStack(spacing: DesignTokens.Spacing.sm) {
-            soundToggleButton
             infoButton
         }
         .padding(DesignTokens.Spacing.md)
-    }
-
-    private var soundToggleButton: some View {
-        Button {
-            soundEnabled.toggle()
-        } label: {
-            Image(systemName: soundEnabled ? "speaker.wave.2" : "speaker.slash")
-                .font(.system(size: DesignTokens.Typography.Size.lg, weight: DesignTokens.Typography.Weight.regular))
-                .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-                .contentTransitionInterpolateCompat()
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(soundEnabled ? "Mute sound" : "Unmute sound")
     }
 
     private var infoButton: some View {
@@ -295,10 +281,14 @@ private struct MacContent: View {
                             .font(.system(size: DesignTokens.Typography.Size.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                             .monospacedDigit()
                             .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+                        SharedCancelButton(action: { countdownEndTime = nil }, theme: Self.macCancelTheme)
+                            .padding(.top, DesignTokens.Spacing.xl)
+                            .padding(.horizontal, DesignTokens.Spacing.xxxl)
+                            .accessibilityLabel("Cancel countdown")
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(DesignTokens.Common.Background.app(scheme))
-                    .accessibilityElement(children: .ignore)
+                    .accessibilityElement(children: .contain)
                     .accessibilityLabel("Countdown, \(remaining) seconds")
                 }
             }
