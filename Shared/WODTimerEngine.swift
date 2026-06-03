@@ -139,7 +139,13 @@ struct WODTimerEngine {
     /// End date for a HealthKit workout so duration = active time (excludes pause). Nil if workout never started.
     func effectiveWorkoutEndDate(now: Date) -> Date? {
         guard startDate != nil else { return nil }
-        return Date(timeIntervalSinceReferenceDate: now.timeIntervalSinceReferenceDate - accumulatedPauseDuration)
+        // Exclude both completed pauses and any in-progress pause (when ending while paused),
+        // so the active-time duration isn't inflated by an open pause interval.
+        var pause = accumulatedPauseDuration
+        if let pauseStart = pausedAt {
+            pause += max(0, now.timeIntervalSince(pauseStart))
+        }
+        return Date(timeIntervalSinceReferenceDate: now.timeIntervalSinceReferenceDate - pause)
     }
 
     // MARK: - Query (Date-based)

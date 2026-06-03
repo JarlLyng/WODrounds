@@ -76,6 +76,9 @@ private struct iOSContent: View {
     @State private var showCancelConfirmation = false
     @State private var lastHapticRound: Int = 0
     @State private var lastHapticPhase: WODTimerPhase?
+    // Tracks the last round we announced a "rounds remaining" cue for, so the
+    // cue fires once per round even though Intervals changes phase twice per round.
+    @State private var lastRoundsRemainingRound: Int = 0
     @State private var showAbout = false
     @State private var countdownEndTime: Date? = nil
     @State private var flashScreen = false
@@ -174,6 +177,7 @@ private struct iOSContent: View {
             if newState == .idle || newState == .finished {
                 lastHapticRound = 0
                 lastHapticPhase = nil
+                lastRoundsRemainingRound = 0
                 resetInRoundCueState()
             }
             if newState == .finished {
@@ -202,7 +206,12 @@ private struct iOSContent: View {
                 Haptics.medium()
                 triggerFlash()
                 lastHapticPhase = newPhase
-                WorkoutSoundManager.checkRoundsRemaining(currentRound: snapshot.currentRound, totalRounds: intervalsRounds)
+                // Phase changes twice per round (work→rest, rest→work); only announce
+                // rounds-remaining once per round so the cue isn't spoken twice.
+                if snapshot.currentRound != lastRoundsRemainingRound {
+                    lastRoundsRemainingRound = snapshot.currentRound
+                    WorkoutSoundManager.checkRoundsRemaining(currentRound: snapshot.currentRound, totalRounds: intervalsRounds)
+                }
             }
         }
         .onAppear { applyIdleTimer(engine.state) }

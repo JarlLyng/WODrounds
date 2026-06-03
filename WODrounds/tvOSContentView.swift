@@ -32,6 +32,9 @@ struct ContentView: View {
     @State private var flashScreen = false
     @State private var lastHapticRound = 0
     @State private var lastHapticPhase: WODTimerPhase?
+    // Tracks the last round we announced a "rounds remaining" cue for, so the
+    // cue fires once per round even though Intervals changes phase twice per round.
+    @State private var lastRoundsRemainingRound: Int = 0
     @AppStorage("soundEnabled") private var soundEnabled: Bool = true
     // In-round cue state — tracks which cues have fired this (round, phase) so each fires once.
     @State private var lastHalfwayRound: Int? = nil
@@ -109,7 +112,13 @@ struct ContentView: View {
                     if (engine.state == .running || engine.state == .paused), timerMode == .intervals, newPhase != lastHapticPhase {
                         triggerFlash()
                         lastHapticPhase = newPhase
-                        WorkoutSoundManager.checkRoundsRemaining(currentRound: engine.snapshot(now: timeline.date).currentRound, totalRounds: intervalsRounds)
+                        // Phase changes twice per round (work→rest, rest→work); only announce
+                        // rounds-remaining once per round so the cue isn't spoken twice.
+                        let currentRound = engine.snapshot(now: timeline.date).currentRound
+                        if currentRound != lastRoundsRemainingRound {
+                            lastRoundsRemainingRound = currentRound
+                            WorkoutSoundManager.checkRoundsRemaining(currentRound: currentRound, totalRounds: intervalsRounds)
+                        }
                     }
                 }
                 .onChange(of: engine.state) { newState in
@@ -119,6 +128,7 @@ struct ContentView: View {
                     if newState == .idle || newState == .finished {
                         lastHapticRound = 0
                         lastHapticPhase = nil
+                        lastRoundsRemainingRound = 0
                         resetInRoundCueState()
                     }
                 }
