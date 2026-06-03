@@ -1,8 +1,9 @@
 name: CodeQL
 
+# CodeQL Swift analysis traces the compiler through a full build (~30 min),
+# so we don't run it on every push to main — only on PRs (pre-merge) and a
+# weekly scheduled scan. This keeps coverage without paying 30 min per push.
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
   schedule:
