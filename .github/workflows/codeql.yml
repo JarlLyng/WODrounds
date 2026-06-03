@@ -1,8 +1,9 @@
 name: CodeQL
 
+# CodeQL Swift analysis traces the compiler through a full build (~30 min),
+# so we don't run it on every push to main — only on PRs (pre-merge) and a
+# weekly scheduled scan. This keeps coverage without paying 30 min per push.
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
   schedule:
@@ -25,12 +26,32 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      # Sentry.xcconfig is gitignored (it holds the DSN); the project's base
+      # configuration references it, so the build (and thus CodeQL analysis)
+      # fails on a clean checkout without it. Provide the placeholder template.
+      - name: Provide Sentry config
+        run: |
+          if [ ! -f Sentry.xcconfig ]; then
+            cp Sentry.xcconfig.example Sentry.xcconfig
+          fi
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: swift
+
+      # Cache the cloned SwiftPM package sources (not build artifacts — caching
+      # DerivedData would skip compilation and starve CodeQL's tracer). Speeds up
+      # dependency resolution while still compiling everything under CodeQL.
+      - name: Cache SwiftPM packages
+        uses: actions/cache@v4
+        with:
+          path: .spm-cache
+          key: spm-${{ runner.os }}-${{ hashFiles('WODrounds.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            spm-${{ runner.os }}-
 
       - name: Build for CodeQL
         run: |
@@ -38,8 +59,9 @@ jobs:
             -scheme WODrounds \
             -configuration Debug \
             -destination 'generic/platform=iOS Simulator' \
+            -clonedSourcePackagesDirPath .spm-cache \
             CODE_SIGNING_ALLOWED=NO \
             build
 
       - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
