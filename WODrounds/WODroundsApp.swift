@@ -54,7 +54,9 @@ struct WODroundsApp: App {
             ContentView()
         }
         #if os(macOS)
-        .defaultSize(width: 340, height: 560)
+        // Tall enough for the full idle layout (mode switch + steppers + Start)
+        // so nothing is clipped at the default size. See issue #47.
+        .defaultSize(width: 340, height: 720)
         #endif
     }
 }

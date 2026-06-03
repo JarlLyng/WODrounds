@@ -20,7 +20,9 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var scheme
 
     private let maxContentWidth: CGFloat = 320
-    private let maxContentHeight: CGFloat = 520
+    // Must accommodate the full idle layout so the mode switch (top) and Start
+    // button (bottom) aren't clipped at the default window size. See issue #47.
+    private let maxContentHeight: CGFloat = 700
 
     var body: some View {
         TimelineView(.periodic(from: Date(), by: 1.0)) { timeline in
