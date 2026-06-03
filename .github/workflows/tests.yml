@@ -26,6 +26,15 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
+      # Sentry.xcconfig is gitignored (it holds the DSN); the project's base
+      # configuration references it, so provide the placeholder template here.
+      # Sentry no-ops on an empty/placeholder DSN, so tests are unaffected.
+      - name: Provide Sentry config
+        run: |
+          if [ ! -f Sentry.xcconfig ]; then
+            cp Sentry.xcconfig.example Sentry.xcconfig
+          fi
+
       - name: Select an available iPhone simulator
         id: sim
         run: |
