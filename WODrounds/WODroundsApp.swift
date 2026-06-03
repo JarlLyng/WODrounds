@@ -21,7 +21,14 @@ struct WODroundsApp: App {
 
     #if os(iOS)
     private static func initSentry() {
-        let dsn = ProcessInfo.processInfo.environment["SENTRY_DSN"]
+        // Don't report under XCTest/XCUITest — it only pollutes the project with
+        // test-harness noise (e.g. false "App Hang" events from the simulator).
+        let env = ProcessInfo.processInfo.environment
+        if env["XCTestConfigurationFilePath"] != nil || env["XCTestSessionIdentifier"] != nil {
+            return
+        }
+
+        let dsn = env["SENTRY_DSN"]
             ?? (Bundle.main.object(forInfoDictionaryKey: "SentryDSN") as? String)
         let dsnTrimmed = dsn?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         guard !dsnTrimmed.isEmpty else {
@@ -32,6 +39,15 @@ struct WODroundsApp: App {
         }
         SentrySDK.start { options in
             options.dsn = dsnTrimmed
+            // Tag non-release builds so simulator/debug events don't masquerade as
+            // production. Only real App Store / TestFlight builds report "production".
+            #if targetEnvironment(simulator)
+            options.environment = "simulator"
+            #elseif DEBUG
+            options.environment = "debug"
+            #else
+            options.environment = "production"
+            #endif
             #if DEBUG
             options.debug = true
             options.tracesSampleRate = 1.0
