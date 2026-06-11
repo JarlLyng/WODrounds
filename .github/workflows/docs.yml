@@ -13,6 +13,10 @@ on:
       - 'scripts/validate_docs.py'
       - '.github/workflows/docs.yml'
 
+# Least privilege: this workflow only reads the repo to validate docs.
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
