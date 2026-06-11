@@ -104,6 +104,7 @@ The app follows the IAMJARL design system via SPM package ([iamjarl-design](http
 - **iOS + Watch:** Use "Any iOS Device" (or a physical iPhone) to run the main app; the Watch app is embedded and installs with the iOS app.
 - **Tests:** `WODroundsTests` uses Swift Testing; run tests via **Product → Test** or `⌘U`.
 - **Docs validation:** Run `python3 scripts/validate_docs.py` before committing docs changes. Also runs automatically on every push to `main` via `.github/workflows/docs.yml`. Checks image references, App Store URLs, JSON-LD validity, sitemap integrity, and canonical URLs.
+- **Sales / downloads:** `scripts/asc_downloads.py` pulls App Store Connect download numbers (new installs vs. updates) from the command line. Credentials stay local — see [scripts/README.md](scripts/README.md). No secrets are committed (`*.p8` and `.env` are gitignored).
 
 ---
 
