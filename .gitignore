@@ -47,3 +47,13 @@ fastlane/screenshots/
 # Sentry — DSN is technically a public client credential, but we don't
 # commit it. Use Sentry.xcconfig.example as a template.
 Sentry.xcconfig
+
+# Secrets — never commit. App Store Connect API keys and env files.
+*.p8
+.env
+.env.*
+!.env.example
+
+# Python virtualenv for scripts/
+.venv/
+__pycache__/
