@@ -44,6 +44,7 @@ Interval timer and workout timer for EMOM, CrossFit, and HIIT. No accounts, no s
 • Apple Watch: Start on iPhone – watch shows same time and round. Or run the timer on the watch only.
 • Audio cues: "Get ready", halfway and ten-seconds voice cues, a 3-2-1 countdown, rounds remaining (10, 5, 2), and randomized completion sounds.
 • Large type, one-handed use, runs in background. Light and dark theme.
+• One-time purchase: pay once, own it forever. No subscription, no ads, no in-app purchases.
 
 The simplest WOD timer: no database, no sharing. Just timer and rounds.
 ```
@@ -174,6 +175,7 @@ Interval timer and workout timer for EMOM, CrossFit, and HIIT on Mac. No account
 • EMOM: Set rounds (1–120) and round length (0:30–9:30). Start, pause, resume, reset.
 • Intervals: Work, rest, rounds. Perfect for Tabata (20/10 × 8) and any interval workout.
 • Compact window, large type. Runs in background. Light and dark theme.
+• One-time purchase: pay once, own it forever. No subscription, no ads, no in-app purchases.
 
 The same minimal WOD timer as on iPhone and Apple Watch – no database, no sharing. Just timer and rounds.
 ```
@@ -216,6 +218,7 @@ Interval timer and workout timer for EMOM, CrossFit, and HIIT on Apple TV. No ac
 • EMOM: Set rounds (1–120) and round length (0:30–9:30). Start, pause, resume, reset with the remote.
 • Intervals: Work, rest, rounds. Perfect for Tabata (20/10 × 8) and any interval workout.
 • Large type for the living room. Focus-friendly UI. Light and dark theme.
+• One-time purchase: pay once, own it forever. No subscription, no ads, no in-app purchases.
 
 The same minimal WOD timer as on iPhone, Watch, and Mac – no database, no sharing. Just timer and rounds.
 ```
@@ -258,6 +261,7 @@ Temporizador de intervalos y de entrenamiento para EMOM, CrossFit y HIIT. Sin cu
 • Apple Watch: empieza en el iPhone y el reloj muestra el mismo tiempo y ronda. O usa el temporizador solo en el reloj.
 • Señales de audio: "Get ready", avisos de voz a la mitad y a los diez segundos, cuenta 3-2-1, rondas restantes (10, 5, 2) y sonidos de finalización aleatorios.
 • Texto grande, uso con una mano, funciona en segundo plano. Tema claro y oscuro.
+• Compra única: paga una vez y es tuyo para siempre. Sin suscripción, sin anuncios, sin compras dentro de la app.
 
 El temporizador WOD más simple: sin base de datos, sin compartir. Solo cronómetro y rondas.
 ```
