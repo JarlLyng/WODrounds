@@ -57,3 +57,7 @@ Sentry.xcconfig
 # Python virtualenv for scripts/
 .venv/
 __pycache__/
+
+# Editor / AI-tool local config (keep .vscode/extensions.json shared)
+.claude/
+.cursor/
