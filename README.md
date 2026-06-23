@@ -146,7 +146,6 @@ Detailed reference docs live in `docs/`:
 | [APP_ICONS.md](docs/APP_ICONS.md) | Icon asset checklist for all platforms |
 | [APP_STORE_CONNECT.md](docs/APP_STORE_CONNECT.md) | App Store text (subtitle, description, keywords) for iOS, Mac, tvOS |
 | [SENTRY.md](docs/SENTRY.md) | Crash reporting setup (iOS only) |
-| [SEO_STRATEGY.md](docs/SEO_STRATEGY.md) | Marketing site SEO strategy and roadmap |
 
 Other root-level docs:
 
