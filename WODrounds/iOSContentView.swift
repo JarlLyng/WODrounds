@@ -430,6 +430,8 @@ private struct iOSContent: View {
     /// Idempotent — each cue fires at most once per (round, phase) tuple.
     private func checkInRoundCues(now: Date) {
         guard engine.state == .running else { return }
+        // For Time counts up with no rounds/phases — none of the in-round cues apply.
+        if case .forTime = engine.mode { return }
         let snapshot = engine.snapshot(now: now)
         let remaining = snapshot.remainingTimeInPhase
         let round = snapshot.currentRound
@@ -442,6 +444,8 @@ private struct iOSContent: View {
                 return TimeInterval(spr)
             case .intervals(let w, let r, _):
                 return TimeInterval(phase == .work ? w : r)
+            case .forTime:
+                return 0 // unreachable (guarded above); keeps the switch exhaustive
             }
         }()
 

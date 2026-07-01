@@ -24,8 +24,11 @@ enum WODTimerPhase: Equatable {
 /// Snapshot of timer state at a given moment. All values derived from Date.
 struct WODTimerEngineSnapshot {
     let state: WODTimerEngineState
-    /// Total seconds remaining in the workout (0 when finished or idle).
+    /// Total seconds remaining in the workout (0 when finished or idle; 0 for uncapped For Time).
     let remainingTime: TimeInterval
+    /// Seconds elapsed since start, excluding pauses. Frozen at the final time once finished.
+    /// The headline value for For Time (count-up); informational for EMOM/Intervals.
+    let elapsedTime: TimeInterval
     /// Current round, 1-based.
     let currentRound: Int
     /// Seconds elapsed within the current minute (EMOM) or N/A (Intervals).
@@ -36,10 +39,12 @@ struct WODTimerEngineSnapshot {
     let remainingTimeInPhase: TimeInterval
 }
 
-/// Timer mode: EMOM (rounds, secondsPerRound) or Intervals (work/rest/rounds).
+/// Timer mode: EMOM (rounds, secondsPerRound), Intervals (work/rest/rounds),
+/// or For Time (count-up; capSeconds nil = uncapped).
 enum WODTimerMode: Equatable {
     case emom(rounds: Int, secondsPerRound: Int)
     case intervals(workSeconds: Int, restSeconds: Int, rounds: Int)
+    case forTime(capSeconds: Int?)
 }
 
 /// EMOM + Intervals timer engine. Date-based, deterministic.
@@ -51,6 +56,8 @@ struct WODTimerEngine {
     private var startDate: Date?
     private var accumulatedPauseDuration: TimeInterval = 0
     private var pausedAt: Date?
+    /// Set by finish(now:) so the final elapsed time is frozen (Done screen, HealthKit).
+    private var finishedAt: Date?
 
     private let secondsPerMinute: TimeInterval = 60
 
@@ -91,30 +98,57 @@ struct WODTimerEngine {
         return totalDurationMinutes
     }
 
-    /// Total duration in seconds (for display). EMOM: rounds * secondsPerRound. Intervals: rounds * work + (rounds - 1) * rest.
+    // MARK: - For Time
+
+    /// Count-up mode. capSeconds nil = uncapped (runs until the user stops it);
+    /// non-nil = auto-finishes when elapsed reaches the cap.
+    init(forTimeCapSeconds: Int?) {
+        self.mode = .forTime(capSeconds: forTimeCapSeconds.map { max(1, $0) })
+    }
+
+    /// Time cap in seconds for For Time (nil when uncapped or not in For Time mode).
+    var forTimeCapSeconds: Int? {
+        if case .forTime(let cap) = mode { return cap }
+        return nil
+    }
+
+    /// True for For Time with no cap: the only mode with no fixed total, so every
+    /// `elapsed >= totalDurationSeconds` auto-finish comparison must be skipped
+    /// (totalDurationSeconds is 0 and would finish instantly).
+    private var isUncappedForTime: Bool {
+        if case .forTime(let cap) = mode { return cap == nil }
+        return false
+    }
+
+    /// Total duration in seconds (for display). EMOM: rounds * secondsPerRound.
+    /// Intervals: rounds * work + (rounds - 1) * rest. For Time: cap, or 0 when uncapped.
     var totalDurationSeconds: TimeInterval {
         switch mode {
         case .emom(let r, let spr):
             return TimeInterval(r) * TimeInterval(spr)
         case .intervals(let w, let r, let n):
             return TimeInterval(n) * TimeInterval(w) + TimeInterval(n - 1) * TimeInterval(r)
+        case .forTime(let cap):
+            return TimeInterval(cap ?? 0)
         }
     }
 
     // MARK: - Actions
 
     mutating func start(now: Date) {
-        guard totalDurationSeconds > 0 else { return }
+        // Uncapped For Time deliberately has no total; every other mode needs one.
+        guard totalDurationSeconds > 0 || isUncappedForTime else { return }
         startDate = now
         accumulatedPauseDuration = 0
         pausedAt = nil
+        finishedAt = nil
         state = .running
     }
 
     mutating func pause(now: Date) {
         guard state == .running, let start = startDate else { return }
         let elapsed = now.timeIntervalSince(start) - accumulatedPauseDuration
-        if elapsed >= totalDurationSeconds {
+        if !isUncappedForTime, elapsed >= totalDurationSeconds {
             state = .finished
             return
         }
@@ -129,11 +163,25 @@ struct WODTimerEngine {
         state = .running
     }
 
+    /// Explicitly end the workout now (For Time "Stop"). Freezes the final elapsed
+    /// time via finishedAt so the Done screen and HealthKit don't keep growing.
+    mutating func finish(now: Date) {
+        guard state == .running || state == .paused else { return }
+        // Fold an open pause into the accumulated total so frozen elapsed excludes it.
+        if let pauseStart = pausedAt {
+            accumulatedPauseDuration += max(0, now.timeIntervalSince(pauseStart))
+            pausedAt = nil
+        }
+        finishedAt = now
+        state = .finished
+    }
+
     mutating func reset() {
         state = .idle
         startDate = nil
         accumulatedPauseDuration = 0
         pausedAt = nil
+        finishedAt = nil
     }
 
     /// End date for a HealthKit workout so duration = active time (excludes pause). Nil if workout never started.
@@ -153,17 +201,17 @@ struct WODTimerEngine {
     func snapshot(now: Date) -> WODTimerEngineSnapshot {
         switch state {
         case .idle:
-            return makeSnapshot(state: .idle, remainingTime: 0, currentRound: 0, secondsIntoCurrentMinute: 0, phase: .work, remainingTimeInPhase: 0)
+            return makeSnapshot(state: .idle, remainingTime: 0, elapsedTime: 0, currentRound: 0, secondsIntoCurrentMinute: 0, phase: .work, remainingTimeInPhase: 0)
         case .running:
             let elapsed = elapsedSeconds(now: now)
             let total = totalDurationSeconds
-            if elapsed >= total {
+            if !isUncappedForTime, elapsed >= total {
                 return makeFinishedSnapshot()
             }
             return snapshotForActive(elapsed: elapsed)
         case .paused:
             let elapsed = elapsedSeconds(now: now)
-            if elapsed >= totalDurationSeconds {
+            if !isUncappedForTime, elapsed >= totalDurationSeconds {
                 return makeFinishedSnapshot()
             }
             return snapshotForPaused(elapsed: elapsed)
@@ -174,6 +222,7 @@ struct WODTimerEngine {
 
     mutating func tick(now: Date) {
         guard state == .running else { return }
+        guard !isUncappedForTime else { return } // uncapped For Time never auto-finishes
         let elapsed = elapsedSeconds(now: now)
         if elapsed >= totalDurationSeconds {
             state = .finished
@@ -197,10 +246,11 @@ struct WODTimerEngine {
         return max(0, raw)
     }
 
-    private func makeSnapshot(state: WODTimerEngineState, remainingTime: TimeInterval, currentRound: Int, secondsIntoCurrentMinute: Int, phase: WODTimerPhase, remainingTimeInPhase: TimeInterval) -> WODTimerEngineSnapshot {
+    private func makeSnapshot(state: WODTimerEngineState, remainingTime: TimeInterval, elapsedTime: TimeInterval, currentRound: Int, secondsIntoCurrentMinute: Int, phase: WODTimerPhase, remainingTimeInPhase: TimeInterval) -> WODTimerEngineSnapshot {
         WODTimerEngineSnapshot(
             state: state,
             remainingTime: remainingTime,
+            elapsedTime: elapsedTime,
             currentRound: currentRound,
             secondsIntoCurrentMinute: secondsIntoCurrentMinute,
             currentPhase: phase,
@@ -208,13 +258,23 @@ struct WODTimerEngine {
         )
     }
 
+    /// Final elapsed time once finished. finish(now:) freezes the exact time via
+    /// finishedAt; auto-finished workouts (cap/total reached) use the full duration.
+    private var finishedElapsedTime: TimeInterval {
+        if let finishedAt, let start = startDate {
+            return max(0, finishedAt.timeIntervalSince(start) - accumulatedPauseDuration)
+        }
+        return totalDurationSeconds
+    }
+
     private func makeFinishedSnapshot() -> WODTimerEngineSnapshot {
         let totalRounds: Int
         switch mode {
         case .emom(let r, _): totalRounds = r
         case .intervals(_, _, let r): totalRounds = r
+        case .forTime: totalRounds = 1 // For Time has no rounds; UI hides the label
         }
-        return makeSnapshot(state: .finished, remainingTime: 0, currentRound: totalRounds, secondsIntoCurrentMinute: 0, phase: .work, remainingTimeInPhase: 0)
+        return makeSnapshot(state: .finished, remainingTime: 0, elapsedTime: finishedElapsedTime, currentRound: totalRounds, secondsIntoCurrentMinute: 0, phase: .work, remainingTimeInPhase: 0)
     }
 
     private func snapshotForActive(elapsed: TimeInterval) -> WODTimerEngineSnapshot {
@@ -225,12 +285,15 @@ struct WODTimerEngine {
             let round = min(roundFromEMOM(elapsed: elapsed), rounds)
             let intoRound = elapsed >= total ? 0 : secondsIntoMinuteFrom(elapsed: elapsed)
             let remainingTimeInPhase = TimeInterval(spr - intoRound)
-            return makeSnapshot(state: .running, remainingTime: remaining, currentRound: round, secondsIntoCurrentMinute: intoRound, phase: .work, remainingTimeInPhase: remainingTimeInPhase)
+            return makeSnapshot(state: .running, remainingTime: remaining, elapsedTime: elapsed, currentRound: round, secondsIntoCurrentMinute: intoRound, phase: .work, remainingTimeInPhase: remainingTimeInPhase)
         case .intervals(let w, let r, let n):
             let total = totalDurationSeconds
             let remaining = max(0, total - elapsed)
             let (round, phase, remainingTimeInPhase) = intervalsPhase(elapsed: elapsed, work: w, rest: r, rounds: n)
-            return makeSnapshot(state: .running, remainingTime: remaining, currentRound: round, secondsIntoCurrentMinute: 0, phase: phase, remainingTimeInPhase: remainingTimeInPhase)
+            return makeSnapshot(state: .running, remainingTime: remaining, elapsedTime: elapsed, currentRound: round, secondsIntoCurrentMinute: 0, phase: phase, remainingTimeInPhase: remainingTimeInPhase)
+        case .forTime(let cap):
+            let remaining = cap.map { max(0, TimeInterval($0) - elapsed) } ?? 0
+            return makeSnapshot(state: .running, remainingTime: remaining, elapsedTime: elapsed, currentRound: 1, secondsIntoCurrentMinute: 0, phase: .work, remainingTimeInPhase: remaining)
         }
     }
 
@@ -242,12 +305,15 @@ struct WODTimerEngine {
             let round = roundFromEMOM(elapsed: elapsed)
             let intoRound = secondsIntoMinuteFrom(elapsed: elapsed)
             let remainingTimeInPhase = TimeInterval(spr - intoRound)
-            return makeSnapshot(state: .paused, remainingTime: remaining, currentRound: round, secondsIntoCurrentMinute: intoRound, phase: .work, remainingTimeInPhase: remainingTimeInPhase)
+            return makeSnapshot(state: .paused, remainingTime: remaining, elapsedTime: elapsed, currentRound: round, secondsIntoCurrentMinute: intoRound, phase: .work, remainingTimeInPhase: remainingTimeInPhase)
         case .intervals(let w, let r, let n):
             let total = totalDurationSeconds
             let remaining = max(0, total - elapsed)
             let (round, phase, remainingTimeInPhase) = intervalsPhase(elapsed: elapsed, work: w, rest: r, rounds: n)
-            return makeSnapshot(state: .paused, remainingTime: remaining, currentRound: round, secondsIntoCurrentMinute: 0, phase: phase, remainingTimeInPhase: remainingTimeInPhase)
+            return makeSnapshot(state: .paused, remainingTime: remaining, elapsedTime: elapsed, currentRound: round, secondsIntoCurrentMinute: 0, phase: phase, remainingTimeInPhase: remainingTimeInPhase)
+        case .forTime(let cap):
+            let remaining = cap.map { max(0, TimeInterval($0) - elapsed) } ?? 0
+            return makeSnapshot(state: .paused, remainingTime: remaining, elapsedTime: elapsed, currentRound: 1, secondsIntoCurrentMinute: 0, phase: .work, remainingTimeInPhase: remaining)
         }
     }
 
@@ -298,20 +364,25 @@ struct WODTimerEngine {
         let startDate: Date?
         let accumulatedPauseDuration: TimeInterval
         let pausedAt: Date?
-        let mode: String        // "emom" | "intervals"
+        let mode: String        // "emom" | "intervals" | "forTime"
         let totalMinutes: Int
         let emomSecondsPerRound: Int?
         let workSeconds: Int?
         let restSeconds: Int?
         let rounds: Int?
+        /// For Time cap; nil when uncapped or in another mode. Optional so old payloads decode.
+        let capSeconds: Int?
+        /// When finish(now:) froze the workout; lets the Watch freeze elapsed too.
+        let finishedAt: Date?
         let lastUpdated: Date
     }
 
     func syncPayload(now: Date) -> SyncPayload {
-        let (modeStr, totalMin, spr, work, rest, rnds): (String, Int, Int?, Int?, Int?, Int?) = {
+        let (modeStr, totalMin, spr, work, rest, rnds, cap): (String, Int, Int?, Int?, Int?, Int?, Int?) = {
             switch mode {
-            case .emom(let m, let s): return ("emom", m, s, nil, nil, nil)
-            case .intervals(let w, let r, let n): return ("intervals", 0, nil, w, r, n)
+            case .emom(let m, let s): return ("emom", m, s, nil, nil, nil, nil)
+            case .intervals(let w, let r, let n): return ("intervals", 0, nil, w, r, n, nil)
+            case .forTime(let c): return ("forTime", 0, nil, nil, nil, nil, c)
             }
         }()
         return SyncPayload(
@@ -325,6 +396,8 @@ struct WODTimerEngine {
             workSeconds: work,
             restSeconds: rest,
             rounds: rnds,
+            capSeconds: cap,
+            finishedAt: finishedAt,
             lastUpdated: now
         )
     }
