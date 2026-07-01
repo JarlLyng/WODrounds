@@ -33,9 +33,17 @@ struct WatchContentView: View {
             let syncedPayload = sessionManager.receivedPayload
             let syncedSnapshot = syncedPayload.flatMap { WODTimerSync.snapshot(from: $0, now: now) }
             let useSynced = syncedSnapshot.map { $0.state == .running || $0.state == .paused } ?? false
+            // Synced For Time counts up and has no rounds (Watch only follows iPhone
+            // For Time; there is no local For Time mode on the Watch).
+            let isSyncedForTime = useSynced && syncedPayload?.mode == "forTime"
             let (displayTime, currentRound, totalRounds, state): (TimeInterval, Int, Int, WODTimerEngineState) = {
                 if useSynced, let s = syncedSnapshot, let payload = syncedPayload {
-                    let disp = payload.mode == "emom" ? s.remainingTimeInPhase : s.remainingTime
+                    let disp: TimeInterval
+                    switch payload.mode {
+                    case "emom": disp = s.remainingTimeInPhase
+                    case "forTime": disp = s.elapsedTime
+                    default: disp = s.remainingTime
+                    }
                     return (disp, s.currentRound, s.totalRounds, s.state)
                 }
                 let local = engine.snapshot(now: now)
@@ -59,14 +67,18 @@ struct WatchContentView: View {
                             .foregroundStyle(WatchDesign.Colors.textTertiary(colorScheme))
                     }
 
-                    Text(timeString(from: displayTime))
+                    // Count-up (For Time) floors so the shown time never runs ahead;
+                    // count-down keeps ceiling so 0 is only shown when truly done.
+                    Text(timeString(from: isSyncedForTime ? floor(displayTime) : displayTime))
                         .font(.system(size: WatchDesign.timerFontSize, weight: .bold, design: .rounded))
                         .monospacedDigit()
                         .foregroundStyle(WatchDesign.Colors.textPrimary(colorScheme))
 
-                    Text("R \(currentRound)/\(totalRounds)")
-                        .font(.system(size: WatchDesign.roundFontSize, weight: .semibold, design: .rounded))
-                        .foregroundStyle(WatchDesign.Colors.textSecondary(colorScheme))
+                    if !isSyncedForTime {
+                        Text("R \(currentRound)/\(totalRounds)")
+                            .font(.system(size: WatchDesign.roundFontSize, weight: .semibold, design: .rounded))
+                            .foregroundStyle(WatchDesign.Colors.textSecondary(colorScheme))
+                    }
 
                     if useSynced {
                         Text("Following iPhone", bundle: .main)
