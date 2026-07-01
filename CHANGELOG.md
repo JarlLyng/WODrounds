@@ -2,6 +2,21 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
+## 1.5 (build 13)
+
+**What's New (App Store copy):**
+
+> • New: For Time mode. The clock counts up from zero; press Stop when you finish and your time is saved. Set an optional time cap and the timer stops there automatically.
+> • For Time works on iPhone, iPad, Mac and Apple TV, and your Apple Watch follows along when you start on iPhone.
+> • Small fixes and polish.
+
+**Details:**
+
+- **Added:** For Time timer mode (#15): counts up from zero. Two variants: uncapped (runs until you press Stop) and capped (auto-finishes at the cap; 0:30–60:00 in 30s steps via a single "Time cap" stepper whose 0 position reads "No cap"). The Done screen shows "Finished in MM:SS" and the workout saves to Apple Health with the real active time (pauses excluded, time frozen at Stop).
+- **Added:** Apple Watch follows a synced For Time workout: elapsed time counts up on the wrist, no round display.
+- **Changed:** In For Time the primary button during a run is **Stop** (a For Time clock isn't paused); Cancel still discards the workout. In-round audio cues (halfway, ten-seconds, 3-2-1, rounds-remaining) don't apply to For Time and stay silent; the completion sound still plays.
+- **Internal:** Timer engine gained `finish(now:)` (freezes the final time) and an `elapsedTime` snapshot field; the Watch sync payload carries `capSeconds`/`finishedAt`. Full unit-test coverage for the new mode.
+
 ## 1.4 (build 12)
 
 **What's New (App Store copy):**
