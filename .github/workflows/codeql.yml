@@ -6,6 +6,15 @@ name: CodeQL
 on:
   pull_request:
     branches: [main]
+    # Skip the ~30 min Swift analysis when a PR touches only docs / markdown /
+    # GitHub templates — there is no code to scan. The weekly scheduled scan
+    # still covers the whole codebase regardless.
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/pull_request_template.md'
+      - 'LICENSE'
   schedule:
     - cron: '20 14 * * 3'
 
