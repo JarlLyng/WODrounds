@@ -27,7 +27,7 @@ Alternatives: `Interval Timer • iPhone & Watch` (29) or `WOD Timer for iPhone 
 Short line at the top of the product page — can be updated without a new version. Include keywords and value proposition.
 
 ```
-Interval & workout timer for EMOM, Tabata, HIIT. Start on iPhone, follow on Apple Watch. No sign-up – just time and focus.
+Interval timer for EMOM, Tabata, HIIT and For Time. Start on iPhone, follow on Apple Watch. One-time purchase, no subscription, no ads.
 ```
 
 ---
@@ -165,7 +165,7 @@ or: `Interval Timer for Mac` (22).
 ## Promotional Text (optional, max 170 characters)
 
 ```
-EMOM and Intervals timer on your Mac. Same app as on iPhone and Watch – no sign-up, just time and focus. Compact window, light and dark theme.
+EMOM, Intervals and For Time on your Mac. The same minimal timer as on iPhone and Watch. One-time purchase, no subscription, no ads.
 ```
 
 ## Description (required)
@@ -209,7 +209,7 @@ or: `Interval Timer for Apple TV` (28).
 ## Promotional Text (optional, max 170 characters)
 
 ```
-EMOM and Intervals timer on the big screen. Use your Apple TV remote to start, pause, and reset. No sign-up – just time and focus for home workouts.
+EMOM, Intervals and For Time on the big screen. Start, stop and reset with the remote. One-time purchase, no subscription, no ads.
 ```
 
 ## Description (required)
@@ -251,7 +251,7 @@ Temporizador HIIT y Tabata
 ## Promotional Text (max 170 characters)
 
 ```
-Temporizador de intervalos para EMOM, Tabata y HIIT. Empieza en el iPhone y sigue en el Apple Watch. Sin registro: solo tiempo, rondas y enfoque.
+Temporizador de intervalos para EMOM, Tabata, HIIT y For Time. Empieza en el iPhone y sigue en el Apple Watch. Compra única, sin suscripción, sin anuncios.
 ```
 
 ## Description
