@@ -37,10 +37,11 @@ Interval & workout timer for EMOM, Tabata, HIIT. Start on iPhone, follow on Appl
 **First 2–3 lines** are often shown in search results and previews — make sure they contain key terms (interval timer, workout, EMOM, CrossFit). Then add concrete bullets.
 
 ```
-Interval timer and workout timer for EMOM, CrossFit, and HIIT. No accounts, no sign-up. Just time, rounds, and focus.
+Interval timer and workout timer for EMOM, For Time, CrossFit, and HIIT. No accounts, no sign-up. Just time, rounds, and focus.
 
 • EMOM: Set rounds (1–120) and round length (0:30–9:30). Start, pause, resume, reset.
 • Intervals: Work, rest, rounds. Perfect for Tabata (20/10 × 8) and any interval workout.
+• For Time: The clock counts up. Press Stop when you finish and your time is saved, or set an optional time cap.
 • Apple Watch: Start on iPhone – watch shows same time and round. Or run the timer on the watch only.
 • Audio cues: "Get ready", halfway and ten-seconds voice cues, a 3-2-1 countdown, rounds remaining (10, 5, 2), and randomized completion sounds.
 • Large type, one-handed use, runs in background. Light and dark theme.
@@ -53,16 +54,16 @@ The simplest WOD timer: no database, no sharing. Just timer and rounds.
 
 ## What's New in This Version (release notes)
 
-Update per release. Current — **1.4**:
+Update per release. Current — **1.5**:
 
 ```
-• Cancel the countdown before a workout starts — tapped Start by mistake? Just back out.
-• More accurate workout duration in Apple Health: paused time no longer counts as active.
-• Fixed a doubled voice announcement during interval workouts.
+• New: For Time mode. The clock counts up from zero; press Stop when you finish and your time is saved.
+• Set an optional time cap and the For Time clock stops there automatically.
+• Your Apple Watch follows a For Time workout when you start on iPhone.
 • Small fixes and polish throughout.
 ```
 
-Mac variant (drop the Health line; add the layout note): "Cancel the countdown before a workout starts. · Tidier setup screen. · Small fixes and polish." tvOS variant: "Cancel the countdown before a workout starts. · Smoother remote navigation with a calmer focus highlight. · Small fixes and polish."
+Mac variant (drop the Watch line): "New: For Time mode. The clock counts up; press Stop when you finish, or set an optional time cap. · Small fixes and polish." tvOS variant: same as Mac.
 
 ---
 
@@ -170,10 +171,11 @@ EMOM and Intervals timer on your Mac. Same app as on iPhone and Watch – no sig
 ## Description (required)
 
 ```
-Interval timer and workout timer for EMOM, CrossFit, and HIIT on Mac. No accounts, no sign-up. Just time, rounds, and focus.
+Interval timer and workout timer for EMOM, For Time, CrossFit, and HIIT on Mac. No accounts, no sign-up. Just time, rounds, and focus.
 
 • EMOM: Set rounds (1–120) and round length (0:30–9:30). Start, pause, resume, reset.
 • Intervals: Work, rest, rounds. Perfect for Tabata (20/10 × 8) and any interval workout.
+• For Time: The clock counts up. Press Stop when you finish and your time is saved, or set an optional time cap.
 • Compact window, large type. Runs in background. Light and dark theme.
 • One-time purchase: pay once, own it forever. No subscription, no ads, no in-app purchases.
 
@@ -213,10 +215,11 @@ EMOM and Intervals timer on the big screen. Use your Apple TV remote to start, p
 ## Description (required)
 
 ```
-Interval timer and workout timer for EMOM, CrossFit, and HIIT on Apple TV. No accounts, no sign-up. Just time, rounds, and focus.
+Interval timer and workout timer for EMOM, For Time, CrossFit, and HIIT on Apple TV. No accounts, no sign-up. Just time, rounds, and focus.
 
 • EMOM: Set rounds (1–120) and round length (0:30–9:30). Start, pause, resume, reset with the remote.
 • Intervals: Work, rest, rounds. Perfect for Tabata (20/10 × 8) and any interval workout.
+• For Time: The clock counts up. Press Stop when you finish and your time is saved, or set an optional time cap.
 • Large type for the living room. Focus-friendly UI. Light and dark theme.
 • One-time purchase: pay once, own it forever. No subscription, no ads, no in-app purchases.
 
@@ -254,10 +257,11 @@ Temporizador de intervalos para EMOM, Tabata y HIIT. Empieza en el iPhone y sigu
 ## Description
 
 ```
-Temporizador de intervalos y de entrenamiento para EMOM, CrossFit y HIIT. Sin cuentas, sin registro. Solo tiempo, rondas y enfoque.
+Temporizador de intervalos y de entrenamiento para EMOM, For Time, CrossFit y HIIT. Sin cuentas, sin registro. Solo tiempo, rondas y enfoque.
 
 • EMOM: define las rondas (1–120) y la duración de cada ronda (0:30–9:30). Inicia, pausa, reanuda y reinicia.
 • Intervalos: trabajo, descanso y rondas. Perfecto para Tabata (20/10 × 8) y cualquier entrenamiento por intervalos.
+• For Time: el reloj cuenta hacia arriba. Pulsa Detener al terminar y tu tiempo queda guardado, o define un límite de tiempo opcional.
 • Apple Watch: empieza en el iPhone y el reloj muestra el mismo tiempo y ronda. O usa el temporizador solo en el reloj.
 • Señales de audio: "Get ready", avisos de voz a la mitad y a los diez segundos, cuenta 3-2-1, rondas restantes (10, 5, 2) y sonidos de finalización aleatorios.
 • Texto grande, uso con una mano, funciona en segundo plano. Tema claro y oscuro.
@@ -274,12 +278,12 @@ Single words, comma-separated, no spaces; excludes terms already in the subtitle
 intervalos,entrenamiento,EMOM,CrossFit,gimnasio,cronómetro,cuenta,regresiva,WOD,rondas,ejercicio
 ```
 
-## What's New in This Version (1.4)
+## What's New in This Version (1.5)
 
 ```
-• Cancela la cuenta regresiva antes de empezar: ¿pulsaste Iniciar sin querer? Solo retrocede.
-• Duración del entrenamiento más precisa en la app Salud: el tiempo en pausa ya no cuenta como activo.
-• Se corrigió un anuncio de voz duplicado durante los entrenamientos por intervalos.
+• Nuevo: modo For Time. El reloj cuenta desde cero; pulsa Detener al terminar y tu tiempo queda guardado.
+• Define un límite de tiempo opcional y el reloj se detiene ahí automáticamente.
+• Tu Apple Watch sigue el entrenamiento For Time cuando empiezas en el iPhone.
 • Pequeñas correcciones y mejoras.
 ```
 

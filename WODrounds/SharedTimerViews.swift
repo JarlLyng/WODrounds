@@ -135,6 +135,8 @@ struct ModeSwitchTheme {
 struct SharedDoneView: View {
     var totalRounds: Int
     var theme: DoneViewTheme
+    /// When set (For Time), the body line shows the finished time instead of rounds.
+    var finishedTime: TimeInterval? = nil
     @Environment(\.colorScheme) private var scheme
 
     var body: some View {
@@ -145,12 +147,20 @@ struct SharedDoneView: View {
             Text("Done")
                 .font(.system(size: theme.titleSize, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
-            Text("You completed \(totalRounds) round\(totalRounds == 1 ? "" : "s")")
+            Text(bodyLine)
                 .font(.system(size: theme.bodySize, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
         }
         .padding(.vertical, theme.verticalSpacing)
         .accessibilityElement(children: .combine)
+    }
+
+    private var bodyLine: String {
+        if let finishedTime {
+            // Floor: the athlete's time is the last full second reached.
+            return "Finished in \(sharedTimeString(from: floor(finishedTime)))"
+        }
+        return "You completed \(totalRounds) round\(totalRounds == 1 ? "" : "s")"
     }
 }
 

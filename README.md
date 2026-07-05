@@ -1,6 +1,6 @@
-# WODrounds — EMOM & Interval Timer for CrossFit and HIIT
+# WODrounds — EMOM, Interval & For Time Timer for CrossFit and HIIT
 
-Minimal SwiftUI timer for CrossFit, EMOM, Tabata and intervals on iPhone, iPad, Apple Watch, Mac and Apple TV. No accounts, no ads, no subscription — a single-purpose tool (not social, not workout tracking).
+Minimal SwiftUI timer for CrossFit — EMOM, Tabata, intervals and For Time — on iPhone, iPad, Apple Watch, Mac and Apple TV. No accounts, no ads, no subscription — a single-purpose tool (not social, not workout tracking).
 
 **[wodrounds.iamjarl.com](https://wodrounds.iamjarl.com)** · [App Store](https://apps.apple.com/app/wodrounds/id6759229877)
 
@@ -24,7 +24,13 @@ Minimal SwiftUI timer for CrossFit, EMOM, Tabata and intervals on iPhone, iPad, 
 
 Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 
-**In-app flow:** Choose EMOM or Intervals → set rounds (and for Intervals: work/rest) → Start → timer runs → Pause/Resume or Cancel → on completion, Done screen → Reset returns to setup.
+### For Time
+- Counts **up** from zero — for classic "complete the work as fast as you can" WODs.
+- Optional **time cap** (0:30–60:00, 30s steps; one stepper where 0 reads "No cap"). Uncapped runs until you press **Stop**; capped auto-finishes at the cap.
+- Stop freezes your final time; the Done screen shows "Finished in MM:SS". No rounds, no in-round audio cues. Saves to Apple Health like the other modes.
+- Apple Watch follows a synced For Time workout (count-up on the wrist); there is no local For Time mode on the Watch.
+
+**In-app flow:** Choose EMOM, Intervals or For Time → set rounds (Intervals: work/rest; For Time: optional cap) → Start → timer runs → Pause/Resume (EMOM/Intervals), Stop (For Time) or Cancel → on completion, Done screen → Reset returns to setup.
 
 ---
 
@@ -38,7 +44,7 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 ### Main app (WODrounds)
 
 **Core files:**
-- **Shared/WODTimerEngine.swift** — Shared with Watch target. State machine for EMOM + Intervals; Date-based, deterministic; no UI/sound/haptics. `effectiveWorkoutEndDate(now:)` for HealthKit active-time.
+- **Shared/WODTimerEngine.swift** — Shared with Watch target. State machine for EMOM + Intervals + For Time; Date-based, deterministic; no UI/sound/haptics. `effectiveWorkoutEndDate(now:)` for HealthKit active-time.
 - **WODTimerSync.swift** — Sends timer state to Watch via WatchConnectivity.
 - **DesignTokens.swift** — Re-exports IAMJARL design tokens from SPM package; adds app-specific font sizes.
 - **ContentView.swift** — Shared types (ranges, `TimerUIMode` enum) used by all platform views.
@@ -53,8 +59,9 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 **Engine behaviour:**
 - Platform-agnostic (Foundation only).
 - Date-based: elapsed = now − startDate − accumulatedPauseDuration; no frame timers.
-- Actions: start(now:), pause(now:), resume(now:), reset(), tick(now:).
-- Snapshot: state, remainingTime, currentRound, currentPhase (work/rest), remainingTimeInPhase, secondsIntoCurrentMinute (EMOM).
+- Actions: start(now:), pause(now:), resume(now:), reset(), tick(now:), finish(now:) (For Time Stop — freezes the final time).
+- Snapshot: state, remainingTime, elapsedTime (count-up headline for For Time), currentRound, currentPhase (work/rest), remainingTimeInPhase, secondsIntoCurrentMinute (EMOM).
+- For Time: `forTime(capSeconds: Int?)` — nil is uncapped (no total; never auto-finishes), otherwise auto-finishes at the cap.
 
 ### Watch app (WODrounds Watch)
 

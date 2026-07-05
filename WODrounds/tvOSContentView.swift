@@ -26,6 +26,8 @@ struct ContentView: View {
     @State private var intervalsRounds: Int = 8
     @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
     @AppStorage("emomRoundLengthSeconds") private var emomRoundLengthSeconds: Int = 60
+    // For Time cap; 0 = "No cap" sentinel (see forTimeCapRange).
+    @AppStorage("forTimeCapSeconds") private var forTimeCapSeconds: Int = 0
     @State private var showCancelConfirmation = false
     @State private var showAbout = false
     @State private var countdownEndTime: Date? = nil
@@ -182,7 +184,8 @@ struct ContentView: View {
             Spacer()
 
             if snapshot.state == .finished {
-                SharedDoneView(totalRounds: totalRounds, theme: Self.tvOSDoneTheme)
+                SharedDoneView(totalRounds: totalRounds, theme: Self.tvOSDoneTheme,
+                               finishedTime: timerMode == .forTime ? snapshot.elapsedTime : nil)
                     .transition(.opacity)
             } else if snapshot.state == .running || snapshot.state == .paused {
                 tvOSActiveTimerView(snapshot: snapshot, totalRounds: totalRounds)
@@ -224,14 +227,25 @@ struct ContentView: View {
 
     private func tvOSActiveTimerView(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
         VStack(spacing: DesignTokens.Spacing.lg) {
-            Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
+            // For Time counts up (floored so the shown time never runs ahead);
+            // EMOM shows the per-round countdown; Intervals the total countdown.
+            Text(sharedTimeString(from: tvOSActiveDisplayTime(snapshot: snapshot)))
                 .font(.system(size: TVOSTypography.display, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                 .monospacedDigit()
                 .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
                 .frame(maxWidth: .infinity)
-            Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
-                .font(.system(size: TVOSTypography.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+            if timerMode == .forTime {
+                // No rounds in For Time; show the cap as context when one is set.
+                if let cap = engine.forTimeCapSeconds {
+                    Text("Cap \(sharedFormatEmomLength(cap))")
+                        .font(.system(size: TVOSTypography.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                        .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+                }
+            } else {
+                Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
+                    .font(.system(size: TVOSTypography.lg, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+            }
             if timerMode == .intervals {
                 Text(snapshot.currentPhase == .work ? "Work" : "Rest")
                     .font(.system(size: TVOSTypography.sm, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
@@ -241,6 +255,14 @@ struct ContentView: View {
         .transition(.opacity)
     }
 
+    private func tvOSActiveDisplayTime(snapshot: WODTimerEngineSnapshot) -> TimeInterval {
+        switch timerMode {
+        case .emom: return snapshot.remainingTimeInPhase
+        case .intervals: return snapshot.remainingTime
+        case .forTime: return floor(snapshot.elapsedTime)
+        }
+    }
+
     private func tvOSIdleSettingsView(state: WODTimerEngineState) -> some View {
         // Render only the active mode's steppers. The previous ZStack overlay kept
         // the inactive mode's steppers in the view at opacity 0 — but opacity /
@@ -248,13 +270,18 @@ struct ContentView: View {
         // focus engine, so the Siri Remote could move focus into invisible buttons
         // and get stuck. Conditional rendering removes them entirely.
         VStack(spacing: DesignTokens.Spacing.xl) {
-            if timerMode == .emom {
+            switch timerMode {
+            case .emom:
                 SharedStepperView(value: $rounds, range: roundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
                 SharedStepperView(value: $emomRoundLengthSeconds, range: emomLengthRange, step: 30, displayString: sharedFormatEmomLength(emomRoundLengthSeconds), label: "Round length", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
-            } else {
+            case .intervals:
                 SharedStepperView(value: $intervalsWork, range: intervalsWorkRange, label: "Work (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
                 SharedStepperView(value: $intervalsRest, range: intervalsRestRange, label: "Rest (sec)", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
                 SharedStepperView(value: $intervalsRounds, range: intervalsRoundsRange, label: "Rounds", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
+            case .forTime:
+                // Single stepper covers both "no cap" and the cap value: the 0
+                // sentinel renders as "No cap" and steps to 0:30, 1:00, … 60:00.
+                SharedStepperView(value: $forTimeCapSeconds, range: forTimeCapRange, step: forTimeCapStep, displayString: forTimeCapDisplay(forTimeCapSeconds), label: "Time cap", onChange: { syncEngineIfIdle(state) }, theme: Self.tvOSStepperTheme, useLongPressRepeat: false)
             }
         }
         .animation(.easeInOut(duration: 0.25), value: timerMode)
@@ -339,6 +366,8 @@ struct ContentView: View {
     /// In-round audio cues. See `iOSContentView.checkInRoundCues` for full doc.
     private func checkInRoundCues(now: Date) {
         guard engine.state == .running else { return }
+        // For Time counts up with no rounds/phases — none of the in-round cues apply.
+        if case .forTime = engine.mode { return }
         let snapshot = engine.snapshot(now: now)
         let remaining = snapshot.remainingTimeInPhase
         let round = snapshot.currentRound
@@ -350,6 +379,8 @@ struct ContentView: View {
                 return TimeInterval(spr)
             case .intervals(let w, let r, _):
                 return TimeInterval(phase == .work ? w : r)
+            case .forTime:
+                return 0 // unreachable (guarded above); keeps the switch exhaustive
             }
         }()
 
@@ -399,6 +430,8 @@ struct ContentView: View {
             return "Select the number of rounds, and length of each round."
         case .intervals:
             return "Set work time, rest time, and number of rounds."
+        case .forTime:
+            return "The clock counts up. Press Stop when you finish, or set an optional time cap."
         }
     }
 
@@ -406,7 +439,12 @@ struct ContentView: View {
         let (title, action): (String, () -> Void) = switch snapshot.state {
         case .idle:
             ("Start", { countdownEndTime = now.addingTimeInterval(10) })
-        case .running: ("Pause", { var e = engine; e.pause(now: now); engine = e })
+        case .running:
+            // For Time: the clock runs until you stop it. Stop freezes the final
+            // time via finish(now:); Cancel below still discards.
+            timerMode == .forTime
+                ? ("Stop", { var e = engine; e.finish(now: now); engine = e })
+                : ("Pause", { var e = engine; e.pause(now: now); engine = e })
         case .paused: ("Resume", { var e = engine; e.resume(now: now); engine = e })
         case .finished: ("Reset", { var e = engine; e.reset(); engine = e })
         }
@@ -422,6 +460,8 @@ struct ContentView: View {
             engine = WODTimerEngine(emomRounds: rounds, secondsPerRound: emomRoundLengthSeconds)
         case .intervals:
             engine = WODTimerEngine(workSeconds: intervalsWork, restSeconds: intervalsRest, rounds: intervalsRounds)
+        case .forTime:
+            engine = WODTimerEngine(forTimeCapSeconds: forTimeEngineCap(forTimeCapSeconds))
         }
     }
 }

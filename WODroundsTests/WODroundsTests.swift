@@ -504,4 +504,216 @@ struct WODroundsTests {
         #expect(engine.workSeconds == 0)
         #expect(engine.restSeconds == 0)
     }
+
+    // MARK: - For Time: Initialisation
+
+    @Test func forTimeCappedInit() {
+        let engine = WODTimerEngine(forTimeCapSeconds: 900)
+        #expect(engine.state == .idle)
+        #expect(engine.forTimeCapSeconds == 900)
+        #expect(engine.totalDurationSeconds == 900)
+    }
+
+    @Test func forTimeUncappedInit() {
+        let engine = WODTimerEngine(forTimeCapSeconds: nil)
+        #expect(engine.forTimeCapSeconds == nil)
+        // Deliberate: uncapped has no total. Every auto-finish comparison must skip it.
+        #expect(engine.totalDurationSeconds == 0)
+    }
+
+    @Test func forTimeCapAccessorNilForOtherModes() {
+        let engine = WODTimerEngine(emomRounds: 5, secondsPerRound: 60)
+        #expect(engine.forTimeCapSeconds == nil)
+    }
+
+    // MARK: - For Time: Uncapped runs and never auto-finishes
+
+    @Test func forTimeUncappedStartWorks() {
+        var engine = WODTimerEngine(forTimeCapSeconds: nil)
+        engine.start(now: Date())
+        #expect(engine.state == .running)
+    }
+
+    @Test func forTimeUncappedCountsUp() {
+        var engine = WODTimerEngine(forTimeCapSeconds: nil)
+        let start = Date()
+        engine.start(now: start)
+        let snap = engine.snapshot(now: start.addingTimeInterval(487))
+        #expect(snap.state == .running)
+        #expect(snap.elapsedTime == 487)
+        #expect(snap.remainingTime == 0)
+    }
+
+    @Test func forTimeUncappedNeverAutoFinishesOnTick() {
+        var engine = WODTimerEngine(forTimeCapSeconds: nil)
+        let start = Date()
+        engine.start(now: start)
+        engine.tick(now: start.addingTimeInterval(7200)) // two hours in
+        #expect(engine.state == .running)
+    }
+
+    @Test func forTimeUncappedPauseDoesNotFinish() {
+        var engine = WODTimerEngine(forTimeCapSeconds: nil)
+        let start = Date()
+        engine.start(now: start)
+        // Regression guard: pause() compares elapsed >= total; with total == 0 that
+        // would instantly finish an uncapped workout unless short-circuited.
+        engine.pause(now: start.addingTimeInterval(90))
+        #expect(engine.state == .paused)
+        let snap = engine.snapshot(now: start.addingTimeInterval(300))
+        #expect(snap.state == .paused)
+        #expect(snap.elapsedTime == 90)
+    }
+
+    // MARK: - For Time: Capped auto-finish
+
+    @Test func forTimeCappedAutoFinishesAtCap() {
+        var engine = WODTimerEngine(forTimeCapSeconds: 600)
+        let start = Date()
+        engine.start(now: start)
+        engine.tick(now: start.addingTimeInterval(600))
+        #expect(engine.state == .finished)
+        let snap = engine.snapshot(now: start.addingTimeInterval(600))
+        #expect(snap.elapsedTime == 600) // frozen at the cap, not still growing
+    }
+
+    @Test func forTimeCappedRemainingCountsDownWhileElapsedCountsUp() {
+        var engine = WODTimerEngine(forTimeCapSeconds: 600)
+        let start = Date()
+        engine.start(now: start)
+        let snap = engine.snapshot(now: start.addingTimeInterval(240))
+        #expect(snap.state == .running)
+        #expect(snap.elapsedTime == 240)
+        #expect(snap.remainingTime == 360)
+    }
+
+    @Test func forTimeCappedSnapshotBeyondCapShowsFinished() {
+        var engine = WODTimerEngine(forTimeCapSeconds: 300)
+        let start = Date()
+        engine.start(now: start)
+        let snap = engine.snapshot(now: start.addingTimeInterval(500))
+        #expect(snap.state == .finished)
+        #expect(snap.elapsedTime == 300)
+    }
+
+    // MARK: - For Time: finish(now:) freezes elapsed
+
+    @Test func forTimeFinishFreezesElapsed() {
+        var engine = WODTimerEngine(forTimeCapSeconds: nil)
+        let start = Date()
+        engine.start(now: start)
+        engine.finish(now: start.addingTimeInterval(437))
+        #expect(engine.state == .finished)
+        // Elapsed must not keep growing after Stop (Done screen + HealthKit).
+        let snap = engine.snapshot(now: start.addingTimeInterval(2000))
+        #expect(snap.state == .finished)
+        #expect(snap.elapsedTime == 437)
+    }
+
+    @Test func forTimeFinishFromPausedExcludesOpenPause() {
+        var engine = WODTimerEngine(forTimeCapSeconds: nil)
+        let start = Date()
+        engine.start(now: start)
+        engine.pause(now: start.addingTimeInterval(100))
+        // Stop while paused, 50s into the pause: active time is still 100s.
+        engine.finish(now: start.addingTimeInterval(150))
+        let snap = engine.snapshot(now: start.addingTimeInterval(400))
+        #expect(snap.state == .finished)
+        #expect(snap.elapsedTime == 100)
+    }
+
+    @Test func forTimeFinishExcludesCompletedPause() {
+        var engine = WODTimerEngine(forTimeCapSeconds: nil)
+        let start = Date()
+        engine.start(now: start)
+        engine.pause(now: start.addingTimeInterval(60))
+        engine.resume(now: start.addingTimeInterval(90)) // 30s pause
+        engine.finish(now: start.addingTimeInterval(200))
+        let snap = engine.snapshot(now: start.addingTimeInterval(200))
+        #expect(snap.elapsedTime == 170) // 200 - 30
+    }
+
+    @Test func forTimeFinishIsNoOpFromIdle() {
+        var engine = WODTimerEngine(forTimeCapSeconds: nil)
+        engine.finish(now: Date())
+        #expect(engine.state == .idle) // finish only acts on running/paused
+    }
+
+    @Test func forTimeResetClearsFrozenTime() {
+        var engine = WODTimerEngine(forTimeCapSeconds: nil)
+        let start = Date()
+        engine.start(now: start)
+        engine.finish(now: start.addingTimeInterval(120))
+        engine.reset()
+        #expect(engine.state == .idle)
+        let snap = engine.snapshot(now: start.addingTimeInterval(300))
+        #expect(snap.elapsedTime == 0)
+    }
+
+    // MARK: - For Time: HealthKit end date
+
+    @Test func forTimeEffectiveEndDateExcludesPause() {
+        var engine = WODTimerEngine(forTimeCapSeconds: nil)
+        let start = Date()
+        engine.start(now: start)
+        engine.pause(now: start.addingTimeInterval(120))
+        engine.resume(now: start.addingTimeInterval(180)) // 60s pause
+        let end = engine.effectiveWorkoutEndDate(now: start.addingTimeInterval(300))
+        #expect(end == start.addingTimeInterval(240)) // 300 - 60 active
+    }
+
+    // MARK: - For Time: elapsedTime present for other modes too
+
+    @Test func emomSnapshotCarriesElapsedTime() {
+        var engine = WODTimerEngine(emomRounds: 5, secondsPerRound: 60)
+        let start = Date()
+        engine.start(now: start)
+        let snap = engine.snapshot(now: start.addingTimeInterval(75))
+        #expect(snap.elapsedTime == 75)
+    }
+
+    // MARK: - For Time: Sync payload
+
+    @Test func forTimeSyncPayloadCarriesCap() {
+        var engine = WODTimerEngine(forTimeCapSeconds: 1200)
+        let start = Date()
+        engine.start(now: start)
+        let payload = engine.syncPayload(now: start)
+        #expect(payload.mode == "forTime")
+        #expect(payload.capSeconds == 1200)
+        #expect(payload.state == "running")
+    }
+
+    @Test func forTimeUncappedSyncPayloadHasNilCap() {
+        let engine = WODTimerEngine(forTimeCapSeconds: nil)
+        let payload = engine.syncPayload(now: Date())
+        #expect(payload.mode == "forTime")
+        #expect(payload.capSeconds == nil)
+    }
+
+    @Test func otherModesSyncPayloadHasNilCap() {
+        let engine = WODTimerEngine(emomRounds: 3, secondsPerRound: 60)
+        let payload = engine.syncPayload(now: Date())
+        #expect(payload.mode == "emom")
+        #expect(payload.capSeconds == nil)
+        #expect(payload.finishedAt == nil)
+    }
+
+    @Test func forTimeSyncPayloadRoundTripsThroughJSON() throws {
+        var engine = WODTimerEngine(forTimeCapSeconds: 900)
+        let start = Date()
+        engine.start(now: start)
+        engine.finish(now: start.addingTimeInterval(300))
+        let payload = engine.syncPayload(now: start.addingTimeInterval(300))
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let data = try encoder.encode(payload)
+        let decoded = try decoder.decode(WODTimerEngine.SyncPayload.self, from: data)
+        #expect(decoded.mode == "forTime")
+        #expect(decoded.capSeconds == 900)
+        #expect(decoded.state == "finished")
+        #expect(decoded.finishedAt != nil)
+    }
 }

@@ -30,6 +30,8 @@ struct ContentView: View {
     @State private var intervalsWork: Int = 30
     @State private var intervalsRest: Int = 15
     @State private var intervalsRounds: Int = 8
+    // For Time cap; 0 = "No cap" sentinel (see forTimeCapRange).
+    @AppStorage("forTimeCapSeconds") private var forTimeCapSeconds: Int = 0
     @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
 
     var body: some View {
@@ -42,6 +44,7 @@ struct ContentView: View {
                 intervalsWork: $intervalsWork,
                 intervalsRest: $intervalsRest,
                 intervalsRounds: $intervalsRounds,
+                forTimeCap: $forTimeCapSeconds,
                 now: timeline.date
             )
             .onChange(of: timeline.date) { newDate in
@@ -68,6 +71,7 @@ private struct iOSContent: View {
     @Binding var intervalsWork: Int
     @Binding var intervalsRest: Int
     @Binding var intervalsRounds: Int
+    @Binding var forTimeCap: Int
     let now: Date
     @Environment(\.colorScheme) private var scheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -233,7 +237,8 @@ private struct iOSContent: View {
             Spacer()
 
             if snapshot.state == .finished {
-                SharedDoneView(totalRounds: totalRounds, theme: doneTheme)
+                SharedDoneView(totalRounds: totalRounds, theme: doneTheme,
+                               finishedTime: timerMode == .forTime ? snapshot.elapsedTime : nil)
                     .transition(.opacity)
             } else if snapshot.state == .running || snapshot.state == .paused {
                 activeTimerView(snapshot: snapshot, totalRounds: totalRounds)
@@ -280,15 +285,26 @@ private struct iOSContent: View {
 
     private func activeTimerView(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
         VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
-            Text(sharedTimeString(from: timerMode == .emom ? snapshot.remainingTimeInPhase : snapshot.remainingTime))
+            // For Time counts up (floored so the shown time never runs ahead);
+            // EMOM shows the per-round countdown; Intervals the total countdown.
+            Text(sharedTimeString(from: activeDisplayTime(snapshot: snapshot)))
                 .font(.system(size: DesignTokens.Typography.Size.display * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                 .monospacedDigit()
                 .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
                 .frame(maxWidth: .infinity)
 
-            Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
-                .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+            if timerMode == .forTime {
+                // No rounds in For Time; show the cap as context when one is set.
+                if let cap = engine.forTimeCapSeconds {
+                    Text("Cap \(sharedFormatEmomLength(cap))")
+                        .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                        .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+                }
+            } else {
+                Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
+                    .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+            }
 
             if timerMode == .intervals {
                 Text(snapshot.currentPhase == .work ? "Work" : "Rest")
@@ -297,6 +313,14 @@ private struct iOSContent: View {
             }
         }
         .transition(.opacity)
+    }
+
+    private func activeDisplayTime(snapshot: WODTimerEngineSnapshot) -> TimeInterval {
+        switch timerMode {
+        case .emom: return snapshot.remainingTimeInPhase
+        case .intervals: return snapshot.remainingTime
+        case .forTime: return floor(snapshot.elapsedTime)
+        }
     }
 
     private func idleSettingsView(state: WODTimerEngineState) -> some View {
@@ -316,6 +340,14 @@ private struct iOSContent: View {
             .opacity(timerMode == .intervals ? 1 : 0)
             .allowsHitTesting(timerMode == .intervals)
             .accessibilityHidden(timerMode != .intervals)
+            VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
+                // Single stepper covers both "no cap" and the cap value: the 0
+                // sentinel renders as "No cap" and steps to 0:30, 1:00, … 60:00.
+                SharedStepperView(value: $forTimeCap, range: forTimeCapRange, step: forTimeCapStep, displayString: forTimeCapDisplay(forTimeCap), label: "Time cap", onChange: { syncEngineIfIdle(state) }, theme: stepperTheme, useLongPressRepeat: true)
+            }
+            .opacity(timerMode == .forTime ? 1 : 0)
+            .allowsHitTesting(timerMode == .forTime)
+            .accessibilityHidden(timerMode != .forTime)
         }
     }
 
@@ -430,6 +462,8 @@ private struct iOSContent: View {
     /// Idempotent — each cue fires at most once per (round, phase) tuple.
     private func checkInRoundCues(now: Date) {
         guard engine.state == .running else { return }
+        // For Time counts up with no rounds/phases — none of the in-round cues apply.
+        if case .forTime = engine.mode { return }
         let snapshot = engine.snapshot(now: now)
         let remaining = snapshot.remainingTimeInPhase
         let round = snapshot.currentRound
@@ -442,6 +476,8 @@ private struct iOSContent: View {
                 return TimeInterval(spr)
             case .intervals(let w, let r, _):
                 return TimeInterval(phase == .work ? w : r)
+            case .forTime:
+                return 0 // unreachable (guarded above); keeps the switch exhaustive
             }
         }()
 
@@ -510,6 +546,8 @@ private struct iOSContent: View {
             return "Select the number of rounds, and length of each round."
         case .intervals:
             return "Set work time, rest time, and number of rounds."
+        case .forTime:
+            return "The clock counts up. Press Stop when you finish, or set an optional time cap."
         }
     }
 
@@ -520,6 +558,8 @@ private struct iOSContent: View {
             engine = WODTimerEngine(emomRounds: rounds, secondsPerRound: emomRoundLength)
         case .intervals:
             engine = WODTimerEngine(workSeconds: intervalsWork, restSeconds: intervalsRest, rounds: intervalsRounds)
+        case .forTime:
+            engine = WODTimerEngine(forTimeCapSeconds: forTimeEngineCap(forTimeCap))
         }
     }
 
@@ -533,7 +573,13 @@ private struct iOSContent: View {
                     countdownEndTime = Date().addingTimeInterval(10)
                 }
             })
-        case .running: ("Pause", { var e = engine; e.pause(now: now); engine = e; WODTimerSync.write(engine.syncPayload(now: now)) })
+        case .running:
+            // For Time: the clock runs until you stop it (a For Time WOD isn't
+            // paused). Stop freezes the final time via finish(now:); Cancel below
+            // still discards. Other modes keep Pause.
+            timerMode == .forTime
+                ? ("Stop", { var e = engine; e.finish(now: now); engine = e; WODTimerSync.write(engine.syncPayload(now: now)) })
+                : ("Pause", { var e = engine; e.pause(now: now); engine = e; WODTimerSync.write(engine.syncPayload(now: now)) })
         case .paused: ("Resume", { var e = engine; e.resume(now: now); engine = e; WODTimerSync.write(engine.syncPayload(now: now)) })
         case .finished: ("Reset", {
             let endDate = engine.effectiveWorkoutEndDate(now: now) ?? now
