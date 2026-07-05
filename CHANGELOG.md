@@ -2,7 +2,7 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
-## 1.5 (build 14)
+## 1.5 (build 13 on iOS; build 14 on macOS/tvOS)
 
 **What's New (App Store copy):**
 
