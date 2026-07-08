@@ -23,6 +23,12 @@ The app reads the DSN in this order: **1)** environment variable `SENTRY_DSN` (e
 
 **If Sentry still doesn't receive events:** In Debug, the Xcode console will show `[Sentry] No DSN: ...` if no DSN was found. Verify that the environment variable is set under Run, or that `Sentry.xcconfig` is used as base config for the WODrounds target.
 
+### C) Xcode Cloud (archives in CI)
+
+`Sentry.xcconfig` is gitignored, so a fresh Xcode Cloud clone has no config file and the build fails at the xcconfig reference. `ci_scripts/ci_post_clone.sh` recreates it after clone from the `SENTRY_DSN` environment variable.
+
+To set it up: in the Xcode Cloud workflow, add an environment variable named `SENTRY_DSN` (mark it secret) with your real DSN. If it is left unset, the script writes an empty DSN and crash reporting is simply off for that build (the archive still succeeds). Same for GitHub Actions, which copies `Sentry.xcconfig.example` instead (see `.github/workflows/`).
+
 ## Adding the Sentry Package (Swift Package)
 
 If you haven't added the package yet:
