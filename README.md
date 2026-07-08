@@ -110,6 +110,7 @@ The app follows the IAMJARL design system via SPM package ([iamjarl-design](http
 - **Xcode:** Open `WODrounds.xcodeproj`. Select scheme **WODrounds** (iOS) or **WODrounds Watch** (watchOS). Build and run on simulator or device.
 - **iOS + Watch:** Use "Any iOS Device" (or a physical iPhone) to run the main app; the Watch app is embedded and installs with the iOS app.
 - **Tests:** `WODroundsTests` uses Swift Testing; run tests via **Product → Test** or `⌘U`.
+- **Releasing:** builds ship via Xcode Cloud, triggered by moving the `release` branch (`git push origin main:release`); `main` pushes never build. Full runbook in [docs/RELEASING.md](docs/RELEASING.md).
 - **Docs validation:** Run `python3 scripts/validate_docs.py` before committing docs changes. Also runs automatically on every push to `main` via `.github/workflows/docs.yml`. Checks image references, App Store URLs, JSON-LD validity, sitemap integrity, and canonical URLs.
 - **Sales / downloads:** `scripts/asc_downloads.py` pulls App Store Connect download numbers (new installs vs. updates) from the command line. Credentials stay local — see [scripts/README.md](scripts/README.md). No secrets are committed (`*.p8` and `.env` are gitignored).
 
@@ -152,6 +153,7 @@ Detailed reference docs live in `docs/`:
 | [ARCHIVE.md](docs/ARCHIVE.md) | Archive destinations, platform filtering, entitlements |
 | [APP_ICONS.md](docs/APP_ICONS.md) | Icon asset checklist for all platforms |
 | [APP_STORE_CONNECT.md](docs/APP_STORE_CONNECT.md) | App Store text (subtitle, description, keywords) for iOS, Mac, tvOS |
+| [RELEASING.md](docs/RELEASING.md) | Release runbook: Xcode Cloud (release-branch trigger), version bumps, App Store submission |
 | [SENTRY.md](docs/SENTRY.md) | Crash reporting setup (iOS only) |
 
 Other root-level docs:
