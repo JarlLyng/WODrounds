@@ -2,6 +2,18 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
+## 1.5.1 (build 15)
+
+**What's New (App Store copy):**
+
+> • Fixed the info button overlapping the For Time tab on iPhone.
+> • Tidied the About screen so Support and Privacy Policy sit correctly.
+
+**Details:**
+
+- **Fixed (iOS):** with the third mode added in 1.5, the setup screen's mode switch reached under the pinned top-right controls, so the info icon overlapped the "For Time" tab. The mode switch now clears the controls.
+- **Fixed (iOS/macOS/tvOS):** the About screen's Support and Privacy Policy links were left-aligned in a block that then centered as a narrow column, reading as "pushed toward the middle". They now center like the rest of the screen.
+
 ## 1.5 (build 13 on iOS; build 14 on macOS/tvOS)
 
 **What's New (App Store copy):**

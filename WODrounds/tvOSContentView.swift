@@ -500,7 +500,7 @@ private struct tvOSAboutView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
 
-            VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
+            VStack(spacing: DesignTokens.Spacing.sm) {
                 if let url = URL(string: "https://wodrounds.iamjarl.com/support") {
                     Link(destination: url) {
                         Text("Support")
@@ -516,6 +516,7 @@ private struct tvOSAboutView: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity)
             .padding(.horizontal)
 
             Spacer()
