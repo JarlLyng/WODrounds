@@ -391,7 +391,7 @@ private struct MacAboutView: View {
                 .font(.system(size: DesignTokens.Typography.Size.base, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
                 .multilineTextAlignment(.center)
-            VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
+            VStack(spacing: DesignTokens.Spacing.sm) {
                 if let url = URL(string: "https://wodrounds.iamjarl.com/support") {
                     Link(destination: url) {
                         Text("Support")
@@ -407,6 +407,7 @@ private struct MacAboutView: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity)
             Spacer()
             Button("Done") { dismiss() }
                 .font(.system(size: DesignTokens.Typography.Size.base, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))

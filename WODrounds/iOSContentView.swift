@@ -271,6 +271,9 @@ private struct iOSContent: View {
     }
 
     private var idleHeaderView: some View {
+        // Top inset clears the pinned top-right controls (44pt touch targets):
+        // with three mode segments the switch now reaches the right edge, so
+        // "For Time" would sit under the info icon without this.
         VStack(spacing: DesignTokens.Spacing.md * spacingScale) {
             SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(engine.state) }, theme: modeSwitchTheme)
             Text(modeHelpText)
@@ -281,6 +284,7 @@ private struct iOSContent: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, DesignTokens.Spacing.xl)
         }
+        .padding(.top, 44)
     }
 
     private func activeTimerView(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
@@ -629,7 +633,10 @@ private struct AboutView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
 
-            VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
+            // Centered to match the rest of the About screen. A leading-aligned
+            // VStack shrinks to its content and then centers as a narrow block,
+            // which read as "pushed toward the middle".
+            VStack(spacing: DesignTokens.Spacing.sm) {
                 if let url = URL(string: "https://wodrounds.iamjarl.com/support") {
                     Link(destination: url) {
                         Text("Support")
@@ -645,6 +652,7 @@ private struct AboutView: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity)
             .padding(.horizontal)
 
             Spacer()
