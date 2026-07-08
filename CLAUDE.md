@@ -37,6 +37,7 @@ Target audience, positioning, pricing reasoning, SEO/ASO playbooks, and competit
 ## Requirements & build
 - Open `WODrounds.xcodeproj`; scheme **WODrounds** (iOS) or **WODrounds Watch** (watchOS).
 - Tests: `WODroundsTests` uses Swift Testing (**Product → Test** / ⌘U).
+- Releasing: Xcode Cloud builds/uploads all platforms when the `release` branch moves (`git push origin main:release`); `main` pushes never build. Do not archive manually. Runbook: `docs/RELEASING.md`.
 - Docs: run `python3 scripts/validate_docs.py` before committing docs changes (also enforced by `.github/workflows/docs.yml`).
 
 ## Conventions
