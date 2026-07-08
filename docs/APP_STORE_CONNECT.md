@@ -54,16 +54,28 @@ The simplest WOD timer: no database, no sharing. Just timer and rounds.
 
 ## What's New in This Version (release notes)
 
-Update per release. Current — **1.5**:
+Update per release. Current — **1.5.1** (iOS):
 
 ```
-• New: For Time mode. The clock counts up from zero; press Stop when you finish and your time is saved.
-• Set an optional time cap and the For Time clock stops there automatically.
-• Your Apple Watch follows a For Time workout when you start on iPhone.
-• Small fixes and polish throughout.
+• Fixed the info button overlapping the For Time tab on iPhone.
+• Tidied up the About screen so the Support and Privacy Policy links sit where they should.
+• Small fixes and polish.
 ```
 
-Mac variant (drop the Watch line): "New: For Time mode. The clock counts up; press Stop when you finish, or set an optional time cap. · Small fixes and polish." tvOS variant: same as Mac.
+**Mac / tvOS variant (1.5.1)** — the info-icon overlap was iOS-only, so only the About fix applies. Do not mention the For Time tab here:
+
+```
+• Tidied up the About screen so the Support and Privacy Policy links sit where they should.
+• Small fixes and polish.
+```
+
+Promotional Text is unchanged from 1.5 (not version-specific): see the per-platform Promotional Text sections above.
+
+<details><summary>Previous — 1.5 What's New (for reference)</summary>
+
+iOS: "New: For Time mode. The clock counts up from zero; press Stop when you finish and your time is saved. · Set an optional time cap and the For Time clock stops there automatically. · Your Apple Watch follows a For Time workout when you start on iPhone. · Small fixes and polish." Mac/tvOS dropped the Watch line.
+
+</details>
 
 ---
 
@@ -278,13 +290,18 @@ Single words, comma-separated, no spaces; excludes terms already in the subtitle
 intervalos,entrenamiento,EMOM,CrossFit,gimnasio,cronómetro,cuenta,regresiva,WOD,rondas,ejercicio
 ```
 
-## What's New in This Version (1.5)
+## What's New in This Version (1.5.1) — es-MX
 
 ```
-• Nuevo: modo For Time. El reloj cuenta desde cero; pulsa Detener al terminar y tu tiempo queda guardado.
-• Define un límite de tiempo opcional y el reloj se detiene ahí automáticamente.
-• Tu Apple Watch sigue el entrenamiento For Time cuando empiezas en el iPhone.
+• Se corrigió el botón de información que se superponía a la pestaña For Time en el iPhone.
+• Se ordenó la pantalla Acerca de para que los enlaces de Soporte y Política de privacidad queden en su lugar.
 • Pequeñas correcciones y mejoras.
 ```
+
+<details><summary>Anterior — 1.5 (referencia)</summary>
+
+"Nuevo: modo For Time. El reloj cuenta desde cero; pulsa Detener al terminar y tu tiempo queda guardado. · Define un límite de tiempo opcional y el reloj se detiene ahí automáticamente. · Tu Apple Watch sigue el entrenamiento For Time cuando empiezas en el iPhone. · Pequeñas correcciones y mejoras."
+
+</details>
 
 (Mac/tvOS Spanish variants: drop the Apple Watch / Health lines as for English. Add Spanish (Spain) / es-ES later only if Spain shows traction.)
