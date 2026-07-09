@@ -80,3 +80,38 @@ and the per-app / per-country cuts count **new downloads only**.
 - Reports lag **~24–48h** — the most recent day(s) will show `(no report)`. Normal.
 - Apple retains **monthly** reports for 12 months and **daily** reports for 365 days,
   so `--all-time` is approximate beyond those windows.
+
+## `asc_analytics.py` — App Store Connect App Analytics
+
+Pulls **App Analytics** (impressions, product page views, conversion, downloads,
+sessions, retention) via the Analytics Reports API. This is separate from the
+Sales API above and works differently: you enroll the app once, Apple generates
+reports over the following ~24h+, then you list and download them.
+
+### One-time enrollment (needs an Admin key)
+
+Creating the report request the first time requires an **Admin** App Store
+Connect API key. After that, the normal Sales and Reports key can list and
+download. Create a temporary Admin key, enroll, then delete it:
+
+```bash
+# with the temporary Admin key's id + .p8 path (kept outside the repo):
+ASC_ADMIN_KEY_ID=XXXX ASC_ADMIN_PRIVATE_KEY=/path/AuthKey_XXXX.p8 \
+  .venv/bin/python scripts/asc_analytics.py enroll --access ONE_TIME_SNAPSHOT   # history
+ASC_ADMIN_KEY_ID=XXXX ASC_ADMIN_PRIVATE_KEY=/path/AuthKey_XXXX.p8 \
+  .venv/bin/python scripts/asc_analytics.py enroll --access ONGOING            # daily going forward
+```
+
+Then delete the Admin key in App Store Connect. The report request persists on
+Apple's side and the Sales key can read it.
+
+### Reading (normal Sales key)
+
+```bash
+.venv/bin/python scripts/asc_analytics.py requests   # list enrollments
+.venv/bin/python scripts/asc_analytics.py reports    # list generated report types
+```
+
+Reports take ~24h+ to appear after enrollment. Downloading and parsing the
+report segments is added once real reports exist (the segment format is easier
+to handle against real data than to guess).
