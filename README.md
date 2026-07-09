@@ -112,7 +112,7 @@ The app follows the IAMJARL design system via SPM package ([iamjarl-design](http
 - **Tests:** `WODroundsTests` uses Swift Testing; run tests via **Product → Test** or `⌘U`.
 - **Releasing:** builds ship via Xcode Cloud, triggered by moving the `release` branch (`git push origin main:release`); `main` pushes never build. Full runbook in [docs/RELEASING.md](docs/RELEASING.md).
 - **Docs validation:** Run `python3 scripts/validate_docs.py` before committing docs changes. Also runs automatically on every push to `main` via `.github/workflows/docs.yml`. Checks image references, App Store URLs, JSON-LD validity, sitemap integrity, and canonical URLs.
-- **Sales / downloads:** `scripts/asc_downloads.py` pulls App Store Connect download numbers (new installs vs. updates) from the command line. Credentials stay local — see [scripts/README.md](scripts/README.md). No secrets are committed (`*.p8` and `.env` are gitignored).
+- **Sales / downloads / analytics:** the App Store Connect tooling is portfolio-wide and lives in the private `iamjarl-strategy` repo (`tools/asc_downloads.py`, `tools/asc_analytics.py`) — one Apple key serves every app, and the numbers are strategy material. No App Store credentials live in this repo. See [scripts/README.md](scripts/README.md) for a pointer.
 
 ---
 
