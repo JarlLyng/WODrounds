@@ -651,6 +651,18 @@ private struct AboutView: View {
                             .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                     }
                 }
+
+                Text("Also from IAMJARL")
+                    .font(.system(size: DesignTokens.Typography.Size.xs, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                    .padding(.top, DesignTokens.Spacing.lg)
+                if let url = URL(string: "https://apps.apple.com/app/id6760627760") {
+                    Link(destination: url) {
+                        Text("Anvil Workout: strength log")
+                            .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                            .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                    }
+                }
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal)
