@@ -83,11 +83,11 @@ iOS: "New: For Time mode. The clock counts up from zero; press Stop when you fin
 
 Search terms users may search for. **Do not repeat words from the app name or subtitle** (Apple weights them lower). Prioritize high-intent words; one comma between each, no spaces after commas.
 
-```
-interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Apple Watch
-```
+**Apply with the next release** (keywords only update when a new version ships). Expanded field, ~99 of 100 chars (was ~65):
 
-(About 65 characters — there's room for e.g. `stopwatch` or `functional fitness` if desired.)
+```
+interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Apple Watch,functional,WOD,fit
+```
 
 ---
 
@@ -196,8 +196,10 @@ The same minimal WOD timer as on iPhone and Apple Watch – no database, no shar
 
 ## Keywords (max 100 characters)
 
+**Apply with the next release.** Expanded field (~98 of 100 chars):
+
 ```
-interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Mac
+interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Mac,desktop timer,WOD,fitness
 ```
 
 ## Screenshots (Mac)
