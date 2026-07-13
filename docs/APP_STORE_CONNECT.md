@@ -202,7 +202,7 @@ Interval timer and workout timer for EMOM, For Time, CrossFit, and HIIT on Mac. 
 • Compact window, large type. Runs in background. Light and dark theme.
 • One-time purchase: pay once, own it forever. No subscription, no ads, no in-app purchases.
 
-The same minimal WOD timer as on iPhone and Apple Watch – no database, no sharing. Just timer and rounds.
+The same minimal WOD timer as on iPhone and Apple Watch. No database, no sharing. Just timer and rounds.
 ```
 
 ## Keywords (max 100 characters)
