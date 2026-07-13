@@ -136,11 +136,19 @@ or just:
 
 ## Previews and Screenshots
 
-**iPhone (5.5" – required):** At least 3 screenshots. 1242 × 2208 px (portrait) or 2208 × 1242 px (landscape).
+Current sizes (Apple retired the old 5.5"/6.5" slots as the primary requirement). Required upload is the **6.9" iPhone**; one 13" iPad set covers all iPad sizes.
 
-Recommendation: Take screenshots of (1) EMOM/Intervals mode selection and settings, (2) timer running, (3) Done screen or Apple Watch sync. Use simulator or device; save as PNG.
+| Slot | Size (px) | Required |
+|---|---|---|
+| iPhone 6.9" | 1290 × 2796 (or 1320 × 2868) | Yes |
+| iPad 13" | 2064 × 2752 | If iPad supported |
+| Mac | 2560 × 1600 | Yes for Mac app |
+| Apple TV | 1920 × 1080 (or 3840 × 2160) | Yes for tvOS app |
+| Apple Watch | 416 × 496 (Series 10/11 46mm) | Optional |
 
-**iPad / Apple Watch:** Optional, but good for credibility if you have them.
+**Current set (1.6):** a captioned, brand-styled set was generated for all five platforms (dark #0d0d0d ground, lime #D0FF00 accent, screen shown below a short headline). iPhone: running timer + the three-mode setup. iPad/Mac/Apple TV: setup and running. Apple Watch: raw captures of the new 1.6 standalone config (screen too small for a caption band). Regenerate with the simulator-capture + Pillow compositor workflow; keep the story on the wedge (Apple Watch, multi-device, pay-once) per the private strategy repo.
+
+Content to feature, in order: (1) timer running (hero), (2) mode setup showing EMOM / Intervals / For Time, (3) the Apple Watch / multi-device angle.
 
 ---
 
@@ -205,7 +213,7 @@ interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Mac,desktop
 
 ## Screenshots (Mac)
 
-Mac App Store typically requires screenshots (e.g. 1280 × 800 or 1440 × 900). Take from Mac build in simulator or on device.
+Mac App Store requires screenshots at 1280 × 800, 1440 × 900, 2560 × 1600, or 2880 × 1800. The current set uses 2560 × 1600 (the compact window centered on the brand background).
 
 ---
 
@@ -249,7 +257,7 @@ interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,Apple TV,remote,home 
 
 ## Screenshots (Apple TV)
 
-tvOS typically requires screenshots (e.g. 1920 × 1080). Take from Apple TV simulator or device.
+tvOS requires 1920 × 1080 or 3840 × 2160. The current set uses 1920 × 1080 (captioned, landscape).
 
 ---
 
