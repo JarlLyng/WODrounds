@@ -5,6 +5,7 @@ All notable user-facing changes to WODrounds. Newest first.
 ## Unreleased
 
 - **Added (iOS/macOS):** a discreet "Also from IAMJARL" line on the About screen linking to Anvil Workout on the App Store. Not on tvOS (no browser hand-off there).
+- **Added (iOS/macOS):** Walkful joined the same "Also from IAMJARL" list on the About screen.
 - Reminder for the next release: apply the expanded App Store keyword fields from `docs/APP_STORE_CONNECT.md` (staged 2026-07-11; keywords only update when a version ships).
 
 ## 1.5.1 (build 15)

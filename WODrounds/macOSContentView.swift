@@ -418,6 +418,13 @@ private struct MacAboutView: View {
                             .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                     }
                 }
+                if let url = URL(string: "https://apps.apple.com/app/id6781303837") {
+                    Link(destination: url) {
+                        Text("Walkful: daily walking")
+                            .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                            .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                    }
+                }
             }
             .frame(maxWidth: .infinity)
             Spacer()
