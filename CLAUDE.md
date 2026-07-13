@@ -29,6 +29,7 @@ All public copy (App Store text, site copy, community posts, replies, release no
 - **For Time (new in 1.5):** counts up from zero; optional time cap (0:30–60:00, 30s steps; 0 = "No cap"). Uncapped runs until Stop; capped auto-finishes at the cap. Stop freezes the final time; Done screen shows "Finished in MM:SS". No rounds, no in-round cues. Watch follows a synced For Time (no local Watch For Time).
 - Start / Pause / Resume / Reset / Cancel; Done screen on completion. For Time uses Stop instead of Pause while running.
 - **iPhone → Watch sync** via WatchConnectivity (start on iPhone, follow on Watch).
+- **Watch standalone (new in 1.6):** the Watch configures and runs EMOM and Intervals on its own (mode switch + steppers, settings persisted via `@AppStorage`). For Time is still synced-only on the Watch.
 - **Date-based timing:** reliable when backgrounded; deterministic engine (`Shared/WODTimerEngine.swift`), no UI/sound in the engine.
 - Sound cues (count-in, halfway, 10s, 3-2-1, rounds-remaining), haptics (iOS), HealthKit save as HIIT (iOS only).
 
