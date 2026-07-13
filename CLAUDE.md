@@ -17,6 +17,10 @@ A minimal SwiftUI interval timer for CrossFit — EMOM, Intervals (Tabata) and F
 
 Target audience, positioning, pricing reasoning, SEO/ASO playbooks, and competitor analysis are **not** in this public repo. They live in a separate private strategy hub. Before doing any audience, positioning, pricing, or marketing-planning work, read that hub's `CONVENTIONS.md` and write results there, not here.
 
+### Voice (read before writing ANY public copy)
+
+All public copy (App Store text, site copy, community posts, replies, release notes) follows the hub's `VOICE.md`, base voice plus this app's overlay. Hard rules: no em-dashes, no bullet lists in public copy, minimal emojis, avoid AI-sounding phrasing, and always pay-once framing (never "free"). WODrounds' overlay is athlete-direct: concrete numbers, features by their real names, no bro-hype and no intensity worship. The maker's first-person story is the proven register. A voice audit of existing copy is tracked in the hub's WODrounds backlog; fold it into the next metadata or site touch.
+
 ## App features (be precise; do not invent features that don't exist)
 
 - **EMOM:** set rounds (1–120) and a custom round length (0:30–9:30, 30s steps); round counter + per-round countdown.
