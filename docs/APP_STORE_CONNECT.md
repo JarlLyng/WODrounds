@@ -146,6 +146,8 @@ Current sizes (Apple retired the old 5.5"/6.5" slots as the primary requirement)
 | Apple TV | 1920 × 1080 (or 3840 × 2160) | Yes for tvOS app |
 | Apple Watch | 416 × 496 (Series 10/11 46mm) | Optional |
 
+The rendered set lives in [`appstore/1.6/`](../appstore/1.6/) (versioned per release; regenerate via `scripts/compose_screenshots.py`, see [`appstore/README.md`](../appstore/README.md)).
+
 **Current set (1.6):** a captioned, brand-styled set was generated for all five platforms (dark #0d0d0d ground, lime #D0FF00 accent, screen shown below a short headline). iPhone: running timer + the three-mode setup. iPad/Mac/Apple TV: setup and running. Apple Watch: raw captures of the new 1.6 standalone config (screen too small for a caption band). Regenerate with the simulator-capture + Pillow compositor workflow; keep the story on the wedge (Apple Watch, multi-device, pay-once) per the private strategy repo.
 
 Content to feature, in order: (1) timer running (hero), (2) mode setup showing EMOM / Intervals / For Time, (3) the Apple Watch / multi-device angle.
