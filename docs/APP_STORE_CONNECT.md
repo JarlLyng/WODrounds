@@ -27,7 +27,7 @@ Alternatives: `Interval Timer • iPhone & Watch` (29) or `WOD Timer for iPhone 
 Short line at the top of the product page — can be updated without a new version. Include keywords and value proposition.
 
 ```
-Interval timer for EMOM, Tabata, HIIT and For Time. Start on iPhone, follow on Apple Watch. One-time purchase, no subscription, no ads.
+EMOM, intervals and For Time for CrossFit and HIIT. Now set up workouts on your Apple Watch too, no iPhone needed. One-time purchase, no subscription.
 ```
 
 ---
@@ -42,12 +42,12 @@ Interval timer and workout timer for EMOM, For Time, CrossFit, and HIIT. No acco
 • EMOM: Set rounds (1–120) and round length (0:30–9:30). Start, pause, resume, reset.
 • Intervals: Work, rest, rounds. Perfect for Tabata (20/10 × 8) and any interval workout.
 • For Time: The clock counts up. Press Stop when you finish and your time is saved, or set an optional time cap.
-• Apple Watch: Start on iPhone – watch shows same time and round. Or run the timer on the watch only.
+• Apple Watch: Start on iPhone and the watch shows the same time and round, or set up and run EMOM and Intervals on the watch by itself.
 • Audio cues: "Get ready", halfway and ten-seconds voice cues, a 3-2-1 countdown, rounds remaining (10, 5, 2), and randomized completion sounds.
 • Large type, one-handed use, runs in background. Light and dark theme.
 • One-time purchase: pay once, own it forever. No subscription, no ads, no in-app purchases.
 
-The simplest WOD timer: no database, no sharing. Just timer and rounds.
+A focused WOD timer. No database, no sharing. Just timer and rounds.
 ```
 
 ---
@@ -276,7 +276,7 @@ Temporizador HIIT y Tabata
 ## Promotional Text (max 170 characters)
 
 ```
-Temporizador de intervalos para EMOM, Tabata, HIIT y For Time. Empieza en el iPhone y sigue en el Apple Watch. Compra única, sin suscripción, sin anuncios.
+EMOM, intervalos y For Time para CrossFit y HIIT. Ahora configura tus entrenamientos también en el Apple Watch, sin necesidad del iPhone. Compra única, sin suscripción.
 ```
 
 ## Description
@@ -287,12 +287,12 @@ Temporizador de intervalos y de entrenamiento para EMOM, For Time, CrossFit y HI
 • EMOM: define las rondas (1–120) y la duración de cada ronda (0:30–9:30). Inicia, pausa, reanuda y reinicia.
 • Intervalos: trabajo, descanso y rondas. Perfecto para Tabata (20/10 × 8) y cualquier entrenamiento por intervalos.
 • For Time: el reloj cuenta hacia arriba. Pulsa Detener al terminar y tu tiempo queda guardado, o define un límite de tiempo opcional.
-• Apple Watch: empieza en el iPhone y el reloj muestra el mismo tiempo y ronda. O usa el temporizador solo en el reloj.
+• Apple Watch: empieza en el iPhone y el reloj muestra el mismo tiempo y ronda, o configura y ejecuta EMOM e Intervalos en el reloj por sí solo.
 • Señales de audio: "Get ready", avisos de voz a la mitad y a los diez segundos, cuenta 3-2-1, rondas restantes (10, 5, 2) y sonidos de finalización aleatorios.
 • Texto grande, uso con una mano, funciona en segundo plano. Tema claro y oscuro.
 • Compra única: paga una vez y es tuyo para siempre. Sin suscripción, sin anuncios, sin compras dentro de la app.
 
-El temporizador WOD más simple: sin base de datos, sin compartir. Solo cronómetro y rondas.
+Un temporizador WOD enfocado. Sin base de datos, sin compartir. Solo cronómetro y rondas.
 ```
 
 ## Keywords (max 100 characters)
