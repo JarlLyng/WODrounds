@@ -248,7 +248,7 @@ Interval timer and workout timer for EMOM, For Time, CrossFit, and HIIT on Apple
 • Large type for the living room. Focus-friendly UI. Light and dark theme.
 • One-time purchase: pay once, own it forever. No subscription, no ads, no in-app purchases.
 
-The same minimal WOD timer as on iPhone, Watch, and Mac – no database, no sharing. Just timer and rounds.
+The same minimal WOD timer as on iPhone, Watch, and Mac. No database, no sharing. Just timer and rounds.
 ```
 
 ## Keywords (max 100 characters)
