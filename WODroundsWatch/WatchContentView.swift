@@ -8,9 +8,25 @@
 import SwiftUI
 import WatchKit
 
+// Local copies of the shared setup ranges (ContentView.swift is not a member
+// of the Watch target). Keep in sync with WODrounds/ContentView.swift.
+private let watchRoundsRange = 1 ... 120
+private let watchEmomLengthRange = 30 ... 570
+private let watchIntervalsWorkRange = 5 ... 300
+private let watchIntervalsRestRange = 0 ... 180
+private let watchIntervalsRoundsRange = 1 ... 60
+
 // MARK: - Watch Content View
 
 struct WatchContentView: View {
+    // Local (standalone) workout configuration, persisted between launches.
+    @AppStorage("watchTimerMode") private var storedMode: String = "emom"
+    @AppStorage("watchEmomRounds") private var emomRounds: Int = 10
+    @AppStorage("watchEmomLength") private var emomLength: Int = 60
+    @AppStorage("watchIntervalsWork") private var intervalsWork: Int = 30
+    @AppStorage("watchIntervalsRest") private var intervalsRest: Int = 15
+    @AppStorage("watchIntervalsRounds") private var intervalsRounds: Int = 8
+
     @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
     @State private var countdownEndTime: Date? = nil
     @Environment(\.colorScheme) private var colorScheme
@@ -19,6 +35,14 @@ struct WatchContentView: View {
     @StateObject private var sessionManager = WatchSessionManager.shared
     @StateObject private var workoutSession = WatchWorkoutSession.shared
     @State private var wasWorkoutActive = false
+
+    private func rebuildEngine() {
+        if storedMode == "intervals" {
+            engine = WODTimerEngine(workSeconds: intervalsWork, restSeconds: intervalsRest, rounds: intervalsRounds)
+        } else {
+            engine = WODTimerEngine(emomRounds: emomRounds, secondsPerRound: emomLength)
+        }
+    }
 
     private func timeString(from interval: TimeInterval) -> String {
         let totalSeconds = max(0, Int(ceil(interval)))
@@ -60,69 +84,64 @@ struct WatchContentView: View {
                 WatchDesign.Colors.background(colorScheme)
                     .ignoresSafeArea()
 
-                VStack(spacing: WatchDesign.Spacing.lg) {
-                    if useSynced {
-                        Text("iPhone", bundle: .main)
-                            .font(.system(size: WatchDesign.roundFontSize, weight: .medium, design: .rounded))
-                            .foregroundStyle(WatchDesign.Colors.textTertiary(colorScheme))
-                    }
+                if !useSynced && state == .idle {
+                    // Standalone setup: mode switch + steppers + Start (#32/#33).
+                    configView(now: now)
+                } else {
+                    VStack(spacing: WatchDesign.Spacing.lg) {
+                        if useSynced {
+                            Text("iPhone", bundle: .main)
+                                .font(.system(size: WatchDesign.roundFontSize, weight: .medium, design: .rounded))
+                                .foregroundStyle(WatchDesign.Colors.textTertiary(colorScheme))
+                        }
 
-                    // Count-up (For Time) floors so the shown time never runs ahead;
-                    // count-down keeps ceiling so 0 is only shown when truly done.
-                    Text(timeString(from: isSyncedForTime ? floor(displayTime) : displayTime))
-                        .font(.system(size: WatchDesign.timerFontSize, weight: .bold, design: .rounded))
-                        .monospacedDigit()
-                        .foregroundStyle(WatchDesign.Colors.textPrimary(colorScheme))
+                        // Count-up (For Time) floors so the shown time never runs ahead;
+                        // count-down keeps ceiling so 0 is only shown when truly done.
+                        Text(timeString(from: isSyncedForTime ? floor(displayTime) : displayTime))
+                            .font(.system(size: WatchDesign.timerFontSize, weight: .bold, design: .rounded))
+                            .monospacedDigit()
+                            .foregroundStyle(WatchDesign.Colors.textPrimary(colorScheme))
 
-                    if !isSyncedForTime {
-                        Text("R \(currentRound)/\(totalRounds)")
-                            .font(.system(size: WatchDesign.roundFontSize, weight: .semibold, design: .rounded))
-                            .foregroundStyle(WatchDesign.Colors.textSecondary(colorScheme))
-                    }
+                        if !isSyncedForTime {
+                            Text("R \(currentRound)/\(totalRounds)")
+                                .font(.system(size: WatchDesign.roundFontSize, weight: .semibold, design: .rounded))
+                                .foregroundStyle(WatchDesign.Colors.textSecondary(colorScheme))
+                        }
 
-                    if useSynced {
-                        Text("Following iPhone", bundle: .main)
-                            .font(.system(size: 10, weight: .regular, design: .rounded))
-                            .foregroundStyle(WatchDesign.Colors.textTertiary(colorScheme))
-                    } else {
-                        HStack(spacing: WatchDesign.Spacing.sm) {
-                            switch state {
-                            case .idle:
-                                Button("Start") {
-                                    countdownEndTime = now.addingTimeInterval(10)
-                                    // Bug fix: start HKWorkoutSession immediately on Start so the
-                                    // app stays alive during the 10s countdown (previously the
-                                    // session only started when engine.state became .running,
-                                    // leaving a window where the Watch could be suspended).
-                                    workoutSession.startIfNeeded()
+                        if useSynced {
+                            Text("Following iPhone", bundle: .main)
+                                .font(.system(size: 10, weight: .regular, design: .rounded))
+                                .foregroundStyle(WatchDesign.Colors.textTertiary(colorScheme))
+                        } else {
+                            HStack(spacing: WatchDesign.Spacing.sm) {
+                                switch state {
+                                case .idle:
+                                    EmptyView() // idle renders configView above
+                                case .running:
+                                    Button("Pause") {
+                                        engine.pause(now: now)
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                    .tint(WatchDesign.Colors.primary(colorScheme))
+                                    .foregroundStyle(WatchDesign.Colors.onPrimary)
+                                case .paused:
+                                    Button("Resume") {
+                                        engine.resume(now: now)
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                    .tint(WatchDesign.Colors.primary(colorScheme))
+                                    .foregroundStyle(WatchDesign.Colors.onPrimary)
+                                case .finished:
+                                    Button("Reset") {
+                                        engine.reset()
+                                    }
+                                    .buttonStyle(.bordered)
                                 }
-                                .buttonStyle(.borderedProminent)
-                                .tint(WatchDesign.Colors.primary(colorScheme))
-                                .foregroundStyle(WatchDesign.Colors.onPrimary)
-                            case .running:
-                                Button("Pause") {
-                                    engine.pause(now: now)
-                                }
-                                .buttonStyle(.borderedProminent)
-                                .tint(WatchDesign.Colors.primary(colorScheme))
-                                .foregroundStyle(WatchDesign.Colors.onPrimary)
-                            case .paused:
-                                Button("Resume") {
-                                    engine.resume(now: now)
-                                }
-                                .buttonStyle(.borderedProminent)
-                                .tint(WatchDesign.Colors.primary(colorScheme))
-                                .foregroundStyle(WatchDesign.Colors.onPrimary)
-                            case .finished:
-                                Button("Reset") {
-                                    engine.reset()
-                                }
-                                .buttonStyle(.bordered)
                             }
                         }
                     }
+                    .padding(WatchDesign.Spacing.md)
                 }
-                .padding(WatchDesign.Spacing.md)
 
                 // Full-screen flash overlay (placed at ZStack level so it covers the entire
                 // screen — previously it was attached to the padded VStack and only covered
@@ -198,6 +217,104 @@ struct WatchContentView: View {
                     workoutSession.stop()
                 }
             }
+            .onAppear {
+                rebuildEngine()
+            }
+        }
+    }
+
+    // MARK: - Standalone setup (#32 / #33)
+
+    private func lengthString(_ seconds: Int) -> String {
+        String(format: "%d:%02d", seconds / 60, seconds % 60)
+    }
+
+    private func configView(now: Date) -> some View {
+        ScrollView {
+            VStack(spacing: WatchDesign.Spacing.md) {
+                // Mode switch
+                HStack(spacing: WatchDesign.Spacing.sm) {
+                    modeButton("EMOM", mode: "emom")
+                    modeButton("Intervals", mode: "intervals")
+                }
+
+                if storedMode == "intervals" {
+                    configRow("WORK", value: lengthString(intervalsWork),
+                              range: watchIntervalsWorkRange, step: 5, binding: $intervalsWork)
+                    configRow("REST", value: lengthString(intervalsRest),
+                              range: watchIntervalsRestRange, step: 5, binding: $intervalsRest)
+                    configRow("ROUNDS", value: "\(intervalsRounds)",
+                              range: watchIntervalsRoundsRange, step: 1, binding: $intervalsRounds)
+                } else {
+                    configRow("ROUNDS", value: "\(emomRounds)",
+                              range: watchRoundsRange, step: 1, binding: $emomRounds)
+                    configRow("LENGTH", value: lengthString(emomLength),
+                              range: watchEmomLengthRange, step: 30, binding: $emomLength)
+                }
+
+                Button("Start") {
+                    rebuildEngine()
+                    countdownEndTime = now.addingTimeInterval(10)
+                    // Start the HKWorkoutSession immediately so the app stays
+                    // alive during the 10s countdown (same fix as before).
+                    workoutSession.startIfNeeded()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(WatchDesign.Colors.primary(colorScheme))
+                .foregroundStyle(WatchDesign.Colors.onPrimary)
+                .padding(.top, WatchDesign.Spacing.xs)
+            }
+            .padding(.horizontal, WatchDesign.Spacing.md)
+            .padding(.vertical, WatchDesign.Spacing.sm)
+        }
+    }
+
+    private func modeButton(_ title: LocalizedStringKey, mode: String) -> some View {
+        let isActive = storedMode == mode
+        return Button(title) {
+            storedMode = mode
+            rebuildEngine()
+        }
+        .font(.system(size: 11, weight: isActive ? .semibold : .regular, design: .rounded))
+        .buttonStyle(.bordered)
+        .tint(isActive ? WatchDesign.Colors.primary(colorScheme) : nil)
+        .foregroundStyle(isActive
+                         ? WatchDesign.Colors.textPrimary(colorScheme)
+                         : WatchDesign.Colors.textSecondary(colorScheme))
+    }
+
+    private func configRow(_ label: LocalizedStringKey, value: String,
+                           range: ClosedRange<Int>, step: Int,
+                           binding: Binding<Int>) -> some View {
+        HStack(spacing: WatchDesign.Spacing.sm) {
+            Button {
+                binding.wrappedValue = max(range.lowerBound, binding.wrappedValue - step)
+                rebuildEngine()
+            } label: {
+                Image(systemName: "minus")
+            }
+            .buttonStyle(.bordered)
+            .disabled(binding.wrappedValue <= range.lowerBound)
+
+            VStack(spacing: 0) {
+                Text(label)
+                    .font(.system(size: 9, weight: .medium, design: .rounded))
+                    .foregroundStyle(WatchDesign.Colors.textTertiary(colorScheme))
+                Text(value)
+                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .monospacedDigit()
+                    .foregroundStyle(WatchDesign.Colors.textPrimary(colorScheme))
+            }
+            .frame(maxWidth: .infinity)
+
+            Button {
+                binding.wrappedValue = min(range.upperBound, binding.wrappedValue + step)
+                rebuildEngine()
+            } label: {
+                Image(systemName: "plus")
+            }
+            .buttonStyle(.bordered)
+            .disabled(binding.wrappedValue >= range.upperBound)
         }
     }
 

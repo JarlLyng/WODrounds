@@ -30,6 +30,10 @@ Tabata (e.g. 20/10 × 8) is a manual Intervals preset.
 - Stop freezes your final time; the Done screen shows "Finished in MM:SS". No rounds, no in-round audio cues. Saves to Apple Health like the other modes.
 - Apple Watch follows a synced For Time workout (count-up on the wrist); there is no local For Time mode on the Watch.
 
+### Apple Watch standalone (new in 1.6)
+- The Watch configures and runs **EMOM and Intervals workouts on its own** — a mode switch plus steppers for rounds / round length (EMOM) or work / rest / rounds (Intervals), same ranges as iOS. Settings persist between workouts.
+- When a workout is started on iPhone, the Watch follows the synced state instead (unchanged).
+
 **In-app flow:** Choose EMOM, Intervals or For Time → set rounds (Intervals: work/rest; For Time: optional cap) → Start → timer runs → Pause/Resume (EMOM/Intervals), Stop (For Time) or Cancel → on completion, Done screen → Reset returns to setup.
 
 ---

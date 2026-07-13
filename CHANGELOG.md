@@ -2,11 +2,19 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
-## Unreleased
+## 1.6 (build 16)
 
-- **Added (iOS/macOS):** a discreet "Also from IAMJARL" line on the About screen linking to Anvil Workout on the App Store. Not on tvOS (no browser hand-off there).
-- **Added (iOS/macOS):** Walkful joined the same "Also from IAMJARL" list on the About screen.
-- Reminder for the next release: apply the expanded App Store keyword fields from `docs/APP_STORE_CONNECT.md` (staged 2026-07-11; keywords only update when a version ships).
+**What's New (App Store copy):**
+
+> • Set up workouts directly on your Apple Watch: choose EMOM or Intervals and adjust rounds, round length, work and rest right on the wrist. No iPhone needed.
+> • The Watch remembers your settings between workouts.
+> • Small fixes and polish.
+
+**Details:**
+
+- **Added (watchOS):** standalone workout configuration (#32, #33). The Watch idle screen is now a setup screen: an EMOM/Intervals mode switch plus steppers for rounds and round length (EMOM) or work, rest and rounds (Intervals), same ranges as iOS. Values persist via `@AppStorage`; previously standalone was hardcoded to 10 × 1:00 EMOM. Synced (iPhone-driven) workouts are unchanged, and there is still no local For Time on the Watch.
+- **Added (iOS/macOS):** a discreet "Also from IAMJARL" section on the About screen linking Anvil Workout and Walkful on the App Store. Not on tvOS (no browser hand-off there).
+- **Release note:** the expanded App Store keyword fields from `docs/APP_STORE_CONNECT.md` (staged 2026-07-11) apply with this release.
 
 ## 1.5.1 (build 15)
 
