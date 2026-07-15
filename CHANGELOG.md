@@ -2,6 +2,10 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
+## Unreleased
+
+- **Changed (iOS, privacy):** crash reporting no longer attaches a screenshot, and performance tracing is off in production. Crash diagnostics now stay device type / OS / app state only, matching what the Privacy Policy describes (never your workout or identity).
+
 ## 1.6 (build 16)
 
 **What's New (App Store copy):**
