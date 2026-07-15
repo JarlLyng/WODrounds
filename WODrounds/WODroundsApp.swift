@@ -52,10 +52,17 @@ struct WODroundsApp: App {
             options.debug = true
             options.tracesSampleRate = 1.0
             #else
-            options.tracesSampleRate = 0.2
+            // Crash reports and release health only. No performance tracing in
+            // production: it sends transaction/timing data for a share of every
+            // session, which a minimal timer doesn't need and which goes beyond
+            // the "crash reports" the privacy policy describes.
+            options.tracesSampleRate = 0.0
             #endif
             options.enableAutoSessionTracking = true
-            options.attachScreenshot = true
+            // No crash screenshots. A crash on the timer screen would capture the
+            // user's workout (rounds, times), and the privacy policy states we do
+            // not send workout programming. Keep that promise true in code.
+            options.attachScreenshot = false
             options.enableMetricKit = true
         }
         #if DEBUG
