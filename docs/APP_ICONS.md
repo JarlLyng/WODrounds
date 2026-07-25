@@ -15,6 +15,8 @@ Overview of icon assets for WODrounds across all platforms. Use this when updati
 
 **Dark icon on home screen:** Apple only shows the dark variant (AppIcon-Dark) on **home screen from iOS 18**. On iOS 17 and older, the light icon (AppIcon-Any) is always used. Make sure to run iOS 18+ if testing the dark icon. In Xcode, App Icon for iOS should be set to **Single Size** (Inspectors → Attributes).
 
+**Mac uses the DARK design on purpose:** macOS has no light/dark icon variants in the asset catalog (one image serves both appearances), and the portfolio convention is the dark icon on Mac. `AppIcon-Mac.png` is therefore the same artwork as `AppIcon-Dark.png` (lime clock on black), not the light one. If you regenerate icons, keep this mapping.
+
 **Summary:** iOS and Mac app icons are complete and correctly sized.
 
 ---
