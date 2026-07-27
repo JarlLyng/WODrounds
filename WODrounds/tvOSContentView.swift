@@ -133,7 +133,13 @@ struct ContentView: View {
                         lastRoundsRemainingRound = 0
                         resetInRoundCueState()
                     }
+                    applyIdleTimer()
                 }
+                // Hold the screensaver off during the count-in too: the engine is
+                // still idle then, and the remote isn't touched once Start is pressed.
+                .onChange(of: countdownEndTime) { _, _ in applyIdleTimer() }
+                .onAppear { applyIdleTimer() }
+                .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
         }
         .padding(DesignTokens.Spacing.xl)
         .background(DesignTokens.Common.Background.app(scheme))
@@ -361,6 +367,17 @@ struct ContentView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
             flashScreen = false
         }
+    }
+
+    /// Keep the Apple TV screensaver away while a workout is on screen.
+    /// Nobody touches the remote during an EMOM, so without this the system
+    /// screensaver covers the timer a few minutes in. Mirrors the iOS behaviour
+    /// (see `iOSContentView.applyIdleTimer`) and always releases when idle.
+    private func applyIdleTimer() {
+        let workoutOnScreen = engine.state == .running
+            || engine.state == .paused
+            || countdownEndTime != nil
+        UIApplication.shared.isIdleTimerDisabled = workoutOnScreen
     }
 
     /// In-round audio cues. See `iOSContentView.checkInRoundCues` for full doc.
