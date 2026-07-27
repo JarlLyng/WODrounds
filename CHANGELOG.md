@@ -2,7 +2,14 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
-## Unreleased
+## 1.6.1 (build 17)
+
+**What's New (App Store copy):**
+
+> Fixed the Apple TV screensaver taking over the screen during a workout.
+> Small fixes and polish.
+
+**Details:**
 
 - **Fixed (tvOS):** the Apple TV screensaver could take over the screen mid-workout. Nobody touches the remote during an EMOM, so on a longer workout the system screensaver covered the timer. The app now holds it off while a workout is running, paused, or counting in, and releases it as soon as you are back on the setup screen (#98).
 - **Changed (iOS, privacy):** crash reporting no longer attaches a screenshot, and performance tracing is off in production. Crash diagnostics now stay device type / OS / app state only, matching what the Privacy Policy describes (never your workout or identity).
