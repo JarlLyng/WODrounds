@@ -159,7 +159,7 @@ The rendered set lives in [`appstore/1.6.1/`](../appstore/1.6.1/) (versioned per
 
 **Apple TV got three screenshots in 1.6.1** (was one), because the device x territory cross-tab showed Apple TV is the #2 platform at 32% of product page views: running timer (hero), the three-mode setup, and For Time with the time cap. The tvOS canvas uses a larger screen scale (0.82) so the timer stays readable at thumbnail size.
 
-**Current set (1.6, carried into 1.6.1 for the other platforms):** a captioned, brand-styled set was generated for all five platforms (dark #0d0d0d ground, lime #D0FF00 accent, screen shown below a short headline). iPhone: running timer + the three-mode setup. iPad/Mac/Apple TV: setup and running. Apple Watch: raw captures of the new 1.6 standalone config (screen too small for a caption band). Regenerate with the simulator-capture + Pillow compositor workflow; keep the story on the wedge (Apple Watch, multi-device, pay-once) per the private strategy repo.
+**Current set (`appstore/1.6.1/`):** a captioned, brand-styled set was generated for all five platforms (dark #0d0d0d ground, lime #D0FF00 accent, screen shown below a short headline). iPhone: running timer + the three-mode setup. iPad/Mac/Apple TV: setup and running. Apple Watch: raw captures of the new 1.6 standalone config (screen too small for a caption band). Regenerate with the simulator-capture + Pillow compositor workflow; keep the story on the wedge (Apple Watch, multi-device, pay-once) per the private strategy repo.
 
 Content to feature, in order: (1) timer running (hero), (2) mode setup showing EMOM / Intervals / For Time, (3) the Apple Watch / multi-device angle.
 

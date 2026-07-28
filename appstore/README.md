@@ -12,8 +12,14 @@ Text spec (What's New, keywords, descriptions) and the slot-size table live in
 
 ```
 appstore/
-  <version>/        one folder per release (e.g. 1.6/), the uploaded set
+  <version>/        one folder per release, the uploaded set
 ```
+
+Current: **`1.6.1/`** (flat, one file per slot: `iphone-*`, `ipad-1`, `mac-*`, `tvos-*`, `watch-*`).
+Archive: **`1.2/`** (the older hand-made set, kept per platform subfolder as it was produced).
+
+Superseded sets are deleted rather than kept forever; git history has them if ever needed.
+This folder replaced a separate top-level "App store screens" directory (consolidated 2026-07-29).
 
 ## Style
 
