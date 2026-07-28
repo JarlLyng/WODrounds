@@ -54,27 +54,36 @@ A focused WOD timer. No database, no sharing. Just timer and rounds.
 
 ## What's New in This Version (release notes)
 
-Update per release. Current — **1.6** (iOS):
+Update per release. Current — **1.6.1** (iOS):
 
 ```
-• Set up workouts directly on your Apple Watch: choose EMOM or Intervals and adjust rounds, round length, work and rest right on the wrist. No iPhone needed.
-• The Watch remembers your settings between workouts.
+• Crash reports are now diagnostics only, with no screenshot attached.
 • Small fixes and polish.
 ```
 
-**Mac / tvOS variant (1.6)** — the Watch feature ships with the iOS listing only; keep Mac/tvOS generic:
+**Apple TV variant (1.6.1)** — the screensaver fix is the tvOS story, so say it plainly:
 
 ```
+• Fixed the Apple TV screensaver taking over the screen during a workout.
 • Small fixes and polish.
 ```
 
-**Remember with this release:** apply the expanded keyword fields (marked "Apply with the next release" in the Keywords sections below) for iOS and Mac.
+**Mac variant (1.6.1):**
 
-Promotional Text is unchanged from 1.5 (not version-specific): see the per-platform Promotional Text sections above.
+```
+• The Mac app now uses the dark app icon.
+• Small fixes and polish.
+```
 
-<details><summary>Previous — 1.5.1 What's New (for reference)</summary>
+**Do these two things with this release** (both are version-locked, so this is the window):
+1. **Paste the full Description** from the sections above into ASC (EN + es-MX). The live listing still runs launch-era copy with **For Time missing entirely**; it carries over silently unless re-pasted.
+2. **Apply the expanded keyword fields** for iOS and Mac (marked "Apply with the next release" in the Keywords sections below), and confirm whether they already went in with 1.6.
 
-iOS: "Fixed the info button overlapping the For Time tab on iPhone. · Tidied up the About screen so the Support and Privacy Policy links sit where they should. · Small fixes and polish." Mac/tvOS dropped the info-button line.
+Promotional Text is unchanged (not version-specific): see the per-platform Promotional Text sections above.
+
+<details><summary>Previous — 1.6 What's New (for reference)</summary>
+
+iOS: "Set up workouts directly on your Apple Watch: choose EMOM or Intervals and adjust rounds, round length, work and rest right on the wrist. No iPhone needed. · The Watch remembers your settings between workouts. · Small fixes and polish." Mac/tvOS were generic ("Small fixes and polish").
 
 </details>
 
@@ -303,11 +312,10 @@ Single words, comma-separated, no spaces; excludes terms already in the subtitle
 intervalos,entrenamiento,EMOM,CrossFit,gimnasio,cronómetro,cuenta,regresiva,WOD,rondas,ejercicio
 ```
 
-## What's New in This Version (1.6) — es-MX
+## What's New in This Version (1.6.1) — es-MX
 
 ```
-• Configura tus entrenamientos directamente en el Apple Watch: elige EMOM o Intervalos y ajusta rondas, duración, trabajo y descanso desde la muñeca. Sin necesidad del iPhone.
-• El Watch recuerda tu configuración entre entrenamientos.
+• Los informes de fallos ahora son solo diagnósticos, sin captura de pantalla adjunta.
 • Pequeñas correcciones y mejoras.
 ```
 
