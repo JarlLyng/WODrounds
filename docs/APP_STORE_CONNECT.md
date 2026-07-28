@@ -24,7 +24,7 @@ Alternatives: `Interval Timer • iPhone & Watch` (29) or `WOD Timer for iPhone 
 
 ## Promotional Text (optional, max 170 characters)
 
-Short line at the top of the product page — can be updated without a new version. Include keywords and value proposition.
+Short line at the top of the product page. It can be edited on a live version without submitting a build, but **it starts empty on each new version**, so re-paste it every release.
 
 ```
 EMOM, intervals and For Time for CrossFit and HIIT. Now set up workouts on your Apple Watch too, no iPhone needed. One-time purchase, no subscription.
@@ -79,7 +79,7 @@ Update per release. Current — **1.6.1** (iOS):
 1. **Paste the full Description** from the sections above into ASC (EN + es-MX). The live listing still runs launch-era copy with **For Time missing entirely**; it carries over silently unless re-pasted.
 2. **Apply the expanded keyword fields** for iOS and Mac (marked "Apply with the next release" in the Keywords sections below), and confirm whether they already went in with 1.6.
 
-Promotional Text is unchanged (not version-specific): see the per-platform Promotional Text sections above.
+**Promotional Text comes up empty on every new version**, so re-paste it each time from the per-platform Promotional Text sections above (it can also be edited on a live version without submitting a build).
 
 <details><summary>Previous — 1.6 What's New (for reference)</summary>
 
