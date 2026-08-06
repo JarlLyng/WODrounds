@@ -24,7 +24,7 @@ let forTimeCapStep = 30
 
 /// Stepper display for the For Time cap: the 0 sentinel reads "No cap".
 func forTimeCapDisplay(_ seconds: Int) -> String {
-    seconds == 0 ? "No cap" : sharedFormatEmomLength(seconds)
+    seconds == 0 ? String(localized: "No cap") : sharedFormatEmomLength(seconds)
 }
 
 /// Engine cap value from the stepper value (0 sentinel → nil = uncapped).

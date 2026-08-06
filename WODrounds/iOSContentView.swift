@@ -276,7 +276,7 @@ private struct iOSContent: View {
         // "For Time" would sit under the info icon without this.
         VStack(spacing: DesignTokens.Spacing.md * spacingScale) {
             SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(engine.state) }, theme: modeSwitchTheme)
-            Text(modeHelpText)
+            Text(LocalizedStringKey(modeHelpText))
                 .font(.system(size: DesignTokens.Typography.Size.sm * fontScale, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                 .multilineTextAlignment(.center)

@@ -221,7 +221,7 @@ struct ContentView: View {
     private func tvOSIdleHeaderView(state: WODTimerEngineState) -> some View {
         VStack(spacing: DesignTokens.Spacing.lg) {
             SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(state) }, theme: Self.tvOSModeSwitchTheme)
-            Text(modeHelpText)
+            Text(LocalizedStringKey(modeHelpText))
                 .font(.system(size: TVOSTypography.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                 .multilineTextAlignment(.center)

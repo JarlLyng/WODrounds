@@ -79,7 +79,7 @@ func sharedTimeString(from interval: TimeInterval) -> String {
 }
 
 func sharedRoundLabel(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> String {
-    "Round \(snapshot.currentRound) / \(totalRounds) Rounds"
+    String(localized: "Round \(snapshot.currentRound) / \(totalRounds) Rounds")
 }
 
 func sharedFormatEmomLength(_ seconds: Int) -> String {
@@ -158,7 +158,7 @@ struct SharedDoneView: View {
     private var bodyLine: String {
         if let finishedTime {
             // Floor: the athlete's time is the last full second reached.
-            return "Finished in \(sharedTimeString(from: floor(finishedTime)))"
+            return String(localized: "Finished in \(sharedTimeString(from: floor(finishedTime)))")
         }
         return "You completed \(totalRounds) round\(totalRounds == 1 ? "" : "s")"
     }
@@ -183,7 +183,7 @@ struct SharedStepperView: View {
 
     var body: some View {
         VStack(spacing: theme.stackSpacing) {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.system(size: theme.labelFontSize, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
 
@@ -210,7 +210,7 @@ struct SharedStepperView: View {
         return Button {
             stepValue(by: sign)
         } label: {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.system(size: theme.valueFontSize * 0.75, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.onPrimary(scheme))
                 .frame(width: theme.buttonSize, height: theme.buttonSize)
@@ -291,7 +291,7 @@ struct SharedPrimaryButton: View {
 
     var body: some View {
         Button(action: action) {
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .font(.system(size: theme.titleSize, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.onPrimary(scheme))
                 .contentTransitionInterpolateCompat()
@@ -357,7 +357,7 @@ struct SharedModeSwitch: View {
             timerMode = mode
             onModeChange()
         } label: {
-            Text(mode.rawValue)
+            Text(LocalizedStringKey(mode.rawValue))
                 .font(.system(size: theme.fontSize, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                 .foregroundStyle(timerMode == mode ? DesignTokens.Common.onPrimary(scheme) : DesignTokens.Common.Text.primary(scheme))
                 .padding(.horizontal, theme.horizontalPadding)

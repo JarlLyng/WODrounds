@@ -198,7 +198,7 @@ private struct MacContent: View {
     private func idleHeaderView(state: WODTimerEngineState) -> some View {
         VStack(spacing: DesignTokens.Spacing.lg) {
             SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(state) }, theme: Self.macModeSwitchTheme)
-            Text(modeHelpText)
+            Text(LocalizedStringKey(modeHelpText))
                 .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                 .multilineTextAlignment(.center)

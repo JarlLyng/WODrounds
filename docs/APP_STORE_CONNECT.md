@@ -276,7 +276,7 @@ tvOS requires 1920 × 1080 or 3840 × 2160. The current set uses 1920 × 1080 (c
 
 # Spanish (es-MX) — iOS
 
-Localization: **Spanish (Mexico)** (serves Latin America + most Spanish-speaking storefronts, incl. US Hispanic). Neutral LatAm vocabulary (e.g. "cuenta regresiva", not the peninsular "cuenta atrás"). App name stays **WODrounds**. In-app strings/audio are still English — this localizes the App Store listing only.
+Localization: **Spanish (Mexico)** (serves Latin America + most Spanish-speaking storefronts, incl. US Hispanic). Neutral LatAm vocabulary (e.g. "cuenta regresiva", not the peninsular "cuenta atrás"). App name stays **WODrounds**. As of 1.7 the **app UI is localized too**; only the spoken audio cues stay English (they are recorded voice files).
 
 ## Subtitle (max 30 characters)
 

@@ -1,0 +1,17 @@
+/* Watch app – Español (es-MX) */
+
+"Start" = "Iniciar";
+"Pause" = "Pausar";
+"Resume" = "Reanudar";
+"Reset" = "Reiniciar";
+"iPhone" = "iPhone";
+"Following iPhone" = "Siguiendo el iPhone";
+"Get ready" = "Prepárate";
+"EMOM" = "EMOM";
+"Intervals" = "Intervalos";
+"WORK" = "TRABAJO";
+"REST" = "DESCANSO";
+"ROUNDS" = "RONDAS";
+"LENGTH" = "DURACIÓN";
+"R %lld/%lld" = "R %lld/%lld";
+"Countdown, %lld seconds" = "Cuenta regresiva, %lld segundos";
