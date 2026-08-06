@@ -11,6 +11,49 @@ import Testing
 
 struct WODroundsTests {
 
+    // MARK: - Review prompt cadence
+
+    @Test("Asks at each threshold exactly once")
+    func reviewPromptAsksOncePerThreshold() {
+        var lastAsked = 0
+        var asks: [Int] = []
+        for completed in 1 ... 40 {
+            if let t = ReviewPrompt.thresholdToAsk(completed: completed, lastAsked: lastAsked) {
+                asks.append(completed)
+                lastAsked = t
+            }
+        }
+        #expect(asks == ReviewPrompt.thresholds)
+    }
+
+    @Test("A skipped count still triggers the ask")
+    func reviewPromptSurvivesSkippedCount() {
+        // The old implementation matched the count exactly, so jumping 2 -> 4
+        // (a double-counted finish, or a device restored past the number) lost
+        // the ask silently and forever.
+        #expect(ReviewPrompt.thresholdToAsk(completed: 4, lastAsked: 0) == 3)
+        #expect(ReviewPrompt.thresholdToAsk(completed: 12, lastAsked: 3) == 10)
+        #expect(ReviewPrompt.thresholdToAsk(completed: 100, lastAsked: 10) == 30)
+    }
+
+    @Test("Never asks twice for the same threshold")
+    func reviewPromptDoesNotRepeat() {
+        #expect(ReviewPrompt.thresholdToAsk(completed: 3, lastAsked: 3) == nil)
+        #expect(ReviewPrompt.thresholdToAsk(completed: 9, lastAsked: 3) == nil)
+        #expect(ReviewPrompt.thresholdToAsk(completed: 31, lastAsked: 30) == nil)
+    }
+
+    @Test("Does not ask before the first threshold")
+    func reviewPromptQuietEarly() {
+        #expect(ReviewPrompt.thresholdToAsk(completed: 0, lastAsked: 0) == nil)
+        #expect(ReviewPrompt.thresholdToAsk(completed: 2, lastAsked: 0) == nil)
+    }
+
+    @Test("Stays within Apple's three-prompts-per-year limit")
+    func reviewPromptRespectsAppleLimit() {
+        #expect(ReviewPrompt.thresholds.count <= 3)
+    }
+
     // MARK: - EMOM: Initialisation
 
     @Test func emomDefaultInit() {

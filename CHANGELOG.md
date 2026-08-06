@@ -2,6 +2,12 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
+## Unreleased
+
+- **Fixed (iOS):** the review prompt could be lost for good. It matched the completed-workout count exactly (5, 15, 50), so a single skipped count meant that ask never happened. It now asks at the first threshold reached and remembers which ones it has used.
+- **Added (macOS):** the Mac app asks for a review too. It never did, so Mac users were never given the chance.
+- **Changed (iOS/macOS):** the first review ask moved from 5 completed workouts to 3, with the later ones at 10 and 30 (Apple allows three prompts per year, so this uses them on people who have actually trained with the app rather than saving them for power users). Apple TV cannot ask: the API does not exist on tvOS.
+
 ## 1.6.1 (build 17)
 
 **What's New (App Store copy):**
