@@ -37,4 +37,23 @@ enum TimerUIMode: String, CaseIterable {
     case intervals = "Intervals"
     case forTime = "For Time"
 }
+
+/// Screenshot support: `-screen emom|intervals|fortime` launches straight into that mode,
+/// so App Store captures are reproducible instead of depending on a synthetic tap landing
+/// on the right segment. DEBUG-only, so it cannot affect a shipped build. The portfolio
+/// screenshot recipe asks for exactly this hook.
+func initialTimerMode() -> TimerUIMode {
+    #if DEBUG
+    let args = ProcessInfo.processInfo.arguments
+    if let i = args.firstIndex(of: "-screen"), i + 1 < args.count {
+        switch args[i + 1] {
+        case "emom": return .emom
+        case "intervals": return .intervals
+        case "fortime": return .forTime
+        default: break
+        }
+    }
+    #endif
+    return .emom
+}
 #endif

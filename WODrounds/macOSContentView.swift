@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var timerMode: TimerUIMode = .emom
+    @State private var timerMode: TimerUIMode = initialTimerMode()
     @State private var rounds: Int = 10
     @AppStorage("emomRoundLengthSeconds") private var emomRoundLengthSeconds: Int = 60
     @State private var intervalsWork: Int = 30

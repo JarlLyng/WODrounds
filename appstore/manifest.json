@@ -17,6 +17,18 @@
       "out": "iphone-2.png"
     },
     {
+      "raw": "raw/iphone-intervals-en.png",
+      "slot": "iphone-6.9",
+      "caption": "Work, rest, rounds.\nTabata in two taps.",
+      "out": "iphone-3.png"
+    },
+    {
+      "raw": "raw/iphone-fortime-en.png",
+      "slot": "iphone-6.9",
+      "caption": "Count up for time,\nwith an optional cap",
+      "out": "iphone-4.png"
+    },
+    {
       "raw": "raw/iphone-running-da.png",
       "slot": "iphone-6.9",
       "caption": "Tag tid p\u00e5 din WOD uden\nat r\u00f8re telefonen",
@@ -29,6 +41,18 @@
       "out": "da/iphone-2.png"
     },
     {
+      "raw": "raw/iphone-intervals-da.png",
+      "slot": "iphone-6.9",
+      "caption": "Arbejde, hvil, runder.\nTabata p\u00e5 to tryk.",
+      "out": "da/iphone-3.png"
+    },
+    {
+      "raw": "raw/iphone-fortime-da.png",
+      "slot": "iphone-6.9",
+      "caption": "T\u00e6l op p\u00e5 tid, med\nen valgfri gr\u00e6nse",
+      "out": "da/iphone-4.png"
+    },
+    {
       "raw": "raw/iphone-running-es.png",
       "slot": "iphone-6.9",
       "caption": "Cronometra tu WOD sin\ntocar el tel\u00e9fono",
@@ -39,6 +63,18 @@
       "slot": "iphone-6.9",
       "caption": "EMOM, intervalos y\nFor Time. Nada m\u00e1s.",
       "out": "es/iphone-2.png"
+    },
+    {
+      "raw": "raw/iphone-intervals-es.png",
+      "slot": "iphone-6.9",
+      "caption": "Trabajo, descanso, rondas.\nTabata en dos toques.",
+      "out": "es/iphone-3.png"
+    },
+    {
+      "raw": "raw/iphone-fortime-es.png",
+      "slot": "iphone-6.9",
+      "caption": "Cuenta hacia arriba, con\nun l\u00edmite opcional",
+      "out": "es/iphone-4.png"
     },
     {
       "raw": "raw/tvos-running.png",

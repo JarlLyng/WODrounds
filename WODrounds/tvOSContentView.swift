@@ -19,7 +19,7 @@ private enum TVOSTypography {
 }
 
 struct ContentView: View {
-    @State private var timerMode: TimerUIMode = .emom
+    @State private var timerMode: TimerUIMode = initialTimerMode()
     @State private var rounds: Int = 10
     @State private var intervalsWork: Int = 30
     @State private var intervalsRest: Int = 15
