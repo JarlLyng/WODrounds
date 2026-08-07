@@ -19,7 +19,7 @@
     {
       "raw": "raw/iphone-intervals-en.png",
       "slot": "iphone-6.9",
-      "caption": "Work, rest, rounds.\nTabata in two taps.",
+      "caption": "Work, rest, rounds.\nTabata, or your own numbers.",
       "out": "iphone-3.png"
     },
     {
@@ -43,7 +43,7 @@
     {
       "raw": "raw/iphone-intervals-da.png",
       "slot": "iphone-6.9",
-      "caption": "Arbejde, hvil, runder.\nTabata p\u00e5 to tryk.",
+      "caption": "Arbejde, hvil, runder.\nTabata eller dine egne tal.",
       "out": "da/iphone-3.png"
     },
     {
@@ -67,7 +67,7 @@
     {
       "raw": "raw/iphone-intervals-es.png",
       "slot": "iphone-6.9",
-      "caption": "Trabajo, descanso, rondas.\nTabata en dos toques.",
+      "caption": "Trabajo, descanso, rondas.\nTabata o tus propios n\u00fameros.",
       "out": "es/iphone-3.png"
     },
     {
