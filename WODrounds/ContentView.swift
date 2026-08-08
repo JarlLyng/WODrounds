@@ -68,4 +68,33 @@ func initialEngine() -> WODTimerEngine {
     case .forTime: return WODTimerEngine(forTimeCapSeconds: nil)
     }
 }
+
+/// When to ask for an App Store review, shared by every platform so the cadence
+/// is decided in one place.
+///
+/// Apple shows at most three prompts per 365 days and silently drops the rest, so
+/// there is no value in asking often; the thresholds just need to land on people who
+/// have actually used the app. The first ask is deliberately early (a few finished
+/// workouts is roughly a first week of training) because a small user base cannot
+/// afford to wait for power users that may never arrive.
+///
+/// iOS and macOS only: `requestReview` is unavailable on tvOS, and watchOS has no
+/// Done-screen moment worth interrupting, so Apple TV workouts are never asked.
+enum ReviewPrompt {
+    /// Completed-workout counts at which to ask. Each is asked at most once.
+    static let thresholds = [3, 10, 30]
+
+    /// Delay before the system dialog, so the Done screen is on screen first.
+    static let delay: TimeInterval = 1.5
+
+    /// The threshold to ask at now, or nil if there is nothing to ask for.
+    ///
+    /// Uses `>=` plus the highest threshold already asked, rather than an exact
+    /// match on the count. An exact match silently loses the ask if the counter ever
+    /// skips a value (a double-counted finish, or a restore onto a device that was
+    /// already past the number), and skipping is exactly the failure you never notice.
+    static func thresholdToAsk(completed: Int, lastAsked: Int) -> Int? {
+        thresholds.first { completed >= $0 && lastAsked < $0 }
+    }
+}
 #endif
