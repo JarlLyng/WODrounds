@@ -15,3 +15,7 @@
 "LENGTH" = "LENGTH";
 "R %lld/%lld" = "R %lld/%lld";
 "Countdown, %lld seconds" = "Countdown, %lld seconds";
+
+/* VoiceOver */
+"Decrease %@" = "Decrease %@";
+"Increase %@" = "Increase %@";

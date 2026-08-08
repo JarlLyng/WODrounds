@@ -12,6 +12,7 @@ All notable user-facing changes to WODrounds. Newest first.
 - **Added (macOS):** the Mac app asks for a review too. It never did, so Mac users were never given the chance.
 - **Changed (iOS/macOS):** the first review ask moved from 5 completed workouts to 3, with the later ones at 10 and 30 (Apple allows three prompts per year, so this uses them on people who have actually trained with the app rather than saving them for power users). Apple TV cannot ask: the API does not exist on tvOS.
 - **Added:** the app now responds to Reduce Motion. Every other animation was already a short crossfade, which is what the setting substitutes for motion anyway; the Apple TV focus effect was the exception and now snaps into place instead of scaling up.
+- **Fixed (watchOS):** the Watch setup screen gave VoiceOver six identical "plus" and "minus" buttons with nothing to say which value each one changed, and read the name and the number as two separate stops. Each button now names its value, and the name and number are announced together.
 - **Fixed:** VoiceOver read the stepper names and the +/- buttons in English even with the app in Danish or Spanish. The labels went through SwiftUI's non-localizing overload, so the screen said "Rundelængde" while VoiceOver said "Round length".
 
 ## 1.6.1 (build 17)
