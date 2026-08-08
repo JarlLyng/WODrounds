@@ -165,6 +165,8 @@ Capture rule learned in 1.7: set the simulator's **system** language, not just t
 
 Apple Watch shots stay uncaptioned; the screen is too small for a caption band.
 
+**The two Apple TV shots sit on a photograph** ([`appstore/photos/`](../appstore/photos/), Unsplash, see the README there for the licence check). The landscape canvas leaves room for the gym to read around the screen, which backs the "readable from across the gym" claim with context the UI cannot show. iPhone, iPad and Mac keep the plain brand ground: on a portrait canvas the photo is reduced to slivers at the edges and reads as noise, and the two nearest competitors both ship plain dark grounds, so a photo is a differentiation bet rather than a norm.
+
 Content to feature, in order: (1) timer running (hero), (2) mode setup showing EMOM / Intervals / For Time, (3) the Apple Watch / multi-device angle.
 
 ---

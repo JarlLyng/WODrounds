@@ -80,13 +80,15 @@
       "raw": "raw/tvos-running.png",
       "slot": "tvos",
       "caption": "Readable from across the gym",
-      "out": "tvos-1.png"
+      "out": "tvos-1.png",
+      "bg_image": "photos/gym-barbell.jpg"
     },
     {
       "raw": "raw/tvos-setup.png",
       "slot": "tvos",
-      "caption": "EMOM, intervals and For Time on the big screen",
-      "out": "tvos-2.png"
+      "caption": "EMOM, intervals and For Time",
+      "out": "tvos-2.png",
+      "bg_image": "photos/gym-floor.jpg"
     },
     {
       "raw": "raw/mac-setup.png",
