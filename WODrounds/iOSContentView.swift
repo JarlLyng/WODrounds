@@ -95,6 +95,8 @@ private struct iOSContent: View {
     @State private var lastBeepRound: Int? = nil
     @State private var lastBeepPhase: WODTimerPhase? = nil
     @AppStorage("completedWorkoutCount") private var completedWorkoutCount: Int = 0
+    /// Highest review threshold already asked at, so each one is asked once.
+    @AppStorage("lastReviewRequestCount") private var lastReviewRequestCount: Int = 0
     @AppStorage("soundEnabled") private var soundEnabled: Bool = true
     @Environment(\.requestReview) private var requestReview
 
@@ -189,9 +191,11 @@ private struct iOSContent: View {
                 HealthKitWorkoutController.shared.endWorkout(endDate: engine.effectiveWorkoutEndDate(now: Date()) ?? Date())
                 WorkoutSoundManager.playYouDidIt()
                 completedWorkoutCount += 1
-                if completedWorkoutCount == 5 || completedWorkoutCount == 15 || completedWorkoutCount == 50 {
+                if let threshold = ReviewPrompt.thresholdToAsk(completed: completedWorkoutCount,
+                                                               lastAsked: lastReviewRequestCount) {
+                    lastReviewRequestCount = threshold
                     // Delay so the Done screen is visible before the system dialog appears.
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + ReviewPrompt.delay) {
                         requestReview()
                     }
                 }
