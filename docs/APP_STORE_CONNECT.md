@@ -18,88 +18,138 @@ Shown under the app name and used in search. Keep it short and searchable.
 EMOM & Intervals Timer
 ```
 
-Alternatives: `Interval Timer • iPhone & Watch` (29) or `WOD Timer for iPhone & Watch` (29).
+Kept unchanged in 1.7 even though it predates For Time. Naming all three modes costs the word
+"timer", which is the highest-intent search term and is **not** in the app name, so the trade is
+bad. For Time lives in the keyword field instead.
 
 ---
 
 ## Promotional Text (optional, max 170 characters)
 
-Short line at the top of the product page. It can be edited on a live version without submitting a build, but **it starts empty on each new version**, so re-paste it every release.
+Short line at the top of the product page. It can be edited on a live version without submitting a
+build, but **it starts empty on each new version**, so re-paste it every release.
+
+**Promotional Text sells the app; it does not announce the release.** Release news belongs in
+What's New, which is already version-locked for it. Through 1.6.1 this field carried news ("Now set
+up workouts on your Apple Watch too") and that was wrong. The 1.7 pattern is: what it is, that one
+purchase covers every platform, and the close.
+
+EN (149):
 
 ```
-EMOM, intervals and For Time for CrossFit and HIIT. Now set up workouts on your Apple Watch too, no iPhone needed. One-time purchase, no subscription.
+EMOM, intervals and For Time. One purchase runs on iPhone, iPad, Apple Watch, Mac and Apple TV. No subscription, no ads. The only WOD timer you need.
 ```
 
----
+es-MX (166):
+
+```
+EMOM, intervalos y For Time. Una compra funciona en iPhone, iPad, Apple Watch, Mac y Apple TV. Sin suscripción, sin anuncios. El único temporizador WOD que necesitas.
+```
+
+Danish (160):
+
+```
+EMOM, intervaller og For Time. Ét køb kører på iPhone, iPad, Apple Watch, Mac og Apple TV. Intet abonnement, ingen reklamer. Den eneste WOD-timer du skal bruge.
+```
+
+"The only WOD timer you need" is a sufficiency claim, not a superiority claim, which is why it
+passes where the old "simplest WOD timer" superlative did not. It is also the brand book's line.
 
 ## Description (required)
 
-**First 2–3 lines** are often shown in search results and previews — make sure they contain key terms (interval timer, workout, EMOM, CrossFit). Then add concrete bullets.
+**First 2-3 lines** are shown in search results and previews, so they carry the key terms (interval
+timer, EMOM, For Time, CrossFit, HIIT).
+
+Rewritten in prose for 1.7. The bulleted version shipped from launch through 1.6.1, but VOICE.md
+rules bullets out of public copy, and CLAUDE.md says to fold the voice audit into the next metadata
+touch. This was that touch. The other change is the closing platform line: the listing never said
+that one purchase covers all five platforms, which is the thing the two nearest competitors cannot
+match.
 
 ```
-Interval timer and workout timer for EMOM, For Time, CrossFit, and HIIT. No accounts, no sign-up. Just time, rounds, and focus.
+Interval timer for EMOM, For Time, CrossFit and HIIT. No account, no sign-up. Just time, rounds and room to train.
 
-• EMOM: Set rounds (1–120) and round length (0:30–9:30). Start, pause, resume, reset.
-• Intervals: Work, rest, rounds. Perfect for Tabata (20/10 × 8) and any interval workout.
-• For Time: The clock counts up. Press Stop when you finish and your time is saved, or set an optional time cap.
-• Apple Watch: Start on iPhone and the watch shows the same time and round, or set up and run EMOM and Intervals on the watch by itself.
-• Audio cues: "Get ready", halfway and ten-seconds voice cues, a 3-2-1 countdown, rounds remaining (10, 5, 2), and randomized completion sounds.
-• Large type, one-handed use, runs in background. Light and dark theme.
-• One-time purchase: pay once, own it forever. No subscription, no ads, no in-app purchases.
+EMOM runs 1 to 120 rounds with a round length between 0:30 and 9:30. Intervals is work, rest and rounds that you set yourself, so Tabata is 20/10 times 8 whenever you want it. For Time counts up from zero, you press Stop when you finish, and you can set a time cap if you want one.
 
-A focused WOD timer. No database, no sharing. Just timer and rounds.
+Start on your iPhone and the watch shows the same time and the same round. You can also set up an EMOM or an interval session on the watch itself and leave the phone in your bag.
+
+Audio cues carry you through: get ready, halfway, ten seconds, 3-2-1 and rounds remaining at ten, five and two. The numbers are big enough to read at a distance, everything works one-handed, and the timer keeps running when the screen goes dark.
+
+One purchase covers iPhone, iPad, Apple Watch, Mac and Apple TV. No subscription, no ads and nothing to buy inside the app.
+
+A timer for training. No logbook, no sharing and no account.
 ```
-
----
 
 ## What's New in This Version (release notes)
 
-Update per release. Current — **1.6.1** (iOS):
+Update per release. Current — **1.7** (iOS):
 
 ```
-• Crash reports are now diagnostics only, with no screenshot attached.
-• Small fixes and polish.
+WODrounds now speaks Danish and Spanish. Every screen, button and help text is translated on iPhone, iPad and Apple Watch. The spoken cues stay in English, because they are recorded voice files.
+
+Those recordings are new this version. VoiceOver now reads the timer controls in your language, and Reduce Motion is respected.
 ```
 
-**Apple TV variant (1.6.1)** — the screensaver fix is the tvOS story, so say it plainly:
+es-MX:
 
 ```
-• Fixed the Apple TV screensaver taking over the screen during a workout.
-• Small fixes and polish.
+WODrounds ahora habla español y danés. Cada pantalla, botón y texto de ayuda está traducido en iPhone, iPad y Apple Watch. Las señales habladas siguen en inglés, porque son grabaciones de voz.
+
+Esas grabaciones son nuevas en esta versión. VoiceOver ahora lee los controles del temporizador en tu idioma y se respeta Reducir movimiento.
 ```
 
-**Mac variant (1.6.1):**
+Danish:
 
 ```
-• The Mac app now uses the dark app icon.
-• Small fixes and polish.
+WODrounds taler nu dansk og spansk. Hver skærm, knap og hjælpetekst er oversat på iPhone, iPad og Apple Watch. De talte cues bliver på engelsk, fordi det er indtalte lydfiler.
+
+Selve lydfilerne er nyindspillede i denne version. VoiceOver læser nu timerens knapper på dit sprog, og Reducer bevægelse bliver respekteret.
 ```
 
-**Do these two things with this release** (both are version-locked, so this is the window):
-1. **Paste the full Description** from the sections above into ASC (EN + es-MX). The live listing still runs launch-era copy with **For Time missing entirely**; it carries over silently unless re-pasted.
-2. **Apply the expanded keyword fields** for iOS and Mac (marked "Apply with the next release" in the Keywords sections below), and confirm whether they already went in with 1.6.
+**Mac (1.7)** drops the Apple Watch line, since the Mac app neither pairs with the watch nor plays
+audio cues:
 
-**Promotional Text comes up empty on every new version**, so re-paste it each time from the per-platform Promotional Text sections above (it can also be edited on a live version without submitting a build).
+```
+WODrounds now speaks Danish and Spanish. Every screen, button and help text is translated.
 
-<details><summary>Previous — 1.6 What's New (for reference)</summary>
+VoiceOver now reads the timer controls in your language, and Reduce Motion is respected.
+```
 
-iOS: "Set up workouts directly on your Apple Watch: choose EMOM or Intervals and adjust rounds, round length, work and rest right on the wrist. No iPhone needed. · The Watch remembers your settings between workouts. · Small fixes and polish." Mac/tvOS were generic ("Small fixes and polish").
+**Apple TV (1.7):**
+
+```
+WODrounds now speaks Danish and Spanish. Every screen, button and help text is translated on Apple TV.
+
+VoiceOver now reads the timer controls in your language, and Reduce Motion is respected.
+```
+
+<details><summary>Previous — 1.6.1 What's New (for reference)</summary>
+
+iOS: "Crash reports are now diagnostics only, with no screenshot attached. Small fixes and polish."
+Apple TV led with the screensaver fix; Mac led with the dark app icon.
 
 </details>
 
----
-
 ## Keywords (required, max 100 characters including commas)
 
-Search terms users may search for. **Do not repeat words from the app name or subtitle** (Apple weights them lower). Prioritize high-intent words; one comma between each, no spaces after commas.
+Apple already indexes the app name and the subtitle and weights repeats of those words lower, so
+every word spent restating them is a wasted character. **WODrounds** spends "WOD" and "rounds";
+the subtitle spends "EMOM", "Intervals" and "Timer". Through 1.6.1 the field restated four of those
+and burned roughly 35 characters doing it.
 
-**Apply with the next release** (keywords only update when a new version ships). Expanded field, ~99 of 100 chars (was ~65):
+Applied with 1.7 (89 of 100):
 
 ```
-interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Apple Watch,functional,WOD,fit
+Tabata,HIIT,CrossFit,for time,countdown,stopwatch,gym,workout,functional,fitness,training
 ```
 
----
+<details><summary>Previous — the 1.6 field, for reference</summary>
+
+`interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Apple Watch,functional,WOD,fit`
+
+</details>
+
+Keywords only update when a new version ships, so this field is version-locked like What's New.
 
 ## Support URL (required)
 
@@ -192,7 +242,9 @@ Choose whether the version should be released manually or automatically after ap
 
 # Mac App (macOS)
 
-In App Store Connect: **Distribution → Mac App → 1.0 Prepare for Submission**. Support URL and Marketing URL can be the same as for iOS.
+**The Mac app has no audio cues and no Apple Health.** `WorkoutSoundManager` is `#if os(iOS) || os(tvOS)`
+and `HealthKitWorkout` is `#if os(iOS)`, so Mac copy must never promise either, and it cannot claim
+the watch follows along (that link is iPhone to Watch). Verified in code for 1.7.
 
 ## Subtitle (max 30 characters)
 
@@ -200,45 +252,55 @@ In App Store Connect: **Distribution → Mac App → 1.0 Prepare for Submission*
 EMOM & Intervals Timer
 ```
 
-or: `Interval Timer for Mac` (22).
-
 ## Promotional Text (optional, max 170 characters)
 
+EN (161):
+
 ```
-EMOM, Intervals and For Time on your Mac. The same minimal timer as on iPhone and Watch. One-time purchase, no subscription, no ads.
+EMOM, intervals and For Time on your Mac. One purchase runs on iPhone, iPad, Apple Watch, Mac and Apple TV. No subscription, no ads. The only WOD timer you need.
+```
+
+Spanish (170, at the ceiling):
+
+```
+EMOM, intervalos y For Time en tu Mac. Una compra funciona en iPhone, iPad, Apple Watch, Mac y Apple TV. Sin suscripción ni anuncios. El único temporizador que necesitas.
 ```
 
 ## Description (required)
 
 ```
-Interval timer and workout timer for EMOM, For Time, CrossFit, and HIIT on Mac. No accounts, no sign-up. Just time, rounds, and focus.
+Interval timer for EMOM, For Time, CrossFit and HIIT, on your Mac. No account, no sign-up. Just time, rounds and room to train.
 
-• EMOM: Set rounds (1–120) and round length (0:30–9:30). Start, pause, resume, reset.
-• Intervals: Work, rest, rounds. Perfect for Tabata (20/10 × 8) and any interval workout.
-• For Time: The clock counts up. Press Stop when you finish and your time is saved, or set an optional time cap.
-• Compact window, large type. Runs in background. Light and dark theme.
-• One-time purchase: pay once, own it forever. No subscription, no ads, no in-app purchases.
+EMOM runs 1 to 120 rounds with a round length between 0:30 and 9:30. Intervals is work, rest and rounds that you set yourself, so Tabata is 20/10 times 8 whenever you want it. For Time counts up from zero, you press Stop when you finish, and you can set a time cap if you want one.
 
-The same minimal WOD timer as on iPhone and Apple Watch. No database, no sharing. Just timer and rounds.
+The window stays compact and the numbers stay large, so you can put it in a corner of the screen and still read it from the mat. It keeps time when the window is behind something else, and it follows your light or dark appearance.
+
+One purchase covers iPhone, iPad, Apple Watch, Mac and Apple TV. No subscription, no ads and nothing to buy inside the app.
+
+A timer for training. No logbook, no sharing and no account.
 ```
 
 ## Keywords (max 100 characters)
 
-**Apply with the next release.** Expanded field (~98 of 100 chars):
+Applied with 1.7 (89). Dropped "Mac" and "desktop timer": everything in the Mac App Store is a Mac
+app, so the word does no work there.
 
 ```
-interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,countdown,Mac,desktop timer,WOD,fitness
+Tabata,HIIT,CrossFit,for time,countdown,stopwatch,gym,workout,functional,fitness,training
 ```
 
 ## Screenshots (Mac)
 
-Mac App Store requires screenshots at 1280 × 800, 1440 × 900, 2560 × 1600, or 2880 × 1800. The current set uses 2560 × 1600 (the compact window centered on the brand background).
+Mac App Store requires screenshots at 1280 × 800, 1440 × 900, 2560 × 1600, or 2880 × 1800. The current set uses 2560 × 1600 (the compact window centered on the brand background). English only; the Mac record has no localized screenshots.
 
 ---
 
 # Apple TV App (tvOS)
 
-In App Store Connect: **Distribution → Apple TV App → 1.0 Prepare for Submission**. Support URL and Marketing URL same as above.
+**Apple TV does have audio cues** (unlike Mac) and an on-screen mute control, but no Apple Health,
+no Watch link, and no review prompt (`requestReview` does not exist on tvOS). Since 1.6.1 the app
+also holds off the system screensaver while a workout runs, which is worth saying plainly: it was
+the bug people actually hit.
 
 ## Subtitle (max 30 characters)
 
@@ -246,91 +308,147 @@ In App Store Connect: **Distribution → Apple TV App → 1.0 Prepare for Submis
 EMOM & Intervals Timer
 ```
 
-or: `Interval Timer for Apple TV` (28).
-
 ## Promotional Text (optional, max 170 characters)
 
+EN (166):
+
 ```
-EMOM, Intervals and For Time on the big screen. Start, stop and reset with the remote. One-time purchase, no subscription, no ads.
+EMOM, intervals and For Time on the big screen, with voice cues the whole room can hear. One purchase runs on every Apple device you own. The only WOD timer you need.
+```
+
+Spanish (166):
+
+```
+EMOM, intervalos y For Time en la pantalla grande, con señales de voz que oye toda la sala. Una compra vale para todos tus dispositivos Apple. El único que necesitas.
 ```
 
 ## Description (required)
 
 ```
-Interval timer and workout timer for EMOM, For Time, CrossFit, and HIIT on Apple TV. No accounts, no sign-up. Just time, rounds, and focus.
+Interval timer for EMOM, For Time, CrossFit and HIIT, on the TV everyone in the room can see. No account, no sign-up. Just time, rounds and room to train.
 
-• EMOM: Set rounds (1–120) and round length (0:30–9:30). Start, pause, resume, reset with the remote.
-• Intervals: Work, rest, rounds. Perfect for Tabata (20/10 × 8) and any interval workout.
-• For Time: The clock counts up. Press Stop when you finish and your time is saved, or set an optional time cap.
-• Large type for the living room. Focus-friendly UI. Light and dark theme.
-• One-time purchase: pay once, own it forever. No subscription, no ads, no in-app purchases.
+EMOM runs 1 to 120 rounds with a round length between 0:30 and 9:30. Intervals is work, rest and rounds that you set yourself, so Tabata is 20/10 times 8 whenever you want it. For Time counts up from zero, you press Stop when you finish, and you can set a time cap if you want one.
 
-The same minimal WOD timer as on iPhone, Watch, and Mac. No database, no sharing. Just timer and rounds.
+The numbers fill the screen, so nobody has to walk over and check the clock. Voice cues carry the room through it: get ready, halfway, ten seconds, 3-2-1 and rounds remaining at ten, five and two. You can mute them from the remote. The screensaver stays out of the way for as long as the workout is running.
+
+One purchase covers iPhone, iPad, Apple Watch, Mac and Apple TV. No subscription, no ads and nothing to buy inside the app.
+
+A timer for training. No logbook, no sharing and no account.
 ```
 
 ## Keywords (max 100 characters)
 
+Applied with 1.7 (89). "box" and "class" are tvOS-only: Apple TV is the one platform where the
+buyer is plausibly setting the timer for a room full of people.
+
 ```
-interval timer,workout timer,EMOM,Tabata,HIIT,CrossFit,gym,Apple TV,remote,home workout
+Tabata,HIIT,CrossFit,for time,countdown,gym,workout,box,functional,fitness,training,class
 ```
 
 ## Screenshots (Apple TV)
 
-tvOS requires 1920 × 1080 or 3840 × 2160. The current set uses 1920 × 1080 (captioned, landscape).
+1920 × 1080 or 3840 × 2160. Three shots since 1.6.1. The two current ones sit on a gym photograph (see Previews and Screenshots above). English only, so a Spanish listing on tvOS shows the English images until Spanish captures are made.
 
 ---
 
-# Spanish (es-MX) — iOS
+# Spanish — which variant, and where
 
-Localization: **Spanish (Mexico)** (serves Latin America + most Spanish-speaking storefronts, incl. US Hispanic). Neutral LatAm vocabulary (e.g. "cuenta regresiva", not the peninsular "cuenta atrás"). App name stays **WODrounds**. As of 1.7 the **app UI is localized too**; only the spoken audio cues stay English (they are recorded voice files).
+**Open decision, must be settled before 1.8.** As of 1.7 the store localizations disagree with each
+other and with the app:
 
-## Subtitle (max 30 characters)
+| Surface | Spanish variant |
+|---|---|
+| iOS listing | Spanish (Mexico) |
+| Mac listing | Spanish (Spain), added 1.7 |
+| Apple TV listing | Spanish (Spain), added 1.7 |
+| App UI (`es.lproj`) | one bundle, written in Latin American Spanish |
+
+So a buyer in Spain reads peninsular store copy and then opens an app that says "presiona" and
+"cuenta regresiva", and a buyer in Mexico sees peninsular copy on Mac and Apple TV. Nothing is
+broken, but it is incoherent.
+
+Two clean ways out. Either move Mac and Apple TV to **Spanish (Mexico)**, which matches iOS and the
+app and covers Latin America plus US Hispanic storefronts, or keep Spain on those two and neutralise
+the handful of Latin American words in `es.lproj` so one bundle reads acceptably in both.
+Recommendation is the first: it is a metadata change rather than a code change, and the strategy
+repo's territory data shows the Spanish traffic that actually exists is Mexican.
+
+Note also that the strategy repo argues **against** a localized tvOS listing at all: Apple TV traffic
+is 78% English-speaking and Mexico is 9 page views over four months, against a per-release metadata
+cost that recurs forever. That analysis predates the 1.7 decision to add one; revisit it rather than
+treating it as settled.
+
+## iOS (es-MX)
+
+Neutral Latin American vocabulary ("cuenta regresiva", not the peninsular "cuenta atrás"). App name
+stays **WODrounds**. As of 1.7 the app UI is localized too; only the spoken audio cues stay English,
+and the description now says so, because a Spanish-speaking buyer would otherwise reasonably expect
+Spanish audio.
+
+### Subtitle (30 of 30)
 
 ```
-Temporizador HIIT y Tabata
+Temporizador EMOM e intervalos
 ```
 
-## Promotional Text (max 170 characters)
+### Description
 
 ```
-EMOM, intervalos y For Time para CrossFit y HIIT. Ahora configura tus entrenamientos también en el Apple Watch, sin necesidad del iPhone. Compra única, sin suscripción.
+Temporizador de intervalos para EMOM, For Time, CrossFit y HIIT. Sin cuenta, sin registro. Solo tiempo, rondas y espacio para entrenar.
+
+EMOM corre de 1 a 120 rondas con una duración de ronda entre 0:30 y 9:30. Intervalos son trabajo, descanso y rondas que tú defines, así que Tabata es 20/10 por 8 cuando quieras. For Time cuenta desde cero, presionas Detener al terminar, y puedes poner un límite de tiempo si lo quieres.
+
+Empieza en tu iPhone y el reloj muestra el mismo tiempo y la misma ronda. También puedes configurar un EMOM o una sesión de intervalos en el reloj y dejar el teléfono en la mochila.
+
+Las señales de audio te llevan: prepárate, a la mitad, diez segundos, 3-2-1 y rondas restantes en diez, cinco y dos. Están grabadas en inglés. Los números se leen a distancia, todo funciona con una mano, y el temporizador sigue corriendo con la pantalla apagada.
+
+Una compra cubre iPhone, iPad, Apple Watch, Mac y Apple TV. Sin suscripción, sin anuncios y nada que comprar dentro de la app.
+
+Un temporizador para entrenar. Sin bitácora, sin compartir y sin cuenta.
+```
+
+### Keywords (97)
+
+```
+HIIT,Tabata,CrossFit,gimnasio,cronómetro,cuenta regresiva,entrenamiento,for time,ejercicio,fuerza
+```
+
+---
+
+# Danish (da) — iOS
+
+New in 1.7, and the highest-value addition in the release: Danish is the **second-largest language
+area** at 16% of page views with no localized listing before now, and Denmark is the strongest sales
+territory. iPhone is 54% of page views, so iOS is where it belongs. Danish screenshots exist for
+iPhone, iPad and Apple Watch (`appstore/1.7/da/`); Mac and Apple TV have none, so those records stay
+English.
+
+Written in prose from the start, per VOICE.md.
+
+## Subtitle (21 of 30)
+
+```
+EMOM og intervaltimer
 ```
 
 ## Description
 
 ```
-Temporizador de intervalos y de entrenamiento para EMOM, For Time, CrossFit y HIIT. Sin cuentas, sin registro. Solo tiempo, rondas y enfoque.
+Intervaltimer til EMOM, For Time, CrossFit og HIIT. Ingen konto og ingen oprettelse. Bare tid, runder og ro til at træne.
 
-• EMOM: define las rondas (1–120) y la duración de cada ronda (0:30–9:30). Inicia, pausa, reanuda y reinicia.
-• Intervalos: trabajo, descanso y rondas. Perfecto para Tabata (20/10 × 8) y cualquier entrenamiento por intervalos.
-• For Time: el reloj cuenta hacia arriba. Pulsa Detener al terminar y tu tiempo queda guardado, o define un límite de tiempo opcional.
-• Apple Watch: empieza en el iPhone y el reloj muestra el mismo tiempo y ronda, o configura y ejecuta EMOM e Intervalos en el reloj por sí solo.
-• Señales de audio: "Get ready", avisos de voz a la mitad y a los diez segundos, cuenta 3-2-1, rondas restantes (10, 5, 2) y sonidos de finalización aleatorios.
-• Texto grande, uso con una mano, funciona en segundo plano. Tema claro y oscuro.
-• Compra única: paga una vez y es tuyo para siempre. Sin suscripción, sin anuncios, sin compras dentro de la app.
+EMOM kører 1 til 120 runder med en rundelængde mellem 0:30 og 9:30. Intervaller er arbejde, hvile og runder som du selv sætter, så Tabata er bare 20/10 gange 8. For Time tæller op fra nul, du trykker Stop når du er færdig, og du kan sætte en tidsgrænse hvis du vil have en.
 
-Un temporizador WOD enfocado. Sin base de datos, sin compartir. Solo cronómetro y rondas.
+Start på din iPhone, og uret viser samme tid og samme runde. Du kan også sætte en EMOM eller et intervalpas op direkte på uret og lade telefonen blive i tasken.
+
+Undervejs får du lydcues: gør dig klar, halvvejs, ti sekunder, 3-2-1 og runder tilbage ved ti, fem og to. De er indtalt på engelsk. Tallene er store nok til at læse på afstand, alt kan betjenes med én hånd, og timeren kører videre når skærmen slukker.
+
+Ét køb dækker iPhone, iPad, Apple Watch, Mac og Apple TV. Intet abonnement, ingen reklamer og intet at købe inde i appen.
+
+En timer til træning. Ingen logbog, ingen deling og ingen konto.
 ```
 
-## Keywords (max 100 characters)
-
-Single words, comma-separated, no spaces; excludes terms already in the subtitle (Temporizador/HIIT/Tabata).
+## Keywords (99)
 
 ```
-intervalos,entrenamiento,EMOM,CrossFit,gimnasio,cronómetro,cuenta,regresiva,WOD,rondas,ejercicio
+crossfit,tabata,hiit,træning,nedtælling,stopur,fitness,cirkeltræning,styrketræning,apple watch,puls
 ```
-
-## What's New in This Version (1.6.1) — es-MX
-
-```
-• Los informes de fallos ahora son solo diagnósticos, sin captura de pantalla adjunta.
-• Pequeñas correcciones y mejoras.
-```
-
-<details><summary>Anterior — 1.5.1 (referencia)</summary>
-
-"Se corrigió el botón de información que se superponía a la pestaña For Time en el iPhone. · Se ordenó la pantalla Acerca de para que los enlaces de Soporte y Política de privacidad queden en su lugar. · Pequeñas correcciones y mejoras."
-
-</details>
-
-(Mac/tvOS Spanish variants: drop the Apple Watch / Health lines as for English. Add Spanish (Spain) / es-ES later only if Spain shows traction.)
