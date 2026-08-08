@@ -61,3 +61,6 @@ __pycache__/
 # Editor / AI-tool local config (keep .vscode/extensions.json shared)
 .claude/
 .cursor/
+
+# Marketing source assets (brand book, video). Large binaries, not needed to build.
+marketing/
