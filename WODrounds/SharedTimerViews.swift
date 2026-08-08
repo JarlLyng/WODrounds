@@ -200,7 +200,10 @@ struct SharedStepperView: View {
                     .minimumScaleFactor(0.4)
                     .frame(minWidth: displayString != nil ? max(theme.buttonSize * 2, theme.valueFontSize * 1.9) : theme.buttonSize * 2)
                     .padding(.horizontal, displayString != nil ? DesignTokens.Spacing.lg : 0)
-                    .accessibilityLabel(label)
+                    // LocalizedStringKey, not the raw String: `label` is an English
+                    // key ("Round length"), and the plain-String overload would read
+                    // it out verbatim while the screen shows "Rundelængde".
+                    .accessibilityLabel(LocalizedStringKey(label))
                     .accessibilityValue(displayString ?? "\(value)")
                 stepperButton(sign: 1)
             }
@@ -225,7 +228,13 @@ struct SharedStepperView: View {
         #else
         .buttonStyle(.plain)
         #endif
-        .accessibilityLabel(sign < 0 ? "Decrease \(self.label)" : "Increase \(self.label)")
+        // Two levels of translation: the surrounding phrase, and the stepper name
+        // interpolated into it. Localizing the phrase alone would announce
+        // "Formindsk Round length".
+        .accessibilityLabel({
+            let name = String(localized: String.LocalizationValue(self.label))
+            return sign < 0 ? String(localized: "Decrease \(name)") : String(localized: "Increase \(name)")
+        }())
         .modifier(LongPressRepeatModifier(enabled: useLongPressRepeat, sign: sign, onPressStart: { startRepeat(by: $0) }, onPressEnd: stopRepeat))
     }
 

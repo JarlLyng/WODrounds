@@ -42,3 +42,9 @@
 "Cancel countdown" = "Cancel countdown";
 "Countdown, %lld seconds" = "Countdown, %lld seconds";
 "Stops workout and returns to setup" = "Stops workout and returns to setup";
+
+/* VoiceOver */
+"Decrease %@" = "Decrease %@";
+"Increase %@" = "Increase %@";
+"Mute sound" = "Mute sound";
+"Unmute sound" = "Unmute sound";
