@@ -49,13 +49,17 @@ extension View {
 /// so focus is still clearly visible without being loud.
 struct TVCalmFocusStyle: ButtonStyle {
     @Environment(\.isFocused) private var isFocused
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     func makeBody(configuration: Configuration) -> some View {
+        // Under Reduce Motion the lift snaps instead of animating. The size
+        // change itself stays: on tvOS it is the focus indicator, and removing
+        // it would leave only a dark shadow on a dark background.
         configuration.label
             .scaleEffect(configuration.isPressed ? 1.02 : (isFocused ? 1.08 : 1.0))
             .shadow(color: Color.black.opacity(isFocused ? 0.35 : 0),
                     radius: isFocused ? 12 : 0, x: 0, y: isFocused ? 6 : 0)
-            .animation(.easeOut(duration: 0.18), value: isFocused)
-            .animation(.easeOut(duration: 0.10), value: configuration.isPressed)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: isFocused)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.10), value: configuration.isPressed)
     }
 }
 
