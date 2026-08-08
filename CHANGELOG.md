@@ -2,11 +2,18 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
-## Unreleased
+## 1.7 (build 18)
 
+- **Added:** the app is now available in **Danish and Spanish (es-MX)**, alongside English. Every screen, button and help text is translated on iPhone, iPad, Mac, Apple TV and Apple Watch.
+- **Changed:** new voice recordings for the spoken cues (get ready, rounds remaining, completion). The audio stays English in every language, because these are recorded voice files.
+- **Fixed:** a stepper value could run straight through the +/- buttons. The value was pinned to its text's ideal width, which suits "01:00" but not a longer word, so the Danish and Spanish "No cap" overflowed the control. Values now shrink to fit instead.
+- **Fixed:** several labels never translated even when a translation existed. SwiftUI shows a plain `String` verbatim, so the mode names, stepper labels, button titles, help text and the round counter were hard-wired to English. They now go through `LocalizedStringKey`.
 - **Fixed (iOS):** the review prompt could be lost for good. It matched the completed-workout count exactly (5, 15, 50), so a single skipped count meant that ask never happened. It now asks at the first threshold reached and remembers which ones it has used.
 - **Added (macOS):** the Mac app asks for a review too. It never did, so Mac users were never given the chance.
 - **Changed (iOS/macOS):** the first review ask moved from 5 completed workouts to 3, with the later ones at 10 and 30 (Apple allows three prompts per year, so this uses them on people who have actually trained with the app rather than saving them for power users). Apple TV cannot ask: the API does not exist on tvOS.
+- **Added:** the app now responds to Reduce Motion. Every other animation was already a short crossfade, which is what the setting substitutes for motion anyway; the Apple TV focus effect was the exception and now snaps into place instead of scaling up.
+- **Fixed (watchOS):** the Watch setup screen gave VoiceOver six identical "plus" and "minus" buttons with nothing to say which value each one changed, and read the name and the number as two separate stops. Each button now names its value, and the name and number are announced together.
+- **Fixed:** VoiceOver read the stepper names and the +/- buttons in English even with the app in Danish or Spanish. The labels went through SwiftUI's non-localizing overload, so the screen said "Rundelængde" while VoiceOver said "Round length".
 
 ## 1.6.1 (build 17)
 

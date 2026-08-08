@@ -15,7 +15,7 @@ appstore/
   <version>/        one folder per release, the uploaded set
 ```
 
-Current: **`1.6.1/`** (flat, one file per slot: `iphone-*`, `ipad-1`, `mac-*`, `tvos-*`, `watch-*`).
+Current: **`1.7/`** (flat, one file per slot: `iphone-*`, `ipad-1`, `mac-*`, `tvos-*`, `watch-*`).
 Archive: **`1.2/`** (the older hand-made set, kept per platform subfolder as it was produced).
 
 Superseded sets are deleted rather than kept forever; git history has them if ever needed.
@@ -30,6 +30,22 @@ strategy repo (concrete, no em-dashes, pay-once framing) and lead with the wedge
 Watch, multi-device, pay-once.
 
 ## Regenerating
+
+**As of 1.7 this uses the portfolio tool**, `tools/appstore_screenshots.py` in the private
+`iamjarl-strategy` repo, driven by [`manifest.json`](manifest.json). The standard it implements
+(slot sizes, dark/light mode, per-app accent, device bezels, caption rules, ordering) lives in
+that repo's `DESIGN.md`. The older local `scripts/compose_screenshots.py` predates it.
+
+```sh
+python3 <hub>/tools/appstore_screenshots.py batch appstore/manifest.json
+```
+
+Raw captures live in [`raw/`](raw/) so a set can be re-composed without re-shooting. Capture in
+**dark mode** (the app's light mode uses a purple accent that clashes with the lime poster ground)
+and force the language with `-AppleLanguages '(da)' -AppleLocale da_DK` on launch.
+
+### Older workflow (pre-1.7)
+
 
 1. **Capture raw screens** per platform. Simulator: `xcrun simctl io <device> screenshot raw.png`
    (set a clean status bar with `xcrun simctl status_bar <device> override --time 09:41 ...`,

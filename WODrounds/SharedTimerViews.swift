@@ -49,13 +49,17 @@ extension View {
 /// so focus is still clearly visible without being loud.
 struct TVCalmFocusStyle: ButtonStyle {
     @Environment(\.isFocused) private var isFocused
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     func makeBody(configuration: Configuration) -> some View {
+        // Under Reduce Motion the lift snaps instead of animating. The size
+        // change itself stays: on tvOS it is the focus indicator, and removing
+        // it would leave only a dark shadow on a dark background.
         configuration.label
             .scaleEffect(configuration.isPressed ? 1.02 : (isFocused ? 1.08 : 1.0))
             .shadow(color: Color.black.opacity(isFocused ? 0.35 : 0),
                     radius: isFocused ? 12 : 0, x: 0, y: isFocused ? 6 : 0)
-            .animation(.easeOut(duration: 0.18), value: isFocused)
-            .animation(.easeOut(duration: 0.10), value: configuration.isPressed)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: isFocused)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.10), value: configuration.isPressed)
     }
 }
 
@@ -79,7 +83,7 @@ func sharedTimeString(from interval: TimeInterval) -> String {
 }
 
 func sharedRoundLabel(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> String {
-    "Round \(snapshot.currentRound) / \(totalRounds) Rounds"
+    String(localized: "Round \(snapshot.currentRound) / \(totalRounds) Rounds")
 }
 
 func sharedFormatEmomLength(_ seconds: Int) -> String {
@@ -158,7 +162,7 @@ struct SharedDoneView: View {
     private var bodyLine: String {
         if let finishedTime {
             // Floor: the athlete's time is the last full second reached.
-            return "Finished in \(sharedTimeString(from: floor(finishedTime)))"
+            return String(localized: "Finished in \(sharedTimeString(from: floor(finishedTime)))")
         }
         return "You completed \(totalRounds) round\(totalRounds == 1 ? "" : "s")"
     }
@@ -183,7 +187,7 @@ struct SharedStepperView: View {
 
     var body: some View {
         VStack(spacing: theme.stackSpacing) {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.system(size: theme.labelFontSize, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
 
@@ -194,10 +198,16 @@ struct SharedStepperView: View {
                     .monospacedDigit()
                     .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
                     .lineLimit(1)
-                    .fixedSize(horizontal: true, vertical: false)
+                    // Shrink rather than overflow. fixedSize used to pin this to the
+                    // text's ideal width, which is fine for "01:00" but sent longer
+                    // localized values ("Ingen grænse") straight through the +/- buttons.
+                    .minimumScaleFactor(0.4)
                     .frame(minWidth: displayString != nil ? max(theme.buttonSize * 2, theme.valueFontSize * 1.9) : theme.buttonSize * 2)
                     .padding(.horizontal, displayString != nil ? DesignTokens.Spacing.lg : 0)
-                    .accessibilityLabel(label)
+                    // LocalizedStringKey, not the raw String: `label` is an English
+                    // key ("Round length"), and the plain-String overload would read
+                    // it out verbatim while the screen shows "Rundelængde".
+                    .accessibilityLabel(LocalizedStringKey(label))
                     .accessibilityValue(displayString ?? "\(value)")
                 stepperButton(sign: 1)
             }
@@ -210,7 +220,7 @@ struct SharedStepperView: View {
         return Button {
             stepValue(by: sign)
         } label: {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.system(size: theme.valueFontSize * 0.75, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.onPrimary(scheme))
                 .frame(width: theme.buttonSize, height: theme.buttonSize)
@@ -222,7 +232,13 @@ struct SharedStepperView: View {
         #else
         .buttonStyle(.plain)
         #endif
-        .accessibilityLabel(sign < 0 ? "Decrease \(self.label)" : "Increase \(self.label)")
+        // Two levels of translation: the surrounding phrase, and the stepper name
+        // interpolated into it. Localizing the phrase alone would announce
+        // "Formindsk Round length".
+        .accessibilityLabel({
+            let name = String(localized: String.LocalizationValue(self.label))
+            return sign < 0 ? String(localized: "Decrease \(name)") : String(localized: "Increase \(name)")
+        }())
         .modifier(LongPressRepeatModifier(enabled: useLongPressRepeat, sign: sign, onPressStart: { startRepeat(by: $0) }, onPressEnd: stopRepeat))
     }
 
@@ -291,7 +307,7 @@ struct SharedPrimaryButton: View {
 
     var body: some View {
         Button(action: action) {
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .font(.system(size: theme.titleSize, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.onPrimary(scheme))
                 .contentTransitionInterpolateCompat()
@@ -357,7 +373,7 @@ struct SharedModeSwitch: View {
             timerMode = mode
             onModeChange()
         } label: {
-            Text(mode.rawValue)
+            Text(LocalizedStringKey(mode.rawValue))
                 .font(.system(size: theme.fontSize, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                 .foregroundStyle(timerMode == mode ? DesignTokens.Common.onPrimary(scheme) : DesignTokens.Common.Text.primary(scheme))
                 .padding(.horizontal, theme.horizontalPadding)

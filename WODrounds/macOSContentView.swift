@@ -10,7 +10,7 @@ import SwiftUI
 import StoreKit
 
 struct ContentView: View {
-    @State private var timerMode: TimerUIMode = .emom
+    @State private var timerMode: TimerUIMode = initialTimerMode()
     @State private var rounds: Int = 10
     @AppStorage("emomRoundLengthSeconds") private var emomRoundLengthSeconds: Int = 60
     @State private var intervalsWork: Int = 30
@@ -18,7 +18,7 @@ struct ContentView: View {
     @State private var intervalsRounds: Int = 8
     // For Time cap; 0 = "No cap" sentinel (see forTimeCapRange).
     @AppStorage("forTimeCapSeconds") private var forTimeCapSeconds: Int = 0
-    @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
+    @State private var engine = initialEngine()
 
     @Environment(\.colorScheme) private var scheme
 
@@ -215,7 +215,7 @@ private struct MacContent: View {
     private func idleHeaderView(state: WODTimerEngineState) -> some View {
         VStack(spacing: DesignTokens.Spacing.lg) {
             SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(state) }, theme: Self.macModeSwitchTheme)
-            Text(modeHelpText)
+            Text(LocalizedStringKey(modeHelpText))
                 .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                 .multilineTextAlignment(.center)

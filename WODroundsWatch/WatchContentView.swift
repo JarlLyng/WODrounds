@@ -283,10 +283,14 @@ struct WatchContentView: View {
                          : WatchDesign.Colors.textSecondary(colorScheme))
     }
 
-    private func configRow(_ label: LocalizedStringKey, value: String,
+    /// `label` is the English catalog key ("WORK"), localized here for display and
+    /// again for the VoiceOver labels. Without those labels the three rows read out
+    /// as six identical "plus" / "minus" buttons with no clue what each one changes.
+    private func configRow(_ label: String, value: String,
                            range: ClosedRange<Int>, step: Int,
                            binding: Binding<Int>) -> some View {
-        HStack(spacing: WatchDesign.Spacing.sm) {
+        let name = String(localized: String.LocalizationValue(label))
+        return HStack(spacing: WatchDesign.Spacing.sm) {
             Button {
                 binding.wrappedValue = max(range.lowerBound, binding.wrappedValue - step)
                 rebuildEngine()
@@ -295,9 +299,10 @@ struct WatchContentView: View {
             }
             .buttonStyle(.bordered)
             .disabled(binding.wrappedValue <= range.lowerBound)
+            .accessibilityLabel(String(localized: "Decrease \(name)"))
 
             VStack(spacing: 0) {
-                Text(label)
+                Text(LocalizedStringKey(label))
                     .font(.system(size: 9, weight: .medium, design: .rounded))
                     .foregroundStyle(WatchDesign.Colors.textTertiary(colorScheme))
                 Text(value)
@@ -306,6 +311,10 @@ struct WatchContentView: View {
                     .foregroundStyle(WatchDesign.Colors.textPrimary(colorScheme))
             }
             .frame(maxWidth: .infinity)
+            // Otherwise the name and the number are two separate stops.
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(name)
+            .accessibilityValue(value)
 
             Button {
                 binding.wrappedValue = min(range.upperBound, binding.wrappedValue + step)
@@ -315,6 +324,7 @@ struct WatchContentView: View {
             }
             .buttonStyle(.bordered)
             .disabled(binding.wrappedValue >= range.upperBound)
+            .accessibilityLabel(String(localized: "Increase \(name)"))
         }
     }
 

@@ -24,7 +24,7 @@ enum Haptics {
 }
 
 struct ContentView: View {
-    @State private var timerMode: TimerUIMode = .emom
+    @State private var timerMode: TimerUIMode = initialTimerMode()
     @State private var rounds: Int = 10
     @AppStorage("emomRoundLengthSeconds") private var emomRoundLengthSeconds: Int = 60
     @State private var intervalsWork: Int = 30
@@ -32,7 +32,7 @@ struct ContentView: View {
     @State private var intervalsRounds: Int = 8
     // For Time cap; 0 = "No cap" sentinel (see forTimeCapRange).
     @AppStorage("forTimeCapSeconds") private var forTimeCapSeconds: Int = 0
-    @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
+    @State private var engine = initialEngine()
 
     var body: some View {
         TimelineView(.periodic(from: Date(), by: 1.0)) { timeline in
@@ -280,7 +280,7 @@ private struct iOSContent: View {
         // "For Time" would sit under the info icon without this.
         VStack(spacing: DesignTokens.Spacing.md * spacingScale) {
             SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(engine.state) }, theme: modeSwitchTheme)
-            Text(modeHelpText)
+            Text(LocalizedStringKey(modeHelpText))
                 .font(.system(size: DesignTokens.Typography.Size.sm * fontScale, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                 .multilineTextAlignment(.center)

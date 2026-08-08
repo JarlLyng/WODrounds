@@ -105,7 +105,7 @@ The app follows the IAMJARL design system via SPM package ([iamjarl-design](http
 - Primary for main actions; error for destructive (e.g. Cancel).
 - Buttons solid and tactile; timer dominates the screen.
 
-**Localization:** English only.
+**Localization:** English, Danish and Spanish (es-MX). The UI is localized; the spoken audio cues stay English on every language, because they are recorded voice files rather than synthesized text.
 
 ---
 

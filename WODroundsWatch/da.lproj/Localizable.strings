@@ -1,0 +1,21 @@
+/* Watch app – Dansk */
+
+"Start" = "Start";
+"Pause" = "Pause";
+"Resume" = "Genoptag";
+"Reset" = "Nulstil";
+"iPhone" = "iPhone";
+"Following iPhone" = "Følger iPhone";
+"Get ready" = "Gør dig klar";
+"EMOM" = "EMOM";
+"Intervals" = "Intervaller";
+"WORK" = "ARBEJDE";
+"REST" = "HVILE";
+"ROUNDS" = "RUNDER";
+"LENGTH" = "LÆNGDE";
+"R %lld/%lld" = "R %lld/%lld";
+"Countdown, %lld seconds" = "Nedtælling, %lld sekunder";
+
+/* VoiceOver */
+"Decrease %@" = "Formindsk %@";
+"Increase %@" = "Forøg %@";

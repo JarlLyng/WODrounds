@@ -1,9 +1,21 @@
-/* Watch app – English */
+/* Watch app – English (development language) */
 
-"Following iPhone" = "Following iPhone";
-"iPhone" = "iPhone";
 "Start" = "Start";
 "Pause" = "Pause";
 "Resume" = "Resume";
 "Reset" = "Reset";
-"Done" = "Done";
+"iPhone" = "iPhone";
+"Following iPhone" = "Following iPhone";
+"Get ready" = "Get ready";
+"EMOM" = "EMOM";
+"Intervals" = "Intervals";
+"WORK" = "WORK";
+"REST" = "REST";
+"ROUNDS" = "ROUNDS";
+"LENGTH" = "LENGTH";
+"R %lld/%lld" = "R %lld/%lld";
+"Countdown, %lld seconds" = "Countdown, %lld seconds";
+
+/* VoiceOver */
+"Decrease %@" = "Decrease %@";
+"Increase %@" = "Increase %@";

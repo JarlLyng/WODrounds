@@ -1,0 +1,50 @@
+/* Main app – Español (es-MX) */
+
+"Start" = "Iniciar";
+"Stop" = "Detener";
+"Pause" = "Pausar";
+"Resume" = "Reanudar";
+"Reset" = "Reiniciar";
+"Done" = "Listo";
+"Cancel" = "Cancelar";
+"EMOM" = "EMOM";
+"Intervals" = "Intervalos";
+"For Time" = "For Time";
+"Work" = "Trabajo";
+"Rest" = "Descanso";
+"Rounds" = "Rondas";
+"Round length" = "Duración de ronda";
+"Work (sec)" = "Trabajo (seg)";
+"Rest (sec)" = "Descanso (seg)";
+"Time cap" = "Límite de tiempo";
+"No cap" = "Sin límite";
+"Get ready" = "Prepárate";
+"About" = "Acerca de";
+"Support" = "Soporte";
+"Privacy Policy" = "Política de privacidad";
+"Cancel workout?" = "¿Cancelar entrenamiento?";
+"Cancel workout" = "Cancelar entrenamiento";
+"Keep going" = "Continuar";
+"You'll return to setup. Current progress will be lost." = "Volverás a la configuración. El progreso actual se perderá.";
+"Open WODrounds on your Apple Watch to see this workout." = "Abre WODrounds en tu Apple Watch para ver este entrenamiento.";
+"Select the number of rounds, and length of each round." = "Elige el número de rondas y la duración de cada ronda.";
+"Set work time, rest time, and number of rounds." = "Define el tiempo de trabajo, el descanso y el número de rondas.";
+"The clock counts up. Press Stop when you finish, or set an optional time cap." = "El cronómetro cuenta hacia arriba. Presiona Detener al terminar, o define un límite de tiempo opcional.";
+"Round %lld / %lld Rounds" = "Ronda %lld / %lld rondas";
+"Finished in %@" = "Terminado en %@";
+"Cap %@" = "Límite %@";
+"Also from IAMJARL" = "También de IAMJARL";
+"Anvil Workout: strength log" = "Anvil Workout: registro de fuerza";
+"Walkful: daily walking" = "Walkful: caminatas diarias";
+"No analytics or tracking. Only crash reports are sent to help fix bugs." = "Sin analíticas ni rastreo. Solo se envían informes de fallos para corregir errores.";
+"No analytics or tracking." = "Sin analíticas ni rastreo.";
+"Version %@ (%@)" = "Versión %@ (%@)";
+"Cancel countdown" = "Cancelar cuenta regresiva";
+"Countdown, %lld seconds" = "Cuenta regresiva, %lld segundos";
+"Stops workout and returns to setup" = "Detiene el entrenamiento y vuelve a la configuración";
+
+/* VoiceOver */
+"Decrease %@" = "Disminuir %@";
+"Increase %@" = "Aumentar %@";
+"Mute sound" = "Silenciar sonido";
+"Unmute sound" = "Activar sonido";

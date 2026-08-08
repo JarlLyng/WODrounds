@@ -1,0 +1,4 @@
+/* HealthKit permission strings – English (development language) */
+
+"NSHealthShareUsageDescription" = "WODrounds does not read your health data. This permission is shown by the system when HealthKit is accessed.";
+"NSHealthUpdateUsageDescription" = "WODrounds saves your workouts to Apple Health, so Fitness and Activity show when you train.";

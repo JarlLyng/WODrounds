@@ -1,0 +1,50 @@
+/* Main app – Dansk */
+
+"Start" = "Start";
+"Stop" = "Stop";
+"Pause" = "Pause";
+"Resume" = "Genoptag";
+"Reset" = "Nulstil";
+"Done" = "Færdig";
+"Cancel" = "Annuller";
+"EMOM" = "EMOM";
+"Intervals" = "Intervaller";
+"For Time" = "For Time";
+"Work" = "Arbejd";
+"Rest" = "Hvil";
+"Rounds" = "Runder";
+"Round length" = "Rundelængde";
+"Work (sec)" = "Arbejde (sek)";
+"Rest (sec)" = "Hvile (sek)";
+"Time cap" = "Tidsgrænse";
+"No cap" = "Ingen";
+"Get ready" = "Gør dig klar";
+"About" = "Om";
+"Support" = "Support";
+"Privacy Policy" = "Privatlivspolitik";
+"Cancel workout?" = "Annuller træning?";
+"Cancel workout" = "Annuller træning";
+"Keep going" = "Fortsæt";
+"You'll return to setup. Current progress will be lost." = "Du vender tilbage til opsætning. Din nuværende fremgang går tabt.";
+"Open WODrounds on your Apple Watch to see this workout." = "Åbn WODrounds på dit Apple Watch for at se denne træning.";
+"Select the number of rounds, and length of each round." = "Vælg antal runder og længden af hver runde.";
+"Set work time, rest time, and number of rounds." = "Vælg arbejdstid, hviletid og antal runder.";
+"The clock counts up. Press Stop when you finish, or set an optional time cap." = "Uret tæller op. Tryk Stop når du er færdig, eller sæt en valgfri tidsgrænse.";
+"Round %lld / %lld Rounds" = "Runde %lld / %lld runder";
+"Finished in %@" = "Fuldført på %@";
+"Cap %@" = "Grænse %@";
+"Also from IAMJARL" = "Også fra IAMJARL";
+"Anvil Workout: strength log" = "Anvil Workout: styrketræningslog";
+"Walkful: daily walking" = "Walkful: daglige gåture";
+"No analytics or tracking. Only crash reports are sent to help fix bugs." = "Ingen analyse eller sporing. Kun nedbrudsrapporter sendes, så fejl kan rettes.";
+"No analytics or tracking." = "Ingen analyse eller sporing.";
+"Version %@ (%@)" = "Version %@ (%@)";
+"Cancel countdown" = "Annuller nedtælling";
+"Countdown, %lld seconds" = "Nedtælling, %lld sekunder";
+"Stops workout and returns to setup" = "Stopper træningen og vender tilbage til opsætning";
+
+/* VoiceOver */
+"Decrease %@" = "Formindsk %@";
+"Increase %@" = "Forøg %@";
+"Mute sound" = "Slå lyd fra";
+"Unmute sound" = "Slå lyd til";
