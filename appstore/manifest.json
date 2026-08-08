@@ -31,7 +31,7 @@
     {
       "raw": "raw/iphone-running-da.png",
       "slot": "iphone-6.9",
-      "caption": "Tag tid p\u00e5 din WOD uden\nat r\u00f8re telefonen",
+      "caption": "Tag tid på din WOD uden\nat røre telefonen",
       "out": "da/iphone-1.png"
     },
     {
@@ -49,31 +49,31 @@
     {
       "raw": "raw/iphone-fortime-da.png",
       "slot": "iphone-6.9",
-      "caption": "T\u00e6l op p\u00e5 tid, med\nen valgfri gr\u00e6nse",
+      "caption": "Tæl op på tid, med\nen valgfri grænse",
       "out": "da/iphone-4.png"
     },
     {
       "raw": "raw/iphone-running-es.png",
       "slot": "iphone-6.9",
-      "caption": "Cronometra tu WOD sin\ntocar el tel\u00e9fono",
+      "caption": "Cronometra tu WOD sin\ntocar el teléfono",
       "out": "es/iphone-1.png"
     },
     {
       "raw": "raw/iphone-setup-es.png",
       "slot": "iphone-6.9",
-      "caption": "EMOM, intervalos y\nFor Time. Nada m\u00e1s.",
+      "caption": "EMOM, intervalos y\nFor Time. Nada más.",
       "out": "es/iphone-2.png"
     },
     {
       "raw": "raw/iphone-intervals-es.png",
       "slot": "iphone-6.9",
-      "caption": "Trabajo, descanso, rondas.\nTabata o tus propios n\u00fameros.",
+      "caption": "Trabajo, descanso, rondas.\nTabata o tus propios números.",
       "out": "es/iphone-3.png"
     },
     {
       "raw": "raw/iphone-fortime-es.png",
       "slot": "iphone-6.9",
-      "caption": "Cuenta hacia arriba, con\nun l\u00edmite opcional",
+      "caption": "Cuenta hacia arriba, con\nun límite opcional",
       "out": "es/iphone-4.png"
     },
     {
@@ -105,6 +105,28 @@
       "raw": "raw/watch-1.png",
       "slot": "watch-s10",
       "out": "watch-1.png"
+    },
+    {
+      "raw": "raw/ipad-setup-da.png",
+      "slot": "ipad-13",
+      "caption": "Stil den op og læs den\nfra hele rummet.",
+      "out": "da/ipad-1.png"
+    },
+    {
+      "raw": "raw/ipad-setup-es.png",
+      "slot": "ipad-13",
+      "caption": "Apóyala y léela desde\nel otro lado de la sala.",
+      "out": "es/ipad-1.png"
+    },
+    {
+      "raw": "raw/watch-1-da.png",
+      "slot": "watch-s10",
+      "out": "da/watch-1.png"
+    },
+    {
+      "raw": "raw/watch-1-es.png",
+      "slot": "watch-s10",
+      "out": "es/watch-1.png"
     }
   ]
 }

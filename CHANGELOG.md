@@ -2,7 +2,7 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
-## Unreleased
+## 1.7 (build 18)
 
 - **Added:** the app is now available in **Danish and Spanish (es-MX)**, alongside English. Every screen, button and help text is translated on iPhone, iPad, Mac, Apple TV and Apple Watch.
 - **Changed:** new voice recordings for the spoken cues (get ready, rounds remaining, completion). The audio stays English in every language, because these are recorded voice files.

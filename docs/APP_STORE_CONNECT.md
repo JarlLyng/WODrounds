@@ -155,11 +155,15 @@ Current sizes (Apple retired the old 5.5"/6.5" slots as the primary requirement)
 | Apple TV | 1920 × 1080 (or 3840 × 2160) | Yes for tvOS app |
 | Apple Watch | 416 × 496 (Series 10/11 46mm) | Optional |
 
-The rendered set lives in [`appstore/1.6.1/`](../appstore/1.6.1/) (versioned per release; regenerate via `scripts/compose_screenshots.py`, see [`appstore/README.md`](../appstore/README.md)).
+The rendered set lives in [`appstore/1.7/`](../appstore/1.7/), versioned per release and driven by [`appstore/manifest.json`](../appstore/manifest.json). Regenerate with the portfolio compositor in the private strategy repo (`tools/appstore_screenshots.py batch appstore/manifest.json`); see [`appstore/README.md`](../appstore/README.md). Older sets in [`appstore/1.6.1/`](../appstore/1.6.1/) and [`appstore/1.2/`](../appstore/1.2/) are kept for reference.
 
 **Apple TV got three screenshots in 1.6.1** (was one), because the device x territory cross-tab showed Apple TV is the #2 platform at 32% of product page views: running timer (hero), the three-mode setup, and For Time with the time cap. The tvOS canvas uses a larger screen scale (0.82) so the timer stays readable at thumbnail size.
 
-**Current set (`appstore/1.6.1/`):** a captioned, brand-styled set was generated for all five platforms (dark #0d0d0d ground, lime #D0FF00 accent, screen shown below a short headline). iPhone: running timer + the three-mode setup. iPad/Mac/Apple TV: setup and running. Apple Watch: raw captures of the new 1.6 standalone config (screen too small for a caption band). Regenerate with the simulator-capture + Pillow compositor workflow; keep the story on the wedge (Apple Watch, multi-device, pay-once) per the private strategy repo.
+**Current set (`appstore/1.7/`), 21 images.** Dark #0d0d0d ground, lime #D0FF00 accent, the app screen below a short headline. English covers all five platforms: four iPhone (running timer, three-mode setup, Intervals, For Time), one iPad, one Mac, two Apple TV, one Apple Watch. Danish (`da/`) and Spanish (`es/`) repeat the four iPhone shots plus iPad and Watch, which is what the iOS app record needs for a localized listing. Mac and Apple TV are separate app records and stay English only.
+
+Capture rule learned in 1.7: set the simulator's **system** language, not just the app's, before capturing iPad. The iPad status bar renders its date from the system locale, so an app launched with `-AppleLanguages` still showed a Danish date on the English screenshot. `xcrun simctl status_bar` fixes the time but not the date, and it is unsupported on watchOS, so Watch captures show whatever the clock says.
+
+Apple Watch shots stay uncaptioned; the screen is too small for a caption band.
 
 Content to feature, in order: (1) timer running (hero), (2) mode setup showing EMOM / Intervals / For Time, (3) the Apple Watch / multi-device angle.
 
