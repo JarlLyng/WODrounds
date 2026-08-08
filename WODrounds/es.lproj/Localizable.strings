@@ -29,7 +29,7 @@
 "Open WODrounds on your Apple Watch to see this workout." = "Abre WODrounds en tu Apple Watch para ver este entrenamiento.";
 "Select the number of rounds, and length of each round." = "Elige el número de rondas y la duración de cada ronda.";
 "Set work time, rest time, and number of rounds." = "Define el tiempo de trabajo, el descanso y el número de rondas.";
-"The clock counts up. Press Stop when you finish, or set an optional time cap." = "El reloj cuenta hacia arriba. Pulsa Detener al terminar, o define un límite de tiempo opcional.";
+"The clock counts up. Press Stop when you finish, or set an optional time cap." = "El cronómetro cuenta hacia arriba. Presiona Detener al terminar, o define un límite de tiempo opcional.";
 "Round %lld / %lld Rounds" = "Ronda %lld / %lld rondas";
 "Finished in %@" = "Terminado en %@";
 "Cap %@" = "Límite %@";
@@ -39,7 +39,7 @@
 "No analytics or tracking. Only crash reports are sent to help fix bugs." = "Sin analíticas ni rastreo. Solo se envían informes de fallos para corregir errores.";
 "No analytics or tracking." = "Sin analíticas ni rastreo.";
 "Version %@ (%@)" = "Versión %@ (%@)";
-"Cancel countdown" = "Cancelar la cuenta regresiva";
+"Cancel countdown" = "Cancelar cuenta regresiva";
 "Countdown, %lld seconds" = "Cuenta regresiva, %lld segundos";
 "Stops workout and returns to setup" = "Detiene el entrenamiento y vuelve a la configuración";
 
