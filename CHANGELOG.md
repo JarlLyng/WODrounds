@@ -6,6 +6,7 @@ All notable user-facing changes to WODrounds. Newest first.
 
 - **Added:** the app is now available in **Danish and Spanish (es-MX)**, alongside English. Every screen, button and help text is translated on iPhone, iPad, Mac, Apple TV and Apple Watch.
 - **Changed:** new voice recordings for the spoken cues (get ready, rounds remaining, completion). The audio stays English in every language, because these are recorded voice files.
+- **Fixed:** a stepper value could run straight through the +/- buttons. The value was pinned to its text's ideal width, which suits "01:00" but not a longer word, so the Danish and Spanish "No cap" overflowed the control. Values now shrink to fit instead.
 - **Fixed:** several labels never translated even when a translation existed. SwiftUI shows a plain `String` verbatim, so the mode names, stepper labels, button titles, help text and the round counter were hard-wired to English. They now go through `LocalizedStringKey`.
 
 ## 1.6.1 (build 17)

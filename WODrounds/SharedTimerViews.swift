@@ -194,7 +194,10 @@ struct SharedStepperView: View {
                     .monospacedDigit()
                     .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
                     .lineLimit(1)
-                    .fixedSize(horizontal: true, vertical: false)
+                    // Shrink rather than overflow. fixedSize used to pin this to the
+                    // text's ideal width, which is fine for "01:00" but sent longer
+                    // localized values ("Ingen grænse") straight through the +/- buttons.
+                    .minimumScaleFactor(0.4)
                     .frame(minWidth: displayString != nil ? max(theme.buttonSize * 2, theme.valueFontSize * 1.9) : theme.buttonSize * 2)
                     .padding(.horizontal, displayString != nil ? DesignTokens.Spacing.lg : 0)
                     .accessibilityLabel(label)
