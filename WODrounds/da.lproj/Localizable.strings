@@ -31,7 +31,7 @@
 "Set work time, rest time, and number of rounds." = "Vælg arbejdstid, hviletid og antal runder.";
 "The clock counts up. Press Stop when you finish, or set an optional time cap." = "Uret tæller op. Tryk Stop når du er færdig, eller sæt en valgfri tidsgrænse.";
 "Round %lld / %lld Rounds" = "Runde %lld / %lld runder";
-"Finished in %@" = "Færdig på %@";
+"Finished in %@" = "Fuldført på %@";
 "Cap %@" = "Grænse %@";
 "Also from IAMJARL" = "Også fra IAMJARL";
 "Anvil Workout: strength log" = "Anvil Workout: styrketræningslog";

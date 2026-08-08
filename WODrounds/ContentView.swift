@@ -56,4 +56,16 @@ func initialTimerMode() -> TimerUIMode {
     #endif
     return .emom
 }
+
+/// Companion to `initialTimerMode()`: the engine has to start in the same mode, or a
+/// screenshot launched with `-screen intervals` shows the Intervals UI while the engine
+/// is still the default EMOM (wrong round count, wrong total). Defaults match the
+/// per-platform @State values.
+func initialEngine() -> WODTimerEngine {
+    switch initialTimerMode() {
+    case .emom: return WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
+    case .intervals: return WODTimerEngine(workSeconds: 30, restSeconds: 15, rounds: 8)
+    case .forTime: return WODTimerEngine(forTimeCapSeconds: nil)
+    }
+}
 #endif

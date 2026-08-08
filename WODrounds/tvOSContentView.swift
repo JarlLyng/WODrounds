@@ -24,7 +24,7 @@ struct ContentView: View {
     @State private var intervalsWork: Int = 30
     @State private var intervalsRest: Int = 15
     @State private var intervalsRounds: Int = 8
-    @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
+    @State private var engine = initialEngine()
     @AppStorage("emomRoundLengthSeconds") private var emomRoundLengthSeconds: Int = 60
     // For Time cap; 0 = "No cap" sentinel (see forTimeCapRange).
     @AppStorage("forTimeCapSeconds") private var forTimeCapSeconds: Int = 0

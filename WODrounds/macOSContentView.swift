@@ -17,7 +17,7 @@ struct ContentView: View {
     @State private var intervalsRounds: Int = 8
     // For Time cap; 0 = "No cap" sentinel (see forTimeCapRange).
     @AppStorage("forTimeCapSeconds") private var forTimeCapSeconds: Int = 0
-    @State private var engine = WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
+    @State private var engine = initialEngine()
 
     @Environment(\.colorScheme) private var scheme
 
