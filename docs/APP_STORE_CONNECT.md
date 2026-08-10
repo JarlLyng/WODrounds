@@ -2,6 +2,11 @@
 
 Copy into the corresponding fields in App Store Connect. Under **Distribution** you typically have **iOS App**, **Mac App**, and **Apple TV App** (tvOS) — each with its own version and metadata. The descriptions here match the app: EMOM + Intervals timer only, no accounts.
 
+**What you can change once a version is live:** only **Promotional Text**. Subtitle, description,
+keywords, screenshots and What's New are version-locked, editable only while a version is being
+prepared or is in review. So a copy change you think of the day after release waits for the next
+version, and the release-day window is the only chance to get them right.
+
 **SEO:** App Store indexes app name, subtitle, keywords, and description. Subtitle and the first sentence of the description are most important; the keyword field is max 100 characters (comma-separated, no spaces). Do not repeat words already in the app name/subtitle.
 
 ---
@@ -65,6 +70,10 @@ rules bullets out of public copy, and CLAUDE.md says to fold the voice audit int
 touch. This was that touch. The other change is the closing platform line: the listing never said
 that one purchase covers all five platforms, which is the thing the two nearest competitors cannot
 match.
+
+**Deferred to 1.8:** the English and Spanish descriptions still shipped in 1.7 with the launch-era
+bullets. Only the Danish one, written fresh for 1.7, is prose. Both were locked before the prose
+rewrite existed, so replace them the next time a version is editable.
 
 ```
 Interval timer for EMOM, For Time, CrossFit and HIIT. No account, no sign-up. Just time, rounds and room to train.
