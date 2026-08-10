@@ -8,25 +8,25 @@
       "raw": "raw/iphone-running-en.png",
       "slot": "iphone-6.9",
       "caption": "Time your WOD without\ntouching your phone",
-      "out": "iphone-1.png"
+      "out": "en/iphone-1.png"
     },
     {
       "raw": "raw/iphone-setup-en.png",
       "slot": "iphone-6.9",
       "caption": "EMOM, intervals and\nFor Time. Nothing else.",
-      "out": "iphone-2.png"
+      "out": "en/iphone-2.png"
     },
     {
       "raw": "raw/iphone-intervals-en.png",
       "slot": "iphone-6.9",
       "caption": "Work, rest, rounds.\nTabata, or your own numbers.",
-      "out": "iphone-3.png"
+      "out": "en/iphone-3.png"
     },
     {
       "raw": "raw/iphone-fortime-en.png",
       "slot": "iphone-6.9",
       "caption": "Count up for time,\nwith an optional cap",
-      "out": "iphone-4.png"
+      "out": "en/iphone-4.png"
     },
     {
       "raw": "raw/iphone-running-da.png",
@@ -80,14 +80,14 @@
       "raw": "raw/tvos-running.png",
       "slot": "tvos",
       "caption": "Readable from across the gym",
-      "out": "tvos-1.png",
+      "out": "en/tvos-1.png",
       "bg_image": "photos/gym-barbell.jpg"
     },
     {
       "raw": "raw/tvos-setup.png",
       "slot": "tvos",
       "caption": "EMOM, intervals and For Time",
-      "out": "tvos-2.png",
+      "out": "en/tvos-2.png",
       "bg_image": "photos/gym-floor.jpg"
     },
     {
@@ -95,18 +95,18 @@
       "slot": "mac",
       "caption": "A gym clock in the corner of your screen",
       "shot_scale": 0.34,
-      "out": "mac-1.png"
+      "out": "en/mac-1.png"
     },
     {
       "raw": "raw/ipad-setup.png",
       "slot": "ipad-13",
       "caption": "Prop it up. Read it\nfrom across the room.",
-      "out": "ipad-1.png"
+      "out": "en/ipad-1.png"
     },
     {
       "raw": "raw/watch-1.png",
       "slot": "watch-s10",
-      "out": "watch-1.png"
+      "out": "en/watch-1.png"
     },
     {
       "raw": "raw/ipad-setup-da.png",
