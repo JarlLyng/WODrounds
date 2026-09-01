@@ -86,6 +86,14 @@ func sharedRoundLabel(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> Str
     String(localized: "Round \(snapshot.currentRound) / \(totalRounds) Rounds")
 }
 
+/// Whole-workout countdown, shown as secondary context while the big readout counts
+/// down the current work or rest phase. Intervals used to put this in the big readout,
+/// which left an athlete mid-interval with no way to see how long the interval had left
+/// — while the audio cues were already counting the phase.
+func sharedTotalRemainingLabel(snapshot: WODTimerEngineSnapshot) -> String {
+    String(localized: "\(sharedTimeString(from: snapshot.remainingTime)) left")
+}
+
 func sharedFormatEmomLength(_ seconds: Int) -> String {
     let m = seconds / 60
     let s = seconds % 60
