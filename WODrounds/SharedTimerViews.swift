@@ -408,3 +408,48 @@ struct SharedModeSwitch: View {
 }
 
 #endif
+
+// MARK: - Phase ring
+
+/// Length of the phase the big readout is counting down, so the ring can show how far
+/// through it we are. Mirrors the switch the audio cues already use.
+func sharedPhaseDuration(mode: WODTimerMode, phase: WODTimerPhase) -> TimeInterval {
+    switch mode {
+    case .emom(_, let secondsPerRound): return TimeInterval(secondsPerRound)
+    case .intervals(let work, let rest, _): return TimeInterval(phase == .work ? work : rest)
+    case .forTime: return 0
+    }
+}
+
+/// Phase progress drawn around the readout. It drains over the current work, rest or EMOM
+/// round and refills at every phase change, so it can be read from across a gym without
+/// focusing on the digits — which is the point when your hands are on a barbell.
+///
+/// Deliberately not animated: the view already redraws on the timer tick, so an animated
+/// trim would add motion that Reduce Motion asks us to leave out, and would lag the digits.
+struct SharedPhaseRing: View {
+    let remaining: TimeInterval
+    let duration: TimeInterval
+    let tint: Color
+    let track: Color
+    let diameter: CGFloat
+    let lineWidth: CGFloat
+
+    private var progress: Double {
+        guard duration > 0 else { return 0 }
+        return min(1, max(0, remaining / duration))
+    }
+
+    var body: some View {
+        ZStack {
+            Circle().stroke(track, lineWidth: lineWidth)
+            Circle()
+                .trim(from: 0, to: progress)
+                .stroke(tint, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+        }
+        .frame(width: diameter, height: diameter)
+        // The digits and the Work/Rest label already carry this for VoiceOver.
+        .accessibilityHidden(true)
+    }
+}

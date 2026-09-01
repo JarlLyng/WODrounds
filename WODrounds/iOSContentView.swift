@@ -302,11 +302,27 @@ private struct iOSContent: View {
                     .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                     .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
             }
-            Text(sharedTimeString(from: activeDisplayTime(snapshot: snapshot)))
-                .font(.system(size: DesignTokens.Typography.Size.display * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
-                .monospacedDigit()
-                .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
-                .frame(maxWidth: .infinity)
+            ZStack {
+                // Intervals only for now. EMOM counts a phase too, but its screen is the
+                // App Store hero and stays as it is until the ring has proved itself here.
+                if timerMode == .intervals {
+                    SharedPhaseRing(
+                        remaining: activeDisplayTime(snapshot: snapshot),
+                        duration: sharedPhaseDuration(mode: engine.mode, phase: snapshot.currentPhase),
+                        tint: snapshot.currentPhase == .work
+                            ? DesignTokens.Common.primary(scheme)
+                            : DesignTokens.Common.Text.secondary(scheme),
+                        track: DesignTokens.Common.Text.tertiary(scheme).opacity(0.25),
+                        diameter: DesignTokens.Typography.Size.display * fontScale * 4.0,
+                        lineWidth: 6 * fontScale
+                    )
+                }
+                Text(sharedTimeString(from: activeDisplayTime(snapshot: snapshot)))
+                    .font(.system(size: DesignTokens.Typography.Size.display * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                    .monospacedDigit()
+                    .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+            }
+            .frame(maxWidth: .infinity)
 
             if timerMode == .forTime {
                 // No rounds in For Time; show the cap as context when one is set.
