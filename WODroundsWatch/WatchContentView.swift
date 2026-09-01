@@ -64,16 +64,15 @@ struct WatchContentView: View {
                 if useSynced, let s = syncedSnapshot, let payload = syncedPayload {
                     let disp: TimeInterval
                     switch payload.mode {
-                    case "emom": disp = s.remainingTimeInPhase
                     case "forTime": disp = s.elapsedTime
-                    default: disp = s.remainingTime
+                    // EMOM and Intervals both count down the current phase, matching
+                    // iPhone and the audio cues, which have always used the phase.
+                    default: disp = s.remainingTimeInPhase
                     }
                     return (disp, s.currentRound, s.totalRounds, s.state)
                 }
                 let local = engine.snapshot(now: now)
-                let isLocalEmom: Bool
-                if case .emom = engine.mode { isLocalEmom = true } else { isLocalEmom = false }
-                let disp = isLocalEmom ? local.remainingTimeInPhase : local.remainingTime
+                let disp = local.remainingTimeInPhase
                 // Use engine.rounds (handles both EMOM and Intervals) instead of totalDurationMinutes
                 // which returns 0 for intervals. Prevents "R x/0" bug when Watch gains local interval config.
                 return (disp, local.currentRound, engine.rounds, local.state)

@@ -294,7 +294,14 @@ private struct iOSContent: View {
     private func activeTimerView(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
         VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
             // For Time counts up (floored so the shown time never runs ahead);
-            // EMOM shows the per-round countdown; Intervals the total countdown.
+            // EMOM and Intervals both show the countdown of the current phase, so the
+            // big readout always answers "how long until this changes". The whole-workout
+            // countdown is secondary context below.
+            if timerMode == .intervals {
+                Text(snapshot.currentPhase == .work ? "Work" : "Rest")
+                    .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+            }
             Text(sharedTimeString(from: activeDisplayTime(snapshot: snapshot)))
                 .font(.system(size: DesignTokens.Typography.Size.display * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                 .monospacedDigit()
@@ -312,13 +319,14 @@ private struct iOSContent: View {
                 Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
                     .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                     .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+
+                if timerMode == .intervals {
+                    Text(sharedTotalRemainingLabel(snapshot: snapshot))
+                        .font(.system(size: DesignTokens.Typography.Size.sm * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                        .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                }
             }
 
-            if timerMode == .intervals {
-                Text(snapshot.currentPhase == .work ? "Work" : "Rest")
-                    .font(.system(size: DesignTokens.Typography.Size.sm * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                    .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-            }
         }
         .transition(.opacity)
     }
@@ -326,7 +334,7 @@ private struct iOSContent: View {
     private func activeDisplayTime(snapshot: WODTimerEngineSnapshot) -> TimeInterval {
         switch timerMode {
         case .emom: return snapshot.remainingTimeInPhase
-        case .intervals: return snapshot.remainingTime
+        case .intervals: return snapshot.remainingTimeInPhase
         case .forTime: return floor(snapshot.elapsedTime)
         }
     }

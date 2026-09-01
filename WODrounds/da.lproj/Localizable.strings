@@ -48,3 +48,6 @@
 "Increase %@" = "Forøg %@";
 "Mute sound" = "Slå lyd fra";
 "Unmute sound" = "Slå lyd til";
+
+/* Whole-workout countdown, secondary to the phase countdown */
+"%@ left" = "%@ tilbage";
