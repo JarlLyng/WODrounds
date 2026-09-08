@@ -29,7 +29,10 @@ html {
     animation-delay: var(--delay, 0ms);
   }
 
-  .reveal {
+  /* Only hide when JS is there to reveal it again: the .js class is set by an inline
+     script in <head>. Without it a blocked or failed script left whole sections at
+     opacity 0 with nothing to restore them. */
+  .js .reveal {
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
@@ -807,7 +810,7 @@ a:hover {
 }
 .byline {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--text-muted);
   margin: 0 0 1.5rem;
 }
 

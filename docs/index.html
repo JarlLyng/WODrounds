@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Marks JS as available so style.css may hide .reveal sections; see .js .reveal -->
+  <script>document.documentElement.className += " js";</script>
   <title>WODrounds — EMOM &amp; Interval Timer for iPhone, Apple Watch, Mac &amp; Apple TV</title>
   <meta name="description" content="The only WOD timer you need. EMOM and interval timer built for CrossFit, HIIT and Tabata. Runs on iPhone, iPad, Apple Watch, Mac and Apple TV. No accounts or ads. See our Privacy Policy for crash reporting (iOS) and site analytics.">
   <meta name="keywords" content="EMOM timer, interval timer, workout timer, Tabata timer, HIIT timer, CrossFit timer, WOD timer, Apple Watch timer, Apple TV workout, Mac workout timer, functional fitness, workout app">
@@ -63,7 +65,7 @@
       "https://wodrounds.iamjarl.com/images/appletv.png"
     ],
     "featureList": "EMOM timer, Interval timer, For Time timer, Tabata presets, iPhone to Watch sync, Apple Health integration, Apple TV support, Mac support, Dark mode, No accounts required",
-    "softwareVersion": "1.5",
+    "softwareVersion": "1.8",
     "author": {
       "@type": "Person",
       "name": "Jarl",
@@ -113,7 +115,7 @@
         "name": "Do I need an iPhone to use the Apple Watch app?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The Watch app syncs with your iPhone in real time, so the full EMOM and Intervals configuration is available when you start from iPhone. Standalone mode on Watch runs a simple 10-round EMOM locally."
+          "text": "The Watch app syncs with your iPhone in real time, so a workout you start on iPhone shows the same time and round on your wrist. The Watch can also set up and run EMOM and Intervals on its own, with no iPhone needed. For Time is synced from iPhone only."
         }
       },
       {
@@ -387,6 +389,11 @@
     document.addEventListener('DOMContentLoaded', function() {
       var els = document.querySelectorAll('.reveal');
       if (!els.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!('IntersectionObserver' in window)) {
+        // No observer: show everything rather than leaving it hidden.
+        els.forEach(function(el) { el.classList.add('in-view'); });
+        return;
+      }
       var io = new IntersectionObserver(function(entries) {
         entries.forEach(function(e) {
           if (e.isIntersecting) { e.target.classList.add('in-view'); }
