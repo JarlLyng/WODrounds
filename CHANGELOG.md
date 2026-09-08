@@ -2,6 +2,13 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
+## 1.8 (build 19)
+
+- **Fixed:** Intervals counted down the whole workout instead of the current interval. Mid-round there was no way to see how much of the work or rest period was left, which is the one number an interval timer exists to show. EMOM already counted its round correctly, the engine already computed the value, and the audio cues had always used it, so the app announced "ten seconds" against a screen showing several minutes. The readout now counts the phase on iPhone, iPad, Mac, Apple TV and Apple Watch.
+- **Changed:** the Intervals screen is arranged around that number. Work / Rest moved above the readout where it says what the number means, and is no longer the smallest text on screen. The whole-workout countdown is still there, as a line below the round counter.
+- **Added:** a ring around the Intervals readout that drains over the current interval and refills at every change, lime while you work and grey while you rest. It is readable from further away than the digits, and it is not animated, so Reduce Motion is respected. EMOM and For Time are unchanged.
+- **Changed:** the Cancel button is a slightly deeper red. The design system moved the error colour to meet WCAG AA contrast against white text.
+
 ## 1.7 (build 18)
 
 - **Added:** the app is now available in **Danish and Spanish (es-MX)**, alongside English. Every screen, button and help text is translated on iPhone, iPad, Mac, Apple TV and Apple Watch.
