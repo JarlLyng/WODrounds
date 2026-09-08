@@ -71,9 +71,14 @@ touch. This was that touch. The other change is the closing platform line: the l
 that one purchase covers all five platforms, which is the thing the two nearest competitors cannot
 match.
 
-**Deferred to 1.8:** the English and Spanish descriptions still shipped in 1.7 with the launch-era
-bullets. Only the Danish one, written fresh for 1.7, is prose. Both were locked before the prose
-rewrite existed, so replace them the next time a version is editable.
+**Status, unconfirmed as of the 1.8 submission.** The English and Spanish descriptions shipped in
+1.7 with the launch-era bullets; only the Danish one, written fresh for 1.7, is prose. 1.8 was the
+window to replace them, but the 1.8 submission covered What's New and Promotional Text, and whether
+the prose descriptions and the reworked keyword fields also went in is not recorded here. **Check
+the live listing before assuming either way**, and if they did not, this rolls to 1.9.
+
+That is the recurring trap with these fields: the window is open for days and closes on approval,
+and the two things people actually remember to paste are the two that changed for this release.
 
 ```
 Interval timer for EMOM, For Time, CrossFit and HIIT. No account, no sign-up. Just time, rounds and room to train.
@@ -91,46 +96,85 @@ A timer for training. No logbook, no sharing and no account.
 
 ## What's New in This Version (release notes)
 
-Update per release. Current — **1.7** (iOS):
+Update per release. Current — **1.8** (iOS):
 
 ```
-WODrounds now speaks Danish and Spanish. Every screen, button and help text is translated on iPhone, iPad and Apple Watch. The spoken cues stay in English, because they are recorded voice files.
+Intervals now counts down the interval you are in, not the whole workout. Mid-round you can see exactly how much of the work or rest period is left, which is the number an interval timer exists to show.
 
-Those recordings are new this version. VoiceOver now reads the timer controls in your language, and Reduce Motion is respected.
-```
+A ring around the readout drains over the interval and refills at every change, lime while you work and grey while you rest, so you can read it from across the gym without focusing on the digits.
 
-es-MX:
-
-```
-WODrounds ahora habla español y danés. Cada pantalla, botón y texto de ayuda está traducido en iPhone, iPad y Apple Watch. Las señales habladas siguen en inglés, porque son grabaciones de voz.
-
-Esas grabaciones son nuevas en esta versión. VoiceOver ahora lee los controles del temporizador en tu idioma y se respeta Reducir movimiento.
+Work and Rest moved above the number, where they say what the number means. The whole-workout countdown is still there, under the round counter.
 ```
 
 Danish:
 
 ```
-WODrounds taler nu dansk og spansk. Hver skærm, knap og hjælpetekst er oversat på iPhone, iPad og Apple Watch. De talte cues bliver på engelsk, fordi det er indtalte lydfiler.
+Intervaller tæller nu det interval du er i ned, ikke hele træningen. Midt i en runde kan du se præcis hvor meget der er tilbage af arbejdet eller hvilet, og det er det tal en intervaltimer er til for at vise.
 
-Selve lydfilerne er nyindspillede i denne version. VoiceOver læser nu timerens knapper på dit sprog, og Reducer bevægelse bliver respekteret.
+En ring om tallet tømmes over intervallet og fyldes igen ved hvert skift, lime mens du arbejder og grå mens du hviler, så du kan læse den fra den anden ende af salen uden at fokusere på cifrene.
+
+Arbejd og Hvil er flyttet op over tallet, hvor de siger hvad tallet betyder. Nedtællingen for hele træningen står stadig, under runde-tælleren.
 ```
 
-**Mac (1.7)** drops the Apple Watch line, since the Mac app neither pairs with the watch nor plays
-audio cues:
+Spanish:
 
 ```
-WODrounds now speaks Danish and Spanish. Every screen, button and help text is translated.
+Intervalos ahora cuenta el intervalo en el que estás, no el entrenamiento completo. A media ronda ves exactamente cuánto queda del trabajo o del descanso, que es el número por el que existe un temporizador de intervalos.
 
-VoiceOver now reads the timer controls in your language, and Reduce Motion is respected.
+Un anillo alrededor de la cifra se vacía durante el intervalo y se llena de nuevo en cada cambio, lima mientras trabajas y gris mientras descansas, así lo lees desde el otro lado del gimnasio sin fijar la vista en los dígitos.
+
+Trabajo y Descanso subieron encima de la cifra, donde dicen qué significa. La cuenta del entrenamiento completo sigue ahí, debajo del contador de rondas.
 ```
 
-**Apple TV (1.7):**
+**Mac (1.8)** drops the across-the-gym line, since it is a window on a desk:
 
 ```
-WODrounds now speaks Danish and Spanish. Every screen, button and help text is translated on Apple TV.
+Intervals now counts down the interval you are in, not the whole workout. Mid-round you can see exactly how much of the work or rest period is left, which is the number an interval timer exists to show.
 
-VoiceOver now reads the timer controls in your language, and Reduce Motion is respected.
+A ring around the readout drains over the interval and refills at every change, lime while you work and grey while you rest.
+
+Work and Rest moved above the number, where they say what the number means. The whole-workout countdown is still there, under the round counter.
 ```
+
+Spanish:
+
+```
+Intervalos ahora cuenta el intervalo en el que estás, no el entrenamiento completo. A media ronda ves exactamente cuánto queda del trabajo o del descanso, que es el número por el que existe un temporizador de intervalos.
+
+Un anillo alrededor de la cifra se vacía durante el intervalo y se llena de nuevo en cada cambio, lima mientras trabajas y gris mientras descansas.
+
+Trabajo y Descanso subieron encima de la cifra, donde dicen qué significa. La cuenta del entrenamiento completo sigue ahí, debajo del contador de rondas.
+```
+
+**Apple TV (1.8)** leans hardest on the distance argument, since it is the only platform where the timer is driving a room:
+
+```
+Intervals now counts down the interval you are in, not the whole workout. Mid-round the screen shows exactly how much of the work or rest period is left, which is the number an interval timer exists to show.
+
+A ring around the readout drains over the interval and refills at every change, lime during work and grey during rest, so the whole room can read it from a distance.
+
+Work and Rest moved above the number, where they say what the number means. The whole-workout countdown is still there, under the round counter.
+```
+
+Spanish:
+
+```
+Intervalos ahora cuenta el intervalo en el que estás, no el entrenamiento completo. A media ronda la pantalla muestra exactamente cuánto queda del trabajo o del descanso, que es el número por el que existe un temporizador de intervalos.
+
+Un anillo alrededor de la cifra se vacía durante el intervalo y se llena de nuevo en cada cambio, lima durante el trabajo y gris durante el descanso, así toda la sala lo lee a distancia.
+
+Trabajo y Descanso subieron encima de la cifra, donde dicen qué significa. La cuenta del entrenamiento completo sigue ahí, debajo del contador de rondas.
+```
+
+**On the Spanish variant:** this particular text contains no vocabulary that separates Latin American from peninsular Spanish, so the same copy was used for the es-MX iOS listing and the es-ES Mac and tvOS listings. Do not read that as the variant question being settled; it is still open, see the Spanish section below.
+
+<details><summary>Previous — 1.7 What's New (for reference)</summary>
+
+iOS led with Danish and Spanish localization, the new voice recordings, and the localized VoiceOver
+labels. Mac dropped the Apple Watch line; Apple TV named the platform. The full text is in the
+1.7 tag.
+
+</details>
 
 <details><summary>Previous — 1.6.1 What's New (for reference)</summary>
 
