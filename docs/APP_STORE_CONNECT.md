@@ -71,14 +71,26 @@ touch. This was that touch. The other change is the closing platform line: the l
 that one purchase covers all five platforms, which is the thing the two nearest competitors cannot
 match.
 
-**Status, unconfirmed as of the 1.8 submission.** The English and Spanish descriptions shipped in
-1.7 with the launch-era bullets; only the Danish one, written fresh for 1.7, is prose. 1.8 was the
-window to replace them, but the 1.8 submission covered What's New and Promotional Text, and whether
-the prose descriptions and the reworked keyword fields also went in is not recorded here. **Check
-the live listing before assuming either way**, and if they did not, this rolls to 1.9.
+**Verified live on 1.7, 2026-09-08.** The prose description is in place in English and in Spanish,
+checked with `tools/appstore_listing.py pull --app WODrounds --country us,mx,es --full` in the
+strategy repo. An earlier note here claimed both still carried the launch-era bullets; that was
+wrong, and this is what the check is for. The Spanish storefront (ES) serves the same es-MX text,
+so Spain falls back rather than running its own variant, which is coherent.
 
-That is the recurring trap with these fields: the window is open for days and closes on approval,
-and the two things people actually remember to paste are the two that changed for this release.
+**The Danish App Store listing does not exist.** The same check against the DK storefront returns
+the *English* description and the *English* release notes, byte-identical to en-US. So the iOS app
+record has no Danish localization at all, which is a bigger gap than the empty keyword field
+suspected in issue #108. The Danish screenshots in `appstore/1.8/da/` have never been uploaded
+either; DK serves the English set.
+
+That matters more than anything else in this document. Denmark is the strongest sales territory
+and the second-largest language area at 16% of page views, and it is **the only storefront with
+ratings at all** (5.0 from 5 ratings, against zero in US, MX and ES). The actual users are Danish
+and they read an English product page for an app that has spoken Danish since 1.7.
+
+Two fields cannot be verified this way, ever: **keyword fields and subtitles are not exposed by the
+public lookup API**. Whether the reworked keyword fields went in can only be seen inside App Store
+Connect.
 
 ```
 Interval timer for EMOM, For Time, CrossFit and HIIT. No account, no sign-up. Just time, rounds and room to train.
@@ -470,9 +482,14 @@ HIIT,Tabata,CrossFit,gimnasio,cronómetro,cuenta regresiva,entrenamiento,for tim
 
 # Danish (da) — iOS
 
-New in 1.7, and the highest-value addition in the release: Danish is the **second-largest language
-area** at 16% of page views with no localized listing before now, and Denmark is the strongest sales
-territory. iPhone is 54% of page views, so iOS is where it belongs. Danish screenshots exist for
+**Not live. Written for 1.7, never added to the app record.** Verified 2026-09-08: the DK storefront
+returns the English description and release notes byte-for-byte, so no Danish localization exists on
+the iOS app record and the screenshots in `appstore/1.8/da/` have never been uploaded. Everything
+below is ready to paste; it just has not been.
+
+This is the highest-value item in the document. Danish is the **second-largest language area** at
+16% of page views, Denmark is the strongest sales territory, and it is the only storefront with any
+ratings (5.0 from 5). iPhone is 54% of page views, so iOS is where it belongs. Danish screenshots exist for
 iPhone, iPad and Apple Watch (`appstore/1.7/da/`); Mac and Apple TV have none, so those records stay
 English.
 
