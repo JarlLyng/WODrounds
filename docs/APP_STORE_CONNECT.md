@@ -77,18 +77,17 @@ strategy repo. An earlier note here claimed both still carried the launch-era bu
 wrong, and this is what the check is for. The Spanish storefront (ES) serves the same es-MX text,
 so Spain falls back rather than running its own variant, which is coherent.
 
-**The Danish App Store listing does not exist.** The same check against the DK storefront returns
-the *English* description and the *English* release notes, byte-identical to en-US. So the iOS app
-record has no Danish localization at all, which is a bigger gap than the empty keyword field
-suspected in issue #108. The Danish screenshots in `appstore/1.8/da/` have never been uploaded
-either; DK serves the English set.
+**The Danish listing is live**, and so are the Spanish ones. Verified on 1.8, 2026-09-12: DK returns
+the Danish description and the Danish release notes, MX and ES return Spanish, US returns English.
 
-That matters more than anything else in this document. Denmark is the strongest sales territory
-and the second-largest language area at 16% of page views, and it is **the only storefront with
-ratings at all** (5.0 from 5 ratings, against zero in US, MX and ES). The actual users are Danish
-and they read an English product page for an app that has spoken Danish since 1.7.
+**A warning about how to check this.** An earlier version of this section stated flatly that no
+Danish localization existed, and that was wrong. The iTunes lookup endpoint answers in **English for
+every storefront** unless you pass a `lang` parameter, so `--country dk` alone returns the en-US text
+and a perfectly healthy localization looks absent. `tools/appstore_listing.py` now sends each
+storefront's own language by default, so the check is trustworthy again. If you ever see a storefront
+returning English text that should be localized, suspect the query before the listing.
 
-Two fields cannot be verified this way, ever: **keyword fields and subtitles are not exposed by the
+Two fields cannot be verified this way at all: **keyword fields and subtitles are not exposed by the
 public lookup API**. Whether the reworked keyword fields went in can only be seen inside App Store
 Connect.
 
@@ -482,14 +481,14 @@ HIIT,Tabata,CrossFit,gimnasio,cronómetro,cuenta regresiva,entrenamiento,for tim
 
 # Danish (da) — iOS
 
-**Not live. Written for 1.7, never added to the app record.** Verified 2026-09-08: the DK storefront
-returns the English description and release notes byte-for-byte, so no Danish localization exists on
-the iOS app record and the screenshots in `appstore/1.8/da/` have never been uploaded. Everything
-below is ready to paste; it just has not been.
+**Live since the 1.7 cycle.** Verified on 1.8, 2026-09-12: the DK storefront returns this
+description and the Danish release notes. An earlier note here claimed the localization did not
+exist; that was a bad query, not a bad listing, and the trap is described in the Description section
+above.
 
-This is the highest-value item in the document. Danish is the **second-largest language area** at
-16% of page views, Denmark is the strongest sales territory, and it is the only storefront with any
-ratings (5.0 from 5). iPhone is 54% of page views, so iOS is where it belongs. Danish screenshots exist for
+Danish is the **second-largest language area** at 16% of page views, Denmark is the strongest sales
+territory, and it is the only storefront with any ratings at all (5.0 from 5), so this is the
+localization that earns its keep. iPhone is 54% of page views, so iOS is where it belongs. Danish screenshots exist for
 iPhone, iPad and Apple Watch (`appstore/1.7/da/`); Mac and Apple TV have none, so those records stay
 English.
 
