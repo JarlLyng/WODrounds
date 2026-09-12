@@ -22,6 +22,34 @@ How a release reaches the App Store. Two separate CI systems, one job each:
 
 That is the whole loop. No manual Xcode archives.
 
+## The metadata window, and what keeps getting missed
+
+Step 6 opens the **only** window in which subtitle, description, keywords, screenshots and What's
+New can be edited. They are version-locked: editable while a version is being prepared or is in
+review, frozen the moment it is approved. Promotional Text is the sole exception and can be changed
+on a live version, but it is emptied by every new version, so it needs re-pasting regardless.
+
+The predictable failure is not forgetting the window. It is that the two fields which changed *for
+this release*, What's New and Promotional Text, prompt themselves, while anything written earlier
+and merely never applied has nothing prompting it. So work through this list at step 6 rather than
+trusting memory:
+
+- [ ] **Recapture the Apple Watch screenshot.** The current one cuts the Start button in half, and
+      there is no caption or crop to rescue it on that slot. A Watch screen is a scroll view, so
+      capture it scrolled, or pick a screen that fits whole. Needed in `en`, `da` and `es`, and
+      Apple requires the same Watch size across every localization. See issue #133.
+- [ ] Regenerate the whole screenshot set if the app's appearance changed at all, and check
+      `appstore/raw/` for captures that predate a redesign.
+- [ ] Confirm the keyword field on **every** localization, not just the primary one. Keywords and
+      subtitles are never exposed by the public lookup API, so this can only be seen in ASC.
+- [ ] Re-paste Promotional Text on every platform and language.
+- [ ] Check any description or subtitle rewrite that was written for an earlier release and parked.
+
+To verify what is actually live afterwards, use `tools/appstore_listing.py` in the strategy repo.
+**Pass the storefront's own language**, or the lookup endpoint answers in English for every
+storefront and a healthy localization reads as missing. The tool now defaults this correctly; the
+trap cost a wrong conclusion once already.
+
 ## Xcode Cloud configuration (reference)
 
 Configured in App Store Connect → WODrounds → Xcode Cloud → Manage Workflows → **Default**. It is not stored in this repo (only `ci_scripts/` is), so this is the record of how it is set up:
