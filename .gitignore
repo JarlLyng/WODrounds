@@ -64,3 +64,9 @@ __pycache__/
 
 # Marketing source assets (brand book, video). Large binaries, not needed to build.
 marketing/
+
+# Local screenshot preview runs. The composer writes wherever a manifest's out_dir
+# points, so trying a layout means a throwaway manifest and a throwaway output tree.
+# Only the set that ships belongs in git, under appstore/<version>/.
+appstore/*-preview/
+appstore/manifest-*.json
