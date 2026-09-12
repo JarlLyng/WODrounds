@@ -71,7 +71,7 @@ touch. This was that touch. The other change is the closing platform line: the l
 that one purchase covers all five platforms, which is the thing the two nearest competitors cannot
 match.
 
-**Verified live on 1.7, 2026-09-08.** The prose description is in place in English and in Spanish,
+**Verified live on 1.8, 2026-09-12.** The prose description is in place in English and in Spanish,
 checked with `tools/appstore_listing.py pull --app WODrounds --country us,mx,es --full` in the
 strategy repo. An earlier note here claimed both still carried the launch-era bullets; that was
 wrong, and this is what the check is for. The Spanish storefront (ES) serves the same es-MX text,
@@ -482,10 +482,17 @@ HIIT,Tabata,CrossFit,gimnasio,cronómetro,cuenta regresiva,entrenamiento,for tim
 
 # Danish (da) — iOS
 
-**Not live. Written for 1.7, never added to the app record.** Verified 2026-09-08: the DK storefront
-returns the English description and release notes byte-for-byte, so no Danish localization exists on
-the iOS app record and the screenshots in `appstore/1.8/da/` have never been uploaded. Everything
-below is ready to paste; it just has not been.
+**Not live. Written for 1.7, offered again for 1.8, still never added.** Re-verified 2026-09-12,
+after 1.8 went live: the DK storefront returns the English description *and* the English 1.8 release
+notes, byte-for-byte identical to en-US. No Danish localization exists on the iOS app record, and
+the screenshots in `appstore/1.8/da/` have never been uploaded. Everything below is ready to paste;
+it just has not been, through two release windows now.
+
+Worth naming the pattern rather than repeating it: these fields are version-locked, so each miss
+costs a whole release cycle. The two that get pasted every time are the two that changed for that
+release, What's New and Promotional Text. Anything that was already written and merely never
+applied has nothing prompting it. **Creating the Danish localization belongs at the top of the 1.9
+submission checklist, before the new copy is written, not after.**
 
 This is the highest-value item in the document. Danish is the **second-largest language area** at
 16% of page views, Denmark is the strongest sales territory, and it is the only storefront with any
