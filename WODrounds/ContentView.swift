@@ -54,13 +54,27 @@ func initialTimerMode() -> TimerUIMode {
         }
     }
     #endif
+    // Reopen in the mode last used. The Watch has always done this
+    // (`watchTimerMode`); the phone, Mac and TV forgot every launch. The
+    // screenshot argument above still wins, so captures stay reproducible.
+    if let raw = UserDefaults.standard.string(forKey: lastTimerModeKey),
+       let mode = TimerUIMode(rawValue: raw) {
+        return mode
+    }
     return .emom
 }
 
+/// Key for the last mode used, shared by the three non-Watch views.
+let lastTimerModeKey = "lastTimerMode"
+
 /// Companion to `initialTimerMode()`: the engine has to start in the same mode, or a
 /// screenshot launched with `-screen intervals` shows the Intervals UI while the engine
-/// is still the default EMOM (wrong round count, wrong total). Defaults match the
-/// per-platform @State values.
+/// is still the default EMOM (wrong round count, wrong total).
+///
+/// The numbers here are only a first guess. Now that the setup values persist, they can
+/// differ from what the steppers will show, so each view calls `syncEngineIfIdle` on
+/// appear to rebuild the engine from the restored values. Without that, the screen would
+/// show your numbers while Start ran these.
 func initialEngine() -> WODTimerEngine {
     switch initialTimerMode() {
     case .emom: return WODTimerEngine(emomRounds: 10, secondsPerRound: 60)

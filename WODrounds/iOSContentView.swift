@@ -25,11 +25,11 @@ enum Haptics {
 
 struct ContentView: View {
     @State private var timerMode: TimerUIMode = initialTimerMode()
-    @State private var rounds: Int = 10
+    @AppStorage("emomRounds") private var rounds: Int = 10
     @AppStorage("emomRoundLengthSeconds") private var emomRoundLengthSeconds: Int = 60
-    @State private var intervalsWork: Int = 30
-    @State private var intervalsRest: Int = 15
-    @State private var intervalsRounds: Int = 8
+    @AppStorage("intervalsWorkSeconds") private var intervalsWork: Int = 30
+    @AppStorage("intervalsRestSeconds") private var intervalsRest: Int = 15
+    @AppStorage("intervalsRounds") private var intervalsRounds: Int = 8
     // For Time cap; 0 = "No cap" sentinel (see forTimeCapRange).
     @AppStorage("forTimeCapSeconds") private var forTimeCapSeconds: Int = 0
     @State private var engine = initialEngine()
@@ -222,7 +222,12 @@ private struct iOSContent: View {
                 }
             }
         }
-        .onAppear { applyIdleTimer(engine.state) }
+        .onAppear {
+            applyIdleTimer(engine.state)
+            // Setup values persist now, so rebuild the engine from them: initialEngine()
+            // only guesses, and Start would otherwise run numbers the screen never showed.
+            syncEngineIfIdle(engine.state)
+        }
         .sheet(isPresented: $showAbout) { AboutView() }
         .confirmationDialog("Cancel workout?", isPresented: $showCancelConfirmation, titleVisibility: .visible) {
             cancelConfirmationContent

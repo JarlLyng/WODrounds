@@ -20,10 +20,10 @@ private enum TVOSTypography {
 
 struct ContentView: View {
     @State private var timerMode: TimerUIMode = initialTimerMode()
-    @State private var rounds: Int = 10
-    @State private var intervalsWork: Int = 30
-    @State private var intervalsRest: Int = 15
-    @State private var intervalsRounds: Int = 8
+    @AppStorage("emomRounds") private var rounds: Int = 10
+    @AppStorage("intervalsWorkSeconds") private var intervalsWork: Int = 30
+    @AppStorage("intervalsRestSeconds") private var intervalsRest: Int = 15
+    @AppStorage("intervalsRounds") private var intervalsRounds: Int = 8
     @State private var engine = initialEngine()
     @AppStorage("emomRoundLengthSeconds") private var emomRoundLengthSeconds: Int = 60
     // For Time cap; 0 = "No cap" sentinel (see forTimeCapRange).
@@ -138,7 +138,12 @@ struct ContentView: View {
                 // Hold the screensaver off during the count-in too: the engine is
                 // still idle then, and the remote isn't touched once Start is pressed.
                 .onChange(of: countdownEndTime) { _, _ in applyIdleTimer() }
-                .onAppear { applyIdleTimer() }
+                .onAppear {
+                    applyIdleTimer()
+                    // Setup values persist now, so rebuild the engine from them: initialEngine()
+                    // only guesses, and Start would otherwise run numbers the screen never showed.
+                    syncEngineIfIdle(engine.state)
+                }
                 .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
         }
         .padding(DesignTokens.Spacing.xl)
