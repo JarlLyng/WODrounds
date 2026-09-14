@@ -250,6 +250,40 @@ struct WODroundsTests {
         #expect(snap.remainingTimeInPhase == 20) // 30 - 10
     }
 
+    /// The Watch rebuilds a synced workout from a payload rather than from an engine, and
+    /// used its own copy of this maths that hardcoded the phase remainder to 0. That was
+    /// invisible while the Watch displayed the whole-workout countdown, and shipped in 1.8
+    /// as a blank readout the moment it displayed the phase instead: rounds ticked over on
+    /// the wrist with no number counting down. Both sides call this now.
+    @Test func intervalsPhaseAtMatchesTheEngineThroughAWholeWorkout() {
+        let (w, r, n) = (30, 15, 4)
+        var engine = WODTimerEngine(workSeconds: w, restSeconds: r, rounds: n)
+        let start = Date()
+        engine.start(now: start)
+
+        // Every second of a 2:45 workout, the shared function and the engine agree.
+        for second in 0 ..< 165 {
+            let elapsed = TimeInterval(second)
+            let snap = engine.snapshot(now: start.addingTimeInterval(elapsed))
+            let (round, phase, remaining) = WODTimerEngine.intervalsPhaseAt(
+                elapsed: elapsed, work: w, rest: r, rounds: n)
+            #expect(round == snap.currentRound, "round differs at \(second)s")
+            #expect(phase == snap.currentPhase, "phase differs at \(second)s")
+            #expect(remaining == snap.remainingTimeInPhase, "remainder differs at \(second)s")
+        }
+    }
+
+    /// The specific regression: a phase remainder of zero while the workout is still running
+    /// is what an empty Watch readout looks like.
+    @Test func intervalsPhaseRemainderIsNeverZeroMidWorkout() {
+        let (w, r, n) = (30, 15, 4)
+        for second in 0 ..< 165 {
+            let (_, _, remaining) = WODTimerEngine.intervalsPhaseAt(
+                elapsed: TimeInterval(second), work: w, rest: r, rounds: n)
+            #expect(remaining > 0, "phase remainder was 0 at \(second)s, mid-workout")
+        }
+    }
+
     @Test func intervalsRunningRestPhase() {
         var engine = WODTimerEngine(workSeconds: 30, restSeconds: 15, rounds: 4)
         let start = Date()

@@ -60,7 +60,7 @@ struct WatchContentView: View {
             // Synced For Time counts up and has no rounds (Watch only follows iPhone
             // For Time; there is no local For Time mode on the Watch).
             let isSyncedForTime = useSynced && syncedPayload?.mode == "forTime"
-            let (displayTime, currentRound, totalRounds, state): (TimeInterval, Int, Int, WODTimerEngineState) = {
+            let (displayTime, currentRound, totalRounds, state, phase): (TimeInterval, Int, Int, WODTimerEngineState, WODTimerPhase) = {
                 if useSynced, let s = syncedSnapshot, let payload = syncedPayload {
                     let disp: TimeInterval
                     switch payload.mode {
@@ -69,13 +69,18 @@ struct WatchContentView: View {
                     // iPhone and the audio cues, which have always used the phase.
                     default: disp = s.remainingTimeInPhase
                     }
-                    return (disp, s.currentRound, s.totalRounds, s.state)
+                    return (disp, s.currentRound, s.totalRounds, s.state, s.currentPhase)
                 }
                 let local = engine.snapshot(now: now)
                 let disp = local.remainingTimeInPhase
                 // Use engine.rounds (handles both EMOM and Intervals) instead of totalDurationMinutes
                 // which returns 0 for intervals. Prevents "R x/0" bug when Watch gains local interval config.
-                return (disp, local.currentRound, engine.rounds, local.state)
+                return (disp, local.currentRound, engine.rounds, local.state, local.currentPhase)
+            }()
+            let isIntervals: Bool = {
+                if useSynced { return syncedPayload?.mode == "intervals" }
+                if case .intervals = engine.mode { return true }
+                return false
             }()
             let workoutActive = useSynced || engine.state == .running || engine.state == .paused
 
@@ -92,6 +97,14 @@ struct WatchContentView: View {
                             Text("iPhone", bundle: .main)
                                 .font(.system(size: WatchDesign.roundFontSize, weight: .medium, design: .rounded))
                                 .foregroundStyle(WatchDesign.Colors.textTertiary(colorScheme))
+                        }
+
+                        if isIntervals {
+                            Text(phase == .work ? "WORK" : "REST", bundle: .main)
+                                .font(.system(size: WatchDesign.roundFontSize, weight: .semibold, design: .rounded))
+                                .foregroundStyle(phase == .work
+                                    ? WatchDesign.Colors.primary(colorScheme)
+                                    : WatchDesign.Colors.textSecondary(colorScheme))
                         }
 
                         // Count-up (For Time) floors so the shown time never runs ahead;

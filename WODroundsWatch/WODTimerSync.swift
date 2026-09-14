@@ -76,13 +76,16 @@ enum WODTimerSync {
         let currentRound: Int
         let totalRounds: Int
         let remainingTimeInPhase: TimeInterval
+        /// Work or rest. Always `.work` for EMOM and For Time, which have no rest phase;
+        /// meaningful only for Intervals, where the readout changes meaning between them.
+        let currentPhase: WODTimerPhase
     }
 
     static func snapshot(from payload: WODTimerSyncPayload, now: Date) -> SyncedSnapshot? {
         switch payload.state {
         case "idle":
             let total = payload.mode == "emom" ? payload.totalMinutes : (payload.rounds ?? 0)
-            return SyncedSnapshot(state: .idle, remainingTime: 0, elapsedTime: 0, currentRound: 0, totalRounds: max(1, total), remainingTimeInPhase: 0)
+            return SyncedSnapshot(state: .idle, remainingTime: 0, elapsedTime: 0, currentRound: 0, totalRounds: max(1, total), remainingTimeInPhase: 0, currentPhase: .work)
         case "finished":
             let total = payload.mode == "emom" ? payload.totalMinutes : (payload.rounds ?? 0)
             // Frozen elapsed: finishedAt (explicit Stop) beats the mode total, so a
@@ -93,7 +96,7 @@ enum WODTimerSync {
             } else {
                 frozenElapsed = totalDurationSeconds(payload: payload)
             }
-            return SyncedSnapshot(state: .finished, remainingTime: 0, elapsedTime: frozenElapsed, currentRound: max(1, total), totalRounds: max(1, total), remainingTimeInPhase: 0)
+            return SyncedSnapshot(state: .finished, remainingTime: 0, elapsedTime: frozenElapsed, currentRound: max(1, total), totalRounds: max(1, total), remainingTimeInPhase: 0, currentPhase: .work)
         case "running", "paused":
             guard payload.startDate != nil else { return nil }
             let totalSec = totalDurationSeconds(payload: payload)
@@ -103,11 +106,12 @@ enum WODTimerSync {
             if payload.mode == "forTime" {
                 // Count-up; no rounds. Uncapped (cap nil → totalSec 0) never finishes
                 // on its own — the iPhone drives the finished state.
-                return SyncedSnapshot(state: state, remainingTime: remaining, elapsedTime: elapsed, currentRound: 1, totalRounds: 1, remainingTimeInPhase: remaining)
+                return SyncedSnapshot(state: state, remainingTime: remaining, elapsedTime: elapsed, currentRound: 1, totalRounds: 1, remainingTimeInPhase: remaining, currentPhase: .work)
             }
             let totalRounds: Int = payload.mode == "emom" ? payload.totalMinutes : (payload.rounds ?? 1)
             let round: Int
             let remainingTimeInPhase: TimeInterval
+            var phase: WODTimerPhase = .work
             if payload.mode == "emom" {
                 let spr = payload.emomSecondsPerRound ?? 60
                 round = min(roundFromEMOM(elapsed: elapsed, totalMinutes: payload.totalMinutes, secondsPerRound: spr), payload.totalMinutes)
@@ -115,11 +119,13 @@ enum WODTimerSync {
                 remainingTimeInPhase = TimeInterval(spr - intoRound)
             } else {
                 guard let w = payload.workSeconds, let r = payload.restSeconds, let n = payload.rounds, n > 0 else { return nil }
-                let cycle = TimeInterval(w + r)
-                round = totalSec <= 0 ? n : min(Int(elapsed / cycle), n - 1) + 1
-                remainingTimeInPhase = 0
+                // Shared with the engine so the wrist and the phone cannot disagree. This
+                // used to compute the round here and hardcode the phase remainder to 0,
+                // which was invisible while the Watch showed the whole-workout countdown
+                // and became a blank readout once it showed the phase.
+                (round, phase, remainingTimeInPhase) = WODTimerEngine.intervalsPhaseAt(elapsed: elapsed, work: w, rest: r, rounds: n)
             }
-            return SyncedSnapshot(state: state, remainingTime: remaining, elapsedTime: elapsed, currentRound: round, totalRounds: totalRounds, remainingTimeInPhase: remainingTimeInPhase)
+            return SyncedSnapshot(state: state, remainingTime: remaining, elapsedTime: elapsed, currentRound: round, totalRounds: totalRounds, remainingTimeInPhase: remainingTimeInPhase, currentPhase: phase)
         default:
             return nil
         }

@@ -334,8 +334,19 @@ struct WODTimerEngine {
 
     /// Returns (currentRound 1-based, phase, remainingSecondsInPhase).
     private func intervalsPhase(elapsed: TimeInterval, work w: Int, rest r: Int, rounds n: Int) -> (Int, WODTimerPhase, TimeInterval) {
+        Self.intervalsPhaseAt(elapsed: elapsed, work: w, rest: r, rounds: n)
+    }
+
+    /// Which round and phase an Intervals workout is in, and how long is left of that phase.
+    ///
+    /// Static and internal because the Watch needs the same answer when it rebuilds a
+    /// workout from an iPhone sync payload rather than from an engine. It had its own copy
+    /// that returned 0 for the phase remainder, which was harmless while the Watch displayed
+    /// the whole-workout countdown and became a blank readout the moment it displayed the
+    /// phase instead. One implementation, so the two cannot disagree again.
+    static func intervalsPhaseAt(elapsed: TimeInterval, work w: Int, rest r: Int, rounds n: Int) -> (Int, WODTimerPhase, TimeInterval) {
         let cycle = TimeInterval(w + r)
-        let total = totalDurationSeconds
+        let total = TimeInterval(n) * TimeInterval(w) + TimeInterval(n - 1) * TimeInterval(r)
         guard elapsed < total, n > 0 else {
             return (n, .work, 0)
         }
