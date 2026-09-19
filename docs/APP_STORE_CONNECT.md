@@ -107,77 +107,60 @@ A timer for training. No logbook, no sharing and no account.
 
 ## What's New in This Version (release notes)
 
-Update per release. Current — **1.8** (iOS):
+Update per release. Current — **1.9** (iOS):
 
 ```
-Intervals now counts down the interval you are in, not the whole workout. Mid-round you can see exactly how much of the work or rest period is left, which is the number an interval timer exists to show.
+Your Apple Watch now counts down the interval you are in when you follow a workout started on your iPhone. It showed the rounds but not the time, and the time is the number you need mid-interval. It also says whether you are working or resting.
 
-A ring around the readout drains over the interval and refills at every change, lime while you work and grey while you rest, so you can read it from across the gym without focusing on the digits.
-
-Work and Rest moved above the number, where they say what the number means. The whole-workout countdown is still there, under the round counter.
+Your setup is remembered between launches too: the mode you were in, and the rounds, work and rest you had set. The Watch has always done this. Now the phone, iPad, Mac and Apple TV do as well.
 ```
 
 Danish:
 
 ```
-Intervaller tæller nu det interval du er i ned, ikke hele træningen. Midt i en runde kan du se præcis hvor meget der er tilbage af arbejdet eller hvilet, og det er det tal en intervaltimer er til for at vise.
+Dit Apple Watch tæller nu det interval du er i ned, når du følger en træning startet på din iPhone. Det viste runderne men ikke tiden, og tiden er det tal du har brug for midt i et interval. Det siger også om du arbejder eller hviler.
 
-En ring om tallet tømmes over intervallet og fyldes igen ved hvert skift, lime mens du arbejder og grå mens du hviler, så du kan læse den fra den anden ende af salen uden at fokusere på cifrene.
-
-Arbejd og Hvil er flyttet op over tallet, hvor de siger hvad tallet betyder. Nedtællingen for hele træningen står stadig, under runde-tælleren.
+Din opsætning bliver også husket mellem gange: den tilstand du var i, og de runder, det arbejde og det hvil du havde sat. Uret har altid gjort det. Nu gør telefonen, iPad, Mac og Apple TV det også.
 ```
 
 Spanish:
 
 ```
-Intervalos ahora cuenta el intervalo en el que estás, no el entrenamiento completo. A media ronda ves exactamente cuánto queda del trabajo o del descanso, que es el número por el que existe un temporizador de intervalos.
+Tu Apple Watch ahora cuenta el intervalo en el que estás cuando sigues un entrenamiento iniciado en el iPhone. Mostraba las rondas pero no el tiempo, y el tiempo es el número que necesitas a media ronda. También dice si estás trabajando o descansando.
 
-Un anillo alrededor de la cifra se vacía durante el intervalo y se llena de nuevo en cada cambio, lima mientras trabajas y gris mientras descansas, así lo lees desde el otro lado del gimnasio sin fijar la vista en los dígitos.
-
-Trabajo y Descanso subieron encima de la cifra, donde dicen qué significa. La cuenta del entrenamiento completo sigue ahí, debajo del contador de rondas.
+Tu configuración se recuerda entre sesiones: el modo en el que estabas y las rondas, el trabajo y el descanso que habías puesto. El reloj siempre lo ha hecho. Ahora también el teléfono, el iPad, la Mac y el Apple TV.
 ```
 
-**Mac (1.8)** drops the across-the-gym line, since it is a window on a desk:
+**Mac and Apple TV (1.9)** do not mention the Watch, since it is not their app. Only the remembered
+setup applies to them:
 
 ```
-Intervals now counts down the interval you are in, not the whole workout. Mid-round you can see exactly how much of the work or rest period is left, which is the number an interval timer exists to show.
-
-A ring around the readout drains over the interval and refills at every change, lime while you work and grey while you rest.
-
-Work and Rest moved above the number, where they say what the number means. The whole-workout countdown is still there, under the round counter.
+Your setup is remembered between launches: the mode you were in, and the rounds, work and rest you had set. Round length and the For Time cap already were, which made forgetting the rest of it look arbitrary.
 ```
 
 Spanish:
 
 ```
-Intervalos ahora cuenta el intervalo en el que estás, no el entrenamiento completo. A media ronda ves exactamente cuánto queda del trabajo o del descanso, que es el número por el que existe un temporizador de intervalos.
-
-Un anillo alrededor de la cifra se vacía durante el intervalo y se llena de nuevo en cada cambio, lima mientras trabajas y gris mientras descansas.
-
-Trabajo y Descanso subieron encima de la cifra, donde dicen qué significa. La cuenta del entrenamiento completo sigue ahí, debajo del contador de rondas.
+Tu configuración se recuerda entre sesiones: el modo en el que estabas y las rondas, el trabajo y el descanso que habías puesto. La duración de ronda y el límite de For Time ya se recordaban, lo que hacía que olvidar el resto pareciera arbitrario.
 ```
 
-**Apple TV (1.8)** leans hardest on the distance argument, since it is the only platform where the timer is driving a room:
+**On the 1.9 screenshots.** Only the Apple Watch shot was recaptured. Nothing changed visually on
+iPhone, iPad, Mac or Apple TV, so the 1.8 set still matches the app.
 
-```
-Intervals now counts down the interval you are in, not the whole workout. Mid-round the screen shows exactly how much of the work or rest period is left, which is the number an interval timer exists to show.
+The Watch capture has to be taken on a **real Watch**, and this is worth recording because it is not
+obvious: on a simulator the config screen has a clean status bar but cuts the Start button, scrolling
+to fix that puts the fixed clock on top of the content, and the running screen composes well but
+gains a red disconnected-phone icon the moment the app activates WatchConnectivity. That icon appears
+on an unpaired simulator and on a connected pair alike. The running screen is the right frame: it is
+one view rather than a scrolling form, so nothing is half-cut, and since 1.9 it also shows the
+WORK / REST label.
 
-A ring around the readout drains over the interval and refills at every change, lime during work and grey during rest, so the whole room can read it from a distance.
+<details><summary>Previous — 1.8 What's New (for reference)</summary>
 
-Work and Rest moved above the number, where they say what the number means. The whole-workout countdown is still there, under the round counter.
-```
+iOS led with the Intervals phase countdown and the ring around it. Mac dropped the across-the-gym
+line; Apple TV leaned on it hardest. The full text is in the 1.8 tag.
 
-Spanish:
-
-```
-Intervalos ahora cuenta el intervalo en el que estás, no el entrenamiento completo. A media ronda la pantalla muestra exactamente cuánto queda del trabajo o del descanso, que es el número por el que existe un temporizador de intervalos.
-
-Un anillo alrededor de la cifra se vacía durante el intervalo y se llena de nuevo en cada cambio, lima durante el trabajo y gris durante el descanso, así toda la sala lo lee a distancia.
-
-Trabajo y Descanso subieron encima de la cifra, donde dicen qué significa. La cuenta del entrenamiento completo sigue ahí, debajo del contador de rondas.
-```
-
-**On the Spanish variant:** this particular text contains no vocabulary that separates Latin American from peninsular Spanish, so the same copy was used for the es-MX iOS listing and the es-ES Mac and tvOS listings. Do not read that as the variant question being settled; it is still open, see the Spanish section below.
+</details>
 
 <details><summary>Previous — 1.7 What's New (for reference)</summary>
 
