@@ -2,7 +2,7 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
-## Unreleased
+## 1.9 (build 20)
 
 - **Fixed (Apple Watch):** during a workout started on iPhone, Intervals showed the rounds ticking over with nothing counting down. The Watch rebuilds a synced workout from the iPhone's payload rather than running its own engine, and that rebuild computed the round but left the phase countdown at zero. It went unnoticed until 1.8 moved every readout to the phase countdown. The Watch now labels the readout Work or Rest too, so the number resetting from 30 to 15 says why.
 - **Changed:** the timer setup is remembered between launches on iPhone, Mac and Apple TV: the mode, EMOM rounds, and interval work, rest and rounds. Round length and the For Time cap already were, which made the old behaviour look arbitrary. The Apple Watch has remembered its own settings since 1.6.
