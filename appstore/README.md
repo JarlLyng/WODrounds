@@ -54,7 +54,7 @@ and force the language with `-AppleLanguages '(da)' -AppleLocale da_DK` on launc
 2. **Compose** each with the shared tool:
    ```sh
    python3 scripts/compose_screenshots.py raw.png "Headline
-   second line" appstore/1.7/iphone-1.png 1290 2796
+   second line" appstore/1.8/iphone-1.png 1290 2796
    ```
    (`scripts/compose_screenshots.py` needs Pillow: `pip install Pillow`.)
 3. **Upload** the folder's PNGs to App Store Connect per platform.

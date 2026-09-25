@@ -1,4 +1,4 @@
-# CLAUDE.md: WODrounds
+# AGENTS.md: WODrounds
 
 Quick-start context for developers and AI assistants. Detailed specs in `docs/`.
 
@@ -15,7 +15,14 @@ A minimal SwiftUI interval timer for CrossFit — EMOM, Intervals (Tabata) and F
 
 ## Strategy lives in a private hub
 
-Target audience, positioning, pricing reasoning, SEO/ASO playbooks, and competitor analysis are **not** in this public repo. They live in a separate private strategy hub. Before doing any audience, positioning, pricing, or marketing-planning work, read that hub's `CONVENTIONS.md` and write results there, not here.
+Target audience, positioning, pricing reasoning, SEO/ASO playbooks, and competitor analysis are **not** in this public repo. They live in the private strategy hub, **[`github.com/JarlLyng/iamjarl-strategy`](https://github.com/JarlLyng/iamjarl-strategy)**, under `WODrounds/`. Before doing any audience, positioning, pricing, or marketing-planning work, read that hub's `CONVENTIONS.md` and write results there, not here.
+
+The hub also holds the rules this file only summarises. Read the one that matches the task:
+
+- `VOICE.md` before writing any public copy.
+- `BRAND_LEGAL.md` for the public identity: IAMJARL, and a first name only where a person is named.
+- `DESIGN.md` before making screenshots, including the `appstore/<version>/` convention.
+- `ASO_GUIDANCE.md` before touching App Store metadata.
 
 ### Voice (read before writing ANY public copy)
 
@@ -24,14 +31,15 @@ All public copy (App Store text, site copy, community posts, replies, release no
 ## App features (be precise; do not invent features that don't exist)
 
 - **EMOM:** set rounds (1–120) and a custom round length (0:30–9:30, 30s steps); round counter + per-round countdown.
-- **Intervals:** work / rest / rounds, each adjustable; phase display (Work / Rest). Total = `rounds × work + (rounds − 1) × rest` (no rest after last work).
+- **Intervals:** work / rest / rounds, each adjustable; phase display (Work / Rest). Total = `rounds × work + (rounds − 1) × rest` (no rest after last work). Since 1.8 the big readout counts down the **current phase**, with the whole-workout countdown as a secondary line, and a ring around the readout drains over each work or rest phase (Intervals only; EMOM and For Time have no ring).
 - **Tabata:** a manual Intervals preset (e.g. 20/10 × 8), not a separate mode.
 - **For Time (new in 1.5):** counts up from zero; optional time cap (0:30–60:00, 30s steps; 0 = "No cap"). Uncapped runs until Stop; capped auto-finishes at the cap. Stop freezes the final time; Done screen shows "Finished in MM:SS". No rounds, no in-round cues. Watch follows a synced For Time (no local Watch For Time).
 - Start / Pause / Resume / Reset / Cancel; Done screen on completion. For Time uses Stop instead of Pause while running.
 - **iPhone → Watch sync** via WatchConnectivity (start on iPhone, follow on Watch).
-- **Watch standalone (new in 1.6):** the Watch configures and runs EMOM and Intervals on its own (mode switch + steppers, settings persisted via `@AppStorage`). For Time is still synced-only on the Watch.
+- **Watch standalone (new in 1.6):** the Watch configures and runs EMOM and Intervals on its own (mode switch + steppers, settings persisted via `@AppStorage`). For Time is still synced-only on the Watch. When following a workout started on iPhone, the Watch shows the time and round with no local controls; the phone owns them. Since 1.9 it labels Intervals WORK or REST.
+- **Remembered setup (new in 1.9):** iPhone, iPad, Mac and Apple TV reopen in the last mode used, with its values (EMOM rounds and round length, Intervals work, rest and rounds, For Time cap).
 - **Date-based timing:** reliable when backgrounded; deterministic engine (`Shared/WODTimerEngine.swift`), no UI/sound in the engine.
-- Sound cues (count-in, halfway, 10s, 3-2-1, rounds-remaining), haptics (iOS), HealthKit save as HIIT (iOS only).
+- Sound cues (count-in, halfway, 10s, 3-2-1, rounds-remaining) on iPhone, iPad and Apple TV only; **the Mac and the Watch have no sound**. Haptics on iPhone and Watch. HealthKit save as HIIT on iPhone and iPad only, and only with permission granted; nothing else saves to Health.
 - **Localization (new in 1.7):** UI in English, Danish and Spanish (es-MX). Spoken audio cues are recorded English voice files and stay English in every language; do not claim localized audio.
 
 ### Features that do NOT exist (common hallucination targets)
@@ -39,6 +47,7 @@ All public copy (App Store text, site copy, community posts, replies, release no
 - No workout *tracking* / history / logbook; it's a timer, not a tracker.
 - No social, sharing, or accounts.
 - No cloud sync or internet dependency.
+- No sync to or from the Mac or Apple TV. `WODTimerSync` is `#if os(iOS)`; everywhere else it is a no-op. Live following is iPhone to Watch only.
 
 ## Requirements & build
 - Open `WODrounds.xcodeproj`; scheme **WODrounds** (iOS) or **WODrounds Watch** (watchOS).
