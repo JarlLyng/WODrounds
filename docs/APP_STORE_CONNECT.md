@@ -66,7 +66,7 @@ passes where the old "simplest WOD timer" superlative did not. It is also the br
 timer, EMOM, For Time, CrossFit, HIIT).
 
 Rewritten in prose for 1.7. The bulleted version shipped from launch through 1.6.1, but VOICE.md
-rules bullets out of public copy, and CLAUDE.md says to fold the voice audit into the next metadata
+rules bullets out of public copy, and AGENTS.md says to fold the voice audit into the next metadata
 touch. This was that touch. The other change is the closing platform line: the listing never said
 that one purchase covers all five platforms, which is the thing the two nearest competitors cannot
 match.
@@ -252,11 +252,11 @@ Current sizes (Apple retired the old 5.5"/6.5" slots as the primary requirement)
 | Apple TV | 1920 × 1080 (or 3840 × 2160) | Yes for tvOS app |
 | Apple Watch | 416 × 496 (Series 10/11 46mm) | Optional |
 
-The rendered set lives in [`appstore/1.7/`](../appstore/1.7/), versioned per release and driven by [`appstore/manifest.json`](../appstore/manifest.json). Regenerate with the portfolio compositor in the private strategy repo (`tools/appstore_screenshots.py batch appstore/manifest.json`); see [`appstore/README.md`](../appstore/README.md). Older sets in [`appstore/1.6.1/`](../appstore/1.6.1/) and [`appstore/1.2/`](../appstore/1.2/) are kept for reference.
+The rendered set lives in [`appstore/1.8/`](../appstore/1.8/), versioned per release and driven by [`appstore/manifest.json`](../appstore/manifest.json). Regenerate with the portfolio compositor in the private strategy repo (`tools/appstore_screenshots.py batch appstore/manifest.json`); see [`appstore/README.md`](../appstore/README.md). Superseded sets are deleted rather than kept, per the hub's `DESIGN.md`; git history has them.
 
 **Apple TV got three screenshots in 1.6.1** (was one), because the device x territory cross-tab showed Apple TV is the #2 platform at 32% of product page views: running timer (hero), the three-mode setup, and For Time with the time cap. The tvOS canvas uses a larger screen scale (0.82) so the timer stays readable at thumbnail size.
 
-**Current set (`appstore/1.7/`), 21 images.** Dark #0d0d0d ground, lime #D0FF00 accent, the app screen below a short headline. Each language sits in its own folder (`en/`, `da/`, `es/`), so no set is the implicit default. English covers all five platforms: four iPhone (running timer, three-mode setup, Intervals, For Time), one iPad, one Mac, two Apple TV, one Apple Watch. Danish (`da/`) and Spanish (`es/`) repeat the four iPhone shots plus iPad and Watch, which is what the iOS app record needs for a localized listing. Mac and Apple TV are separate app records and stay English only.
+**Current set (`appstore/1.8/`), 21 images.** Dark #0d0d0d ground, lime #D0FF00 accent, the app screen below a short headline. Each language sits in its own folder (`en/`, `da/`, `es/`), so no set is the implicit default. English covers all five platforms: four iPhone (running timer, three-mode setup, Intervals, For Time), one iPad, one Mac, two Apple TV, one Apple Watch. Danish (`da/`) and Spanish (`es/`) repeat the four iPhone shots plus iPad and Watch, which is what the iOS app record needs for a localized listing. Mac and Apple TV are separate app records and stay English only.
 
 Capture rule learned in 1.7: set the simulator's **system** language, not just the app's, before capturing iPad. The iPad status bar renders its date from the system locale, so an app launched with `-AppleLanguages` still showed a Danish date on the English screenshot. `xcrun simctl status_bar` fixes the time but not the date, and it is unsupported on watchOS, so Watch captures show whatever the clock says.
 
@@ -470,9 +470,9 @@ exist; that was a bad query, not a bad listing, and the trap is described in the
 above.
 
 Danish is the **second-largest language area** at 16% of page views, Denmark is the strongest sales
-territory, and it is the only storefront with any ratings at all (5.0 from 5), so this is the
-localization that earns its keep. iPhone is 54% of page views, so iOS is where it belongs. Danish screenshots exist for
-iPhone, iPad and Apple Watch (`appstore/1.7/da/`); Mac and Apple TV have none, so those records stay
+territory, and it leads the storefronts on ratings, so this is the localization that earns its
+keep. iPhone is 54% of page views, so iOS is where it belongs. Danish screenshots exist for
+iPhone, iPad and Apple Watch (`appstore/1.8/da/`); Mac and Apple TV have none, so those records stay
 English.
 
 Written in prose from the start, per VOICE.md.
