@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>About — WODrounds, made by Jarl in Copenhagen</title>
+  <title>About | WODrounds, made by Jarl in Copenhagen</title>
   <meta name="description" content="WODrounds is built by Jarl, a Copenhagen-based developer and CrossFitter. Here is why I built a minimal timer app for Apple devices and how I keep it that way.">
   <meta name="keywords" content="Jarl, IAMJARL, WODrounds creator, indie iOS developer, Copenhagen, about WODrounds">
   <link rel="canonical" href="https://wodrounds.iamjarl.com/about.html">
   <meta name="robots" content="index, follow">
   <meta property="og:type" content="profile">
   <meta property="og:url" content="https://wodrounds.iamjarl.com/about.html">
-  <meta property="og:title" content="About WODrounds — made by Jarl in Copenhagen">
+  <meta property="og:title" content="About WODrounds | made by Jarl in Copenhagen">
   <meta property="og:description" content="Why I built a minimal timer for Apple devices and how I keep it that way.">
   <meta property="og:image" content="https://wodrounds.iamjarl.com/images/og-image.png">
   <meta property="og:site_name" content="WODrounds">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="About WODrounds — made by Jarl">
+  <meta name="twitter:title" content="About WODrounds | made by Jarl">
   <meta name="twitter:description" content="Why I built a minimal timer for Apple devices and how I keep it that way.">
   <meta name="twitter:image" content="https://wodrounds.iamjarl.com/images/og-image.png">
   <meta name="theme-color" content="#0a0a0a">
@@ -94,8 +94,8 @@
         <p class="guide-intro">WODrounds is a single-purpose timer app for CrossFit, HIIT and interval training. I built it because every workout timer I tried wanted something from me. This page explains who I am, why I made it, and the principles that keep it small.</p>
 
         <h2>Who builds this</h2>
-        <p>I'm Jarl. I work as a developer in Copenhagen and have done consulting and software design for over a decade. Outside work I do CrossFit, lift weights, and play music. WODrounds is one of my indie projects under <a href="https://iamjarl.com" rel="external">IAMJARL</a> — a portfolio of small, focused tools that solve one problem each.</p>
-        <p>I built WODrounds alone. The code, the design, the marketing site, the App Store screenshots — all of it. That's a deliberate choice, not a humble brag: it means decisions are fast, scope is narrow, and there's no roadmap pressure from anyone but me.</p>
+        <p>I'm Jarl. I work as a developer in Copenhagen and have done consulting and software design for over a decade. Outside work I do CrossFit, lift weights, and play music. WODrounds is one of my indie projects under <a href="https://iamjarl.com" rel="external">IAMJARL</a>, a portfolio of small, focused tools that solve one problem each.</p>
+        <p>I built WODrounds alone. The code, the design, the marketing site, the App Store screenshots: all of it. That's a deliberate choice, not a humble brag: it means decisions are fast, scope is narrow, and there's no roadmap pressure from anyone but me.</p>
 
         <h2>Why I built it</h2>
         <p>Every CrossFit timer app I tried wanted something from me:</p>
@@ -113,8 +113,8 @@
         <p>Technical principles I stick to:</p>
         <ul>
           <li><strong>SwiftUI only.</strong> One target serves iOS, iPadOS, macOS, and tvOS. A separate target serves watchOS. The timer engine is shared code.</li>
-          <li><strong>Date-based timing.</strong> No frame timers — the timer computes from <code>Date()</code> on every tick, so it stays accurate when the app is backgrounded.</li>
-          <li><strong>No third-party dependencies in the timer code.</strong> The only external library is Sentry, used optionally for crash reporting on iOS. Workout state, sync, audio, HealthKit — all Apple frameworks.</li>
+          <li><strong>Date-based timing.</strong> No frame timers: the timer computes from <code>Date()</code> on every tick, so it stays accurate when the app is backgrounded.</li>
+          <li><strong>No third-party dependencies in the timer code.</strong> The only external library is Sentry, used optionally for crash reporting on iOS. Workout state, sync, audio, HealthKit: all Apple frameworks.</li>
           <li><strong>HKWorkoutSession on Watch.</strong> Keeps the Watch app alive throughout a workout. No suspension mid-WOD.</li>
           <li><strong>iPhone → Watch sync via WatchConnectivity.</strong> Start on iPhone, follow on Watch. State is delivered immediately when the Watch is reachable.</li>
         </ul>
@@ -124,7 +124,7 @@
         <p>If you want to verify any of this, the source is open at <a href="https://github.com/JarlLyng/WODrounds" rel="external">github.com/JarlLyng/WODrounds</a>.</p>
 
         <h2>What I do and don't promise</h2>
-        <p><strong>I promise:</strong> WODrounds is a one-time purchase — pay once and own it forever. No ads, no subscription, no in-app purchases, no upsells. The features will stay narrow. Updates will respect your time — no notification spam, no "what's new" dialogs in the way of starting a workout.</p>
+        <p><strong>I promise:</strong> WODrounds is a one-time purchase. Pay once and own it forever. No ads, no subscription, no in-app purchases, no upsells. The features will stay narrow. Updates will respect your time: no notification spam, no "what's new" dialogs in the way of starting a workout.</p>
         <p><strong>I don't promise:</strong> Android support, web version, AMRAP mode, workout libraries, or social features. If those matter to you, <a href="best-crossfit-timer-apps.html">other apps</a> handle them well.</p>
 
         <h2>How to reach me</h2>
