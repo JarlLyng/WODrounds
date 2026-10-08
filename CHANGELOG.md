@@ -2,6 +2,10 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
+## Unreleased
+
+- **Changed:** WODrounds now needs iOS and iPadOS 17 or later, and watchOS 10 or later. Xcode 27.1, which this release is built with for iPhone Duo, builds nothing older. The Mac (macOS 13) and Apple TV (tvOS 17) are unchanged. Devices on iOS 16 or watchOS 9 keep the version they have.
+
 ## 1.9 (build 20)
 
 - **Fixed (Apple Watch):** during a workout started on iPhone, Intervals showed the rounds ticking over with nothing counting down. The Watch rebuilds a synced workout from the iPhone's payload rather than running its own engine, and that rebuild computed the round but left the phase countdown at zero. It went unnoticed until 1.8 moved every readout to the phase countdown. The Watch now labels the readout Work or Rest too, so the number resetting from 30 to 15 says why.
