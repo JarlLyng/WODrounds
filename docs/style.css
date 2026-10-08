@@ -777,6 +777,52 @@ a:hover {
   color: var(--accent);
 }
 
+/* The shared IAMJARL footer (<ij-footer>, built by scripts/update_footer.py).
+   This site is dark in both appearances, and the component follows the
+   system's, so it gets this site's colours rather than its own light ones. */
+ij-footer {
+  --ij-color-text-primary: var(--text);
+  --ij-color-text-secondary: var(--text-muted);
+  --ij-color-primary: var(--accent);
+  /* .site-footer already draws the rule above the footer. */
+  --ij-color-border-subtle: transparent;
+  display: block;
+}
+
+/* Slotted links stay in this page's DOM, so the site-wide lime `a` colour would
+   win over the component's. Muted, lime on hover, as the footer always was. */
+ij-footer a[slot] {
+  color: var(--text-muted);
+}
+
+ij-footer a[slot]:hover {
+  color: var(--accent);
+}
+
+/* Before the component loads, or if it never does: plain link rows. */
+ij-footer:not(:defined) a[slot] {
+  margin-right: 1rem;
+  font-size: 0.9rem;
+}
+
+ij-footer:not(:defined) [slot="fineprint"] {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* The language links sit under the shared footer; sized to match its rows. */
+.footer-lang-label {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--text);
+  opacity: 0.75;
+}
+
+.footer-lang-label + .footer-links a {
+  font-size: 0.875rem;
+  margin-right: 0.75rem;
+}
+
 .footer-copy {
   font-size: 0.85rem;
   color: var(--text-muted);

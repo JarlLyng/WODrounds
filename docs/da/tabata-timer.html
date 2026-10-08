@@ -49,6 +49,8 @@
   }
   </script>
   <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="7a65d61a-b231-4611-b514-3c6cd0a5b7b3" data-do-not-track="true" data-domains="wodrounds.iamjarl.com"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.18.1/dist/components/ij-footer.js"
+    integrity="sha384-vbo2o61hGBKT7RZB4taOfO8TxwNA3akt7UBF0X31Xjfk5rZlCXkz6oJ9HqiBglTJ" crossorigin="anonymous"></script>
 </head>
 <body>
   <header class="site-header">
@@ -156,14 +158,22 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      <p class="footer-logo">WODrounds</p>
-      <p class="footer-links">
-        <a href="../guide.html">Guide</a>
-        <a href="../about.html">About</a>
-        <a href="../privacy.html">Privatliv</a>
-        <a href="../support.html">Support</a>
-      </p>
-      <p class="footer-links" style="margin-top:0.5rem;font-size:0.85em;opacity:0.75;">Language</p>
+      <ij-footer app="wodrounds" links-label="WODrounds">
+        <a slot="links" href="../guide.html">Guide</a>
+        <a slot="links" href="../about.html">About</a>
+        <a slot="links" href="../privacy.html">Privatliv</a>
+        <a slot="links" href="../support.html">Support</a>
+        <!-- IAMJARL cross-links for WODrounds — generated, do not edit -->
+        <!-- design system v1.18.1, registry updated 2026-10-04 -->
+        <a slot="cross-links" href="https://anvilworkout.iamjarl.com">Anvil Workout</a>
+        <a slot="cross-links" href="https://walkful.iamjarl.com">Walkful</a>
+        <a slot="cross-links" href="https://weannicotine.iamjarl.com">Wean Nicotine</a>
+        <a slot="cross-links" href="https://madebyhuman.iamjarl.com">Made by Human</a>
+        <a slot="cross-links" href="https://iamjarl.com">All projects</a>
+        <p slot="fineprint">Bygget i København af <a href="https://iamjarl.com" class="footer-author">IAMJARL</a>. <a href="../privacy.html">Privatlivspolitikken</a> dækker både appen og dette website.</p>
+        <p class="footer-logo">WODrounds</p>
+      </ij-footer>
+      <p class="footer-links footer-lang-label">Language</p>
       <p class="footer-links">
         <a href="https://wodrounds.iamjarl.com/tabata-timer.html" lang="en">English</a>
         <a href="https://wodrounds.iamjarl.com/da/tabata-timer.html" lang="da">Dansk</a>
@@ -173,7 +183,6 @@
         <a href="https://wodrounds.iamjarl.com/fr/tabata-timer.html" lang="fr">Français</a>
         <a href="https://wodrounds.iamjarl.com/es/tabata-timer.html" lang="es">Español</a>
       </p>
-      <p class="footer-copy">Bygget i København af <a href="https://iamjarl.com" class="footer-author">IAMJARL</a>. <a href="../privacy.html">Privatlivspolitikken</a> dækker både appen og dette website.</p>
     </div>
   </footer>
 </body>
