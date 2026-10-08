@@ -139,6 +139,34 @@ a:hover {
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
+  /* A 44 px tall target without moving the header: padding, taken back by margin. */
+  display: inline-block;
+  padding: 0.7rem 0.25rem;
+  margin: -0.7rem -0.25rem;
+}
+
+/* Keyboard users: a skip link first, and a focus ring that is designed, not the default. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #000;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 .nav a:hover {
@@ -826,6 +854,13 @@ a:hover {
   font-weight: 600;
   margin: 2rem 0 0.75rem;
   color: var(--text);
+}
+
+/* Article prose at a readable measure; cards and tables keep the full width. */
+.page-content .wrap > :is(p, ul, ol, h2, h3, dl),
+.guide-intro,
+.guide-content > :is(p, ul, ol) {
+  max-width: 70ch;
 }
 
 .page-content p {
