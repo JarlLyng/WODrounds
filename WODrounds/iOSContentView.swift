@@ -122,7 +122,7 @@ private struct iOSContent: View {
     private var stepperTheme: StepperTheme {
         StepperTheme(
             labelFontSize: DesignTokens.Typography.Size.sm * fontScale,
-            valueFontSize: DesignTokens.Typography.Size.title * fontScale,
+            valueFontSize: DesignTokens.Typography.Numeral.md.size * fontScale,
             buttonSize: DesignTokens.Spacing.xxxl * 2 * spacingScale,
             cornerRadius: DesignTokens.Radius.md,
             stackSpacing: DesignTokens.Spacing.lg * spacingScale,
@@ -318,12 +318,12 @@ private struct iOSContent: View {
                             ? DesignTokens.Common.primary(scheme)
                             : DesignTokens.Common.Text.secondary(scheme),
                         track: DesignTokens.Common.Text.tertiary(scheme).opacity(0.25),
-                        diameter: DesignTokens.Typography.Size.display * fontScale * 4.0,
+                        diameter: DesignTokens.Typography.Numeral.lg.size * fontScale * 4.0,
                         lineWidth: 6 * fontScale
                     )
                 }
                 Text(sharedTimeString(from: activeDisplayTime(snapshot: snapshot)))
-                    .font(.system(size: DesignTokens.Typography.Size.display * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                    .font(.system(size: DesignTokens.Typography.Numeral.lg.size * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                     .monospacedDigit()
                     .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
             }
@@ -442,7 +442,7 @@ private struct iOSContent: View {
                         .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                         .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
                     Text("\(remaining)")
-                        .font(.system(size: DesignTokens.Typography.Size.display * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                        .font(.system(size: DesignTokens.Typography.Numeral.lg.size * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
                         .monospacedDigit()
                         .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
                     SharedCancelButton(action: {
@@ -713,7 +713,7 @@ private struct AboutView: View {
                 dismiss()
             }
             .font(.system(size: DesignTokens.Typography.Size.base, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-            .foregroundStyle(DesignTokens.Common.onPrimary(scheme))
+            .foregroundStyle(DesignTokens.Palette.onPrimary)
             .frame(maxWidth: .infinity)
             .padding(.vertical, DesignTokens.Spacing.md)
             .padding(.horizontal, DesignTokens.Spacing.xl)
