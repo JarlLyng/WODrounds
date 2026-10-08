@@ -13,6 +13,18 @@ A minimal SwiftUI interval timer for CrossFit — EMOM, Intervals (Tabata) and F
 - **Price:** $2.99 USD one-time (no in-app purchases, no subscription, no ads)
 - **Platforms:** iPhone, iPad, Apple Watch, Mac, Apple TV (SwiftUI; one target, multiple destinations + an embedded Watch target)
 
+## Boundaries: work only in this repo
+
+- Commit, push and open pull requests **only in this repo**. Never edit, commit to, push to or
+  open a pull request in another IAMJARL repo, and that includes `iamjarl-design`.
+- To ask another repo for something, **open an issue there**. Public repos get findings, never
+  measured numbers. If it is strategic, or not safe in public, it goes to the hub instead.
+- The one place outside this repo you write is this app's own folder in the private hub
+  (`WODrounds/`). Shared hub files (`PORTFOLIO.md`, the standards, `tools/`) are changed from inside
+  the hub; if one needs changing, open an issue there.
+- If a task seems to need a change in another repo, stop, open the issue, and carry on with what
+  this repo can do.
+
 ## Strategy lives in a private hub
 
 Target audience, positioning, pricing reasoning, SEO/ASO playbooks, and competitor analysis are **not** in this public repo. They live in the private strategy hub, **[`github.com/JarlLyng/iamjarl-strategy`](https://github.com/JarlLyng/iamjarl-strategy)**, under `WODrounds/`. Before doing any audience, positioning, pricing, or marketing-planning work, read that hub's `CONVENTIONS.md` and write results there, not here.
