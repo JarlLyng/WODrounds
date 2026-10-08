@@ -266,6 +266,23 @@ Apple Watch shots stay uncaptioned; the screen is too small for a caption band.
 
 Content to feature, in order: (1) timer running (hero), (2) mode setup showing EMOM / Intervals / For Time, (3) the Apple Watch / multi-device angle.
 
+### Product page header (pilot, #158)
+
+iOS and iPadOS 27 show an optional header at the top of the product page, 3840 × 1646, PNG or JPEG, no alpha. It goes up through the app's **Asset Library** and is reviewed on its own, without an app version. WODrounds is the portfolio's pilot.
+
+**Safe area**, read from Apple's Photoshop template (layer "Art Safe Area"): 1646 × 661 centred, so x 1097 to 2743 and y 493 to 1154. Insets: 1097 left and right, 493 top, 492 bottom. Anything that has to be read stays inside it.
+
+**Draft:** [`appstore/header/header.png`](../appstore/header/header.png), made by [`scripts/appstore_header.py`](../scripts/appstore_header.py). The running Intervals timer, drawn at 4K in the app's proportions: digits a quarter of the ring's diameter, ring lime while you work. The digits sit inside the safe area; the ring runs past it, so a tight crop still shows a timer. No text, so nothing to localize. `--lang en|da|es` gives a variant with the first screenshot's line beside a smaller ring, for comparison.
+
+Before submitting, check it in App Store Connect's preview tool on iPhone, iPad and iPhone Duo, in light and Dark Mode. No search result asset in this pilot: it would replace the screenshots in search.
+
+| | Date |
+|---|---|
+| Header submitted | not yet |
+| Header live | not yet |
+
+Log both dates here. A standalone asset has no release date, so this is the only way a later readout can tell when the page changed.
+
 ---
 
 ## Build
