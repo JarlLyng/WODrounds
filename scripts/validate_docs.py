@@ -2,12 +2,15 @@
 """
 Validate integrity of docs/ marketing site.
 
-Runs five checks:
+Runs six checks:
 1. Image references: all images/*.png etc. referenced in HTML exist as files
-2. App Store URLs: all apps.apple.com links include the app ID (id6759229877)
+2. App Store URLs: all apps.apple.com links include the app ID (id6759229877),
+   and links to WODrounds carry the campaign parameters (pt, ct=site, mt)
 3. JSON-LD: all <script type="application/ld+json"> blocks parse as valid JSON
 4. Sitemap: all URLs in sitemap.xml correspond to actual HTML files
 5. Canonical URLs: each HTML file's canonical URL matches its path
+6. Workout durations: a workout card's stated duration matches what the timer
+   runs for its settings
 
 Exits 0 on success, 1 on any failure. Designed to run locally and in CI.
 
@@ -26,6 +29,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DOCS = REPO_ROOT / "docs"
 SITE_URL = "https://wodrounds.iamjarl.com"
 APP_ID = "6759229877"
+CAMPAIGN_PT = "128512007"
 
 
 class Failures:
@@ -93,6 +97,15 @@ def check_app_store_urls(failures: Failures) -> None:
                     f"WODrounds App Store URL has wrong app ID (expected id{APP_ID}): {url}",
                     file=html,
                 )
+            # And carry the campaign, so App Analytics can attribute the click (#153).
+            elif "/wodrounds" in url.lower():
+                query = url.split("?", 1)[1].replace("&amp;", "&") if "?" in url else ""
+                params = dict(p.split("=", 1) for p in query.split("&") if "=" in p)
+                if params.get("pt") != CAMPAIGN_PT or params.get("ct") != "site" or params.get("mt") != "8":
+                    failures.error(
+                        f"WODrounds App Store URL lacks pt={CAMPAIGN_PT}&ct=site&mt=8: {url}",
+                        file=html,
+                    )
 
 
 def check_json_ld(failures: Failures) -> None:
@@ -182,6 +195,50 @@ def check_canonical_urls(failures: Failures) -> None:
             )
 
 
+def timer_seconds_intervals(work: int, rest: int, rounds: int) -> int:
+    """What the Intervals timer runs: no rest after the last work period.
+    The same formula as WODTimerEngine; see AGENTS.md."""
+    return rounds * work + (rounds - 1) * rest
+
+
+def check_workout_durations(failures: Failures) -> None:
+    """A workout card's heading duration must match its settings.
+
+    Intervals cards state the exact timer time, as m:ss, because the timer skips
+    the last rest: 20/10 x 8 runs 3:50, not the 4:00 the Tabata protocol is
+    usually quoted as (#115). EMOM cards state whole minutes, rounds x length.
+    """
+    print("→ Checking workout durations...")
+    card = re.compile(
+        r"<h([23])>[^<]*?\(([^)]*)\)</h\1>\s*(?:<p[^>]*>[^<]*</p>\s*)?"
+        r"<p(?: class=\"workout-settings\")?>(Intervals|EMOM)(?: mode)? &middot; ([^<]*)</p>"
+    )
+    intervals = re.compile(r"^Work (\d+)s &middot; Rest (\d+)s &middot; (\d+) [^&]+$")
+    emom = re.compile(r"^(\d+) [^&]+ &middot; (\d+):(\d\d) ")
+    stated_min = re.compile(r"^(\d+) (?:min|Min|minutes)$")
+    stated_mss = re.compile(r"^(\d+):(\d\d)$")
+    for html in DOCS.rglob("*.html"):
+        for m in card.finditer(html.read_text()):
+            stated, mode, settings = m.group(2).strip(), m.group(3), m.group(4).strip()
+            if mode == "Intervals":
+                s = intervals.match(settings)
+                if not s:
+                    continue  # e.g. "8 rounds × 3 sets": described in the text instead
+                total = timer_seconds_intervals(*(int(g) for g in s.groups()))
+                want = f"{total // 60}:{total % 60:02d}"
+                if stated != want:
+                    failures.error(f"Intervals card says ({stated}), the timer runs {want}: {settings}", file=html)
+            else:
+                s = emom.match(settings)
+                if not s:
+                    continue
+                total = int(s.group(1)) * (int(s.group(2)) * 60 + int(s.group(3)))
+                mm, ss = stated_min.match(stated), stated_mss.match(stated)
+                got = int(mm.group(1)) * 60 if mm else (int(ss.group(1)) * 60 + int(ss.group(2)) if ss else None)
+                if got != total:
+                    failures.error(f"EMOM card says ({stated}), the timer runs {total // 60}:{total % 60:02d}: {settings}", file=html)
+
+
 def main() -> int:
     if not DOCS.is_dir():
         print(f"::error::docs/ not found at {DOCS}")
@@ -194,6 +251,7 @@ def main() -> int:
     check_json_ld(failures)
     check_sitemap(failures)
     check_canonical_urls(failures)
+    check_workout_durations(failures)
 
     print()
     if failures.count:
