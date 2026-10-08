@@ -323,6 +323,14 @@ a:hover {
   margin-top: 0.25rem;
 }
 
+/* On a translated page, a link to a page that exists only in English says so. */
+html:not([lang="en"]) a[hreflang="en"]::after {
+  content: " EN";
+  font-size: 0.7em;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
 /* Section shared */
 .section-lead {
   color: var(--text-muted);
