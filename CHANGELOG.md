@@ -4,6 +4,7 @@ All notable user-facing changes to WODrounds. Newest first.
 
 ## Unreleased
 
+- **Added:** Send feedback, in About on iPhone, iPad and Mac, and in the Mac's Help menu. It opens an email to support@iamjarl.com with the app and system version filled in below the space for your message, and you see all of it before you send.
 - **Changed:** WODrounds now needs iOS and iPadOS 17 or later, and watchOS 10 or later. Xcode 27.1, which this release is built with for iPhone Duo, builds nothing older. The Mac (macOS 13) and Apple TV (tvOS 17) are unchanged. Devices on iOS 16 or watchOS 9 keep the version they have.
 
 ## 1.9 (build 20)

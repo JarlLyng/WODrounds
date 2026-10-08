@@ -6,6 +6,36 @@
 //
 
 import SwiftUI
+#if os(iOS)
+import UIKit
+#endif
+
+#if os(iOS) || os(macOS)
+// MARK: - Feedback
+
+/// A `mailto:` link to support, with the app and OS version filled in below an
+/// empty space for the message. The user sees all of it in their mail app
+/// before anything is sent; nothing is collected in the background.
+func feedbackMailURL() -> URL? {
+    let info = Bundle.main.infoDictionary
+    let version = info?["CFBundleShortVersionString"] as? String ?? "?"
+    let build = info?["CFBundleVersion"] as? String ?? "?"
+    #if os(iOS)
+    let system = "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)"
+    #else
+    let v = ProcessInfo.processInfo.operatingSystemVersion
+    let system = "macOS \(v.majorVersion).\(v.minorVersion).\(v.patchVersion)"
+    #endif
+    var components = URLComponents()
+    components.scheme = "mailto"
+    components.path = "support@iamjarl.com"
+    components.queryItems = [
+        URLQueryItem(name: "subject", value: "WODrounds \(version) feedback"),
+        URLQueryItem(name: "body", value: "\n\n\n--\nWODrounds \(version) (\(build))\n\(system)")
+    ]
+    return components.url
+}
+#endif
 
 #if os(iOS) || os(macOS) || os(tvOS)
 

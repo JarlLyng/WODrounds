@@ -5,7 +5,7 @@
 ## Getting help
 
 - **Bugs or feature requests:** Open an issue on the app’s GitHub repository (see link in App Store or in-app About).
-- **General questions:** Use the Support URL linked in the app’s About screen, or email **jarl@iamjarl.com**.
+- **General questions:** Use the Support URL linked in the app’s About screen, or email **support@iamjarl.com**.
 
 ## What we see when you report an issue
 
@@ -14,4 +14,4 @@
 
 When you contact us, please mention your device (e.g. iPhone 15, iOS 18) and what you were doing when the problem occurred.
 
-*Last updated: April 2026*
+*Last updated: October 2026*

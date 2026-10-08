@@ -438,6 +438,13 @@ private struct MacAboutView: View {
                 .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
                 .multilineTextAlignment(.center)
             VStack(spacing: DesignTokens.Spacing.sm) {
+                if let url = feedbackMailURL() {
+                    Link(destination: url) {
+                        Text("Send feedback")
+                            .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                            .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                    }
+                }
                 if let url = URL(string: "https://wodrounds.iamjarl.com/support") {
                     Link(destination: url) {
                         Text("Support")

@@ -81,6 +81,13 @@ struct WODroundsApp: App {
         // it. contentMinSize stops the user shrinking it small enough to clip.
         .defaultSize(width: 360, height: 740)
         .windowResizability(.contentMinSize)
+        .commands {
+            CommandGroup(after: .help) {
+                Button("Send feedback") {
+                    if let url = feedbackMailURL() { NSWorkspace.shared.open(url) }
+                }
+            }
+        }
         #endif
     }
 }
