@@ -230,7 +230,7 @@ struct SharedStepperView: View {
         } label: {
             Text(LocalizedStringKey(label))
                 .font(.system(size: theme.valueFontSize * 0.75, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
-                .foregroundStyle(DesignTokens.Common.onPrimary(scheme))
+                .foregroundStyle(DesignTokens.Palette.onPrimary)
                 .frame(width: theme.buttonSize, height: theme.buttonSize)
                 .background(DesignTokens.Common.primary(scheme))
                 .clipShape(RoundedRectangle(cornerRadius: theme.cornerRadius))
@@ -317,7 +317,7 @@ struct SharedPrimaryButton: View {
         Button(action: action) {
             Text(LocalizedStringKey(title))
                 .font(.system(size: theme.titleSize, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
-                .foregroundStyle(DesignTokens.Common.onPrimary(scheme))
+                .foregroundStyle(DesignTokens.Palette.onPrimary)
                 .contentTransitionInterpolateCompat()
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, theme.verticalPadding)
@@ -387,7 +387,7 @@ struct SharedModeSwitch: View {
         } label: {
             Text(LocalizedStringKey(mode.rawValue))
                 .font(.system(size: theme.fontSize, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                .foregroundStyle(timerMode == mode ? DesignTokens.Common.onPrimary(scheme) : DesignTokens.Common.Text.primary(scheme))
+                .foregroundStyle(timerMode == mode ? DesignTokens.Palette.onPrimary : DesignTokens.Common.Text.primary(scheme))
                 .padding(.horizontal, theme.horizontalPadding)
                 .padding(.vertical, theme.verticalPadding)
                 .background(timerMode == mode ? DesignTokens.Common.primary(scheme) : DesignTokens.Common.Background.card(scheme))

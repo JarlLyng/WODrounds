@@ -571,7 +571,7 @@ private struct tvOSAboutView: View {
                 dismiss()
             }
             .font(.system(size: TVOSTypography.base, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-            .foregroundStyle(DesignTokens.Common.onPrimary(scheme))
+            .foregroundStyle(DesignTokens.Palette.onPrimary)
             .frame(maxWidth: .infinity)
             .padding(.vertical, DesignTokens.Spacing.lg)
             .padding(.horizontal, DesignTokens.Spacing.xxl)
