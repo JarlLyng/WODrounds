@@ -395,18 +395,37 @@ struct SharedModeSwitch: View {
     @Binding var timerMode: TimerUIMode
     var onModeChange: () -> Void
     var theme: ModeSwitchTheme
+    /// Stack the three vertically when they don't fit side by side, as in the
+    /// left column of the iOS two-column layout. Otherwise a name that doesn't
+    /// fit shrinks a little rather than wrapping onto two lines.
+    var stacksWhenNarrow = false
     @Environment(\.colorScheme) private var scheme
 
     var body: some View {
-        HStack(spacing: theme.spacing) {
-            ForEach(TimerUIMode.allCases, id: \.self) { mode in
-                modeButton(mode: mode)
+        if stacksWhenNarrow {
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: theme.spacing) {
+                    ForEach(TimerUIMode.allCases, id: \.self) { mode in
+                        modeButton(mode: mode, fixed: true)
+                    }
+                }
+                VStack(spacing: theme.spacing) {
+                    ForEach(TimerUIMode.allCases, id: \.self) { mode in
+                        modeButton(mode: mode, fixed: true)
+                    }
+                }
+            }
+        } else {
+            HStack(spacing: theme.spacing) {
+                ForEach(TimerUIMode.allCases, id: \.self) { mode in
+                    modeButton(mode: mode, fixed: false)
+                }
             }
         }
     }
 
     @ViewBuilder
-    private func modeButton(mode: TimerUIMode) -> some View {
+    private func modeButton(mode: TimerUIMode, fixed: Bool) -> some View {
         let button = Button {
             timerMode = mode
             // Persisted here rather than in each view: this is the only place the mode
@@ -417,6 +436,9 @@ struct SharedModeSwitch: View {
         } label: {
             Text(LocalizedStringKey(mode.rawValue))
                 .font(.system(size: theme.fontSize, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                .lineLimit(1)
+                .minimumScaleFactor(fixed ? 1 : 0.7)
+                .fixedSize(horizontal: fixed, vertical: false)
                 .foregroundStyle(timerMode == mode ? DesignTokens.Palette.onPrimary : DesignTokens.Common.Text.primary(scheme))
                 .padding(.horizontal, theme.horizontalPadding)
                 .padding(.vertical, theme.verticalPadding)

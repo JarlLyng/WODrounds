@@ -36,6 +36,7 @@ struct ContentView: View {
 
     var body: some View {
         TimelineView(.periodic(from: Date(), by: 1.0)) { timeline in
+            GeometryReader { geo in
             iOSContent(
                 engine: $engine,
                 timerMode: $timerMode,
@@ -45,8 +46,10 @@ struct ContentView: View {
                 intervalsRest: $intervalsRest,
                 intervalsRounds: $intervalsRounds,
                 forTimeCap: $forTimeCapSeconds,
-                now: timeline.date
+                now: timeline.date,
+                layoutSize: geo.size
             )
+            }
             .onChange(of: timeline.date) { newDate in
                 if engine.state == .running {
                     var e = engine
@@ -73,9 +76,11 @@ private struct iOSContent: View {
     @Binding var intervalsRounds: Int
     @Binding var forTimeCap: Int
     let now: Date
+    /// The space the app has. On iPhone Duo, in iPhone Mirroring and in iPad
+    /// multitasking that can be any shape, so the layout is chosen from this,
+    /// not from the device or its size classes.
+    let layoutSize: CGSize
     @Environment(\.colorScheme) private var scheme
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
     @State private var showCancelConfirmation = false
     @State private var lastHapticRound: Int = 0
@@ -100,16 +105,34 @@ private struct iOSContent: View {
     @AppStorage("soundEnabled") private var soundEnabled: Bool = true
     @Environment(\.requestReview) private var requestReview
 
-    // MARK: - iPad adaptation
-    // iPad has both size classes regular. iPhone in landscape has horizontal=regular but
-    // vertical=compact, so requiring both prevents iPhone Plus models from getting iPad styling.
-    private var isIPad: Bool {
-        horizontalSizeClass == .regular && verticalSizeClass == .regular
+    // MARK: - Adapting to the space
+    // Every size here follows from layoutSize. Width earns the larger scale (an
+    // iPad, or iPhone Duo's inner display); height caps it, so a short window
+    // shrinks the screen instead of pushing Start or Pause off it. On every
+    // iPhone in portrait this comes out at 1.0 and on an iPad in portrait at 1.5,
+    // as before.
+
+    /// Two columns when the space is about as wide as it is tall, or wider:
+    /// landscape, iPhone Duo's inner display, an iPad on its side. One tall
+    /// column of steppers does not fit there at a readable size.
+    private var isTwoColumn: Bool {
+        layoutSize.width >= 560 && layoutSize.width > layoutSize.height * 0.9
     }
-    private var fontScale: CGFloat { isIPad ? 1.5 : 1.0 }
-    private var spacingScale: CGFloat { isIPad ? 1.3 : 1.0 }
-    /// Max content width on iPad keeps stepper +/- buttons within reach. nil = unconstrained on iPhone.
-    private var maxContentWidth: CGFloat? { isIPad ? 600 : nil }
+    private var fontScale: CGFloat {
+        let byWidth = min(1.5, max(1.0, 1.0 + (layoutSize.width - 500) / 400))
+        let byHeight = LayoutFit.largestScale(height: layoutSize.height, twoColumns: isTwoColumn)
+        return max(0.7, min(byWidth, byHeight))
+    }
+    /// Width of the right-hand column of buttons and labels in two columns. The
+    /// readout gets the rest.
+    private var controlsColumnWidth: CGFloat {
+        min(300 * fontScale, layoutSize.width * 0.35)
+    }
+    /// Spacing grows more slowly than type on a large display, and shrinks with
+    /// it on a short one.
+    private var spacingScale: CGFloat { fontScale < 1 ? fontScale : 1.0 + (fontScale - 1.0) * 0.6 }
+    /// Max content width when wide keeps stepper +/- buttons within reach. nil = unconstrained.
+    private var maxContentWidth: CGFloat? { isTwoColumn ? nil : (fontScale > 1.0 ? 600 : nil) }
 
     private var doneTheme: DoneViewTheme {
         DoneViewTheme(
@@ -165,8 +188,12 @@ private struct iOSContent: View {
             // while iPhone uses full width (maxContentWidth = nil → no constraint).
             HStack(spacing: 0) {
                 Spacer(minLength: 0)
-                mainVStack(snapshot: snapshot, totalRounds: totalRounds)
-                    .frame(maxWidth: maxContentWidth)
+                if isTwoColumn {
+                    twoColumnLayout(snapshot: snapshot, totalRounds: totalRounds)
+                } else {
+                    mainVStack(snapshot: snapshot, totalRounds: totalRounds)
+                        .frame(maxWidth: maxContentWidth)
+                }
                 Spacer(minLength: 0)
             }
             topRightControls
@@ -261,20 +288,80 @@ private struct iOSContent: View {
 
             Spacer()
 
-            VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
-                iosPrimaryButton(snapshot: snapshot, now: now)
-                if snapshot.state == .running || snapshot.state == .paused {
-                    SharedCancelButton(action: { showCancelConfirmation = true }, theme: cancelTheme)
-                    Text("Open WODrounds on your Apple Watch to see this workout.")
-                        .font(.system(size: DesignTokens.Typography.Size.xs * fontScale, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
-                        .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
+            controlsStack(snapshot: snapshot)
+                .padding(.horizontal, DesignTokens.Spacing.lg)
+                .padding(.bottom, DesignTokens.Spacing.xxl * spacingScale)
+        }
+        .animation(.easeInOut(duration: 0.25), value: snapshot.state)
+        .animation(.easeInOut(duration: 0.25), value: timerMode)
+    }
+
+    private func controlsStack(snapshot: WODTimerEngineSnapshot) -> some View {
+        VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
+            iosPrimaryButton(snapshot: snapshot, now: now)
+            if snapshot.state == .running || snapshot.state == .paused {
+                SharedCancelButton(action: { showCancelConfirmation = true }, theme: cancelTheme)
+                Text("Open WODrounds on your Apple Watch to see this workout.")
+                    .font(.system(size: DesignTokens.Typography.Size.xs * fontScale, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+            }
+        }
+    }
+
+    /// Side by side. While setting up, the mode switch runs across the top with the
+    /// steppers below it and Start beside them. While the timer runs, the readout
+    /// takes everything left of the buttons, so on a large display the digits grow
+    /// with it rather than stopping at the iPad size.
+    @ViewBuilder
+    private func twoColumnLayout(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
+        let gap = DesignTokens.Spacing.xxl * spacingScale
+        Group {
+            switch snapshot.state {
+            case .idle:
+                // Header and Start on the left, the steppers on the right.
+                HStack(spacing: gap) {
+                    VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
+                        idleHeaderView
+                        Spacer(minLength: 0)
+                        iosPrimaryButton(snapshot: snapshot, now: now)
+                    }
+                    .frame(maxWidth: .infinity)
+                    idleSettingsView(state: snapshot.state)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                .padding(.bottom, DesignTokens.Spacing.lg * spacingScale)
+            case .running, .paused:
+                HStack(spacing: gap) {
+                    GeometryReader { geo in
+                        readout(snapshot: snapshot, diameter: min(geo.size.width, geo.size.height), fill: true)
+                            .frame(width: geo.size.width, height: geo.size.height)
+                    }
+                    VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
+                        Spacer(minLength: 0)
+                        phaseLabel(snapshot: snapshot)
+                        progressLabels(snapshot: snapshot, totalRounds: totalRounds)
+                        Spacer(minLength: 0)
+                        controlsStack(snapshot: snapshot)
+                    }
+                    .frame(width: controlsColumnWidth)
+                    // The sound and info buttons sit over the top of this column.
+                    .padding(.top, 44)
+                    .padding(.bottom, DesignTokens.Spacing.lg * spacingScale)
+                }
+            case .finished:
+                HStack(spacing: gap) {
+                    SharedDoneView(totalRounds: totalRounds, theme: doneTheme,
+                                   finishedTime: timerMode == .forTime ? snapshot.elapsedTime : nil)
+                        .frame(maxWidth: .infinity)
+                        .transition(.opacity)
+                    controlsStack(snapshot: snapshot)
+                        .frame(width: controlsColumnWidth)
                 }
             }
-            .padding(.horizontal, DesignTokens.Spacing.lg)
-            .padding(.bottom, DesignTokens.Spacing.xxl * spacingScale)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.easeInOut(duration: 0.25), value: snapshot.state)
         .animation(.easeInOut(duration: 0.25), value: timerMode)
     }
@@ -284,7 +371,8 @@ private struct iOSContent: View {
         // with three mode segments the switch now reaches the right edge, so
         // "For Time" would sit under the info icon without this.
         VStack(spacing: DesignTokens.Spacing.md * spacingScale) {
-            SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(engine.state) }, theme: modeSwitchTheme)
+            SharedModeSwitch(timerMode: $timerMode, onModeChange: { syncEngineIfIdle(engine.state) }, theme: modeSwitchTheme,
+                             stacksWhenNarrow: isTwoColumn)
             Text(LocalizedStringKey(modeHelpText))
                 .font(.system(size: DesignTokens.Typography.Size.sm * fontScale, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
@@ -298,58 +386,77 @@ private struct iOSContent: View {
 
     private func activeTimerView(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
         VStack(spacing: DesignTokens.Spacing.lg * spacingScale) {
-            // For Time counts up (floored so the shown time never runs ahead);
-            // EMOM and Intervals both show the countdown of the current phase, so the
-            // big readout always answers "how long until this changes". The whole-workout
-            // countdown is secondary context below.
-            if timerMode == .intervals {
-                Text(snapshot.currentPhase == .work ? "Work" : "Rest")
-                    .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
-                    .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
-            }
-            ZStack {
-                // Intervals only for now. EMOM counts a phase too, but its screen is the
-                // App Store hero and stays as it is until the ring has proved itself here.
-                if timerMode == .intervals {
-                    SharedPhaseRing(
-                        remaining: activeDisplayTime(snapshot: snapshot),
-                        duration: sharedPhaseDuration(mode: engine.mode, phase: snapshot.currentPhase),
-                        tint: snapshot.currentPhase == .work
-                            ? DesignTokens.Common.primary(scheme)
-                            : DesignTokens.Common.Text.secondary(scheme),
-                        track: DesignTokens.Common.Text.tertiary(scheme).opacity(0.25),
-                        diameter: DesignTokens.Typography.Numeral.lg.size * fontScale * 4.0,
-                        lineWidth: 6 * fontScale
-                    )
-                }
-                Text(sharedTimeString(from: activeDisplayTime(snapshot: snapshot)))
-                    .font(.system(size: DesignTokens.Typography.Numeral.lg.size * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
-                    .monospacedDigit()
-                    .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
-            }
-            .frame(maxWidth: .infinity)
-
-            if timerMode == .forTime {
-                // No rounds in For Time; show the cap as context when one is set.
-                if let cap = engine.forTimeCapSeconds {
-                    Text("Cap \(sharedFormatEmomLength(cap))")
-                        .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                        .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
-                }
-            } else {
-                Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
-                    .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                    .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
-
-                if timerMode == .intervals {
-                    Text(sharedTotalRemainingLabel(snapshot: snapshot))
-                        .font(.system(size: DesignTokens.Typography.Size.sm * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
-                        .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
-                }
-            }
-
+            phaseLabel(snapshot: snapshot)
+            readout(snapshot: snapshot, diameter: min(DesignTokens.Typography.Numeral.lg.size * fontScale * 4.0,
+                                                      layoutSize.width - DesignTokens.Spacing.md * 2))
+                .frame(maxWidth: .infinity)
+            progressLabels(snapshot: snapshot, totalRounds: totalRounds)
         }
         .transition(.opacity)
+    }
+
+    // For Time counts up (floored so the shown time never runs ahead);
+    // EMOM and Intervals both show the countdown of the current phase, so the
+    // big readout always answers "how long until this changes". The whole-workout
+    // countdown is secondary context below.
+    @ViewBuilder
+    private func phaseLabel(snapshot: WODTimerEngineSnapshot) -> some View {
+        if timerMode == .intervals {
+            Text(snapshot.currentPhase == .work ? "Work" : "Rest")
+                .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+        }
+    }
+
+    /// The digits, and the Intervals ring around them. The digits are a quarter of
+    /// the ring's diameter, so the two always scale together. With `fill`, and no
+    /// ring to stay inside, EMOM and For Time digits take most of the width.
+    private func readout(snapshot: WODTimerEngineSnapshot, diameter: CGFloat, fill: Bool = false) -> some View {
+        ZStack {
+            // Intervals only for now. EMOM counts a phase too, but its screen is the
+            // App Store hero and stays as it is until the ring has proved itself here.
+            if timerMode == .intervals {
+                SharedPhaseRing(
+                    remaining: activeDisplayTime(snapshot: snapshot),
+                    duration: sharedPhaseDuration(mode: engine.mode, phase: snapshot.currentPhase),
+                    tint: snapshot.currentPhase == .work
+                        ? DesignTokens.Common.primary(scheme)
+                        : DesignTokens.Common.Text.secondary(scheme),
+                    track: DesignTokens.Common.Text.tertiary(scheme).opacity(0.25),
+                    diameter: diameter,
+                    lineWidth: 6 * max(1, diameter / 320)
+                )
+            }
+            Text(sharedTimeString(from: activeDisplayTime(snapshot: snapshot)))
+                .font(.system(size: (fill && timerMode != .intervals) ? diameter / 3.2 : diameter / 4.0,
+                              weight: DesignTokens.Typography.Weight.bold, design: .monospaced))
+                .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .foregroundStyle(DesignTokens.Common.Text.primary(scheme))
+        }
+    }
+
+    @ViewBuilder
+    private func progressLabels(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
+        if timerMode == .forTime {
+            // No rounds in For Time; show the cap as context when one is set.
+            if let cap = engine.forTimeCapSeconds {
+                Text("Cap \(sharedFormatEmomLength(cap))")
+                    .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+            }
+        } else {
+            Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
+                .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+
+            if timerMode == .intervals {
+                Text(sharedTotalRemainingLabel(snapshot: snapshot))
+                    .font(.system(size: DesignTokens.Typography.Size.sm * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
+                    .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+            }
+        }
     }
 
     private func activeDisplayTime(snapshot: WODTimerEngineSnapshot) -> TimeInterval {
@@ -629,6 +736,22 @@ private struct iOSContent: View {
         }
         return SharedPrimaryButton(title: title, action: action, theme: primaryTheme)
             .animation(.easeInOut(duration: 0.2), value: snapshot.state)
+    }
+}
+
+/// The largest scale at which the tallest screen, Intervals setup with three
+/// steppers, fits a given height. The numbers are measured from renders of that
+/// screen, not derived, so re-measure them if its layout changes.
+enum LayoutFit {
+    static func largestScale(height h: CGFloat, twoColumns: Bool) -> CGFloat {
+        if twoColumns {
+            // The column of three steppers sets the height.
+            return (h - 60) / 330
+        }
+        // One column: 748 pt at 1.0. Above that, spacing grows at 0.6 of the
+        // type, so 1.5 needs about 950 pt; below it, everything shrinks together
+        // apart from about 180 pt of insets and paddings that do not.
+        return h >= 748 ? 1.0 + (h - 748) / 404 : (h - 180) / 568
     }
 }
 

@@ -4,6 +4,7 @@ All notable user-facing changes to WODrounds. Newest first.
 
 ## Unreleased
 
+- **Changed:** the iPhone and iPad screens follow the space they get instead of the kind of device. Where it is about as wide as it is tall, or wider, the timer runs in two columns: the digits on the left, as large as the column allows, and the buttons on the right. That covers iPhone Duo's inner display, an iPad on its side and, new, the iPhone in landscape. Short screens such as the iPhone SE and mini scale down a little, so the setup screen fits inside the safe area instead of running into the home indicator. Larger iPhones and iPads in portrait look as before.
 - **Added:** Send feedback, in About on iPhone, iPad and Mac, and in the Mac's Help menu. It opens an email to support@iamjarl.com with the app and system version filled in below the space for your message, and you see all of it before you send.
 - **Changed:** WODrounds now needs iOS and iPadOS 17 or later, and watchOS 10 or later. Xcode 27.1, which this release is built with for iPhone Duo, builds nothing older. The Mac (macOS 13) and Apple TV (tvOS 17) are unchanged. Devices on iOS 16 or watchOS 9 keep the version they have.
 
