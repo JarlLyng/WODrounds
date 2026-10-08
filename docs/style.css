@@ -148,8 +148,8 @@ a:hover {
 /* Hero */
 .hero {
   position: relative;
-  padding: 8rem 0 6rem;
-  min-height: 90vh;
+  padding: 3rem 0 4rem;
+  min-height: min(90vh, 52rem);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -200,11 +200,11 @@ a:hover {
 
 .hero-title {
   font-family: var(--ij-font-display, "JetBrains Mono", ui-monospace, monospace);
-  font-size: clamp(3rem, 6vw, 5rem);
+  font-size: clamp(3rem, 5.5vw, 4.5rem);
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.04em;
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.25rem;
   color: #fff;
 }
 
@@ -212,7 +212,7 @@ a:hover {
   font-size: 1.25rem;
   color: rgba(255, 255, 255, 0.85);
   max-width: 38ch;
-  margin: 0 0 2.5rem;
+  margin: 0 0 1.75rem;
   line-height: 1.6;
 }
 
@@ -234,7 +234,7 @@ a:hover {
   transform: translate(-50%, -50%);
   width: 120%;
   height: 120%;
-  background: radial-gradient(circle, rgba(52, 199, 89, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(208, 255, 0, 0.10) 0%, transparent 70%);
   z-index: -1;
   pointer-events: none;
 }
@@ -243,6 +243,9 @@ a:hover {
   max-width: 300px;
   width: 100%;
   height: auto;
+  /* Short windows: the phone shrinks so the button above the fold stays there. */
+  max-height: 72vh;
+  object-fit: contain;
   border-radius: 44px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
   transform: rotate(2deg) translateY(10px);
@@ -286,6 +289,10 @@ a:hover {
   margin-top: 0.75rem;
   font-size: 0.85rem;
   color: var(--text-muted);
+}
+
+.cta-note--platforms {
+  margin-top: 0.25rem;
 }
 
 /* Section shared */
@@ -1042,10 +1049,7 @@ a:hover {
     font-size: clamp(2.25rem, 8vw, 3rem);
   }
 
-  .hero-image {
-    order: -1;
-  }
-
+  /* Promise and the App Store button first; the screenshot follows. */
   .hero-iphone {
     max-width: 220px;
     transform: none;
@@ -1053,7 +1057,16 @@ a:hover {
 
   .hero {
     min-height: auto;
-    padding: 4rem 0 3rem;
+    padding: 2rem 0 3rem;
+  }
+
+  .hero-title {
+    margin-bottom: 1rem;
+  }
+
+  .hero-lead {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
   }
 
   .platform-row {
