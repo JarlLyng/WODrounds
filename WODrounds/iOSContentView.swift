@@ -670,6 +670,13 @@ private struct AboutView: View {
             // VStack shrinks to its content and then centers as a narrow block,
             // which read as "pushed toward the middle".
             VStack(spacing: DesignTokens.Spacing.sm) {
+                if let url = feedbackMailURL() {
+                    Link(destination: url) {
+                        Text("Send feedback")
+                            .font(.system(size: DesignTokens.Typography.Size.sm, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
+                            .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                    }
+                }
                 if let url = URL(string: "https://wodrounds.iamjarl.com/support") {
                     Link(destination: url) {
                         Text("Support")
