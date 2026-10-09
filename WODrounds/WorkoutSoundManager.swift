@@ -11,6 +11,14 @@ import AudioToolbox
 import Foundation
 
 enum WorkoutSoundManager {
+    /// Every recorded voice cue, by file name (`.mp3`, in `en.lproj`, `da.lproj`,
+    /// `es.lproj`). The lines and how they are made are in docs/VOICE_CUES.md.
+    static let voiceCues = [
+        "getReadyStart", "halfway", "tenSeconds",
+        "tenRoundsLeft", "fiveRoundsLeft", "twoRoundsLeft",
+        "youDidIt", "youDidIt2", "youDidIt3",
+    ]
+
     private static var currentPlayer: AVAudioPlayer?
     private static let synthesizer = AVSpeechSynthesizer()
 
@@ -27,14 +35,16 @@ enum WorkoutSoundManager {
 
     /// "Halfway" voice cue — fires when half of the current round/phase is left.
     static func speakHalfway() {
-        speak("halfway")
+        if !play(name: "halfway", ext: "mp3") { speak("halfway") }
     }
 
     /// "Ten seconds" voice cue — fires at 10 seconds left in the round/phase.
     static func speakTenSecondsLeft() {
-        speak("ten seconds")
+        if !play(name: "tenSeconds", ext: "mp3") { speak("ten seconds") }
     }
 
+    /// The system voice, only for a cue whose recorded file is missing. It is a
+    /// different speaker from the recordings, so every cue should have a file.
     private static func speak(_ text: String) {
         guard isSoundEnabled else { return }
         configureAudioSession()
@@ -106,21 +116,30 @@ enum WorkoutSoundManager {
         }
     }
 
-    private static func play(name: String, ext: String) {
+    /// The recorded cue in the app's language: `da.lproj/halfway.mp3` for an app
+    /// running in Danish, and so on. A cue not recorded in that language falls back
+    /// to English, so a missing translation is heard in English rather than not at all.
+    static func cueURL(name: String, ext: String, bundle: Bundle = .main) -> URL? {
+        bundle.url(forResource: name, withExtension: ext)
+            ?? bundle.url(forResource: name, withExtension: ext, subdirectory: nil, localization: "en")
+    }
+
+    /// Plays a recorded cue. Returns false when there is no file for it, so a caller
+    /// can fall back; true when it played or sound is off (nothing else should play).
+    @discardableResult
+    private static func play(name: String, ext: String) -> Bool {
         // Respect the user's sound on/off preference (toggle in the main UI).
-        guard isSoundEnabled else { return }
-        let url = Bundle.main.url(forResource: name, withExtension: ext, subdirectory: "Sounds")
-            ?? Bundle.main.url(forResource: name, withExtension: ext)
-        guard let url = url else {
+        guard isSoundEnabled else { return true }
+        guard let url = cueURL(name: name, ext: ext) else {
             print("[Sound] File not found: \(name).\(ext)")
-            return
+            return false
         }
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             print("[Sound] Audio session setup failed: \(error.localizedDescription)")
-            return
+            return true
         }
         do {
             let player = try AVAudioPlayer(contentsOf: url)
@@ -129,6 +148,7 @@ enum WorkoutSoundManager {
         } catch {
             print("[Sound] Failed to play \(name).\(ext): \(error.localizedDescription)")
         }
+        return true
     }
 }
 #endif
