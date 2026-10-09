@@ -30,6 +30,9 @@ enum WatchDesign {
     static let buttonFontSize: CGFloat = 14
     static let countdownTitleFontSize: CGFloat = 13
     static let countdownNumberFontSize: CGFloat = 28
+    /// Height of the setup screen's mode switch and − / + buttons. Small enough for
+    /// three stepper rows on a 40 mm watch without scrolling.
+    static let compactControlHeight: CGFloat = 30
 
     /// Colors from the IAMJARL design system package
     enum Colors {
