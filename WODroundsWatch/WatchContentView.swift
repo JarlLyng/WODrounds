@@ -241,58 +241,72 @@ struct WatchContentView: View {
         String(format: "%d:%02d", seconds / 60, seconds % 60)
     }
 
+    /// Fits on one screen down to the 40 mm watch, with no scrolling: Start sits in
+    /// the bottom bar, and the mode switch and stepper rows are compact. The scroll
+    /// view only scrolls when the content cannot fit, at the largest text sizes.
     private func configView(now: Date) -> some View {
-        ScrollView {
-            VStack(spacing: WatchDesign.Spacing.md) {
-                // Mode switch
-                HStack(spacing: WatchDesign.Spacing.sm) {
-                    modeButton("EMOM", mode: "emom")
-                    modeButton("Intervals", mode: "intervals")
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: WatchDesign.Spacing.xs) {
+                    if storedMode == "intervals" {
+                        configRow("WORK", value: lengthString(intervalsWork),
+                                  range: watchIntervalsWorkRange, step: 5, binding: $intervalsWork)
+                        configRow("REST", value: lengthString(intervalsRest),
+                                  range: watchIntervalsRestRange, step: 5, binding: $intervalsRest)
+                        configRow("ROUNDS", value: "\(intervalsRounds)",
+                                  range: watchIntervalsRoundsRange, step: 1, binding: $intervalsRounds)
+                    } else {
+                        configRow("ROUNDS", value: "\(emomRounds)",
+                                  range: watchRoundsRange, step: 1, binding: $emomRounds)
+                        configRow("LENGTH", value: lengthString(emomLength),
+                                  range: watchEmomLengthRange, step: 30, binding: $emomLength)
+                    }
                 }
-
-                if storedMode == "intervals" {
-                    configRow("WORK", value: lengthString(intervalsWork),
-                              range: watchIntervalsWorkRange, step: 5, binding: $intervalsWork)
-                    configRow("REST", value: lengthString(intervalsRest),
-                              range: watchIntervalsRestRange, step: 5, binding: $intervalsRest)
-                    configRow("ROUNDS", value: "\(intervalsRounds)",
-                              range: watchIntervalsRoundsRange, step: 1, binding: $intervalsRounds)
-                } else {
-                    configRow("ROUNDS", value: "\(emomRounds)",
-                              range: watchRoundsRange, step: 1, binding: $emomRounds)
-                    configRow("LENGTH", value: lengthString(emomLength),
-                              range: watchEmomLengthRange, step: 30, binding: $emomLength)
-                }
-
-                Button("Start") {
-                    rebuildEngine()
-                    countdownEndTime = now.addingTimeInterval(10)
-                    // Start the HKWorkoutSession immediately so the app stays
-                    // alive during the 10s countdown (same fix as before).
-                    workoutSession.startIfNeeded()
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(WatchDesign.Colors.primary(colorScheme))
-                .foregroundStyle(WatchDesign.Colors.onPrimary)
-                .padding(.top, WatchDesign.Spacing.xs)
+                .padding(.horizontal, WatchDesign.Spacing.xs)
             }
-            .padding(.horizontal, WatchDesign.Spacing.md)
-            .padding(.vertical, WatchDesign.Spacing.sm)
+            .scrollBounceBehavior(.basedOnSize)
+            .toolbar {
+                // The mode sits in the top bar, beside the clock, so three stepper
+                // rows and Start fit below it on a 40 mm watch.
+                ToolbarItem(placement: .topBarLeading) {
+                    modeToggle
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Start") {
+                        rebuildEngine()
+                        countdownEndTime = now.addingTimeInterval(10)
+                        // Start the HKWorkoutSession immediately so the app stays
+                        // alive during the 10s countdown (same fix as before).
+                        workoutSession.startIfNeeded()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(WatchDesign.Colors.primary(colorScheme))
+                    .foregroundStyle(WatchDesign.Colors.onPrimary)
+                }
+            }
         }
     }
 
-    private func modeButton(_ title: LocalizedStringKey, mode: String) -> some View {
-        let isActive = storedMode == mode
-        return Button(title) {
-            storedMode = mode
+    /// EMOM or Intervals, as one button that switches between the two. It names
+    /// the current mode, with a swap icon so it reads as something to tap.
+    private var modeToggle: some View {
+        let isIntervals = storedMode == "intervals"
+        return Button {
+            storedMode = isIntervals ? "emom" : "intervals"
             rebuildEngine()
+        } label: {
+            HStack(spacing: 3) {
+                Text(isIntervals ? "Intervals" : "EMOM")
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                Image(systemName: "arrow.left.arrow.right")
+                    .font(.system(size: 9, weight: .bold))
+            }
+            .font(.system(size: 13, weight: .semibold, design: .rounded))
+            .foregroundStyle(WatchDesign.Colors.primary(colorScheme))
         }
-        .font(.system(size: 11, weight: isActive ? .semibold : .regular, design: .rounded))
-        .buttonStyle(.bordered)
-        .tint(isActive ? WatchDesign.Colors.primary(colorScheme) : nil)
-        .foregroundStyle(isActive
-                         ? WatchDesign.Colors.textPrimary(colorScheme)
-                         : WatchDesign.Colors.textSecondary(colorScheme))
+        .accessibilityLabel(isIntervals ? "Intervals" : "EMOM")
+        .accessibilityHint(String(localized: "Switches between EMOM and Intervals"))
     }
 
     /// `label` is the English catalog key ("WORK"), localized here for display and
@@ -303,22 +317,20 @@ struct WatchContentView: View {
                            binding: Binding<Int>) -> some View {
         let name = String(localized: String.LocalizationValue(label))
         return HStack(spacing: WatchDesign.Spacing.sm) {
-            Button {
+            stepButton("minus", enabled: binding.wrappedValue > range.lowerBound) {
                 binding.wrappedValue = max(range.lowerBound, binding.wrappedValue - step)
                 rebuildEngine()
-            } label: {
-                Image(systemName: "minus")
             }
-            .buttonStyle(.bordered)
-            .disabled(binding.wrappedValue <= range.lowerBound)
             .accessibilityLabel(String(localized: "Decrease \(name)"))
 
             VStack(spacing: 0) {
                 Text(LocalizedStringKey(label))
                     .font(.system(size: 9, weight: .medium, design: .rounded))
                     .foregroundStyle(WatchDesign.Colors.textTertiary(colorScheme))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
                 Text(value)
-                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .font(.system(size: 17, weight: .semibold, design: .rounded))
                     .monospacedDigit()
                     .foregroundStyle(WatchDesign.Colors.textPrimary(colorScheme))
             }
@@ -328,16 +340,28 @@ struct WatchContentView: View {
             .accessibilityLabel(name)
             .accessibilityValue(value)
 
-            Button {
+            stepButton("plus", enabled: binding.wrappedValue < range.upperBound) {
                 binding.wrappedValue = min(range.upperBound, binding.wrappedValue + step)
                 rebuildEngine()
-            } label: {
-                Image(systemName: "plus")
             }
-            .buttonStyle(.bordered)
-            .disabled(binding.wrappedValue >= range.upperBound)
             .accessibilityLabel(String(localized: "Increase \(name)"))
         }
+    }
+
+    /// A compact round − / + button. The system bordered style is 44 pt tall on the
+    /// watch, which is what pushed Start off the screen with three rows.
+    private func stepButton(_ symbol: String, enabled: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.system(size: 14, weight: .semibold))
+                .frame(width: WatchDesign.compactControlHeight * 1.3, height: WatchDesign.compactControlHeight)
+                .foregroundStyle(WatchDesign.Colors.textPrimary(colorScheme))
+                .background(WatchDesign.Colors.textTertiary(colorScheme).opacity(0.25), in: Capsule())
+                .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .disabled(!enabled)
+        .opacity(enabled ? 1 : 0.35)
     }
 
     private func triggerFlash() {
