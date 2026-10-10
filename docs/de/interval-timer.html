@@ -63,6 +63,8 @@
   }
   </script>
   <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="7a65d61a-b231-4611-b514-3c6cd0a5b7b3" data-do-not-track="true" data-domains="wodrounds.iamjarl.com"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.18.1/dist/components/ij-footer.js"
+    integrity="sha384-vbo2o61hGBKT7RZB4taOfO8TxwNA3akt7UBF0X31Xjfk5rZlCXkz6oJ9HqiBglTJ" crossorigin="anonymous"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -211,13 +213,22 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      <p class="footer-logo">WODrounds</p>
-      <p class="footer-links">
-        <a href="../guide.html">Guide</a>
-        <a href="../about.html">About</a>
-        <a href="../privacy.html">Datenschutz</a>
-        <a href="../support.html">Support</a>
-      </p>      <p class="footer-links" style="margin-top:0.5rem;font-size:0.85em;opacity:0.75;">Language</p>
+      <ij-footer app="wodrounds" links-label="WODrounds">
+        <a slot="links" href="../guide.html">Guide</a>
+        <a slot="links" href="../about.html">About</a>
+        <a slot="links" href="../privacy.html">Datenschutz</a>
+        <a slot="links" href="../support.html">Support</a>
+        <!-- IAMJARL cross-links for WODrounds — generated, do not edit -->
+        <!-- design system v1.18.1, registry updated 2026-10-04 -->
+        <a slot="cross-links" href="https://anvilworkout.iamjarl.com">Anvil Workout</a>
+        <a slot="cross-links" href="https://walkful.iamjarl.com">Walkful</a>
+        <a slot="cross-links" href="https://weannicotine.iamjarl.com">Wean Nicotine</a>
+        <a slot="cross-links" href="https://madebyhuman.iamjarl.com">Made by Human</a>
+        <a slot="cross-links" href="https://iamjarl.com">All projects</a>
+        <p slot="fineprint">Entwickelt in Kopenhagen von <a href="https://iamjarl.com" class="footer-author">IAMJARL</a>. Die <a href="../privacy.html">Datenschutzerklärung</a> gilt für die App und diese Website.</p>
+        <p class="footer-logo">WODrounds</p>
+      </ij-footer>
+      <p class="footer-links footer-lang-label">Language</p>
       <p class="footer-links">
         <a href="https://wodrounds.iamjarl.com/interval-timer.html" lang="en">English</a>
         <a href="https://wodrounds.iamjarl.com/da/interval-timer.html" lang="da">Dansk</a>
@@ -227,8 +238,6 @@
         <a href="https://wodrounds.iamjarl.com/fr/interval-timer.html" lang="fr">Français</a>
         <a href="https://wodrounds.iamjarl.com/es/interval-timer.html" lang="es">Español</a>
       </p>
-
-      <p class="footer-copy">Entwickelt in Kopenhagen von <a href="https://iamjarl.com" class="footer-author">IAMJARL</a>. Die <a href="../privacy.html">Datenschutzerklärung</a> gilt für die App und diese Website.</p>
     </div>
   </footer>
 </body>
