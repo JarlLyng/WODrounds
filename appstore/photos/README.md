@@ -23,6 +23,9 @@ competitors both ship plain dark grounds.
 The home page (#182) uses two more from the same set, in `docs/images/unsplash/`: the barbell
 on a chalked floor (`victor-freitas-qZ-U9z4TQ6A`) as a band between the frameless pieces and
 the tour, and the kettlebell (`ambitious-studio-rick-barrett-0tQLfwcr5-M`) behind the closing
-wordmark. The same licence reasoning holds: cropped body shots, no faces. The design system's
-`.ij-scene` makes them black and white and dims them, never in the hero, lazy-loaded with an
-empty `alt`. The plank is left out because the rower's brand shows.
+wordmark. The same licence reasoning holds, and the rule is no face and no brand, so both are
+retouched: `retouch_scenes.py` crops the beard and the logo on the shorts off the top of the
+barbell, paints out the lettering on both wrist wraps and the logo on the kettlebell's
+waistband, and writes each at 960, 1280 and 1920 px. Run it again rather than editing the
+files. The design system's `.ij-scene` makes them black and white and dims them, never in the
+hero, lazy-loaded with an empty `alt`. The plank is left out because the rower's brand shows.
