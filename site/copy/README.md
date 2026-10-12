@@ -21,7 +21,9 @@ seven files, and rebuild, rather than editing a page by hand.
   wording for each language, as read from the store page on 2026-10-12 and confirmed in App
   Store Connect the same day: Data Not Linked to You, with Health (Health & Fitness) and Crash
   Data and Performance Data (Diagnostics), all for app functionality. Check it again whenever
-  the label changes.
+  the label changes. Each page takes the wording of the storefront its price comes from, so
+  `es` is Spain's (Datos no vinculados contigo), matching its euro price, not Mexico's.
+  The data types are set inline, not as a list.
 - `maker`: the maker's note, signed "Jarl".
 - `faq`: mirrored in the FAQPage JSON-LD.
 
