@@ -1,405 +1,391 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Marks JS as available so style.css may hide .reveal sections; see .js .reveal -->
-  <script>document.documentElement.className += " js";</script>
-  <title>WODrounds | EMOM &amp; Interval Timer for iPhone, Apple Watch, Mac &amp; Apple TV</title>
-  <meta name="description" content="The only WOD timer you need. EMOM and interval timer built for CrossFit, HIIT and Tabata. Runs on iPhone, iPad, Apple Watch, Mac and Apple TV. No accounts or ads. See our Privacy Policy for crash reporting (iOS) and site analytics.">
-  <meta name="keywords" content="EMOM timer, interval timer, workout timer, Tabata timer, HIIT timer, CrossFit timer, WOD timer, Apple Watch timer, Apple TV workout, Mac workout timer, functional fitness, workout app">
-  <link rel="canonical" href="https://wodrounds.iamjarl.com/">
-  <link rel="alternate" hreflang="en" href="https://wodrounds.iamjarl.com/">
-  <link rel="alternate" hreflang="da" href="https://wodrounds.iamjarl.com/da/index.html">
-  <link rel="alternate" hreflang="sv" href="https://wodrounds.iamjarl.com/sv/index.html">
-  <link rel="alternate" hreflang="nb" href="https://wodrounds.iamjarl.com/no/index.html">
-  <link rel="alternate" hreflang="de" href="https://wodrounds.iamjarl.com/de/index.html">
-  <link rel="alternate" hreflang="fr" href="https://wodrounds.iamjarl.com/fr/index.html">
-  <link rel="alternate" hreflang="es" href="https://wodrounds.iamjarl.com/es/index.html">
-  <link rel="alternate" hreflang="x-default" href="https://wodrounds.iamjarl.com/">
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://wodrounds.iamjarl.com/">
-  <meta property="og:title" content="WODrounds | The Only WOD Timer You Need">
-  <meta property="og:description" content="EMOM and interval timer for CrossFit, HIIT and Tabata. iPhone, iPad, Apple Watch, Mac and Apple TV. No accounts or ads. Privacy Policy explains iOS crash reporting and site analytics.">
-  <meta property="og:image" content="https://wodrounds.iamjarl.com/images/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:site_name" content="WODrounds">
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="WODrounds | The Only WOD Timer You Need">
-  <meta name="twitter:description" content="EMOM &amp; interval timer for CrossFit, HIIT, Tabata. iPhone, Watch, Mac, Apple TV.">
-  <meta name="twitter:image" content="https://wodrounds.iamjarl.com/images/og-image.png">
-  <meta name="twitter:image:alt" content="WODrounds interval timer running on iPhone, showing the work phase counting down">
-  <!-- App / SEO -->
-  <meta name="robots" content="index, follow, max-image-preview:large">
-  <meta name="theme-color" content="#0a0a0a">
-  <meta name="apple-itunes-app" content="app-id=6759229877">
-  <link rel="icon" href="images/favicon-dark.png" type="image/png">
-  <link rel="apple-touch-icon" href="images/favicon-dark.png">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.18.1/dist/fonts/jetbrains-mono.css" integrity="sha384-fDaVBwljZLE3JVXuTkK1gEw9aP5EwHQ74vD094MbB9l5TSxyawriXrnZptujwZLu" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.18.1/dist/identity/wodrounds.css" integrity="sha384-dw6qyZ3VlcMASqgn2EIA2DBpdwDlL9Mq4AZzXGalRS9KeNEOj7i2LqELX7yZ3SSi" crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "WODrounds",
-    "url": "https://wodrounds.iamjarl.com/",
-    "applicationCategory": "HealthApplication",
-    "operatingSystem": "iOS 16, iPadOS 16, watchOS 9, macOS 13, tvOS 17",
-    "description": "Minimal EMOM and interval timer for CrossFit, HIIT and Tabata. Runs on iPhone, iPad, Apple Watch, Mac and Apple TV. No accounts or ads. Optional crash reporting on iOS; see privacy policy on wodrounds.iamjarl.com.",
-    "offers": {
-      "@type": "Offer",
-      "price": "2.99",
-      "priceCurrency": "USD"
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Built by scripts/build_home.py from site/copy/en.json. Edit those, not this file. -->
+<meta name="apple-itunes-app" content="app-id=6759229877">
+<title>WODrounds | EMOM, interval and For Time timer for iPhone and Apple Watch</title>
+<meta name="description" content="EMOM, intervals and For Time, with digits you can read mid-set. On iPhone, Apple Watch, iPad, Mac and Apple TV, paid for once. No account, no ads, no subscription.">
+<link rel="canonical" href="https://wodrounds.iamjarl.com/">
+<link rel="alternate" hreflang="en" href="https://wodrounds.iamjarl.com/">
+<link rel="alternate" hreflang="da" href="https://wodrounds.iamjarl.com/da/index.html">
+<link rel="alternate" hreflang="de" href="https://wodrounds.iamjarl.com/de/index.html">
+<link rel="alternate" hreflang="es" href="https://wodrounds.iamjarl.com/es/index.html">
+<link rel="alternate" hreflang="fr" href="https://wodrounds.iamjarl.com/fr/index.html">
+<link rel="alternate" hreflang="nb" href="https://wodrounds.iamjarl.com/no/index.html">
+<link rel="alternate" hreflang="sv" href="https://wodrounds.iamjarl.com/sv/index.html">
+<link rel="alternate" hreflang="x-default" href="https://wodrounds.iamjarl.com/">
+<meta name="theme-color" content="#0B0C0D">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WODrounds">
+<meta property="og:title" content="WODrounds | EMOM, interval and For Time timer for iPhone and Apple Watch">
+<meta property="og:description" content="EMOM, intervals and For Time, with digits you can read mid-set. On iPhone, Apple Watch, iPad, Mac and Apple TV, paid for once. No account, no ads, no subscription.">
+<meta property="og:url" content="https://wodrounds.iamjarl.com/">
+<meta property="og:image" content="https://wodrounds.iamjarl.com/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="da_DK">
+<meta property="og:locale:alternate" content="de_DE">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="nb_NO">
+<meta property="og:locale:alternate" content="sv_SE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WODrounds | EMOM, interval and For Time timer for iPhone and Apple Watch">
+<meta name="twitter:description" content="EMOM, intervals and For Time, with digits you can read mid-set. On iPhone, Apple Watch, iPad, Mac and Apple TV, paid for once. No account, no ads, no subscription.">
+<meta name="twitter:image" content="https://wodrounds.iamjarl.com/images/og-image.png">
+<link rel="icon" href="images/favicon-dark.png" type="image/png">
+<link rel="apple-touch-icon" href="images/favicon-dark.png">
+<!-- The design system's marketing kit and WODrounds' dark identity, all from v1.25.0 (#182). -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/css/tokens.css"
+  integrity="sha384-7mIi/daEMnWFSVRRBcuRlED7KMkAyFh6kUkXg8KD70ih8iPrrwXoe/ZEJuVOFK7R" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/identity/wodrounds.css"
+  integrity="sha384-+qiDMXymuOcArs4hrA5Eok54hY/iuwXWcq64au62d/bQXSx1/Uh8AmuetXELCovd" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/fonts/jetbrains-mono.css"
+  integrity="sha384-K9dCvR5cEupe+OP9ORKSXf0GVpmuwIFY76WZcV5fgNWqo0eEjo4JFIAmUTwfdpQ8" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/kit/kit.css"
+  integrity="sha384-tHt/CJKtfPbMO/nEgPZHLw34WarZUcpabnkjbyzxqT84bldYvc2WLMqrwVTNKVro" crossorigin="anonymous">
+<link rel="stylesheet" href="home.css">
+<script type="module" src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/kit/kit.js"
+  integrity="sha384-rGama9fiL3OtukRCrj0alAP9yZwtWeLT5AOewtHWaCgwV2jjgrWuplf1t4M8vlIH" crossorigin="anonymous"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/components/ij-nav.js"
+  integrity="sha384-eqJtCXuLp8enZ2tpIOAuBB9GlMbX2qCH1UoKA0Lobtd4mABWsq98hVCfbToQRIi+" crossorigin="anonymous"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/components/ij-footer.js"
+  integrity="sha384-WYNy1mUQL32Xlo8ci/uUJVm522N+0MvZ/8X+Ij0kwa8Kwl5eeLoyjIpc6AWah2mG" crossorigin="anonymous"></script>
+<script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="7a65d61a-b231-4611-b514-3c6cd0a5b7b3" data-do-not-track="true" data-domains="wodrounds.iamjarl.com"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://wodrounds.iamjarl.com/#app",
+  "name": "WODrounds",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "iOS 16, iPadOS 16, watchOS 9, macOS 13, tvOS 17",
+  "description": "EMOM, intervals and For Time, with digits you can read mid-set. On iPhone, Apple Watch, iPad, Mac and Apple TV, paid for once. No account, no ads, no subscription.",
+  "url": "https://wodrounds.iamjarl.com/",
+  "downloadUrl": "https://apps.apple.com/app/id6759229877",
+  "inLanguage": [
+    "en",
+    "da",
+    "es"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "2.99",
+    "priceCurrency": "USD",
+    "url": "https://apps.apple.com/app/id6759229877"
+  },
+  "screenshot": [
+    "https://wodrounds.iamjarl.com/assets/site/tour-emom-en.jpg",
+    "https://wodrounds.iamjarl.com/assets/site/tour-intervals-en.jpg",
+    "https://wodrounds.iamjarl.com/assets/site/tour-fortime-en.jpg"
+  ],
+  "publisher": {
+    "@id": "https://iamjarl.com/#org"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://iamjarl.com/#org",
+  "name": "IAMJARL",
+  "url": "https://iamjarl.com",
+  "sameAs": [
+    "https://github.com/JarlLyng"
+  ]
+}
+</script>
+<!-- Mirrors the visible FAQ word for word. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an EMOM timer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EMOM stands for Every Minute on the Minute. You do a set at the start of each minute and rest for what is left of it. In WODrounds you choose 1 to 120 rounds, each from 30 seconds to 9 minutes 30 seconds long."
+      }
     },
-    "screenshot": [
-      "https://wodrounds.iamjarl.com/images/iphone-setup.jpg",
-      "https://wodrounds.iamjarl.com/images/mac-setup.jpg",
-      "https://wodrounds.iamjarl.com/images/appletv-running.jpg"
-    ],
-    "featureList": "EMOM timer, Interval timer, For Time timer, Tabata presets, iPhone to Watch sync, Apple Health integration, Apple TV support, Mac support, Dark mode, No accounts required",
-    "softwareVersion": "1.8",
-    "author": {
-      "@type": "Person",
-      "name": "Jarl",
-      "url": "https://iamjarl.com"
+    {
+      "@type": "Question",
+      "name": "Can I use WODrounds for Tabata?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Tabata is 20 seconds of work and 10 seconds of rest, 8 times. Choose Intervals and set work to 20, rest to 10 and rounds to 8. The timer runs 3:50, because there is no rest after the last round."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I time a For Time WOD?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Choose For Time and the clock counts up from zero. Press Stop when you finish and the Done screen shows your time. You can set a time cap from 0:30 to 60:00, or leave it uncapped."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work on Apple TV?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. WODrounds runs on Apple TV, controlled with the Siri Remote, with the same three timers and the same sound cues as on the iPhone. It runs on its own there and does not sync with the iPhone."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need an iPhone for the Apple Watch app?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not for EMOM and Intervals, which the Watch sets up and runs on its own. A workout you start on the iPhone shows on the Watch live, with the same time and round, and that is how For Time reaches the Watch. The Watch gives haptics, not sound."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does WODrounds keep a log of my workouts?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is a timer, not a log. On iPhone and iPad it can save a finished workout to Apple Health as a HIIT session, if you allow it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does it cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One purchase covers iPhone, iPad, Apple Watch, Mac and Apple TV. No subscription, no in-app purchases, no ads. The App Store shows the price in your currency."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the app or this site track me?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The app has no analytics and no ad tracking. On iPhone and iPad it can send crash reports so I can fix bugs, which is the Diagnostics on the App Store's privacy label. This site counts page views with Umami, without cookies. Neither sees your workouts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which languages is the app in?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "English, Danish and Spanish. The spoken cues are in English."
+      }
     }
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is an EMOM timer?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "EMOM stands for Every Minute on the Minute. You perform a set of exercises at the start of each minute and rest for the remaining time. WODrounds lets you set 1 to 120 rounds with custom round lengths from 30 seconds to 9 minutes 30 seconds."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I use WODrounds for Tabata workouts?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Tabata is a type of interval training with 20 seconds of work and 10 seconds of rest for 8 rounds. In WODrounds, switch to Intervals mode and set work to 20, rest to 10, and rounds to 8."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I time a For Time WOD?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Switch to For Time mode and the clock counts up from zero. Press Stop when you finish and your time is saved. You can set an optional time cap (0:30 to 60:00) so the timer stops automatically, or leave it uncapped to run until you stop it."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Does WODrounds work on Apple TV?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. WODrounds is a native app on Apple TV. Navigate with the Siri Remote and see your timer on the big screen. It supports EMOM, Intervals and For Time with sound cues."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do I need an iPhone to use the Apple Watch app?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The Watch app syncs with your iPhone in real time, so a workout you start on iPhone shows the same time and round on your wrist. The Watch can also set up and run EMOM and Intervals on its own, with no iPhone needed. For Time is synced from iPhone only."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Does WODrounds save my workouts?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "On iPhone, completed workouts are saved to Apple Health as HIIT sessions if you grant permission. This is optional and write-only. Your workout programming is not uploaded to us for analytics; see the Privacy Policy for Apple Health, optional iOS crash reporting (Sentry), and website analytics (Umami)."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How much does WODrounds cost? Is there a subscription?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "WODrounds is a one-time purchase. Pay once and own it forever. No subscription, no in-app purchases, no ads. All features are included. The price is US$2.99 (it varies by region and currency)."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Does WODrounds or this website track me?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The app does not use marketing analytics or ad trackers. On iPhone, crash reports may be sent to Sentry to fix bugs. This website uses Umami for aggregate page views. Neither receives your workout programming. See the Privacy Policy on wodrounds.iamjarl.com for details."
-        }
-      }
-    ]
-  }
-  </script>
-  <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="7a65d61a-b231-4611-b514-3c6cd0a5b7b3" data-do-not-track="true" data-domains="wodrounds.iamjarl.com"></script>
+  ]
+}
+</script>
 </head>
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a href="index.html" class="logo" aria-label="WODrounds home">
-        <img src="images/logo-dark.svg" alt="" class="logo-icon" width="28" height="28" aria-hidden="true">
-        WODrounds
-      </a>
-      <nav class="nav" aria-label="Main navigation">
-        <a href="guide.html">Guide</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="support.html">Support</a>
-      </nav>
+<body class="ij-page">
+<a class="skip-link" href="#main">Skip to content</a>
+<ij-nav>
+  <a slot="brand" href="index.html">WODrounds</a>
+  <a slot="links" href="#timers">Timers</a>
+  <a slot="links" href="#where">Where it works</a>
+  <a slot="links" href="#faq">FAQ</a>
+  <a slot="cta" href="https://apps.apple.com/app/id6759229877?pt=128512007&amp;ct=site&amp;mt=8" data-umami-event="store-click" data-umami-event-store="app-store" data-umami-event-placement="nav" data-umami-event-locale="en">Download</a>
+</ij-nav>
+
+<main id="main">
+
+  <!-- 1. Hero. On a phone the words and the store button come before the device. -->
+  <section class="ij-hero ij-hero--split" id="hero">
+    <div class="ij-container ij-hero__inner">
+      <div class="ij-hero__text">
+        <h1 class="ij-display">The only WOD timer you need.</h1>
+        <p class="ij-lede">EMOM, intervals and For Time, with digits you can read mid-set. On your iPhone and your Apple Watch, paid for once.</p>
+        <div class="ij-store" data-ij-store="wodrounds" data-ij-store-locale="en">
+          <a class="ij-store-badge" href="https://apps.apple.com/app/id6759229877?pt=128512007&amp;ct=site&amp;mt=8" data-umami-event="store-click" data-umami-event-store="app-store" data-umami-event-placement="hero" data-umami-event-locale="en">
+            <img src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/badges/app-store-white-en-us.svg" alt="Download on the App Store" width="120" height="40">
+          </a>
+          <p class="ij-store-facts">$2.99 once · iOS 16 or later</p>
+        </div>
+      </div>
+      <div class="ij-hero__media">
+        <div class="ij-phone" style="--ij-phone-width: 320px">
+          <div class="ij-phone__screen">
+            <video class="ij-loop" muted loop playsinline preload="none" poster="/assets/site/intervals-en-poster.jpg"
+              width="602" height="1308" aria-label="WODrounds running a Tabata, 20 seconds of work and 10 of rest: five seconds of work left in round 3 of 8, then rest begins."><source src="/assets/site/intervals-en.mp4" type="video/mp4"></video>
+          </div>
+        </div>
+      </div>
     </div>
-  </header>
+  </section>
 
-  <main id="main">
-    <!-- Hero -->
-    <section class="hero">
-      <div class="hero-bg" aria-hidden="true">
-        <img src="images/unsplash/ambitious-studio-rick-barrett-diDnHZkGRsw-1920.jpg" srcset="images/unsplash/ambitious-studio-rick-barrett-diDnHZkGRsw-960.jpg 960w, images/unsplash/ambitious-studio-rick-barrett-diDnHZkGRsw-1920.jpg 1920w" sizes="100vw" width="1920" height="1280" alt="" decoding="async">
-      </div>
-      <div class="wrap hero-content">
-        <div class="hero-text">
-          <p class="hero-label animate" style="--delay: 0ms">EMOM &amp; Interval Timer</p>
-          <h1 class="hero-title animate" style="--delay: 100ms">The only<br>WOD timer<br>you need.</h1>
-          <p class="hero-lead animate" style="--delay: 250ms">Built for CrossFit, HIIT and Tabata. Start on iPhone, follow on Apple Watch. Or train from your Mac, iPad and Apple TV. Zero setup, zero accounts, zero noise.</p>
-          <p class="hero-cta animate" style="--delay: 450ms">
-            <a href="https://apps.apple.com/app/wodrounds/id6759229877?pt=128512007&amp;ct=site&amp;mt=8" class="btn btn-primary btn-large" data-umami-event="appstore-click" data-umami-event-page="index" data-umami-event-lang="en" data-umami-event-placement="hero">Download on the App Store</a>
-            <span class="cta-note">Pay once, $2.99 in the US store. No subscription, no ads, no account.</span>
-            <span class="cta-note cta-note--platforms">iPhone &middot; iPad &middot; Apple Watch &middot; Mac &middot; Apple TV</span>
-          </p>
+  <!-- 2. Frameless pieces of the app, each linking to its timer page -->
+  <section class="ij-section ij-section--band" id="timers" aria-labelledby="timers-h">
+    <div class="ij-container ij-stack">
+      <h2 class="ij-headline" id="timers-h">Built for the workout</h2>
+      <div class="ij-bento">
+        <div class="ij-card ij-card--half">
+          <div class="ij-card__piece"><img src="/assets/site/piece-ring-en.png" alt="Work, 14 seconds left, inside a lime ring. Round 3 of 8, 2:44 left in the workout." width="362" height="444" loading="lazy" decoding="async"></div>
+          <h3 class="ij-title">Every interval, one ring</h3>
+          <p>The ring drains over each work and rest period, lime while you work and grey while you rest, so you can read it from the floor. <a href="tabata-timer.html">Tabata timer</a></p>
         </div>
-        <div class="hero-image animate" style="--delay: 600ms">
-           <img src="images/hero-screenshot.png" alt="WODrounds on iPhone: EMOM, Intervals and For Time, with rounds and round length set" width="375" height="815" fetchpriority="high" class="hero-iphone">
+        <div class="ij-card ij-card--half">
+          <div class="ij-card__piece"><img src="/assets/site/piece-emom-round-en.png" alt="39 seconds left in round 4 of 12." width="342" height="150" loading="lazy" decoding="async"></div>
+          <h3 class="ij-title">The round, always on screen</h3>
+          <p>Each minute counts down on its own, with the round you are in right under it. <a href="emom-timer.html">EMOM timer</a></p>
         </div>
-      </div>
-    </section>
-
-    <!-- iPhone + Watch showcase -->
-    <section class="app-showcase reveal">
-      <div class="wrap">
-        <h2 class="section-title">iPhone &amp; Apple Watch</h2>
-        <p class="section-lead">Start a workout on your iPhone. Your Apple Watch picks it up instantly. Or run the timer directly on the Watch when your phone is in the locker.</p>
-        <div class="app-shots">
-          <figure class="app-shot">
-            <img src="images/iphone-setup.jpg" alt="WODrounds on iPhone: EMOM setup, 10 rounds of one minute" width="375" height="815" loading="lazy" decoding="async" style="border-radius: 44px; box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);">
-            <figcaption>Set up your EMOM</figcaption>
-          </figure>
-          <figure class="app-shot app-shot--watch">
-            <img src="images/watch-setup.jpg" alt="WODrounds on Apple Watch: EMOM setup, 10 rounds of one minute" width="416" height="496" loading="lazy" decoding="async">
-            <figcaption>Or set it up on the Watch</figcaption>
-          </figure>
+        <div class="ij-card ij-card--half">
+          <div class="ij-card__piece"><img src="/assets/site/piece-finished-en.png" alt="Done. Finished in 12:47." width="322" height="210" loading="lazy" decoding="async"></div>
+          <h3 class="ij-title">Your time, when you stop</h3>
+          <p>For Time counts up from zero. Press Stop and the Done screen keeps your time, with an optional cap from 30 seconds to 60 minutes. <a href="for-time-timer.html">For Time timer</a></p>
+        </div>
+        <div class="ij-card ij-card--half">
+          <div class="ij-card__piece"><img src="/assets/site/piece-countin-en.png" alt="Get ready, 8." width="282" height="145" loading="lazy" decoding="async"></div>
+          <h3 class="ij-title">Ten seconds to set up</h3>
+          <p>Every workout starts with a 10-second count-in, enough to put the phone down and get to the bar. <a href="interval-timer.html">Interval timer</a></p>
         </div>
       </div>
-    </section>
-
-    <!-- Features -->
-    <section class="features reveal">
-      <div class="features-bg" aria-hidden="true">
-        <img src="images/unsplash/ambitious-studio-rick-barrett-1PM_MY1zbF4-1920.jpg" srcset="images/unsplash/ambitious-studio-rick-barrett-1PM_MY1zbF4-960.jpg 960w, images/unsplash/ambitious-studio-rick-barrett-1PM_MY1zbF4-1920.jpg 1920w" sizes="100vw" width="1920" height="1280" alt="" loading="lazy" decoding="async">
-      </div>
-      <div class="wrap features-content">
-        <h2 class="section-title text-center">Built for the workout</h2>
-        <ul class="feature-grid">
-          <li class="feature feature-glass delay-1">
-            <span class="feature-icon" aria-hidden="true">EMOM</span>
-            <h3>EMOM Timer</h3>
-            <p>Every Minute on the Minute. Set 1 to 120 rounds with custom round length from 30 seconds to 9:30. Large numbers, one-handed use.</p>
-          </li>
-          <li class="feature feature-glass delay-2">
-            <span class="feature-icon" aria-hidden="true">Work / Rest</span>
-            <h3>Interval Timer</h3>
-            <p>Configure work time, rest time and rounds. For Tabata, set 20 seconds work, 10 rest and 8 rounds. Perfect for HIIT, circuit training and Tabata.</p>
-          </li>
-          <li class="feature feature-glass delay-3">
-            <span class="feature-icon" aria-hidden="true">Sync</span>
-            <h3>iPhone &rarr; Watch</h3>
-            <p>Start a timer on iPhone and follow it live on Apple Watch. Same countdown, same round, same state. Or run EMOM and Intervals on the Watch by itself. For Time starts on the iPhone.</p>
-          </li>
-          <li class="feature feature-glass delay-4">
-            <span class="feature-icon" aria-hidden="true">Health</span>
-            <h3>Apple Health</h3>
-            <p>Completed workouts save to Apple Health as HIIT sessions. Your Activity rings and Fitness app reflect every workout. iOS only.</p>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Multi-platform -->
-    <section class="platforms reveal">
-      <div class="platforms-bg" aria-hidden="true">
-        <img src="images/unsplash/ambitious-studio-rick-barrett-0tQLfwcr5-M-1920.jpg" srcset="images/unsplash/ambitious-studio-rick-barrett-0tQLfwcr5-M-960.jpg 960w, images/unsplash/ambitious-studio-rick-barrett-0tQLfwcr5-M-1920.jpg 1920w" sizes="100vw" width="1920" height="1280" alt="" loading="lazy" decoding="async">
-      </div>
-      <div class="wrap platforms-content">
-        <h2 class="section-title text-center">Every screen. Same timer.</h2>
-        <p class="section-lead text-center mx-auto">WODrounds is a native app on every Apple platform. Not a web wrapper. Built with SwiftUI for each device, with the same engine under the hood.</p>
-
-        <div class="platform-showcase">
-          <figure class="platform-card platform-card--wide reveal">
-            <img src="images/mac-setup.jpg" alt="WODrounds on Mac: the EMOM setup in a compact window" width="800" height="500" loading="lazy" decoding="async">
-            <figcaption>
-              <h3>Mac</h3>
-              <p>Compact window that stays out of the way. Dark and light mode. Perfect for timing from your desk.</p>
-            </figcaption>
-          </figure>
-
-          <div class="platform-row">
-            <figure class="platform-card reveal">
-              <img src="images/appletv-running.jpg" alt="WODrounds on Apple TV: an EMOM running, 0:44 left in round 1 of 10" width="800" height="450" loading="lazy" decoding="async">
-              <figcaption>
-                <h3>Apple TV</h3>
-                <p>Your timer on the big screen. Navigate with the Siri Remote. Visible from across the gym or garage.</p>
-              </figcaption>
-            </figure>
-            <figure class="platform-card reveal">
-              <img src="images/ipad.jpg" alt="WODrounds on iPad: EMOM setup, 10 rounds of one minute" width="750" height="1000" loading="lazy" decoding="async">
-              <figcaption>
-                <h3>iPad</h3>
-                <p>Full-screen timer optimized for iPad. Prop it up, start your workout, and see the countdown from anywhere in the room.</p>
-              </figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Intervals detail -->
-    <section class="detail-section reveal">
-      <div class="detail-bg" aria-hidden="true">
-        <img src="images/unsplash/victor-freitas-qZ-U9z4TQ6A-1920.jpg" srcset="images/unsplash/victor-freitas-qZ-U9z4TQ6A-960.jpg 960w, images/unsplash/victor-freitas-qZ-U9z4TQ6A-1920.jpg 1920w" sizes="100vw" width="1920" height="1280" alt="" loading="lazy" decoding="async">
-      </div>
-      <div class="wrap detail-content">
-        <div class="detail-grid">
-          <div class="detail-text feature-glass">
-            <h2 class="section-title">EMOM, Intervals<br>or For Time.</h2>
-            <p class="section-lead">Three modes, zero bloat. EMOM gives you a round counter with a configurable minute. Intervals give you work, rest and rounds. <a href="for-time-timer.html">For Time</a> counts up from zero so you can race the clock, with an optional cap. Every mode has a 10-second countdown to get ready.</p>
-            <ul class="check-list">
-              <li>10-second countdown before every workout</li>
-              <li>Halfway and ten-seconds voice cues, plus a 3-2-1 countdown</li>
-              <li>Haptic feedback on round transitions</li>
-              <li>Pause, resume or cancel anytime. For Time uses Stop instead</li>
-            </ul>
-          </div>
-          <figure class="detail-image">
-            <img src="images/hero-screenshot.png" alt="WODrounds on iPhone: EMOM, Intervals and For Time, with rounds and round length set" width="375" height="815" loading="lazy">
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <!-- Principles -->
-    <section class="principles reveal">
-      <div class="wrap">
-        <h2 class="section-title">A tool, not a feed</h2>
-        <p class="principles-lead">I built WODrounds because every timer app I tried wanted me to create an account, watch ads, or subscribe to a plan. I just needed a timer. So I made one.</p>
-        <ul class="principles-list">
-          <li>No sign-in or accounts required</li>
-          <li>No ads or in-app usage analytics; optional crash reports on iOS (<a href="privacy.html">privacy</a>); this site uses Umami for aggregate visits only</li>
-          <li>Pay once, own it forever. No subscription, no recurring fees</li>
-          <li>No cloud database. Everything stays on your device</li>
-          <li>Optional Apple Health write-only on iOS</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="faq reveal">
-      <div class="wrap">
-        <h2 class="section-title">Frequently asked questions</h2>
-        <dl class="faq-list">
-          <div class="faq-item">
-            <dt>What is an EMOM timer?</dt>
-            <dd>EMOM stands for Every Minute on the Minute. You perform a set of exercises at the start of each minute and rest for the remaining time. WODrounds lets you set 1 to 120 rounds with custom round lengths from 30 seconds to 9 minutes 30 seconds.</dd>
-          </div>
-          <div class="faq-item">
-            <dt>Can I use WODrounds for Tabata workouts?</dt>
-            <dd>Yes. Tabata is a type of interval training with 20 seconds of work and 10 seconds of rest for 8 rounds. In WODrounds, switch to Intervals mode and set work to 20, rest to 10, and rounds to 8.</dd>
-          </div>
-          <div class="faq-item">
-            <dt>Can I time a <a href="for-time-timer.html">For Time</a> WOD?</dt>
-            <dd>Yes. Switch to For Time mode and the clock counts up from zero. Press Stop when you finish and your time is saved. You can set an optional time cap (0:30 to 60:00) so the timer stops automatically, or leave it uncapped to run until you stop it.</dd>
-          </div>
-          <div class="faq-item">
-            <dt>Does WODrounds work on Apple TV?</dt>
-            <dd>Yes. WODrounds is a native app on Apple TV. Navigate with the Siri Remote and see your timer on the big screen. It supports EMOM, Intervals and For Time with sound cues.</dd>
-          </div>
-          <div class="faq-item">
-            <dt>Do I need an iPhone to use the Apple Watch app?</dt>
-            <dd>Both. Set up and run EMOM or Intervals on the Watch with no iPhone nearby, or start a workout on your iPhone and the Watch follows it live, showing the same time and round. For Time is the one exception: it is started on the iPhone, and the Watch follows along.</dd>
-          </div>
-          <div class="faq-item">
-            <dt>Does WODrounds save my workouts?</dt>
-            <dd>On iPhone, completed workouts are saved to Apple Health as HIIT sessions if you grant permission. This is optional and write-only. No workout data is sent to any server.</dd>
-          </div>
-          <div class="faq-item">
-            <dt>How much does WODrounds cost? Is there a subscription?</dt>
-            <dd>WODrounds is a one-time purchase. Pay once and own it forever. No subscription, no in-app purchases, no ads. All features are included. The price is US$2.99 (it varies by region and currency).</dd>
-          </div>
-          <div class="faq-item">
-            <dt>Does WODrounds or this website track me?</dt>
-            <dd>The app does not use marketing analytics or ad trackers. On iPhone, crash reports may be sent to Sentry to fix bugs. This website uses Umami for aggregate page views. Neither receives your workout programming. See the <a href="privacy.html">Privacy Policy</a> for details.</dd>
-          </div>
-        </dl>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta reveal">
-      <div class="wrap">
-        <h2 class="section-title">Start timing your workout</h2>
-        <p class="cta-lead">Available on the App Store for iPhone, iPad, Apple Watch, Mac and Apple TV.</p>
-        <a href="https://apps.apple.com/app/wodrounds/id6759229877?pt=128512007&amp;ct=site&amp;mt=8" class="btn btn-primary btn-large" data-umami-event="appstore-click" data-umami-event-page="index" data-umami-event-lang="en" data-umami-event-placement="body">Download WODrounds</a>
-        <span class="cta-note">Works offline. No account needed.</span>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="wrap">
-      <p class="footer-logo">WODrounds</p>
-      <p class="footer-links">
-        <a href="guide.html">Guide</a>
-        <a href="about.html">About</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="support.html">Support</a>
-      </p>
-      <p class="footer-links" style="margin-top:0.5rem;font-size:0.85em;opacity:0.75;">More from IAMJARL</p>
-      <p class="footer-links">
-        <a href="https://anvilworkout.iamjarl.com">Anvil Workout</a>
-        <a href="https://walkful.iamjarl.com">Walkful</a>
-        <a href="https://weannicotine.iamjarl.com">Wean Nicotine</a>
-        <a href="https://trimrpix.iamjarl.com">TrimrPix</a>
-        <a href="https://madebyhuman.iamjarl.com">Made by Human</a>
-        <a href="https://iamjarl.com">All projects</a>
-      </p>
-      <p class="footer-copy">Built in Copenhagen by <a href="https://iamjarl.com" class="footer-author">IAMJARL</a>. <a href="privacy.html">Privacy Policy</a> covers the app and this website.</p>
     </div>
-  </footer>
+  </section>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var els = document.querySelectorAll('.reveal');
-      if (!els.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (!('IntersectionObserver' in window)) {
-        // No observer: show everything rather than leaving it hidden.
-        els.forEach(function(el) { el.classList.add('in-view'); });
-        return;
-      }
-      var io = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-          if (e.isIntersecting) { e.target.classList.add('in-view'); }
-        });
-      }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
-      els.forEach(function(el) { io.observe(el); });
-    });
-  </script>
+  <!-- 3. The phone that stays -->
+  <section class="ij-section" aria-labelledby="tour-h">
+    <div class="ij-container ij-stack">
+      <h2 class="ij-headline" id="tour-h">Three timers. Nothing else.</h2>
+      <div class="ij-tour">
+        <div class="ij-tour__screens">
+          <div class="ij-phone" data-step="1"><div class="ij-phone__screen"><img src="/assets/site/tour-emom-en.jpg" alt="EMOM setup: 12 rounds of 1:00." width="602" height="1308" loading="lazy" decoding="async"></div></div>
+          <div class="ij-phone" data-step="2"><div class="ij-phone__screen"><img src="/assets/site/tour-intervals-en.jpg" alt="A Tabata running: work, 14 seconds left, round 3 of 8." width="602" height="1308" loading="lazy" decoding="async"></div></div>
+          <div class="ij-phone" data-step="3"><div class="ij-phone__screen"><img src="/assets/site/tour-fortime-en.jpg" alt="Done. Finished in 12:47." width="602" height="1308" loading="lazy" decoding="async"></div></div>
+        </div>
+        <ol class="ij-tour__steps">
+          <li class="ij-tour__step" data-step="1"><h3 class="ij-title">EMOM in two numbers</h3><p>How many rounds, from 1 to 120, and how long each one is, from 30 seconds to 9:30. Press Start.</p></li>
+          <li class="ij-tour__step" data-step="2"><h3 class="ij-title">Work, rest, rounds</h3><p>Work from 5 seconds to 5 minutes, rest up to 3 minutes, up to 60 rounds. The big number is the time left in this interval, and the whole workout counts down under it.</p></li>
+          <li class="ij-tour__step" data-step="3"><h3 class="ij-title">Count up, then stop</h3><p>For Time runs until you press Stop or reach your cap. The Done screen keeps your finished time until you reset.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Where it works: one big number, then the platforms. Each trait is true where it says (#125). -->
+  <section class="ij-section ij-section--band" id="where" aria-labelledby="where-h">
+    <div class="ij-container ij-stack">
+      <h2 class="ij-headline" id="where-h">Where it works.</h2>
+      <div class="ij-traits">
+        <div class="ij-trait ij-trait--number">
+          <p class="ij-numeral home-five">5</p>
+          <h3 class="ij-title">Apple platforms. One payment.</h3>
+          <p>iPhone, iPad, Apple Watch, Mac and Apple TV. Buy WODrounds once and it runs on all of them.</p>
+        </div>
+        <div class="ij-trait">
+          <div class="ij-watch" style="--ij-watch-width: 130px"><div class="ij-watch__screen"><img src="/assets/site/watch-intervals-en.png" alt="WODrounds on Apple Watch: work, 11 seconds left, round 3 of 8." width="416" height="496" loading="lazy" decoding="async"></div></div>
+          <h3 class="ij-title">On your wrist</h3><p>The Watch follows a workout you start on the iPhone, live. It also runs EMOM and Intervals on its own. For Time starts on the iPhone.</p>
+        </div>
+        <div class="ij-trait"><h3 class="ij-title">Sound and haptics</h3><p>Voice cues and beeps on iPhone, iPad and Apple TV. Haptics on iPhone and Apple Watch. The Mac and the Watch stay silent.</p></div>
+        <div class="ij-trait ij-trait--wide">
+          <div class="ij-tv" style="--ij-tv-width: 420px"><div class="ij-tv__screen"><img src="/assets/site/tv-intervals-en.jpg" alt="WODrounds on Apple TV: a Tabata in round 3 of 8, 12 seconds of work left." width="1920" height="1080" loading="lazy" decoding="async"></div></div>
+          <h3 class="ij-title">Across the room</h3><p>On Apple TV the timer fills the screen, so a home gym can read it from the rower.</p>
+        </div>
+        <div class="ij-trait"><h3 class="ij-title">Mac and iPad</h3><p>The same three timers in a small window on the Mac and full screen on the iPad.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Privacy and price -->
+  <section class="ij-section" aria-labelledby="privacy-h">
+    <div class="ij-container ij-stack">
+      <h2 class="ij-headline" id="privacy-h">No account. Paid for once.</h2>
+      <div class="ij-assurances">
+        <div class="ij-assurance"><h3 class="ij-title">No account</h3><p>Open it and press Start. There is nothing to sign in to, and nothing needs a connection, so it works in a basement gym with no signal.</p></div>
+        <div class="ij-assurance"><h3 class="ij-title">Paid for once</h3><p>No subscription, no in-app purchases, no ads. Every feature comes with the one purchase.</p></div>
+        <div class="ij-assurance ij-assurance--label">
+          <h3 class="ij-title">Data Not Linked to You</h3>
+          <p class="home-label-intro">The App Store&#x27;s privacy label for WODrounds, as Apple shows it. <span class="home-label-source">App Privacy. As shown on the App Store, 2026-10-12.</span></p>
+          <p>The following data may be collected but it is not linked to your identity:</p>
+          <ul class="home-label-types"><li>Health &amp; Fitness</li><li>Diagnostics</li></ul>
+          <p>Health is the workout you choose to save to Apple Health on iPhone or iPad. Diagnostics are crash reports, so I can fix bugs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. A note from the maker -->
+  <section class="ij-section ij-section--band" aria-label="A note from the maker">
+    <div class="ij-container">
+      <div class="ij-maker">
+        <p>I built WODrounds because every timer app I tried wanted me to create an account, watch ads, or subscribe to a plan. I just needed a timer. So I made one.</p>
+        <p class="ij-maker__sign">Jarl</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. FAQ. The FAQPage JSON-LD in the head mirrors this word for word. -->
+  <section class="ij-section" id="faq" aria-labelledby="faq-h">
+    <div class="ij-container">
+      <div class="ij-stack ij-measure">
+        <h2 class="ij-headline" id="faq-h">Questions.</h2>
+        <div class="faq">
+          <details><summary>What is an EMOM timer?</summary>
+            <p>EMOM stands for Every Minute on the Minute. You do a set at the start of each minute and rest for what is left of it. In WODrounds you choose 1 to 120 rounds, each from 30 seconds to 9 minutes 30 seconds long.</p></details>
+          <details><summary>Can I use WODrounds for Tabata?</summary>
+            <p>Yes. Tabata is 20 seconds of work and 10 seconds of rest, 8 times. Choose Intervals and set work to 20, rest to 10 and rounds to 8. The timer runs 3:50, because there is no rest after the last round.</p></details>
+          <details><summary>Can I time a For Time WOD?</summary>
+            <p>Yes. Choose For Time and the clock counts up from zero. Press Stop when you finish and the Done screen shows your time. You can set a time cap from 0:30 to 60:00, or leave it uncapped.</p></details>
+          <details><summary>Does it work on Apple TV?</summary>
+            <p>Yes. WODrounds runs on Apple TV, controlled with the Siri Remote, with the same three timers and the same sound cues as on the iPhone. It runs on its own there and does not sync with the iPhone.</p></details>
+          <details><summary>Do I need an iPhone for the Apple Watch app?</summary>
+            <p>Not for EMOM and Intervals, which the Watch sets up and runs on its own. A workout you start on the iPhone shows on the Watch live, with the same time and round, and that is how For Time reaches the Watch. The Watch gives haptics, not sound.</p></details>
+          <details><summary>Does WODrounds keep a log of my workouts?</summary>
+            <p>No. It is a timer, not a log. On iPhone and iPad it can save a finished workout to Apple Health as a HIIT session, if you allow it.</p></details>
+          <details><summary>What does it cost?</summary>
+            <p>One purchase covers iPhone, iPad, Apple Watch, Mac and Apple TV. No subscription, no in-app purchases, no ads. The App Store shows the price in your currency.</p></details>
+          <details><summary>Does the app or this site track me?</summary>
+            <p>The app has no analytics and no ad tracking. On iPhone and iPad it can send crash reports so I can fix bugs, which is the Diagnostics on the App Store&#x27;s privacy label. This site counts page views with Umami, without cookies. Neither sees your workouts.</p></details>
+          <details><summary>Which languages is the app in?</summary>
+            <p>English, Danish and Spanish. The spoken cues are in English.</p></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Closing -->
+  <section class="ij-section ij-section--band" aria-label="Download WODrounds">
+    <div class="ij-container ij-closing">
+      <p class="ij-wordmark" style="--ij-wordmark-em: 5.2">WODrounds</p>
+      <div class="ij-store" data-ij-store="wodrounds" data-ij-store-locale="en">
+        <a class="ij-store-badge" href="https://apps.apple.com/app/id6759229877?pt=128512007&amp;ct=site&amp;mt=8" data-umami-event="store-click" data-umami-event-store="app-store" data-umami-event-placement="footer" data-umami-event-locale="en">
+          <img src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/badges/app-store-white-en-us.svg" alt="Download on the App Store" width="120" height="40">
+        </a>
+        <p class="ij-store-facts">$2.99 once · iOS 16 or later</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="ij-container site-footer">
+<ij-footer app="wodrounds" links-label="WODrounds">
+<a slot="links" href="guide.html">Timer guide</a>
+<a slot="links" href="about.html">About</a>
+<a slot="links" href="privacy.html">Privacy Policy</a>
+<a slot="links" href="support.html">Support</a>
+<a slot="links" href="da/index.html" hreflang="da" lang="da">Dansk</a>
+<a slot="links" href="de/index.html" hreflang="de" lang="de">Deutsch</a>
+<a slot="links" href="es/index.html" hreflang="es" lang="es">Español</a>
+<a slot="links" href="fr/index.html" hreflang="fr" lang="fr">Français</a>
+<a slot="links" href="no/index.html" hreflang="nb" lang="nb">Norsk</a>
+<a slot="links" href="sv/index.html" hreflang="sv" lang="sv">Svenska</a>
+<!-- IAMJARL cross-links for WODrounds: generated, do not edit -->
+<!-- design system v1.25.0, registry updated 2026-10-12 -->
+<!-- Paste inside <ij-footer app="wodrounds">. Rebuild to refresh. -->
+<a slot="cross-links" href="https://anvilworkout.iamjarl.com">Anvil Workout</a>
+<a slot="cross-links" href="https://walkful.iamjarl.com">Walkful</a>
+<a slot="cross-links" href="https://weannicotine.iamjarl.com">Wean Nicotine</a>
+<a slot="cross-links" href="https://madebyhuman.iamjarl.com">Made by Human</a>
+<a slot="cross-links" href="https://iamjarl.com">All projects</a>
+<p slot="fineprint">© 2026 IAMJARL.</p>
+<!-- No slot attribute on purpose: the fallback, shown only if the component never loads. -->
+<p><a href="guide.html">Timer guide</a> &middot; <a href="about.html">About</a> &middot; <a href="privacy.html">Privacy Policy</a> &middot; <a href="support.html">Support</a> &middot; © 2026 IAMJARL.</p>
+</ij-footer>
+</div>
 </body>
 </html>

@@ -76,21 +76,10 @@
     "lede": "iPhone, iPad, Apple Watch, Mac och Apple TV. Köp WODrounds en gång så fungerar den på alla.",
     "traits": [
       {
-        "id": "tv",
-        "title": "Tvärs över rummet",
-        "body": "På Apple TV fyller timern skärmen, så den går att läsa från roddmaskinen i ett hemmagym.",
-        "alt": "WODrounds på Apple TV: en Tabata i varv 3 av 8, 12 sekunders arbete kvar."
-      },
-      {
         "id": "watch",
         "title": "På handleden",
         "body": "Klockan följer live ett pass du startar på iPhonen. Den kör också EMOM och intervaller på egen hand. For Time startar på iPhonen.",
         "alt": "WODrounds på Apple Watch: Work, 11 sekunder kvar, varv 3 av 8."
-      },
-      {
-        "id": "offline",
-        "title": "Offline, inget konto",
-        "body": "Inget att registrera och inget att synka. Den fungerar i ett källargym utan täckning."
       },
       {
         "id": "sound",
@@ -98,16 +87,23 @@
         "body": "Röst och pip på iPhone, iPad och Apple TV. Vibration på iPhone och Apple Watch. Mac och klocka är tysta."
       },
       {
+        "id": "tv",
+        "title": "Tvärs över rummet",
+        "body": "På Apple TV fyller timern skärmen, så den går att läsa från roddmaskinen i ett hemmagym.",
+        "alt": "WODrounds på Apple TV: en Tabata i varv 3 av 8, 12 sekunders arbete kvar."
+      },
+      {
         "id": "mac-ipad",
         "title": "Mac och iPad",
         "body": "Samma tre timrar i ett litet fönster på Mac och i helskärm på iPad."
       }
-    ]
+    ],
+    "heading": "Var den fungerar."
   },
   "assurances": {
     "noAccount": {
       "title": "Inget konto",
-      "body": "Öppna den och tryck Start. Det finns inget att logga in på."
+      "body": "Öppna den och tryck Start. Det finns inget att logga in på och inget behöver uppkoppling, så den fungerar i ett källargym utan täckning."
     },
     "paidOnce": {
       "title": "Betald en gång",
@@ -117,14 +113,20 @@
       "heading": "Appintegritet",
       "category": "Data som inte kopplas till dig",
       "sentence": "Följande data kan samlas in men den kopplas inte till din identitet:",
-      "types": ["Hälsa och motion", "Diagnostik"],
+      "types": [
+        "Hälsa och motion",
+        "Diagnostik"
+      ],
       "note": "Hälsa är passet du väljer att spara i Apple Hälsa på iPhone eller iPad. Diagnostik är kraschrapporter, så att jag kan rätta fel.",
-      "source": "Så som det står i App Store, 2026-10-12."
-    }
+      "source": "Så som det står i App Store, 2026-10-12.",
+      "intro": "App Stores integritetsetikett för WODrounds, så som Apple visar den."
+    },
+    "heading": "Inget konto. Betald en gång."
   },
   "maker": {
     "quote": "Jag byggde WODrounds för att varenda timerapp jag provade ville att jag skulle skapa ett konto, titta på annonser eller teckna en prenumeration. Jag behövde bara en timer. Så jag gjorde en.",
-    "signature": "Jarl"
+    "signature": "Jarl",
+    "label": "En rad från utvecklaren"
   },
   "faq": [
     {
@@ -165,12 +167,27 @@
     }
   ],
   "closing": {
-    "wordmark": "WODrounds"
+    "wordmark": "WODrounds",
+    "label": "Hämta WODrounds"
   },
   "links": {
     "emom": "emom-timer.html",
     "interval": "interval-timer.html",
     "tabata": "tabata-timer.html",
     "fortime": "for-time-timer.html"
+  },
+  "nav": {
+    "timers": "Timrar",
+    "where": "Var den fungerar",
+    "faq": "Frågor"
+  },
+  "faqHeading": "Frågor.",
+  "footer": {
+    "guide": "Timerguide",
+    "about": "Om",
+    "privacy": "Integritetspolicy",
+    "support": "Support",
+    "languages": "Språk",
+    "fineprint": "© 2026 IAMJARL."
   }
 }

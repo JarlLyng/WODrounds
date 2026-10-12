@@ -1,0 +1,68 @@
+/* The home pages (#182): the few things the design system's kit doesn't carry.
+   Everything else comes from kit.css and WODrounds' identity sheet. */
+
+/* Keyboard users first: a skip link, shown on focus. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  border-radius: var(--ij-radius-sm, 8px);
+  background: var(--ij-color-accent);
+  color: var(--ij-color-on-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus { top: 1rem; }
+
+/* The frameless pieces are captures on the app's black. "Lighten" lets the card
+   show through the black and keeps the digits, the ring and the lime as they are. */
+.ij-card__piece > img {
+  mix-blend-mode: lighten;
+  max-width: min(100%, 260px);
+  max-height: 220px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* The one big number. It doesn't count up. */
+.home-five {
+  font-size: var(--ij-mkt-wordmark-size);
+  line-height: 1;
+  margin: 0;
+  color: var(--ij-color-accent) !important;
+}
+
+/* The App Store's privacy label, in Apple's words. */
+.home-label-intro { color: var(--ij-color-text-secondary); }
+.home-label-source { display: block; margin-top: 0.25rem; font-size: 0.85em; color: var(--ij-color-text-tertiary); }
+.home-label-types { margin: 0; padding-left: 1.2rem; color: var(--ij-color-text-primary); }
+
+/* FAQ: native details, styled. */
+.faq { display: grid; gap: var(--ij-spacing-sm); }
+.faq details {
+  border: 1px solid var(--ij-color-border-subtle);
+  border-radius: var(--ij-radius-md, 12px);
+  background: var(--ij-color-bg-card);
+  padding: 0 1.1rem;
+}
+.faq summary {
+  cursor: pointer;
+  padding: 1rem 0;
+  font-weight: 600;
+  color: var(--ij-color-text-primary);
+  list-style-position: outside;
+}
+.faq details[open] summary { padding-bottom: 0.5rem; }
+.faq details p { margin: 0 0 1rem; color: var(--ij-color-text-secondary); }
+
+/* On a translated page, a link to a page that exists only in English says so. */
+html:not([lang="en"]) a[hreflang="en"]::after {
+  content: " EN";
+  font-size: 0.7em;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+.site-footer { padding-block: var(--ij-mkt-space-block, 3rem); }
