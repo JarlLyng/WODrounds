@@ -23,8 +23,8 @@ import re
 import sys
 from pathlib import Path
 
-from build_home import (CDN, COPY, DESIGN_VERSION, DOCS, LANG_NAMES, LANGS, ROOT, SRI, e,
-                        fetch, fragment, home_href)
+from build_home import (CDN, COPY, DESIGN_VERSION, DOCS, LANG_NAMES, LANGS, ROOT, SRI, cross_links,
+                        e, fetch, fragment, home_href)
 
 # <html lang> on the pages, to the copy file and the folder it lives in.
 LANG_OF = {"en": "en", "da": "da", "de": "de", "es": "es", "fr": "fr", "nb": "nb", "no": "nb", "sv": "sv"}
@@ -94,8 +94,7 @@ def footer_block(lang: str, folder: str, alternates: dict[str, str]) -> str:
             continue
         href = alternates.get(l) or home_href(fo, folder)
         langs.append(f'<a slot="links" href="{href}" hreflang="{l}" lang="{l}">{LANG_NAMES[l]}</a>')
-    cross = "\n".join(ln for ln in fetch("dist/footers/wodrounds.html").splitlines()
-                      if 'slot="cross-links"' in ln or ln.startswith("<!--"))
+    cross = cross_links(lang)
     fallback = " &middot; ".join(f'<a href="{h}"{en_attr}>{e(t)}</a>' for h, t in own)
     return f'''<!-- frame:footer -->
 <ij-footer app="wodrounds" links-label="WODrounds">

@@ -24,16 +24,16 @@ COPY = ROOT / "site" / "copy"
 SITE = "https://wodrounds.iamjarl.com"
 APP_ID = "6759229877"
 
-DESIGN_VERSION = "1.27.0"
+DESIGN_VERSION = "1.29.0"
 CDN = f"https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v{DESIGN_VERSION}"
 SRI = {
-    "dist/css/tokens.css": "sha384-lUfvcrapc06S2TYGgD2xqH12RmcJvhF0n6Y2wVLZ/Ic9Sz5bi3ae0sX9Fcr9frJR",
-    "dist/identity/wodrounds.css": "sha384-gFTXVIoo/YvacAT5JxSlhGMNOUnrvvvCRK84H2VXtTBDqawnQNxWeL34gKEsjEJe",
-    "dist/fonts/jetbrains-mono.css": "sha384-BPEa18VrG+uVFRsfnChBEvwfBO75Pe1/jFFyzbs52BhCzabLEMUuLFQD1QMiRelm",
-    "dist/kit/kit.css": "sha384-YRM9Clkjn4G/BOJeaJQ0xcDKUDAW9GKlhNjLj/pkL39BEAviKnf3jx4h0p8wV4CE",
-    "dist/kit/kit.js": "sha384-TWUIZarqO2gUXjJchgDbCMQn6O4DcTXtMPbPE02wT0QLLXjUwwndXTainwjqXrDa",
-    "dist/components/ij-nav.js": "sha384-rfFGyLCJO1I5Wc7UzQnbwvLcMfb4dlYwUkFyZgPA1hhbpeEwA4RDVoxIVqage5sQ",
-    "dist/components/ij-footer.js": "sha384-gGA1tzED68MBs2FjWMsSnbeXPkJwayCkjkx44b7+M3okCSWg2noj1cfiS+tQGQQL",
+    "dist/css/tokens.css": "sha384-PjJvOjBQ0JFKQk+XkQpRor6o7qw/Fs5mDKKoTQ3rwuBLuj5GtXpd6FDUOeE402G6",
+    "dist/identity/wodrounds.css": "sha384-6w1MrYZ71b1HtogTiD93uzkKm5TRzVHXJw6Hiid3h5w0bd9L22Wy7jHsawMF3Izw",
+    "dist/fonts/jetbrains-mono.css": "sha384-fQdr07pAKQAcvHFeI72U4Wx8CiK2q9ilPU7zKXdf6wpFEzYdC8YAZjZ7xvCZ91vd",
+    "dist/kit/kit.css": "sha384-DRCPoqgHnzFfJOvB6CoPkQnl2eFwdzv0qjtEw6nDNB+OCzv/W0uvL4LBu+uyQiGQ",
+    "dist/kit/kit.js": "sha384-m94hbQajjK02lEyfLgweaxJMKImF99h2/acBZ7I40RvyNN+fMlAWAtCfY39eLs6W",
+    "dist/components/ij-nav.js": "sha384-XecJFMR93u4krdBam99rEdklN0rvMJmbYP41OX02IZbs9wlp6hjdEBgXczMg3jiE",
+    "dist/components/ij-footer.js": "sha384-QEFi85RQoD6M+uZCO28j7rQKSTfQo7OJ0g7l0uenR8ftNJPqHrCRzM0+6v+Tb95/",
 }
 
 # Language, its folder under docs/, and its Open Graph locale.
@@ -64,6 +64,14 @@ def fetch(path: str) -> str:
         with urllib.request.urlopen(f"{CDN}/{path}", timeout=30) as r:
             _cache[path] = r.read().decode()
     return _cache[path]
+
+
+def cross_links(lang: str) -> str:
+    """The registry's cross-links for the footer, in the page's language: only the
+    portfolio link's words differ (v1.29.0). English is the unsuffixed fragment."""
+    name = "wodrounds.html" if lang == "en" else f"wodrounds.{lang}.html"
+    return "\n".join(ln for ln in fetch(f"dist/footers/{name}").splitlines()
+                     if 'slot="cross-links"' in ln or ln.startswith("<!--"))
 
 
 def fragment(path: str) -> str:
@@ -215,7 +223,7 @@ def build(lang: str, folder: str, og_locale: str) -> str:
     lang_links = "\n".join(
         f'<a slot="links" href="{home_href(fo, folder)}" hreflang="{l}" lang="{l}">{LANG_NAMES[l]}</a>'
         for l, fo, _ in LANGS if l != lang)
-    cross = "\n".join(ln for ln in fetch("dist/footers/wodrounds.html").splitlines() if 'slot="cross-links"' in ln or ln.startswith("<!--"))
+    cross = cross_links(lang)
     fallback = " &middot; ".join(f'<a href="{h}"{en_attr}>{e(t)}</a>' for h, t in own)
 
     title = e(c["meta"]["title"])
