@@ -16,7 +16,7 @@
       {
         "id": "ring",
         "title": "Un anneau par intervalle",
-        "body": "L'anneau se vide à chaque période de travail et de repos, vert citron pendant l'effort et gris pendant le repos, pour le lire depuis le sol.",
+        "body": "L'anneau se vide à chaque période de travail et de repos et passe au gris pendant le repos, pour le lire depuis le sol.",
         "link": "tabata",
         "linkText": "Minuteur Tabata",
         "alt": "Work, encore 14 secondes, dans un anneau vert citron. Tour 3 sur 8, encore 2:44 d'entraînement."

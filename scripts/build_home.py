@@ -173,7 +173,11 @@ def build(lang: str, folder: str, og_locale: str) -> str:
   <h3 class="ij-title">{e(w["numeralLabel"])}</h3>
   <p>{e(w["lede"])}</p>
 </div>''']
-    for t in w["traits"]:
+    # The two short traits sit beside the number, which spans two rows at desktop width;
+    # the Watch, the tallest card, goes in the last row with the wide Apple TV card.
+    # Next to the number it stretched that card and left a gap above the "5".
+    order = ["sound", "mac-ipad", "watch", "tv"]
+    for t in sorted(w["traits"], key=lambda t: order.index(t["id"])):
         if t["id"] == "tv":
             traits.append(f'''<div class="ij-trait ij-trait--wide">
   <div class="ij-tv" style="--ij-tv-width: 420px"><div class="ij-tv__screen"><img src="{a}/tv-intervals-{app}.jpg" alt="{e(t["alt"])}" width="1920" height="1080" loading="lazy" decoding="async"></div></div>
@@ -190,14 +194,13 @@ def build(lang: str, folder: str, og_locale: str) -> str:
     # 5. Privacy and price
     s = c["assurances"]
     pl = s["privacyLabel"]
-    types = "".join(f"<li>{e(x)}</li>" for x in pl["types"])
+    types = e(", ".join(pl["types"]))  # inline, as the voice rules want, not a list
     assurances = f'''<div class="ij-assurance"><h3 class="ij-title">{e(s["noAccount"]["title"])}</h3><p>{e(s["noAccount"]["body"])}</p></div>
 <div class="ij-assurance"><h3 class="ij-title">{e(s["paidOnce"]["title"])}</h3><p>{e(s["paidOnce"]["body"])}</p></div>
 <div class="ij-assurance ij-assurance--label">
   <h3 class="ij-title">{e(pl["category"])}</h3>
   <p class="home-label-intro">{e(pl["intro"])} <span class="home-label-source">{e(pl["heading"])}. {e(pl["source"])}</span></p>
-  <p>{e(pl["sentence"])}</p>
-  <ul class="home-label-types">{types}</ul>
+  <p>{e(pl["sentence"])} <span class="home-label-types">{types}.</span></p>
   <p>{e(pl["note"])}</p>
 </div>'''
 

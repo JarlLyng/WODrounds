@@ -16,7 +16,7 @@
       {
         "id": "ring",
         "title": "En ring per intervall",
-        "body": "Ringen töms under varje period av arbete och vila, limegrön när du jobbar och grå när du vilar, så du kan läsa den från golvet.",
+        "body": "Ringen töms under varje period av arbete och vila och blir grå när du vilar, så du kan läsa den från golvet.",
         "link": "tabata",
         "linkText": "Tabata-timer",
         "alt": "Work, 14 sekunder kvar, inuti en limegrön ring. Varv 3 av 8, 2:44 kvar av passet."

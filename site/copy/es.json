@@ -16,7 +16,7 @@
       {
         "id": "ring",
         "title": "Un anillo por intervalo",
-        "body": "El anillo se vacía en cada periodo de trabajo y de descanso, verde lima mientras trabajas y gris mientras descansas, así que lo lees desde el suelo.",
+        "body": "El anillo se vacía en cada periodo de trabajo y de descanso y se vuelve gris mientras descansas, así que lo lees desde el suelo.",
         "link": "tabata",
         "linkText": "Temporizador Tabata",
         "alt": "Trabajo, quedan 14 segundos, dentro de un anillo verde lima. Ronda 3 de 8, quedan 2:44 del entrenamiento."
@@ -111,13 +111,13 @@
     },
     "privacyLabel": {
       "heading": "Privacidad de la app",
-      "category": "Datos no asociados con tu identidad",
-      "sentence": "Los siguientes datos pueden recopilarse, pero no están asociados con tu identidad:",
+      "category": "Datos no vinculados contigo",
+      "sentence": "Los siguientes datos pueden recopilarse, pero no se vinculan con tu identidad:",
       "types": [
-        "Salud y fitness",
-        "Diagnóstico"
+        "Salud y forma física",
+        "Diagnósticos"
       ],
-      "note": "Salud es el entrenamiento que eliges guardar en Apple Salud en el iPhone o el iPad. Diagnóstico son los informes de fallos, para que pueda corregir errores.",
+      "note": "Salud es el entrenamiento que eliges guardar en Apple Salud en el iPhone o el iPad. Diagnósticos son los informes de fallos, para que pueda corregir errores.",
       "source": "Tal como aparece en el App Store, 12/10/2026.",
       "intro": "La etiqueta de privacidad del App Store para WODrounds, tal como la muestra Apple."
     },
