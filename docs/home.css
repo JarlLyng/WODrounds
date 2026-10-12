@@ -1,31 +1,6 @@
 /* The home pages (#182): the few things the design system's kit doesn't carry.
    Everything else comes from kit.css and WODrounds' identity sheet. */
 
-/* Keyboard users first: a skip link, shown on focus. Written as .ij-page a.skip-link so
-   it beats the kit's link colour (lime on lime otherwise), and above <ij-nav>'s sticky
-   bar, until the kit has a skip link of its own (#182). */
-.ij-page a.skip-link {
-  position: absolute;
-  left: 1rem;
-  top: -4rem;
-  z-index: calc(var(--ij-z-sticky, 1100) + 1);
-  padding: 0.6rem 1rem;
-  border-radius: var(--ij-radius-sm, 8px);
-  background: var(--ij-color-accent);
-  color: var(--ij-color-on-accent);
-  font-weight: 600;
-  text-decoration: none;
-}
-.ij-page a.skip-link:focus { top: 1rem; }
-
-/* The tour's row of phones on a narrow screen: the kit centres a row that is wider than
-   its scroller, which pushes the first screen past the start edge where it can't be
-   scrolled to. Auto margins centre the row when it fits and start it at the edge when it
-   doesn't. Wean's workaround, until the kit ships the fix (iamjarl-design#80). */
-.ij-tour:not(.is-live) .ij-tour__screens { justify-content: flex-start; }
-.ij-tour:not(.is-live) .ij-tour__screens > :first-child { margin-left: auto; }
-.ij-tour:not(.is-live) .ij-tour__screens > :last-child { margin-right: auto; }
-
 /* The frameless pieces are captures on the app's black. "Lighten" lets the card
    show through the black and keeps the digits, the ring and the lime as they are. */
 .ij-card__piece > img {

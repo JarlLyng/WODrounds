@@ -68,7 +68,7 @@ def nav_block(lang: str, folder: str) -> str:
     nav = c["nav"]
     cta = fragment(f"dist/store/wodrounds.{lang}.nav.html")
     return f'''<!-- frame:nav -->
-<a class="skip-link" href="#main">{e(SKIP[lang])}</a>
+<a class="ij-skip" href="#main">{e(SKIP[lang])}</a>
 <ij-nav>
   <a slot="brand" href="{home}">WODrounds</a>
   <a slot="links" href="{home}#timers">{e(nav["timers"])}</a>
