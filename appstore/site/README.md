@@ -65,10 +65,10 @@ holds for one second, so the repeat keeps the rhythm.
 ```bash
 swift appstore/site/loopkit.swift sheet  raw/loop-en-raw.mp4 sheet.jpg 10 13 0.1 10
 swift appstore/site/loopkit.swift encode raw/loop-en-raw.mp4 docs/assets/site/intervals-en.mp4 11.2 9.0 602 1308 600000
-swift appstore/site/loopkit.swift poster docs/assets/site/intervals-en.mp4 docs/assets/site/intervals-en-poster.jpg 0.5 602 1308 0.82
+swift appstore/site/loopkit.swift poster docs/assets/site/intervals-en.mp4 docs/assets/site/intervals-en-poster.jpg 0.5 602 1308 0.35
 ```
 
 `encode` also paints out the Dynamic Island, which a simulator recording draws and a screenshot
-doesn't. Each loop comes out at about 45 KB and each poster at about 70 KB. The poster is the
+doesn't. Each loop comes out at about 45 KB and each poster at about 35 KB, lighter than the loop it stands in for. The poster is the
 first second of work, so the page reads the same before the video plays, without the script and
 under reduce motion.

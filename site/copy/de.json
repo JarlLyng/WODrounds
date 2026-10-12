@@ -16,7 +16,7 @@
       {
         "id": "ring",
         "title": "Ein Ring pro Intervall",
-        "body": "Der Ring leert sich über jede Arbeits- und Pausenphase, limettengrün bei der Arbeit und grau in der Pause, damit du ihn vom Boden aus liest.",
+        "body": "Der Ring leert sich über jede Arbeits- und Pausenphase und wird in der Pause grau, damit du ihn vom Boden aus liest.",
         "link": "tabata",
         "linkText": "Tabata-Timer",
         "alt": "Work, noch 14 Sekunden, in einem limettengrünen Ring. Runde 3 von 8, noch 2:44 im Workout."

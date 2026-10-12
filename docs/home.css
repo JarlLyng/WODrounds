@@ -1,12 +1,14 @@
 /* The home pages (#182): the few things the design system's kit doesn't carry.
    Everything else comes from kit.css and WODrounds' identity sheet. */
 
-/* Keyboard users first: a skip link, shown on focus. */
-.skip-link {
+/* Keyboard users first: a skip link, shown on focus. Written as .ij-page a.skip-link so
+   it beats the kit's link colour (lime on lime otherwise), and above <ij-nav>'s sticky
+   bar, until the kit has a skip link of its own (#182). */
+.ij-page a.skip-link {
   position: absolute;
   left: 1rem;
   top: -4rem;
-  z-index: 100;
+  z-index: calc(var(--ij-z-sticky, 1100) + 1);
   padding: 0.6rem 1rem;
   border-radius: var(--ij-radius-sm, 8px);
   background: var(--ij-color-accent);
@@ -14,7 +16,15 @@
   font-weight: 600;
   text-decoration: none;
 }
-.skip-link:focus { top: 1rem; }
+.ij-page a.skip-link:focus { top: 1rem; }
+
+/* The tour's row of phones on a narrow screen: the kit centres a row that is wider than
+   its scroller, which pushes the first screen past the start edge where it can't be
+   scrolled to. Auto margins centre the row when it fits and start it at the edge when it
+   doesn't. Wean's workaround, until the kit ships the fix (iamjarl-design#80). */
+.ij-tour:not(.is-live) .ij-tour__screens { justify-content: flex-start; }
+.ij-tour:not(.is-live) .ij-tour__screens > :first-child { margin-left: auto; }
+.ij-tour:not(.is-live) .ij-tour__screens > :last-child { margin-right: auto; }
 
 /* The frameless pieces are captures on the app's black. "Lighten" lets the card
    show through the black and keeps the digits, the ring and the lime as they are. */
@@ -37,7 +47,7 @@
 /* The App Store's privacy label, in Apple's words. */
 .home-label-intro { color: var(--ij-color-text-secondary); }
 .home-label-source { display: block; margin-top: 0.25rem; font-size: 0.85em; color: var(--ij-color-text-tertiary); }
-.home-label-types { margin: 0; padding-left: 1.2rem; color: var(--ij-color-text-primary); }
+.home-label-types { color: var(--ij-color-text-primary); font-weight: 600; }
 
 /* FAQ: native details, styled. */
 .faq { display: grid; gap: var(--ij-spacing-sm); }
@@ -52,13 +62,13 @@
   padding: 1rem 0;
   font-weight: 600;
   color: var(--ij-color-text-primary);
-  list-style-position: outside;
+  list-style-position: inside;
 }
 .faq details[open] summary { padding-bottom: 0.5rem; }
 .faq details p { margin: 0 0 1rem; color: var(--ij-color-text-secondary); }
 
 /* On a translated page, a link to a page that exists only in English says so. */
-html:not([lang="en"]) a[hreflang="en"]::after {
+html:not([lang="en"]) a[hreflang="en"]:not([lang])::after {
   content: " EN";
   font-size: 0.7em;
   letter-spacing: 0.04em;
