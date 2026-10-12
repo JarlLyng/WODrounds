@@ -18,8 +18,10 @@ seven files, and rebuild, rather than editing a page by hand.
 - `where`: the big "5", the line under it, and the traits. Every trait has to be true on the
   platforms it names (#125). The iPhone Duo trait is added only once the Duo version is live.
 - `assurances`: no account, paid for once, and the App Store's privacy label in Apple's own
-  wording for each language, as read from the store page on 2026-10-12. Check it again in App
-  Store Connect before the page ships, and whenever the label changes.
+  wording for each language, as read from the store page on 2026-10-12 and confirmed in App
+  Store Connect the same day: Data Not Linked to You, with Health (Health & Fitness) and Crash
+  Data and Performance Data (Diagnostics), all for app functionality. Check it again whenever
+  the label changes.
 - `maker`: the maker's note, signed "Jarl".
 - `faq`: mirrored in the FAQPage JSON-LD.
 
