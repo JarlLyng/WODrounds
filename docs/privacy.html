@@ -20,12 +20,19 @@
   <meta name="twitter:title" content="Privacy Policy | WODrounds">
   <meta name="twitter:description" content="How WODrounds handles app data, crash reports, and website analytics.">
   <meta name="twitter:image" content="https://wodrounds.iamjarl.com/images/og-image.png">
-  <meta name="theme-color" content="#0a0a0a">
+  <meta name="theme-color" content="#0B0C0D">
   <meta name="apple-itunes-app" content="app-id=6759229877">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.18.1/dist/fonts/jetbrains-mono.css" integrity="sha384-fDaVBwljZLE3JVXuTkK1gEw9aP5EwHQ74vD094MbB9l5TSxyawriXrnZptujwZLu" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.18.1/dist/identity/wodrounds.css" integrity="sha384-dw6qyZ3VlcMASqgn2EIA2DBpdwDlL9Mq4AZzXGalRS9KeNEOj7i2LqELX7yZ3SSi" crossorigin="anonymous">
   <link rel="icon" href="images/favicon-dark.png" type="image/png">
   <link rel="apple-touch-icon" href="images/favicon-dark.png">
+<!-- frame:head -->
+<!-- The homes' design system files, v1.26.0, without the kit's marketing sections (#189). Built by scripts/build_pages.py. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.26.0/dist/css/tokens.css" integrity="sha384-PKlt/RFEr/PqV2mjuOAm2tovN6l9sR3RwM+JgU1GP9vJisydnvt6l3h//+ythhEH" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.26.0/dist/identity/wodrounds.css" integrity="sha384-T1dD/e0Jqjg5pYNAiVz7SZOqaPLDUw3CA8IYr5MoFUggVbiruvaU+GijwsUH2DXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.26.0/dist/fonts/jetbrains-mono.css" integrity="sha384-4EDegyjW32y0mhvqLdn7Bma8HM6U1AjeQpPGTbtkRE14gKBdlhBJspuOu6qhyBmq" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.26.0/dist/kit/kit.css" integrity="sha384-GbcA6lh/Swuy7rKjPm6Jgnq8nA+uvGv/ItuzZC60OpmgW7hWm7oJb4YR4OOfXLwT" crossorigin="anonymous">
+<script type="module" src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.26.0/dist/components/ij-nav.js" integrity="sha384-WVM/rurI3KnRJKOiwseL9jwHJtTQ5lNwC9JfFlzXqKlUo6a2dkeV5hJvqRV+sLUQ" crossorigin="anonymous"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.26.0/dist/components/ij-footer.js" integrity="sha384-PerBKUYbLWOcIY2bcVsIp53pRh4d0gpDmMrTPzU5c/dy/Uo/zIqK3A0MKM51tkKU" crossorigin="anonymous"></script>
+<!-- /frame:head -->
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
   {
@@ -39,18 +46,17 @@
   </script>
   <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="7a65d61a-b231-4611-b514-3c6cd0a5b7b3" data-do-not-track="true" data-domains="wodrounds.iamjarl.com"></script>
 </head>
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a href="index.html" class="logo"><img src="images/logo-dark.svg" alt="" class="logo-icon" width="28" height="28" aria-hidden="true"> WODrounds</a>
-      <nav class="nav">
-        <a href="guide.html">Guide</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="support.html">Support</a>
-      </nav>
-    </div>
-  </header>
+<body class="ij-page">
+<!-- frame:nav -->
+<a class="skip-link" href="#main">Skip to content</a>
+<ij-nav>
+  <a slot="brand" href="index.html">WODrounds</a>
+  <a slot="links" href="index.html#timers">Timers</a>
+  <a slot="links" href="index.html#where">Where it works</a>
+  <a slot="links" href="index.html#faq">FAQ</a>
+  <a slot="cta" href="https://apps.apple.com/app/id6759229877?pt=128512007&amp;ct=site&amp;mt=8" data-umami-event="store-click" data-umami-event-store="app-store" data-umami-event-placement="nav" data-umami-event-locale="en">Download</a>
+</ij-nav>
+<!-- /frame:nav -->
 
   <main id="main">
     <article class="page-content">
@@ -80,16 +86,30 @@
     </article>
   </main>
 
-  <footer class="site-footer">
-    <div class="wrap">
-      <p class="footer-logo">WODrounds</p>
-      <p class="footer-links">
-        <a href="guide.html">Guide</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="support.html">Support</a>
-      </p>
-      <p class="footer-copy">Questions? <a href="support.html">Support</a>.</p>
-    </div>
-  </footer>
+<!-- frame:footer -->
+<ij-footer app="wodrounds" links-label="WODrounds">
+<a slot="links" href="guide.html">Timer guide</a>
+<a slot="links" href="about.html">About</a>
+<a slot="links" href="privacy.html">Privacy Policy</a>
+<a slot="links" href="support.html">Support</a>
+<a slot="links" href="da/index.html" hreflang="da" lang="da">Dansk</a>
+<a slot="links" href="de/index.html" hreflang="de" lang="de">Deutsch</a>
+<a slot="links" href="es/index.html" hreflang="es" lang="es">Español</a>
+<a slot="links" href="fr/index.html" hreflang="fr" lang="fr">Français</a>
+<a slot="links" href="no/index.html" hreflang="nb" lang="nb">Norsk</a>
+<a slot="links" href="sv/index.html" hreflang="sv" lang="sv">Svenska</a>
+<!-- IAMJARL cross-links for WODrounds: generated, do not edit -->
+<!-- design system v1.26.0, registry updated 2026-10-12 -->
+<!-- Paste inside <ij-footer app="wodrounds">. Rebuild to refresh. -->
+<a slot="cross-links" href="https://anvilworkout.iamjarl.com">Anvil Workout</a>
+<a slot="cross-links" href="https://walkful.iamjarl.com">Walkful</a>
+<a slot="cross-links" href="https://weannicotine.iamjarl.com">Wean Nicotine</a>
+<a slot="cross-links" href="https://madebyhuman.iamjarl.com">Made by Human</a>
+<a slot="cross-links" href="https://iamjarl.com">All projects</a>
+<p slot="fineprint">© 2026 IAMJARL.</p>
+<!-- No slot attribute on purpose: the fallback, shown only if the component never loads. -->
+<p><a href="guide.html">Timer guide</a> &middot; <a href="about.html">About</a> &middot; <a href="privacy.html">Privacy Policy</a> &middot; <a href="support.html">Support</a> &middot; © 2026 IAMJARL.</p>
+</ij-footer>
+<!-- /frame:footer -->
 </body>
 </html>
