@@ -1,13 +1,15 @@
 /* WODrounds marketing site — minimal, dark-first, neon lime accent */
 
 :root {
-  --bg: #0d0d0d;
-  --bg-soft: #161616;
-  --text: #e6e6e6;
-  --text-muted: #8c8c8c;
-  --accent: #D0FF00;
-  --accent-hover: #b8e000;
-  --border: #2a2a2a;
+  /* The site's own names, pointed at WODrounds' identity in the design system (#189),
+     so these pages and the homes share one ground, one text colour and one lime. */
+  --bg: var(--ij-color-bg-app);
+  --bg-soft: var(--ij-color-bg-card);
+  --text: var(--ij-color-text-primary);
+  --text-muted: var(--ij-color-text-secondary);
+  --accent: var(--ij-color-accent);
+  --accent-hover: var(--ij-color-primary-hover);
+  --border: var(--ij-color-border-subtle);
   --wrap: min(90vw, 1100px);
   --wrap-wide: min(92vw, 1400px);
 }
@@ -17,7 +19,7 @@
 }
 
 html {
-  font-size: 18px;
+  /* The browser's 16 px, as on the homes: the kit sets 18 px copy on .ij-page. */
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
 }
@@ -84,12 +86,14 @@ body {
   line-height: 1.55;
 }
 
-a {
+/* Links in the page's own content. Anything slotted into <ij-nav> or <ij-footer> is the
+   component's to colour: a page rule would beat its ::slotted rule (the kit does the same). */
+a:not([slot], [slot] *) {
   color: var(--accent);
   text-decoration: none;
 }
 
-a:hover {
+a:not([slot], [slot] *):hover {
   text-decoration: underline;
 }
 
@@ -145,21 +149,23 @@ a:hover {
   margin: -0.7rem -0.25rem;
 }
 
-/* Keyboard users: a skip link first, and a focus ring that is designed, not the default. */
-.skip-link {
+/* Keyboard users: a skip link first, and a focus ring that is designed, not the default.
+   .ij-page a.skip-link beats the kit's link colour, and it sits above <ij-nav>'s sticky
+   bar, as on the homes (#182). */
+.ij-page a.skip-link {
   position: absolute;
   left: 1rem;
   top: -4rem;
-  z-index: 100;
+  z-index: calc(var(--ij-z-sticky, 1100) + 1);
   padding: 0.6rem 1rem;
   border-radius: 8px;
   background: var(--accent);
-  color: #000;
+  color: var(--ij-color-on-accent);
   font-weight: 600;
   text-decoration: none;
 }
 
-.skip-link:focus {
+.ij-page a.skip-link:focus {
   top: 1rem;
 }
 
@@ -233,7 +239,7 @@ a:hover {
   line-height: 1.05;
   letter-spacing: -0.04em;
   margin: 0 0 1.25rem;
-  color: #fff;
+  color: var(--text);
 }
 
 .hero-lead {
@@ -314,7 +320,7 @@ a:hover {
 
 .cta-note {
   display: block;
-  margin-top: 0.75rem;
+  margin: 0.75rem 0 0;
   font-size: 0.85rem;
   color: var(--text-muted);
 }
@@ -324,7 +330,7 @@ a:hover {
 }
 
 /* On a translated page, a link to a page that exists only in English says so. */
-html:not([lang="en"]) a[hreflang="en"]::after {
+html:not([lang="en"]) a[hreflang="en"]:not([lang])::after {
   content: " EN";
   font-size: 0.7em;
   letter-spacing: 0.04em;
@@ -483,7 +489,7 @@ html:not([lang="en"]) a[hreflang="en"]::after {
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0 0 0.75rem;
-  color: #fff;
+  color: var(--text);
 }
 
 .feature p {
@@ -572,7 +578,7 @@ html:not([lang="en"]) a[hreflang="en"]::after {
   font-size: 1.15rem;
   font-weight: 700;
   margin: 0 0 0.5rem;
-  color: #fff;
+  color: var(--text);
 }
 
 .platform-card p {
@@ -688,7 +694,7 @@ html:not([lang="en"]) a[hreflang="en"]::after {
   position: relative;
   padding-left: 2rem;
   margin-bottom: 1rem;
-  color: #fff;
+  color: var(--text);
   font-size: 1.05rem;
   font-weight: 500;
 }
@@ -998,6 +1004,12 @@ html:not([lang="en"]) a[hreflang="en"]::after {
 .guide-cta {
   margin-top: 2.5rem !important;
   text-align: center;
+}
+
+/* The design system's store button, centred where the old button was. */
+.cta .ij-store,
+.guide-cta .ij-store {
+  align-items: center;
 }
 
 /* Workout example cards (landing pages) */
