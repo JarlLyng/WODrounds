@@ -76,21 +76,10 @@
     "lede": "iPhone, iPad, Apple Watch, Mac and Apple TV. Buy WODrounds once and it runs on all of them.",
     "traits": [
       {
-        "id": "tv",
-        "title": "Across the room",
-        "body": "On Apple TV the timer fills the screen, so a home gym can read it from the rower.",
-        "alt": "WODrounds on Apple TV: a Tabata in round 3 of 8, 12 seconds of work left."
-      },
-      {
         "id": "watch",
         "title": "On your wrist",
         "body": "The Watch follows a workout you start on the iPhone, live. It also runs EMOM and Intervals on its own. For Time starts on the iPhone.",
         "alt": "WODrounds on Apple Watch: work, 11 seconds left, round 3 of 8."
-      },
-      {
-        "id": "offline",
-        "title": "Offline, no account",
-        "body": "Nothing to sign up for and nothing to sync. It works in a basement gym with no signal."
       },
       {
         "id": "sound",
@@ -98,16 +87,23 @@
         "body": "Voice cues and beeps on iPhone, iPad and Apple TV. Haptics on iPhone and Apple Watch. The Mac and the Watch stay silent."
       },
       {
+        "id": "tv",
+        "title": "Across the room",
+        "body": "On Apple TV the timer fills the screen, so a home gym can read it from the rower.",
+        "alt": "WODrounds on Apple TV: a Tabata in round 3 of 8, 12 seconds of work left."
+      },
+      {
         "id": "mac-ipad",
         "title": "Mac and iPad",
         "body": "The same three timers in a small window on the Mac and full screen on the iPad."
       }
-    ]
+    ],
+    "heading": "Where it works."
   },
   "assurances": {
     "noAccount": {
       "title": "No account",
-      "body": "Open it and press Start. There is nothing to sign in to."
+      "body": "Open it and press Start. There is nothing to sign in to, and nothing needs a connection, so it works in a basement gym with no signal."
     },
     "paidOnce": {
       "title": "Paid for once",
@@ -117,14 +113,20 @@
       "heading": "App Privacy",
       "category": "Data Not Linked to You",
       "sentence": "The following data may be collected but it is not linked to your identity:",
-      "types": ["Health & Fitness", "Diagnostics"],
+      "types": [
+        "Health & Fitness",
+        "Diagnostics"
+      ],
       "note": "Health is the workout you choose to save to Apple Health on iPhone or iPad. Diagnostics are crash reports, so I can fix bugs.",
-      "source": "As shown on the App Store, 2026-10-12."
-    }
+      "source": "As shown on the App Store, 2026-10-12.",
+      "intro": "The App Store's privacy label for WODrounds, as Apple shows it."
+    },
+    "heading": "No account. Paid for once."
   },
   "maker": {
     "quote": "I built WODrounds because every timer app I tried wanted me to create an account, watch ads, or subscribe to a plan. I just needed a timer. So I made one.",
-    "signature": "Jarl"
+    "signature": "Jarl",
+    "label": "A note from the maker"
   },
   "faq": [
     {
@@ -165,12 +167,27 @@
     }
   ],
   "closing": {
-    "wordmark": "WODrounds"
+    "wordmark": "WODrounds",
+    "label": "Download WODrounds"
   },
   "links": {
     "emom": "emom-timer.html",
     "interval": "interval-timer.html",
     "tabata": "tabata-timer.html",
     "fortime": "for-time-timer.html"
+  },
+  "nav": {
+    "timers": "Timers",
+    "where": "Where it works",
+    "faq": "FAQ"
+  },
+  "faqHeading": "Questions.",
+  "footer": {
+    "guide": "Timer guide",
+    "about": "About",
+    "privacy": "Privacy Policy",
+    "support": "Support",
+    "languages": "Language",
+    "fineprint": "© 2026 IAMJARL."
   }
 }

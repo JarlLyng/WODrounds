@@ -76,21 +76,10 @@
     "lede": "iPhone, iPad, Apple Watch, Mac et Apple TV. Achetez WODrounds une fois, il fonctionne sur tous.",
     "traits": [
       {
-        "id": "tv",
-        "title": "D'un bout à l'autre de la pièce",
-        "body": "Sur l'Apple TV, le minuteur remplit l'écran, lisible depuis le rameur dans une salle à la maison.",
-        "alt": "WODrounds sur Apple TV : un Tabata au tour 3 sur 8, encore 12 secondes de travail."
-      },
-      {
         "id": "watch",
         "title": "À votre poignet",
         "body": "La Watch suit en direct une séance lancée sur l'iPhone. Elle fait aussi tourner EMOM et intervalles toute seule. For Time se lance sur l'iPhone.",
         "alt": "WODrounds sur Apple Watch : Work, encore 11 secondes, tour 3 sur 8."
-      },
-      {
-        "id": "offline",
-        "title": "Hors ligne, sans compte",
-        "body": "Rien à créer, rien à synchroniser. Il fonctionne dans une salle au sous-sol sans réseau."
       },
       {
         "id": "sound",
@@ -98,16 +87,23 @@
         "body": "Annonces vocales et bips sur iPhone, iPad et Apple TV. Vibrations sur iPhone et Apple Watch. Le Mac et la Watch restent silencieux."
       },
       {
+        "id": "tv",
+        "title": "D'un bout à l'autre de la pièce",
+        "body": "Sur l'Apple TV, le minuteur remplit l'écran, lisible depuis le rameur dans une salle à la maison.",
+        "alt": "WODrounds sur Apple TV : un Tabata au tour 3 sur 8, encore 12 secondes de travail."
+      },
+      {
         "id": "mac-ipad",
         "title": "Mac et iPad",
         "body": "Les trois mêmes minuteurs dans une petite fenêtre sur Mac et en plein écran sur iPad."
       }
-    ]
+    ],
+    "heading": "Où il fonctionne."
   },
   "assurances": {
     "noAccount": {
       "title": "Sans compte",
-      "body": "Ouvrez-le et appuyez sur Start. Il n'y a rien à quoi se connecter."
+      "body": "Ouvrez-le et appuyez sur Start. Il n'y a rien à quoi se connecter et rien ne demande de connexion, il fonctionne donc dans une salle au sous-sol sans réseau."
     },
     "paidOnce": {
       "title": "Payé une seule fois",
@@ -117,14 +113,20 @@
       "heading": "Confidentialité de l’app",
       "category": "Données n’établissant aucun lien avec vous",
       "sentence": "Les données suivantes peuvent être collectées, mais elles ne sont pas liées à votre identité :",
-      "types": ["Santé et activité physique", "Diagnostic"],
+      "types": [
+        "Santé et activité physique",
+        "Diagnostic"
+      ],
       "note": "Santé, c'est la séance que vous choisissez d'enregistrer dans Apple Santé sur iPhone ou iPad. Diagnostic, ce sont les rapports de plantage, pour que je puisse corriger les bugs.",
-      "source": "Tel qu'affiché sur l'App Store, le 12/10/2026."
-    }
+      "source": "Tel qu'affiché sur l'App Store, le 12/10/2026.",
+      "intro": "L'étiquette de confidentialité de l'App Store pour WODrounds, telle qu'Apple l'affiche."
+    },
+    "heading": "Sans compte. Payé une fois."
   },
   "maker": {
     "quote": "J'ai créé WODrounds parce que chaque appli de minuteur que j'essayais voulait que je crée un compte, que je regarde des publicités ou que je souscrive un abonnement. Il me fallait juste un minuteur. Alors j'en ai fait un.",
-    "signature": "Jarl"
+    "signature": "Jarl",
+    "label": "Un mot du créateur"
   },
   "faq": [
     {
@@ -165,12 +167,27 @@
     }
   ],
   "closing": {
-    "wordmark": "WODrounds"
+    "wordmark": "WODrounds",
+    "label": "Télécharger WODrounds"
   },
   "links": {
     "emom": "emom-timer.html",
     "interval": "interval-timer.html",
     "tabata": "tabata-timer.html",
     "fortime": "for-time-timer.html"
+  },
+  "nav": {
+    "timers": "Minuteurs",
+    "where": "Où il fonctionne",
+    "faq": "Questions"
+  },
+  "faqHeading": "Questions.",
+  "footer": {
+    "guide": "Guide des minuteurs",
+    "about": "À propos",
+    "privacy": "Confidentialité",
+    "support": "Assistance",
+    "languages": "Langue",
+    "fineprint": "© 2026 IAMJARL."
   }
 }

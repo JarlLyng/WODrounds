@@ -1,163 +1,391 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="da">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WODrounds | Minimal EMOM &amp; Interval Timer til CrossFit</title>
-  <meta name="description" content="Minimal SwiftUI timer til CrossFit, EMOM, Tabata og intervaller. iPhone, iPad, Apple Watch, Mac og Apple TV. Ingen login, ingen reklamer, ingen abonnement.">
-  <meta name="keywords" content="CrossFit timer, EMOM timer, interval timer, Tabata timer, trænings timer, HIIT timer, Apple Watch timer, funktionel træning">
-  <link rel="canonical" href="https://wodrounds.iamjarl.com/da/index.html">
-  <meta name="robots" content="index, follow">
-  <link rel="alternate" hreflang="en" href="https://wodrounds.iamjarl.com/">
-  <link rel="alternate" hreflang="da" href="https://wodrounds.iamjarl.com/da/index.html">
-  <link rel="alternate" hreflang="sv" href="https://wodrounds.iamjarl.com/sv/index.html">
-  <link rel="alternate" hreflang="nb" href="https://wodrounds.iamjarl.com/no/index.html">
-  <link rel="alternate" hreflang="de" href="https://wodrounds.iamjarl.com/de/index.html">
-  <link rel="alternate" hreflang="fr" href="https://wodrounds.iamjarl.com/fr/index.html">
-  <link rel="alternate" hreflang="es" href="https://wodrounds.iamjarl.com/es/index.html">
-  <link rel="alternate" hreflang="x-default" href="https://wodrounds.iamjarl.com/">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://wodrounds.iamjarl.com/da/index.html">
-  <meta property="og:title" content="WODrounds | Minimal EMOM &amp; Interval Timer til CrossFit">
-  <meta property="og:description" content="Minimal SwiftUI timer til CrossFit, EMOM, Tabata og intervaller. iPhone, iPad, Apple Watch, Mac og Apple TV. Ingen login, ingen reklamer, ingen abonnement.">
-  <meta property="og:image" content="https://wodrounds.iamjarl.com/images/og-image.png">
-  <meta property="og:site_name" content="WODrounds">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="da_DK">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="WODrounds | Minimal EMOM &amp; Interval Timer til CrossFit">
-  <meta name="twitter:description" content="Minimal SwiftUI timer til CrossFit, EMOM, Tabata og intervaller. iPhone, iPad, Apple Watch, Mac og Apple TV. Ingen login, ingen reklamer, ingen abonnement.">
-  <meta name="twitter:image" content="https://wodrounds.iamjarl.com/images/og-image.png">
-  <meta name="theme-color" content="#0a0a0a">
-  <meta name="apple-itunes-app" content="app-id=6759229877">
-  <link rel="icon" href="../images/favicon-dark.png" type="image/png">
-  <link rel="apple-touch-icon" href="../images/favicon-dark.png">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.18.1/dist/fonts/jetbrains-mono.css" integrity="sha384-fDaVBwljZLE3JVXuTkK1gEw9aP5EwHQ74vD094MbB9l5TSxyawriXrnZptujwZLu" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.18.1/dist/identity/wodrounds.css" integrity="sha384-dw6qyZ3VlcMASqgn2EIA2DBpdwDlL9Mq4AZzXGalRS9KeNEOj7i2LqELX7yZ3SSi" crossorigin="anonymous">
-  <link rel="stylesheet" href="../style.css">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "WODrounds",
-    "url": "https://wodrounds.iamjarl.com/da/",
-    "inLanguage": "da",
-    "publisher": {
-      "@type": "Organization",
-      "name": "IAMJARL",
-      "url": "https://iamjarl.com"
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Built by scripts/build_home.py from site/copy/da.json. Edit those, not this file. -->
+<meta name="apple-itunes-app" content="app-id=6759229877">
+<title>WODrounds | EMOM-, interval- og For Time-timer til iPhone og Apple Watch</title>
+<meta name="description" content="EMOM, intervaller og For Time, med tal du kan læse midt i et sæt. På iPhone, Apple Watch, iPad, Mac og Apple TV, betalt én gang. Ingen konto, ingen reklamer, intet abonnement.">
+<link rel="canonical" href="https://wodrounds.iamjarl.com/da/index.html">
+<link rel="alternate" hreflang="en" href="https://wodrounds.iamjarl.com/">
+<link rel="alternate" hreflang="da" href="https://wodrounds.iamjarl.com/da/index.html">
+<link rel="alternate" hreflang="de" href="https://wodrounds.iamjarl.com/de/index.html">
+<link rel="alternate" hreflang="es" href="https://wodrounds.iamjarl.com/es/index.html">
+<link rel="alternate" hreflang="fr" href="https://wodrounds.iamjarl.com/fr/index.html">
+<link rel="alternate" hreflang="nb" href="https://wodrounds.iamjarl.com/no/index.html">
+<link rel="alternate" hreflang="sv" href="https://wodrounds.iamjarl.com/sv/index.html">
+<link rel="alternate" hreflang="x-default" href="https://wodrounds.iamjarl.com/">
+<meta name="theme-color" content="#0B0C0D">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WODrounds">
+<meta property="og:title" content="WODrounds | EMOM-, interval- og For Time-timer til iPhone og Apple Watch">
+<meta property="og:description" content="EMOM, intervaller og For Time, med tal du kan læse midt i et sæt. På iPhone, Apple Watch, iPad, Mac og Apple TV, betalt én gang. Ingen konto, ingen reklamer, intet abonnement.">
+<meta property="og:url" content="https://wodrounds.iamjarl.com/da/index.html">
+<meta property="og:image" content="https://wodrounds.iamjarl.com/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="da_DK">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="de_DE">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="nb_NO">
+<meta property="og:locale:alternate" content="sv_SE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WODrounds | EMOM-, interval- og For Time-timer til iPhone og Apple Watch">
+<meta name="twitter:description" content="EMOM, intervaller og For Time, med tal du kan læse midt i et sæt. På iPhone, Apple Watch, iPad, Mac og Apple TV, betalt én gang. Ingen konto, ingen reklamer, intet abonnement.">
+<meta name="twitter:image" content="https://wodrounds.iamjarl.com/images/og-image.png">
+<link rel="icon" href="../images/favicon-dark.png" type="image/png">
+<link rel="apple-touch-icon" href="../images/favicon-dark.png">
+<!-- The design system's marketing kit and WODrounds' dark identity, all from v1.25.0 (#182). -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/css/tokens.css"
+  integrity="sha384-7mIi/daEMnWFSVRRBcuRlED7KMkAyFh6kUkXg8KD70ih8iPrrwXoe/ZEJuVOFK7R" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/identity/wodrounds.css"
+  integrity="sha384-+qiDMXymuOcArs4hrA5Eok54hY/iuwXWcq64au62d/bQXSx1/Uh8AmuetXELCovd" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/fonts/jetbrains-mono.css"
+  integrity="sha384-K9dCvR5cEupe+OP9ORKSXf0GVpmuwIFY76WZcV5fgNWqo0eEjo4JFIAmUTwfdpQ8" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/kit/kit.css"
+  integrity="sha384-tHt/CJKtfPbMO/nEgPZHLw34WarZUcpabnkjbyzxqT84bldYvc2WLMqrwVTNKVro" crossorigin="anonymous">
+<link rel="stylesheet" href="../home.css">
+<script type="module" src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/kit/kit.js"
+  integrity="sha384-rGama9fiL3OtukRCrj0alAP9yZwtWeLT5AOewtHWaCgwV2jjgrWuplf1t4M8vlIH" crossorigin="anonymous"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/components/ij-nav.js"
+  integrity="sha384-eqJtCXuLp8enZ2tpIOAuBB9GlMbX2qCH1UoKA0Lobtd4mABWsq98hVCfbToQRIi+" crossorigin="anonymous"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/dist/components/ij-footer.js"
+  integrity="sha384-WYNy1mUQL32Xlo8ci/uUJVm522N+0MvZ/8X+Ij0kwa8Kwl5eeLoyjIpc6AWah2mG" crossorigin="anonymous"></script>
+<script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="7a65d61a-b231-4611-b514-3c6cd0a5b7b3" data-do-not-track="true" data-domains="wodrounds.iamjarl.com"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://wodrounds.iamjarl.com/#app",
+  "name": "WODrounds",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "iOS 16, iPadOS 16, watchOS 9, macOS 13, tvOS 17",
+  "description": "EMOM, intervaller og For Time, med tal du kan læse midt i et sæt. På iPhone, Apple Watch, iPad, Mac og Apple TV, betalt én gang. Ingen konto, ingen reklamer, intet abonnement.",
+  "url": "https://wodrounds.iamjarl.com/da/index.html",
+  "downloadUrl": "https://apps.apple.com/app/id6759229877",
+  "inLanguage": [
+    "en",
+    "da",
+    "es"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "29.00",
+    "priceCurrency": "DKK",
+    "url": "https://apps.apple.com/app/id6759229877"
+  },
+  "screenshot": [
+    "https://wodrounds.iamjarl.com/assets/site/tour-emom-da.jpg",
+    "https://wodrounds.iamjarl.com/assets/site/tour-intervals-da.jpg",
+    "https://wodrounds.iamjarl.com/assets/site/tour-fortime-da.jpg"
+  ],
+  "publisher": {
+    "@id": "https://iamjarl.com/#org"
   }
-  </script>
-  <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="7a65d61a-b231-4611-b514-3c6cd0a5b7b3" data-do-not-track="true" data-domains="wodrounds.iamjarl.com"></script>
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://iamjarl.com/#org",
+  "name": "IAMJARL",
+  "url": "https://iamjarl.com",
+  "sameAs": [
+    "https://github.com/JarlLyng"
+  ]
+}
+</script>
+<!-- Mirrors the visible FAQ word for word. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Hvad er en EMOM-timer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EMOM står for Every Minute on the Minute. Du laver et sæt i starten af hvert minut og hviler resten af det. I WODrounds vælger du 1 til 120 runder, hver fra 30 sekunder til 9 minutter og 30 sekunder lang."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Kan jeg bruge WODrounds til Tabata?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Tabata er 20 sekunders arbejde og 10 sekunders hvile, 8 gange. Vælg Intervaller, og sæt arbejde til 20, hvile til 10 og runder til 8. Timeren kører 3:50, fordi der ikke er hvile efter sidste runde."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Kan jeg tage tid på en For Time-WOD?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Vælg For Time, så tæller uret op fra nul. Tryk Stop, når du er færdig, og Færdig-skærmen viser din tid. Du kan sætte en tidsgrænse fra 0:30 til 60:00 eller lade være."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Virker den på Apple TV?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. WODrounds kører på Apple TV og styres med Siri Remote, med de samme tre timere og de samme lydsignaler som på iPhonen. Den kører for sig selv der og synkroniserer ikke med iPhonen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Skal jeg have en iPhone til Apple Watch-appen?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ikke til EMOM og intervaller, som uret sætter op og kører selv. En træning, du starter på iPhonen, vises live på uret med samme tid og runde, og det er sådan For Time kommer på uret. Uret vibrerer, det giver ikke lyd."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Gemmer WODrounds en log over mine træninger?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nej. Det er en timer, ikke en log. På iPhone og iPad kan den gemme en færdig træning i Apple Sundhed som en HIIT-træning, hvis du tillader det."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hvad koster den?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ét køb dækker iPhone, iPad, Apple Watch, Mac og Apple TV. Intet abonnement, ingen køb i appen, ingen reklamer. App Store viser prisen i din valuta."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Tracker appen eller denne side mig?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Appen har ingen statistik og ingen reklamesporing. På iPhone og iPad kan den sende nedbrudsrapporter, så jeg kan rette fejl, og det er den Diagnostik, der står i App Stores privatlivsmærkat. Siden tæller sidevisninger med Umami uden cookies. Ingen af dem ser dine træninger."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hvilke sprog er appen på?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Engelsk, dansk og spansk. Stemmen er på engelsk."
+      }
+    }
+  ]
+}
+</script>
 </head>
-<body>
-  <a class="skip-link" href="#main">Spring til indhold</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a href="index.html" class="logo"><img src="../images/logo-dark.svg" alt="" class="logo-icon" width="28" height="28" aria-hidden="true"> WODrounds</a>
-      <nav class="nav" aria-label="WODrounds">
-        <a href="../guide.html" hreflang="en">Guide</a>
-        <a href="../privacy.html" hreflang="en">Privatliv</a>
-        <a href="../support.html" hreflang="en">Support</a>
-      </nav>
+<body class="ij-page">
+<a class="skip-link" href="#main">Spring til indhold</a>
+<ij-nav>
+  <a slot="brand" href="../da/index.html">WODrounds</a>
+  <a slot="links" href="#timers">Timere</a>
+  <a slot="links" href="#where">Hvor den virker</a>
+  <a slot="links" href="#faq">Spørgsmål</a>
+  <a slot="cta" href="https://apps.apple.com/app/id6759229877?pt=128512007&amp;ct=site&amp;mt=8" data-umami-event="store-click" data-umami-event-store="app-store" data-umami-event-placement="nav" data-umami-event-locale="da">Hent</a>
+</ij-nav>
+
+<main id="main">
+
+  <!-- 1. Hero. On a phone the words and the store button come before the device. -->
+  <section class="ij-hero ij-hero--split" id="hero">
+    <div class="ij-container ij-hero__inner">
+      <div class="ij-hero__text">
+        <h1 class="ij-display">Den eneste WOD-timer du har brug for.</h1>
+        <p class="ij-lede">EMOM, intervaller og For Time, med tal du kan læse midt i et sæt. På din iPhone og dit Apple Watch, betalt én gang.</p>
+        <div class="ij-store" data-ij-store="wodrounds" data-ij-store-locale="da">
+          <a class="ij-store-badge" href="https://apps.apple.com/app/id6759229877?pt=128512007&amp;ct=site&amp;mt=8" data-umami-event="store-click" data-umami-event-store="app-store" data-umami-event-placement="hero" data-umami-event-locale="da">
+            <img src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/badges/app-store-white-da-dk.svg" alt="Hent i App Store" width="120" height="40">
+          </a>
+          <p class="ij-store-facts">29,00 kr engangskøb · iOS 16 eller nyere</p>
+        </div>
+      </div>
+      <div class="ij-hero__media">
+        <div class="ij-phone" style="--ij-phone-width: 320px">
+          <div class="ij-phone__screen">
+            <video class="ij-loop" muted loop playsinline preload="none" poster="/assets/site/intervals-da-poster.jpg"
+              width="602" height="1308" aria-label="WODrounds kører en Tabata, 20 sekunders arbejde og 10 sekunders hvile: fem sekunders arbejde tilbage i runde 3 af 8, så begynder hvilen."><source src="/assets/site/intervals-da.mp4" type="video/mp4"></video>
+          </div>
+        </div>
+      </div>
     </div>
-  </header>
+  </section>
 
-  <main id="main">
-    <section class="hero">
-      <div class="wrap">
-        <p class="hero-label">Den eneste WOD-timer du har brug for</p>
-        <h1 class="hero-title">Den eneste<br>WOD-timer<br>du har brug for.</h1>
-        <p class="hero-lead">Bygget til CrossFit, HIIT og Tabata. Start på iPhone, følg på Apple Watch. Eller træn fra din Mac, iPad og Apple TV. Ingen opsætning, ingen login, ingen støj.</p>
-        <p class="hero-cta">
-          <a href="https://apps.apple.com/app/wodrounds/id6759229877?pt=128512007&amp;ct=site&amp;mt=8" class="btn btn-primary btn-large" data-umami-event="appstore-click" data-umami-event-page="index" data-umami-event-lang="da" data-umami-event-placement="hero">Download i App Store</a>
-          <span class="cta-note">iPhone &middot; iPad &middot; Apple Watch &middot; Mac &middot; Apple TV</span>
-        </p>
+  <!-- 2. Frameless pieces of the app, each linking to its timer page -->
+  <section class="ij-section ij-section--band" id="timers" aria-labelledby="timers-h">
+    <div class="ij-container ij-stack">
+      <h2 class="ij-headline" id="timers-h">Bygget til træningen</h2>
+      <div class="ij-bento">
+        <div class="ij-card ij-card--half">
+          <div class="ij-card__piece"><img src="/assets/site/piece-ring-da.png" alt="Arbejd, 14 sekunder tilbage, inde i en lime ring. Runde 3 af 8, 2:44 tilbage af træningen." width="362" height="444" loading="lazy" decoding="async"></div>
+          <h3 class="ij-title">Én ring per interval</h3>
+          <p>Ringen tømmes over hver periode med arbejde og hvile, lime når du arbejder og grå når du hviler, så du kan læse den fra gulvet. <a href="tabata-timer.html">Tabata-timer</a></p>
+        </div>
+        <div class="ij-card ij-card--half">
+          <div class="ij-card__piece"><img src="/assets/site/piece-emom-round-da.png" alt="38 sekunder tilbage i runde 4 af 12." width="342" height="150" loading="lazy" decoding="async"></div>
+          <h3 class="ij-title">Runden står altid fremme</h3>
+          <p>Hvert minut tæller ned for sig, med den runde du er i lige under. <a href="emom-timer.html">EMOM-timer</a></p>
+        </div>
+        <div class="ij-card ij-card--half">
+          <div class="ij-card__piece"><img src="/assets/site/piece-finished-da.png" alt="Færdig. Fuldført på 12:47." width="322" height="210" loading="lazy" decoding="async"></div>
+          <h3 class="ij-title">Din tid, når du stopper</h3>
+          <p>For Time tæller op fra nul. Tryk Stop, og Færdig-skærmen holder på din tid, med en valgfri grænse fra 30 sekunder til 60 minutter. <a href="for-time-timer.html">For Time-timer</a></p>
+        </div>
+        <div class="ij-card ij-card--half">
+          <div class="ij-card__piece"><img src="/assets/site/piece-countin-da.png" alt="Gør dig klar, 8." width="282" height="145" loading="lazy" decoding="async"></div>
+          <h3 class="ij-title">Ti sekunder til at gøre klar</h3>
+          <p>Hver træning starter med en nedtælling på 10 sekunder, nok til at lægge telefonen og komme hen til stangen. <a href="interval-timer.html">Interval-timer</a></p>
+        </div>
       </div>
-    </section>
-
-    <section class="features">
-      <div class="wrap">
-        <h2 class="section-title text-center">Bygget til træningen</h2>
-        <ul class="feature-grid">
-          <li class="feature">
-            <span class="feature-icon" aria-hidden="true">Fokus</span>
-            <h3>EMOM, intervaller &amp; For Time</h3>
-            <p>Tre timere. Sæt runder, arbejde og hvile. Tryk Start. Ikke mere.</p>
-          </li>
-          <li class="feature">
-            <span class="feature-icon" aria-hidden="true">Watch</span>
-            <h3>iPhone &rarr; Watch sync</h3>
-            <p>Start på iPhone og følg med på uret. Samme tid, samme runde, med haptisk feedback.</p>
-          </li>
-          <li class="feature">
-            <span class="feature-icon" aria-hidden="true">Privatliv</span>
-            <h3>Ingen tracking</h3>
-            <p>Ingen konto, ingen reklamer, ingen abonnement. Valgfri fejlrapportering på iOS via Sentry.</p>
-          </li>
-          <li class="feature">
-            <span class="feature-icon" aria-hidden="true">Apple</span>
-            <h3>5 platforme</h3>
-            <p>Native på iPhone, iPad, Apple Watch, Mac og Apple TV. På iPhone og iPad kan workouts gemmes i Apple Health.</p>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="features">
-      <div class="wrap">
-        <ul class="feature-grid">
-          <li class="feature">
-            <a href="emom-timer.html" style="text-decoration:none;color:inherit">
-              <span class="feature-icon" aria-hidden="true">EMOM</span>
-              <h3>EMOM Timer &rarr;</h3>
-              <p>Every Minute on the Minute. Sæt runder og rundelængde.</p>
-            </a>
-          </li>
-          <li class="feature">
-            <a href="interval-timer.html" style="text-decoration:none;color:inherit">
-              <span class="feature-icon" aria-hidden="true">Work / Rest</span>
-              <h3>Interval Timer &rarr;</h3>
-              <p>Work, rest, runder. Til HIIT, Tabata og circuits.</p>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="cta">
-      <div class="wrap">
-        <h2 class="section-title">Start din workout</h2>
-        <p class="cta-lead">Findes i App Store til iPhone, iPad, Apple Watch, Mac og Apple TV.</p>
-        <a href="https://apps.apple.com/app/wodrounds/id6759229877?pt=128512007&amp;ct=site&amp;mt=8" class="btn btn-primary btn-large" data-umami-event="appstore-click" data-umami-event-page="index" data-umami-event-lang="da" data-umami-event-placement="body">Download WODrounds</a>
-        <span class="cta-note">Ingen login. Virker offline.</span>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="wrap">
-      <p class="footer-logo">WODrounds</p>
-      <p class="footer-links">
-        <a href="../guide.html">Guide</a>
-        <a href="../about.html">About</a>
-        <a href="../privacy.html">Privatliv</a>
-        <a href="../support.html">Support</a>
-      </p>
-      <p class="footer-links" style="margin-top:0.5rem;font-size:0.85em;opacity:0.75;">Language</p>
-      <p class="footer-links">
-        <a href="https://wodrounds.iamjarl.com/" lang="en">English</a>
-        <a href="https://wodrounds.iamjarl.com/da/index.html" lang="da">Dansk</a>
-        <a href="https://wodrounds.iamjarl.com/sv/index.html" lang="sv">Svenska</a>
-        <a href="https://wodrounds.iamjarl.com/no/index.html" lang="nb">Norsk</a>
-        <a href="https://wodrounds.iamjarl.com/de/index.html" lang="de">Deutsch</a>
-        <a href="https://wodrounds.iamjarl.com/fr/index.html" lang="fr">Français</a>
-        <a href="https://wodrounds.iamjarl.com/es/index.html" lang="es">Español</a>
-      </p>
-      <p class="footer-copy">Bygget i København af <a href="https://iamjarl.com" class="footer-author">IAMJARL</a>. <a href="../privacy.html">Privatlivspolitikken</a> dækker både appen og dette website.</p>
     </div>
-  </footer>
+  </section>
+
+  <!-- 3. The phone that stays -->
+  <section class="ij-section" aria-labelledby="tour-h">
+    <div class="ij-container ij-stack">
+      <h2 class="ij-headline" id="tour-h">Tre timere. Ikke andet.</h2>
+      <div class="ij-tour">
+        <div class="ij-tour__screens">
+          <div class="ij-phone" data-step="1"><div class="ij-phone__screen"><img src="/assets/site/tour-emom-da.jpg" alt="EMOM-opsætning: 12 runder á 1:00." width="602" height="1308" loading="lazy" decoding="async"></div></div>
+          <div class="ij-phone" data-step="2"><div class="ij-phone__screen"><img src="/assets/site/tour-intervals-da.jpg" alt="En Tabata i gang: arbejd, 14 sekunder tilbage, runde 3 af 8." width="602" height="1308" loading="lazy" decoding="async"></div></div>
+          <div class="ij-phone" data-step="3"><div class="ij-phone__screen"><img src="/assets/site/tour-fortime-da.jpg" alt="Færdig. Fuldført på 12:47." width="602" height="1308" loading="lazy" decoding="async"></div></div>
+        </div>
+        <ol class="ij-tour__steps">
+          <li class="ij-tour__step" data-step="1"><h3 class="ij-title">EMOM i to tal</h3><p>Hvor mange runder, fra 1 til 120, og hvor lang hver runde er, fra 30 sekunder til 9:30. Tryk Start.</p></li>
+          <li class="ij-tour__step" data-step="2"><h3 class="ij-title">Arbejde, hvile, runder</h3><p>Arbejde fra 5 sekunder til 5 minutter, hvile op til 3 minutter, op til 60 runder. Det store tal er tiden tilbage i dette interval, og hele træningen tæller ned under det.</p></li>
+          <li class="ij-tour__step" data-step="3"><h3 class="ij-title">Tæl op, og stop</h3><p>For Time kører, til du trykker Stop eller rammer din grænse. Færdig-skærmen holder på din tid, til du nulstiller.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Where it works: one big number, then the platforms. Each trait is true where it says (#125). -->
+  <section class="ij-section ij-section--band" id="where" aria-labelledby="where-h">
+    <div class="ij-container ij-stack">
+      <h2 class="ij-headline" id="where-h">Hvor den virker.</h2>
+      <div class="ij-traits">
+        <div class="ij-trait ij-trait--number">
+          <p class="ij-numeral home-five">5</p>
+          <h3 class="ij-title">Apple-platforme. Én betaling.</h3>
+          <p>iPhone, iPad, Apple Watch, Mac og Apple TV. Køb WODrounds én gang, så kører den på dem alle.</p>
+        </div>
+        <div class="ij-trait">
+          <div class="ij-watch" style="--ij-watch-width: 130px"><div class="ij-watch__screen"><img src="/assets/site/watch-intervals-da.png" alt="WODrounds på Apple Watch: arbejde, 12 sekunder tilbage, runde 3 af 8." width="416" height="496" loading="lazy" decoding="async"></div></div>
+          <h3 class="ij-title">På dit håndled</h3><p>Uret følger live med i en træning, du starter på iPhonen. Det kører også EMOM og intervaller alene. For Time starter på iPhonen.</p>
+        </div>
+        <div class="ij-trait"><h3 class="ij-title">Lyd og vibrationer</h3><p>Stemme og bip på iPhone, iPad og Apple TV. Vibrationer på iPhone og Apple Watch. Mac og ur er tavse.</p></div>
+        <div class="ij-trait ij-trait--wide">
+          <div class="ij-tv" style="--ij-tv-width: 420px"><div class="ij-tv__screen"><img src="/assets/site/tv-intervals-da.jpg" alt="WODrounds på Apple TV: en Tabata i runde 3 af 8, 12 sekunders arbejde tilbage." width="1920" height="1080" loading="lazy" decoding="async"></div></div>
+          <h3 class="ij-title">Tværs over rummet</h3><p>På Apple TV fylder timeren skærmen, så den kan læses fra romaskinen i et hjemmegym.</p>
+        </div>
+        <div class="ij-trait"><h3 class="ij-title">Mac og iPad</h3><p>De samme tre timere i et lille vindue på Mac og på hele skærmen på iPad.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Privacy and price -->
+  <section class="ij-section" aria-labelledby="privacy-h">
+    <div class="ij-container ij-stack">
+      <h2 class="ij-headline" id="privacy-h">Ingen konto. Betalt én gang.</h2>
+      <div class="ij-assurances">
+        <div class="ij-assurance"><h3 class="ij-title">Ingen konto</h3><p>Åbn den og tryk Start. Der er intet at logge ind på, og intet kræver forbindelse, så den virker i et kældergym uden dækning.</p></div>
+        <div class="ij-assurance"><h3 class="ij-title">Betalt én gang</h3><p>Intet abonnement, ingen køb i appen, ingen reklamer. Alt følger med det ene køb.</p></div>
+        <div class="ij-assurance ij-assurance--label">
+          <h3 class="ij-title">Data, der ikke er tilknyttet dig</h3>
+          <p class="home-label-intro">App Stores privatlivsmærkat for WODrounds, som Apple viser det. <span class="home-label-source">App-anonymitet. Som det står i App Store, 12.10.2026.</span></p>
+          <p>Følgende data vil muligvis blive indsamlet, men de er ikke tilknyttet din identitet:</p>
+          <ul class="home-label-types"><li>Sundhed og fitness</li><li>Diagnostik</li></ul>
+          <p>Sundhed er den træning, du vælger at gemme i Apple Sundhed på iPhone eller iPad. Diagnostik er nedbrudsrapporter, så jeg kan rette fejl.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. A note from the maker -->
+  <section class="ij-section ij-section--band" aria-label="En note fra udvikleren">
+    <div class="ij-container">
+      <div class="ij-maker">
+        <p>Jeg byggede WODrounds, fordi hver eneste timer-app jeg prøvede ville have mig til at oprette en konto, se reklamer eller tegne et abonnement. Jeg havde bare brug for en timer. Så jeg lavede en.</p>
+        <p class="ij-maker__sign">Jarl</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. FAQ. The FAQPage JSON-LD in the head mirrors this word for word. -->
+  <section class="ij-section" id="faq" aria-labelledby="faq-h">
+    <div class="ij-container">
+      <div class="ij-stack ij-measure">
+        <h2 class="ij-headline" id="faq-h">Spørgsmål.</h2>
+        <div class="faq">
+          <details><summary>Hvad er en EMOM-timer?</summary>
+            <p>EMOM står for Every Minute on the Minute. Du laver et sæt i starten af hvert minut og hviler resten af det. I WODrounds vælger du 1 til 120 runder, hver fra 30 sekunder til 9 minutter og 30 sekunder lang.</p></details>
+          <details><summary>Kan jeg bruge WODrounds til Tabata?</summary>
+            <p>Ja. Tabata er 20 sekunders arbejde og 10 sekunders hvile, 8 gange. Vælg Intervaller, og sæt arbejde til 20, hvile til 10 og runder til 8. Timeren kører 3:50, fordi der ikke er hvile efter sidste runde.</p></details>
+          <details><summary>Kan jeg tage tid på en For Time-WOD?</summary>
+            <p>Ja. Vælg For Time, så tæller uret op fra nul. Tryk Stop, når du er færdig, og Færdig-skærmen viser din tid. Du kan sætte en tidsgrænse fra 0:30 til 60:00 eller lade være.</p></details>
+          <details><summary>Virker den på Apple TV?</summary>
+            <p>Ja. WODrounds kører på Apple TV og styres med Siri Remote, med de samme tre timere og de samme lydsignaler som på iPhonen. Den kører for sig selv der og synkroniserer ikke med iPhonen.</p></details>
+          <details><summary>Skal jeg have en iPhone til Apple Watch-appen?</summary>
+            <p>Ikke til EMOM og intervaller, som uret sætter op og kører selv. En træning, du starter på iPhonen, vises live på uret med samme tid og runde, og det er sådan For Time kommer på uret. Uret vibrerer, det giver ikke lyd.</p></details>
+          <details><summary>Gemmer WODrounds en log over mine træninger?</summary>
+            <p>Nej. Det er en timer, ikke en log. På iPhone og iPad kan den gemme en færdig træning i Apple Sundhed som en HIIT-træning, hvis du tillader det.</p></details>
+          <details><summary>Hvad koster den?</summary>
+            <p>Ét køb dækker iPhone, iPad, Apple Watch, Mac og Apple TV. Intet abonnement, ingen køb i appen, ingen reklamer. App Store viser prisen i din valuta.</p></details>
+          <details><summary>Tracker appen eller denne side mig?</summary>
+            <p>Appen har ingen statistik og ingen reklamesporing. På iPhone og iPad kan den sende nedbrudsrapporter, så jeg kan rette fejl, og det er den Diagnostik, der står i App Stores privatlivsmærkat. Siden tæller sidevisninger med Umami uden cookies. Ingen af dem ser dine træninger.</p></details>
+          <details><summary>Hvilke sprog er appen på?</summary>
+            <p>Engelsk, dansk og spansk. Stemmen er på engelsk.</p></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Closing -->
+  <section class="ij-section ij-section--band" aria-label="Hent WODrounds">
+    <div class="ij-container ij-closing">
+      <p class="ij-wordmark" style="--ij-wordmark-em: 5.2">WODrounds</p>
+      <div class="ij-store" data-ij-store="wodrounds" data-ij-store-locale="da">
+        <a class="ij-store-badge" href="https://apps.apple.com/app/id6759229877?pt=128512007&amp;ct=site&amp;mt=8" data-umami-event="store-click" data-umami-event-store="app-store" data-umami-event-placement="footer" data-umami-event-locale="da">
+          <img src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.25.0/badges/app-store-white-da-dk.svg" alt="Hent i App Store" width="120" height="40">
+        </a>
+        <p class="ij-store-facts">29,00 kr engangskøb · iOS 16 eller nyere</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="ij-container site-footer">
+<ij-footer app="wodrounds" links-label="WODrounds">
+<a slot="links" href="../guide.html" hreflang="en">Timer-guide</a>
+<a slot="links" href="../about.html" hreflang="en">Om</a>
+<a slot="links" href="../privacy.html" hreflang="en">Privatlivspolitik</a>
+<a slot="links" href="../support.html" hreflang="en">Support</a>
+<a slot="links" href="../index.html" hreflang="en" lang="en">English</a>
+<a slot="links" href="../de/index.html" hreflang="de" lang="de">Deutsch</a>
+<a slot="links" href="../es/index.html" hreflang="es" lang="es">Español</a>
+<a slot="links" href="../fr/index.html" hreflang="fr" lang="fr">Français</a>
+<a slot="links" href="../no/index.html" hreflang="nb" lang="nb">Norsk</a>
+<a slot="links" href="../sv/index.html" hreflang="sv" lang="sv">Svenska</a>
+<!-- IAMJARL cross-links for WODrounds: generated, do not edit -->
+<!-- design system v1.25.0, registry updated 2026-10-12 -->
+<!-- Paste inside <ij-footer app="wodrounds">. Rebuild to refresh. -->
+<a slot="cross-links" href="https://anvilworkout.iamjarl.com">Anvil Workout</a>
+<a slot="cross-links" href="https://walkful.iamjarl.com">Walkful</a>
+<a slot="cross-links" href="https://weannicotine.iamjarl.com">Wean Nicotine</a>
+<a slot="cross-links" href="https://madebyhuman.iamjarl.com">Made by Human</a>
+<a slot="cross-links" href="https://iamjarl.com">All projects</a>
+<p slot="fineprint">© 2026 IAMJARL.</p>
+<!-- No slot attribute on purpose: the fallback, shown only if the component never loads. -->
+<p><a href="../guide.html" hreflang="en">Timer-guide</a> &middot; <a href="../about.html" hreflang="en">Om</a> &middot; <a href="../privacy.html" hreflang="en">Privatlivspolitik</a> &middot; <a href="../support.html" hreflang="en">Support</a> &middot; © 2026 IAMJARL.</p>
+</ij-footer>
+</div>
 </body>
 </html>

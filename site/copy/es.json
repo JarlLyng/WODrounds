@@ -76,21 +76,10 @@
     "lede": "iPhone, iPad, Apple Watch, Mac y Apple TV. Compra WODrounds una vez y funciona en todos.",
     "traits": [
       {
-        "id": "tv",
-        "title": "Desde el otro lado de la sala",
-        "body": "En Apple TV el temporizador ocupa la pantalla, así que en un gimnasio en casa se lee desde el remo.",
-        "alt": "WODrounds en Apple TV: un Tabata en la ronda 3 de 8, quedan 12 segundos de trabajo."
-      },
-      {
         "id": "watch",
         "title": "En tu muñeca",
         "body": "El reloj sigue en vivo un entrenamiento que empiezas en el iPhone. También corre EMOM e intervalos por su cuenta. For Time empieza en el iPhone.",
         "alt": "WODrounds en Apple Watch: trabajo, quedan 12 segundos, ronda 3 de 8."
-      },
-      {
-        "id": "offline",
-        "title": "Sin conexión, sin cuenta",
-        "body": "Nada que registrar y nada que sincronizar. Funciona en un gimnasio de sótano sin señal."
       },
       {
         "id": "sound",
@@ -98,16 +87,23 @@
         "body": "Voz y pitidos en iPhone, iPad y Apple TV. Vibración en iPhone y Apple Watch. El Mac y el reloj no suenan."
       },
       {
+        "id": "tv",
+        "title": "Desde el otro lado de la sala",
+        "body": "En Apple TV el temporizador ocupa la pantalla, así que en un gimnasio en casa se lee desde el remo.",
+        "alt": "WODrounds en Apple TV: un Tabata en la ronda 3 de 8, quedan 12 segundos de trabajo."
+      },
+      {
         "id": "mac-ipad",
         "title": "Mac y iPad",
         "body": "Los mismos tres temporizadores en una ventana pequeña en el Mac y a pantalla completa en el iPad."
       }
-    ]
+    ],
+    "heading": "Dónde funciona."
   },
   "assurances": {
     "noAccount": {
       "title": "Sin cuenta",
-      "body": "Ábrela y pulsa Iniciar. No hay nada en lo que iniciar sesión."
+      "body": "Ábrela y pulsa Iniciar. No hay nada en lo que iniciar sesión y nada necesita conexión, así que funciona en un gimnasio de sótano sin señal."
     },
     "paidOnce": {
       "title": "Un solo pago",
@@ -117,14 +113,20 @@
       "heading": "Privacidad de la app",
       "category": "Datos no asociados con tu identidad",
       "sentence": "Los siguientes datos pueden recopilarse, pero no están asociados con tu identidad:",
-      "types": ["Salud y fitness", "Diagnóstico"],
+      "types": [
+        "Salud y fitness",
+        "Diagnóstico"
+      ],
       "note": "Salud es el entrenamiento que eliges guardar en Apple Salud en el iPhone o el iPad. Diagnóstico son los informes de fallos, para que pueda corregir errores.",
-      "source": "Tal como aparece en el App Store, 12/10/2026."
-    }
+      "source": "Tal como aparece en el App Store, 12/10/2026.",
+      "intro": "La etiqueta de privacidad del App Store para WODrounds, tal como la muestra Apple."
+    },
+    "heading": "Sin cuenta. Un solo pago."
   },
   "maker": {
     "quote": "Hice WODrounds porque cada app de temporizador que probé quería que creara una cuenta, viera anuncios o me suscribiera a un plan. Solo necesitaba un temporizador. Así que hice uno.",
-    "signature": "Jarl"
+    "signature": "Jarl",
+    "label": "Una nota del creador"
   },
   "faq": [
     {
@@ -165,12 +167,27 @@
     }
   ],
   "closing": {
-    "wordmark": "WODrounds"
+    "wordmark": "WODrounds",
+    "label": "Descargar WODrounds"
   },
   "links": {
     "emom": "emom-timer.html",
     "interval": "interval-timer.html",
     "tabata": "tabata-timer.html",
     "fortime": "for-time-timer.html"
+  },
+  "nav": {
+    "timers": "Temporizadores",
+    "where": "Dónde funciona",
+    "faq": "Preguntas"
+  },
+  "faqHeading": "Preguntas.",
+  "footer": {
+    "guide": "Guía de temporizadores",
+    "about": "Acerca de",
+    "privacy": "Política de privacidad",
+    "support": "Soporte",
+    "languages": "Idioma",
+    "fineprint": "© 2026 IAMJARL."
   }
 }
