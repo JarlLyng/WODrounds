@@ -100,13 +100,16 @@ def build(lang: str, folder: str, og_locale: str) -> str:
     def link(rel: str) -> str:
         return f'<link rel="stylesheet" href="{CDN}/{rel}"\n  integrity="{SRI[rel]}" crossorigin="anonymous">'
 
-    def scene(photo: str, extra: str = "") -> str:
+    def scene(photo: str, height: int, extra: str = "") -> str:
         # The kit makes it black and white, dims it and holds the words at AA over it,
-        # so the page adds no filter, overlay or colour of its own.
+        # so the page adds no filter, overlay or colour of its own. The photos are the
+        # retouched ones (appstore/photos/retouch_scenes.py); the 1280 step keeps a 3x
+        # phone off the 1920 file.
         src = f"/images/unsplash/{photo}"
+        srcset = ", ".join(f"{src}-{w}.jpg {w}w" for w in (960, 1280, 1920))
         return (f'<img class="ij-scene__photo" src="{src}-960.jpg" '
-                f'srcset="{src}-960.jpg 960w, {src}-1920.jpg 1920w" sizes="100vw" '
-                f'width="1920" height="1280" alt="" loading="lazy" decoding="async"{extra}>')
+                f'srcset="{srcset}" sizes="100vw" '
+                f'width="1920" height="{height}" alt="" loading="lazy" decoding="async"{extra}>')
 
     def script(rel: str) -> str:
         return f'<script type="module" src="{CDN}/{rel}"\n  integrity="{SRI[rel]}" crossorigin="anonymous"></script>'
@@ -303,7 +306,7 @@ def build(lang: str, folder: str, og_locale: str) -> str:
 
   <!-- The gym, for the mood, with nothing written on it. Never in the hero. -->
   <div class="ij-scene" aria-hidden="true">
-    {scene("victor-freitas-qZ-U9z4TQ6A", ' style="object-position: 50% 35%"')}
+    {scene("victor-freitas-qZ-U9z4TQ6A", 1164, ' style="object-position: 50% 35%"')}
   </div>
 
   <!-- 3. The phone that stays -->
@@ -365,7 +368,7 @@ def build(lang: str, folder: str, og_locale: str) -> str:
 
   <!-- 8. Closing -->
   <section class="ij-scene" aria-label="{e(c["closing"]["label"])}">
-    {scene("ambitious-studio-rick-barrett-0tQLfwcr5-M")}
+    {scene("ambitious-studio-rick-barrett-0tQLfwcr5-M", 1280)}
     <div class="ij-container ij-closing">
       <p class="ij-wordmark" style="--ij-wordmark-em: 5.2">{e(c["closing"]["wordmark"])}</p>
 {indent(fragment(f"dist/store/wodrounds.{lang}.footer.white.html"), 6)}
