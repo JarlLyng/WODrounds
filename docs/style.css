@@ -149,26 +149,7 @@ a:not([slot], [slot] *):hover {
   margin: -0.7rem -0.25rem;
 }
 
-/* Keyboard users: a skip link first, and a focus ring that is designed, not the default.
-   .ij-page a.skip-link beats the kit's link colour, and it sits above <ij-nav>'s sticky
-   bar, as on the homes (#182). */
-.ij-page a.skip-link {
-  position: absolute;
-  left: 1rem;
-  top: -4rem;
-  z-index: calc(var(--ij-z-sticky, 1100) + 1);
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  background: var(--accent);
-  color: var(--ij-color-on-accent);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.ij-page a.skip-link:focus {
-  top: 1rem;
-}
-
+/* Keyboard users: the kit's .ij-skip is the skip link (v1.27.0), and the focus ring is designed, not the default. */
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;

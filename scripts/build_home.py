@@ -24,16 +24,16 @@ COPY = ROOT / "site" / "copy"
 SITE = "https://wodrounds.iamjarl.com"
 APP_ID = "6759229877"
 
-DESIGN_VERSION = "1.26.0"
+DESIGN_VERSION = "1.27.0"
 CDN = f"https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v{DESIGN_VERSION}"
 SRI = {
-    "dist/css/tokens.css": "sha384-PKlt/RFEr/PqV2mjuOAm2tovN6l9sR3RwM+JgU1GP9vJisydnvt6l3h//+ythhEH",
-    "dist/identity/wodrounds.css": "sha384-T1dD/e0Jqjg5pYNAiVz7SZOqaPLDUw3CA8IYr5MoFUggVbiruvaU+GijwsUH2DXm",
-    "dist/fonts/jetbrains-mono.css": "sha384-4EDegyjW32y0mhvqLdn7Bma8HM6U1AjeQpPGTbtkRE14gKBdlhBJspuOu6qhyBmq",
-    "dist/kit/kit.css": "sha384-GbcA6lh/Swuy7rKjPm6Jgnq8nA+uvGv/ItuzZC60OpmgW7hWm7oJb4YR4OOfXLwT",
-    "dist/kit/kit.js": "sha384-nz0b4UX8YLqGvm2cAmyEGIvyKslXkjL5bjao3+ItF76Inx4yYbKGW6XpTzVMKunU",
-    "dist/components/ij-nav.js": "sha384-WVM/rurI3KnRJKOiwseL9jwHJtTQ5lNwC9JfFlzXqKlUo6a2dkeV5hJvqRV+sLUQ",
-    "dist/components/ij-footer.js": "sha384-PerBKUYbLWOcIY2bcVsIp53pRh4d0gpDmMrTPzU5c/dy/Uo/zIqK3A0MKM51tkKU",
+    "dist/css/tokens.css": "sha384-lUfvcrapc06S2TYGgD2xqH12RmcJvhF0n6Y2wVLZ/Ic9Sz5bi3ae0sX9Fcr9frJR",
+    "dist/identity/wodrounds.css": "sha384-gFTXVIoo/YvacAT5JxSlhGMNOUnrvvvCRK84H2VXtTBDqawnQNxWeL34gKEsjEJe",
+    "dist/fonts/jetbrains-mono.css": "sha384-BPEa18VrG+uVFRsfnChBEvwfBO75Pe1/jFFyzbs52BhCzabLEMUuLFQD1QMiRelm",
+    "dist/kit/kit.css": "sha384-YRM9Clkjn4G/BOJeaJQ0xcDKUDAW9GKlhNjLj/pkL39BEAviKnf3jx4h0p8wV4CE",
+    "dist/kit/kit.js": "sha384-TWUIZarqO2gUXjJchgDbCMQn6O4DcTXtMPbPE02wT0QLLXjUwwndXTainwjqXrDa",
+    "dist/components/ij-nav.js": "sha384-rfFGyLCJO1I5Wc7UzQnbwvLcMfb4dlYwUkFyZgPA1hhbpeEwA4RDVoxIVqage5sQ",
+    "dist/components/ij-footer.js": "sha384-gGA1tzED68MBs2FjWMsSnbeXPkJwayCkjkx44b7+M3okCSWg2noj1cfiS+tQGQQL",
 }
 
 # Language, its folder under docs/, and its Open Graph locale.
@@ -267,7 +267,7 @@ def build(lang: str, folder: str, og_locale: str) -> str:
 {ld(faq_ld)}
 </head>
 <body class="ij-page">
-<a class="skip-link" href="#main">{e({"en": "Skip to content", "da": "Spring til indhold", "de": "Zum Inhalt springen", "es": "Saltar al contenido", "fr": "Aller au contenu", "nb": "Hopp til innhold", "sv": "Hoppa till innehåll"}[lang])}</a>
+<a class="ij-skip" href="#main">{e({"en": "Skip to content", "da": "Spring til indhold", "de": "Zum Inhalt springen", "es": "Saltar al contenido", "fr": "Aller au contenu", "nb": "Hopp til innhold", "sv": "Hoppa till innehåll"}[lang])}</a>
 <ij-nav>
   <a slot="brand" href="{home_href(folder, folder)}">WODrounds</a>
   <a slot="links" href="#timers">{e(nav["timers"])}</a>
