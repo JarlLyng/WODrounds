@@ -89,7 +89,13 @@ private struct iOSContent: View {
     // cue fires once per round even though Intervals changes phase twice per round.
     @State private var lastRoundsRemainingRound: Int = 0
     @State private var showAbout = false
-    @State private var countdownEndTime: Date? = nil
+    @State private var countdownEndTime: Date? = {
+        #if DEBUG
+        return SiteCapture.countInEnd
+        #else
+        return nil
+        #endif
+    }()
     @State private var flashScreen = false
     // In-round cue state — tracks which cues have fired this (round, phase) so each fires once.
     @State private var lastHalfwayRound: Int? = nil
@@ -305,6 +311,9 @@ private struct iOSContent: View {
                     .font(.system(size: DesignTokens.Typography.Size.xs * fontScale, weight: DesignTokens.Typography.Weight.regular, design: .monospaced))
                     .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
                     .multilineTextAlignment(.center)
+                    // Two lines, always: with the Intervals ring the stack is tight, and
+                    // the note was cut to "…to see…" on a 6.3-inch phone.
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal)
             }
         }
@@ -669,6 +678,11 @@ private struct iOSContent: View {
     }
 
     private func triggerFlash() {
+        #if DEBUG
+        // Site captures: the hero loop repeats every few seconds, and a full-screen
+        // flash on every repeat would blink at the visitor.
+        if SiteCapture.isActive { return }
+        #endif
         flashScreen = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
             flashScreen = false
@@ -697,6 +711,9 @@ private struct iOSContent: View {
 
     private func syncEngineIfIdle(_ state: WODTimerEngineState) {
         guard state == .idle || state == .finished else { return }
+        #if DEBUG
+        if SiteCapture.isActive { return } // keep the captured moment, Done screen included
+        #endif
         switch timerMode {
         case .emom:
             engine = WODTimerEngine(emomRounds: rounds, secondsPerRound: emomRoundLength)

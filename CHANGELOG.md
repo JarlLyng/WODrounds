@@ -4,6 +4,7 @@ All notable user-facing changes to WODrounds. Newest first.
 
 ## Unreleased
 
+- **Fixed:** during Intervals on a 6.3-inch iPhone, the line about following the workout on Apple Watch was cut off mid-sentence. It now always gets its two lines.
 - **Changed (Apple Watch):** setting up a workout on the Watch fits on one screen, down to the 40 mm watch, with no scrolling. EMOM or Intervals is now a button beside the clock, Start sits at the bottom, and the − and + buttons are smaller, so three Intervals rows fit. Only the largest text sizes still scroll.
 - **Changed:** the iPhone and iPad screens follow the space they get instead of the kind of device. Where it is about as wide as it is tall, or wider, the timer runs in two columns: the digits on the left, as large as the column allows, and the buttons on the right. That covers iPhone Duo's inner display, an iPad on its side and, new, the iPhone in landscape. Short screens such as the iPhone SE and mini scale down a little, so the setup screen fits inside the safe area instead of running into the home indicator. Larger iPhones and iPads in portrait look as before.
 - **Added:** Send feedback, in About on iPhone, iPad and Mac, and in the Mac's Help menu. It opens an email to support@iamjarl.com with the app and system version filled in below the space for your message, and you see all of it before you send.

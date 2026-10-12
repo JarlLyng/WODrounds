@@ -1,0 +1,176 @@
+{
+  "lang": "nb",
+  "appLanguage": "en",
+  "meta": {
+    "title": "WODrounds | EMOM-, intervall- og For Time-timer for iPhone og Apple Watch",
+    "description": "EMOM, intervaller og For Time, med tall du kan lese midt i et sett. På iPhone, Apple Watch, iPad, Mac og Apple TV, betalt én gang. Ingen konto, ingen reklame, ikke abonnement."
+  },
+  "hero": {
+    "headline": "Den eneste WOD-timeren du trenger.",
+    "lede": "EMOM, intervaller og For Time, med tall du kan lese midt i et sett. På iPhonen og Apple Watch-en din, betalt én gang.",
+    "loopAlt": "WODrounds kjører en Tabata med 20 sekunder arbeid og 10 sekunder hvile: fem sekunder arbeid igjen i runde 3 av 8, så begynner hvilen."
+  },
+  "pieces": {
+    "heading": "Laget for treningen",
+    "items": [
+      {
+        "id": "ring",
+        "title": "Én ring per intervall",
+        "body": "Ringen tømmes gjennom hver periode med arbeid og hvile, limegrønn når du jobber og grå når du hviler, så du kan lese den fra gulvet.",
+        "link": "tabata",
+        "linkText": "Tabata-timer",
+        "alt": "Work, 14 sekunder igjen, inne i en limegrønn ring. Runde 3 av 8, 2:44 igjen av økten."
+      },
+      {
+        "id": "emom-round",
+        "title": "Runden alltid fremme",
+        "body": "Hvert minutt teller ned for seg, med runden du er i rett under.",
+        "link": "emom",
+        "linkText": "EMOM-timer",
+        "alt": "39 sekunder igjen i runde 4 av 12."
+      },
+      {
+        "id": "finished",
+        "title": "Tiden din når du stopper",
+        "body": "For Time teller opp fra null. Trykk Stop, og Done-skjermen holder på tiden din, med en valgfri grense fra 30 sekunder til 60 minutter.",
+        "link": "fortime",
+        "linkText": "For Time-timer",
+        "alt": "Done. Finished in 12:47."
+      },
+      {
+        "id": "countin",
+        "title": "Ti sekunder til å gjøre klar",
+        "body": "Hver økt starter med en nedtelling på 10 sekunder, nok til å legge fra deg telefonen og komme deg til stanga.",
+        "link": "interval",
+        "linkText": "Intervall-timer",
+        "alt": "Get ready, 8."
+      }
+    ]
+  },
+  "tour": {
+    "heading": "Tre timere. Ikke noe mer.",
+    "steps": [
+      {
+        "id": "emom",
+        "title": "EMOM i to tall",
+        "body": "Hvor mange runder, fra 1 til 120, og hvor lang hver runde er, fra 30 sekunder til 9:30. Trykk Start.",
+        "alt": "EMOM-oppsett: 12 runder à 1:00."
+      },
+      {
+        "id": "intervals",
+        "title": "Arbeid, hvile, runder",
+        "body": "Arbeid fra 5 sekunder til 5 minutter, hvile opptil 3 minutter, opptil 60 runder. Det store tallet er tiden som er igjen av dette intervallet, og hele økten teller ned under det.",
+        "alt": "En Tabata i gang: Work, 14 sekunder igjen, runde 3 av 8."
+      },
+      {
+        "id": "fortime",
+        "title": "Tell opp, og stopp",
+        "body": "For Time går til du trykker Stop eller når grensen din. Done-skjermen holder på tiden din til du nullstiller.",
+        "alt": "Done. Finished in 12:47."
+      }
+    ]
+  },
+  "where": {
+    "numeral": "5",
+    "numeralLabel": "Apple-plattformer. Én betaling.",
+    "lede": "iPhone, iPad, Apple Watch, Mac og Apple TV. Kjøp WODrounds én gang, så kjører den på alle.",
+    "traits": [
+      {
+        "id": "tv",
+        "title": "Tvers over rommet",
+        "body": "På Apple TV fyller timeren skjermen, så den kan leses fra romaskinen i et hjemmegym.",
+        "alt": "WODrounds på Apple TV: en Tabata i runde 3 av 8, 12 sekunder arbeid igjen."
+      },
+      {
+        "id": "watch",
+        "title": "På håndleddet",
+        "body": "Klokken følger live en økt du starter på iPhonen. Den kjører også EMOM og intervaller alene. For Time starter på iPhonen.",
+        "alt": "WODrounds på Apple Watch: Work, 11 sekunder igjen, runde 3 av 8."
+      },
+      {
+        "id": "offline",
+        "title": "Uten nett, uten konto",
+        "body": "Ingenting å registrere og ingenting å synkronisere. Den virker i et kjellergym uten dekning."
+      },
+      {
+        "id": "sound",
+        "title": "Lyd og vibrasjon",
+        "body": "Stemme og pip på iPhone, iPad og Apple TV. Vibrasjon på iPhone og Apple Watch. Mac og klokke er stille."
+      },
+      {
+        "id": "mac-ipad",
+        "title": "Mac og iPad",
+        "body": "De samme tre timerne i et lite vindu på Mac og på hele skjermen på iPad."
+      }
+    ]
+  },
+  "assurances": {
+    "noAccount": {
+      "title": "Ingen konto",
+      "body": "Åpne den og trykk Start. Det er ingenting å logge inn på."
+    },
+    "paidOnce": {
+      "title": "Betalt én gang",
+      "body": "Ikke abonnement, ingen kjøp i appen, ingen reklame. Alt følger med det ene kjøpet."
+    },
+    "privacyLabel": {
+      "heading": "Apper og personvern",
+      "category": "Data som ikke knyttes til deg",
+      "sentence": "Følgende data kan bli samlet inn, men vil ikke bli knyttet til identiteten din:",
+      "types": ["Helse og trening", "Diagnostikk"],
+      "note": "Helse er økten du velger å lagre i Apple Helse på iPhone eller iPad. Diagnostikk er krasjrapporter, så jeg kan rette feil.",
+      "source": "Slik det står i App Store, 12.10.2026."
+    }
+  },
+  "maker": {
+    "quote": "Jeg lagde WODrounds fordi hver eneste timer-app jeg prøvde ville at jeg skulle opprette en konto, se reklame eller tegne et abonnement. Jeg trengte bare en timer. Så jeg lagde en.",
+    "signature": "Jarl"
+  },
+  "faq": [
+    {
+      "q": "Hva er en EMOM-timer?",
+      "a": "EMOM står for Every Minute on the Minute. Du tar et sett i starten av hvert minutt og hviler resten av det. I WODrounds velger du 1 til 120 runder, hver fra 30 sekunder til 9 minutter og 30 sekunder lang."
+    },
+    {
+      "q": "Kan jeg bruke WODrounds til Tabata?",
+      "a": "Ja. Tabata er 20 sekunder arbeid og 10 sekunder hvile, 8 ganger. Velg Intervals og sett arbeid til 20, hvile til 10 og runder til 8. Timeren går i 3:50, fordi det ikke er hvile etter siste runde."
+    },
+    {
+      "q": "Kan jeg ta tiden på en For Time-WOD?",
+      "a": "Ja. Velg For Time, så teller klokken opp fra null. Trykk Stop når du er ferdig, og Done-skjermen viser tiden din. Du kan sette en tidsgrense fra 0:30 til 60:00 eller la være."
+    },
+    {
+      "q": "Virker den på Apple TV?",
+      "a": "Ja. WODrounds kjører på Apple TV og styres med Siri Remote, med de samme tre timerne og de samme lydsignalene som på iPhonen. Den kjører for seg selv der og synkroniserer ikke med iPhonen."
+    },
+    {
+      "q": "Trenger jeg en iPhone til Apple Watch-appen?",
+      "a": "Ikke til EMOM og intervaller, som klokken setter opp og kjører selv. En økt du starter på iPhonen, vises live på klokken med samme tid og runde, og det er slik For Time kommer på klokken. Klokken vibrerer, den gir ikke lyd."
+    },
+    {
+      "q": "Fører WODrounds en logg over øktene mine?",
+      "a": "Nei. Det er en timer, ikke en logg. På iPhone og iPad kan den lagre en fullført økt i Apple Helse som en HIIT-økt, hvis du tillater det."
+    },
+    {
+      "q": "Hva koster den?",
+      "a": "Ett kjøp dekker iPhone, iPad, Apple Watch, Mac og Apple TV. Ikke abonnement, ingen kjøp i appen, ingen reklame. App Store viser prisen i din valuta."
+    },
+    {
+      "q": "Sporer appen eller denne siden meg?",
+      "a": "Appen har ingen statistikk og ingen reklamesporing. På iPhone og iPad kan den sende krasjrapporter så jeg kan rette feil, og det er Diagnostikk i App Stores personvernetikett. Siden teller sidevisninger med Umami, uten informasjonskapsler. Ingen av dem ser øktene dine."
+    },
+    {
+      "q": "Hvilke språk er appen på?",
+      "a": "Engelsk, dansk og spansk. Denne siden viser appen på engelsk. Stemmen er på engelsk."
+    }
+  ],
+  "closing": {
+    "wordmark": "WODrounds"
+  },
+  "links": {
+    "emom": "emom-timer.html",
+    "interval": "interval-timer.html",
+    "tabata": "tabata-timer.html",
+    "fortime": "for-time-timer.html"
+  }
+}

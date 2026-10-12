@@ -1,0 +1,176 @@
+{
+  "lang": "fr",
+  "appLanguage": "en",
+  "meta": {
+    "title": "WODrounds | Minuteur EMOM, intervalles et For Time pour iPhone et Apple Watch",
+    "description": "EMOM, intervalles et For Time, avec des chiffres lisibles en pleine série. Sur iPhone, Apple Watch, iPad, Mac et Apple TV, payé une seule fois. Sans compte, sans publicité, sans abonnement."
+  },
+  "hero": {
+    "headline": "Le seul minuteur WOD dont vous avez besoin.",
+    "lede": "EMOM, intervalles et For Time, avec des chiffres lisibles en pleine série. Sur votre iPhone et votre Apple Watch, payé une seule fois.",
+    "loopAlt": "WODrounds pendant un Tabata de 20 secondes de travail et 10 de repos : il reste cinq secondes de travail au tour 3 sur 8, puis le repos commence."
+  },
+  "pieces": {
+    "heading": "Pensé pour l'entraînement",
+    "items": [
+      {
+        "id": "ring",
+        "title": "Un anneau par intervalle",
+        "body": "L'anneau se vide à chaque période de travail et de repos, vert citron pendant l'effort et gris pendant le repos, pour le lire depuis le sol.",
+        "link": "tabata",
+        "linkText": "Minuteur Tabata",
+        "alt": "Work, encore 14 secondes, dans un anneau vert citron. Tour 3 sur 8, encore 2:44 d'entraînement."
+      },
+      {
+        "id": "emom-round",
+        "title": "Le tour toujours affiché",
+        "body": "Chaque minute se décompte à part, avec le tour en cours juste en dessous.",
+        "link": "emom",
+        "linkText": "Minuteur EMOM",
+        "alt": "Encore 39 secondes au tour 4 sur 12."
+      },
+      {
+        "id": "finished",
+        "title": "Votre temps, à l'arrêt",
+        "body": "For Time compte à partir de zéro. Appuyez sur Stop et l'écran Done garde votre temps, avec une limite facultative de 30 secondes à 60 minutes.",
+        "link": "fortime",
+        "linkText": "Minuteur For Time",
+        "alt": "Done. Finished in 12:47."
+      },
+      {
+        "id": "countin",
+        "title": "Dix secondes pour s'installer",
+        "body": "Chaque séance commence par un compte à rebours de 10 secondes, le temps de poser le téléphone et d'aller à la barre.",
+        "link": "interval",
+        "linkText": "Minuteur d'intervalles",
+        "alt": "Get ready, 8."
+      }
+    ]
+  },
+  "tour": {
+    "heading": "Trois minuteurs. Rien d'autre.",
+    "steps": [
+      {
+        "id": "emom",
+        "title": "L'EMOM en deux chiffres",
+        "body": "Combien de tours, de 1 à 120, et la durée de chacun, de 30 secondes à 9:30. Appuyez sur Start.",
+        "alt": "Réglage EMOM : 12 tours de 1:00."
+      },
+      {
+        "id": "intervals",
+        "title": "Travail, repos, tours",
+        "body": "Travail de 5 secondes à 5 minutes, repos jusqu'à 3 minutes, jusqu'à 60 tours. Le grand chiffre est le temps restant de l'intervalle en cours, et la séance entière se décompte en dessous.",
+        "alt": "Un Tabata en cours : Work, encore 14 secondes, tour 3 sur 8."
+      },
+      {
+        "id": "fortime",
+        "title": "Compter, puis s'arrêter",
+        "body": "For Time tourne jusqu'à ce que vous appuyiez sur Stop ou atteigniez votre limite. L'écran Done garde votre temps jusqu'à la remise à zéro.",
+        "alt": "Done. Finished in 12:47."
+      }
+    ]
+  },
+  "where": {
+    "numeral": "5",
+    "numeralLabel": "plateformes Apple. Un seul paiement.",
+    "lede": "iPhone, iPad, Apple Watch, Mac et Apple TV. Achetez WODrounds une fois, il fonctionne sur tous.",
+    "traits": [
+      {
+        "id": "tv",
+        "title": "D'un bout à l'autre de la pièce",
+        "body": "Sur l'Apple TV, le minuteur remplit l'écran, lisible depuis le rameur dans une salle à la maison.",
+        "alt": "WODrounds sur Apple TV : un Tabata au tour 3 sur 8, encore 12 secondes de travail."
+      },
+      {
+        "id": "watch",
+        "title": "À votre poignet",
+        "body": "La Watch suit en direct une séance lancée sur l'iPhone. Elle fait aussi tourner EMOM et intervalles toute seule. For Time se lance sur l'iPhone.",
+        "alt": "WODrounds sur Apple Watch : Work, encore 11 secondes, tour 3 sur 8."
+      },
+      {
+        "id": "offline",
+        "title": "Hors ligne, sans compte",
+        "body": "Rien à créer, rien à synchroniser. Il fonctionne dans une salle au sous-sol sans réseau."
+      },
+      {
+        "id": "sound",
+        "title": "Son et vibrations",
+        "body": "Annonces vocales et bips sur iPhone, iPad et Apple TV. Vibrations sur iPhone et Apple Watch. Le Mac et la Watch restent silencieux."
+      },
+      {
+        "id": "mac-ipad",
+        "title": "Mac et iPad",
+        "body": "Les trois mêmes minuteurs dans une petite fenêtre sur Mac et en plein écran sur iPad."
+      }
+    ]
+  },
+  "assurances": {
+    "noAccount": {
+      "title": "Sans compte",
+      "body": "Ouvrez-le et appuyez sur Start. Il n'y a rien à quoi se connecter."
+    },
+    "paidOnce": {
+      "title": "Payé une seule fois",
+      "body": "Sans abonnement, sans achats intégrés, sans publicité. Tout est compris dans l'achat."
+    },
+    "privacyLabel": {
+      "heading": "Confidentialité de l’app",
+      "category": "Données n’établissant aucun lien avec vous",
+      "sentence": "Les données suivantes peuvent être collectées, mais elles ne sont pas liées à votre identité :",
+      "types": ["Santé et activité physique", "Diagnostic"],
+      "note": "Santé, c'est la séance que vous choisissez d'enregistrer dans Apple Santé sur iPhone ou iPad. Diagnostic, ce sont les rapports de plantage, pour que je puisse corriger les bugs.",
+      "source": "Tel qu'affiché sur l'App Store, le 12/10/2026."
+    }
+  },
+  "maker": {
+    "quote": "J'ai créé WODrounds parce que chaque appli de minuteur que j'essayais voulait que je crée un compte, que je regarde des publicités ou que je souscrive un abonnement. Il me fallait juste un minuteur. Alors j'en ai fait un.",
+    "signature": "Jarl"
+  },
+  "faq": [
+    {
+      "q": "Qu'est-ce qu'un minuteur EMOM ?",
+      "a": "EMOM signifie Every Minute on the Minute. Vous faites une série au début de chaque minute et récupérez le reste. Dans WODrounds, vous choisissez de 1 à 120 tours, chacun de 30 secondes à 9 minutes 30."
+    },
+    {
+      "q": "Puis-je utiliser WODrounds pour un Tabata ?",
+      "a": "Oui. Un Tabata, c'est 20 secondes de travail et 10 de repos, 8 fois. Choisissez Intervals et réglez le travail sur 20, le repos sur 10 et les tours sur 8. Le minuteur dure 3:50, car il n'y a pas de repos après le dernier tour."
+    },
+    {
+      "q": "Puis-je chronométrer un WOD For Time ?",
+      "a": "Oui. Choisissez For Time et le chrono part de zéro. Appuyez sur Stop à la fin et l'écran Done affiche votre temps. Vous pouvez fixer une limite de 0:30 à 60:00, ou ne pas en mettre."
+    },
+    {
+      "q": "Est-ce que ça fonctionne sur Apple TV ?",
+      "a": "Oui. WODrounds fonctionne sur Apple TV avec la Siri Remote, avec les trois mêmes minuteurs et les mêmes signaux sonores que sur iPhone. Il y fonctionne seul et ne se synchronise pas avec l'iPhone."
+    },
+    {
+      "q": "Faut-il un iPhone pour l'app Apple Watch ?",
+      "a": "Pas pour l'EMOM et les intervalles, que la Watch règle et fait tourner seule. Une séance lancée sur l'iPhone s'affiche en direct sur la Watch, avec le même temps et le même tour, et c'est ainsi que For Time arrive sur la Watch. La Watch vibre, elle n'émet pas de son."
+    },
+    {
+      "q": "WODrounds garde-t-il un journal de mes séances ?",
+      "a": "Non. C'est un minuteur, pas un journal. Sur iPhone et iPad, il peut enregistrer une séance terminée dans Apple Santé comme entraînement HIIT, si vous l'autorisez."
+    },
+    {
+      "q": "Combien ça coûte ?",
+      "a": "Un seul achat couvre iPhone, iPad, Apple Watch, Mac et Apple TV. Sans abonnement, sans achats intégrés, sans publicité. L'App Store affiche le prix dans votre devise."
+    },
+    {
+      "q": "L'app ou ce site me pistent-ils ?",
+      "a": "L'app n'a ni statistiques ni pistage publicitaire. Sur iPhone et iPad, elle peut envoyer des rapports de plantage pour que je corrige les bugs, c'est le Diagnostic de l'étiquette de confidentialité de l'App Store. Ce site compte les pages vues avec Umami, sans cookies. Aucun des deux ne voit vos séances."
+    },
+    {
+      "q": "En quelles langues est l'app ?",
+      "a": "Anglais, danois et espagnol. Cette page montre l'app en anglais. Les annonces vocales sont en anglais."
+    }
+  ],
+  "closing": {
+    "wordmark": "WODrounds"
+  },
+  "links": {
+    "emom": "emom-timer.html",
+    "interval": "interval-timer.html",
+    "tabata": "tabata-timer.html",
+    "fortime": "for-time-timer.html"
+  }
+}

@@ -47,6 +47,11 @@ enum WorkoutSoundManager {
     /// different speaker from the recordings, so every cue should have a file.
     private static func speak(_ text: String) {
         guard isSoundEnabled else { return }
+        #if DEBUG
+        // The system voice stalls the iOS 27 simulator mid-workout, which froze the
+        // site capture; a capture has no sound anyway.
+        if SiteCapture.isActive { return }
+        #endif
         configureAudioSession()
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")

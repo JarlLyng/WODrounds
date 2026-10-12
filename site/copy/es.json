@@ -1,0 +1,176 @@
+{
+  "lang": "es",
+  "appLanguage": "es",
+  "meta": {
+    "title": "WODrounds | Temporizador EMOM, de intervalos y For Time para iPhone y Apple Watch",
+    "description": "EMOM, intervalos y For Time, con números que puedes leer en plena serie. En iPhone, Apple Watch, iPad, Mac y Apple TV, con un solo pago. Sin cuenta, sin anuncios, sin suscripción."
+  },
+  "hero": {
+    "headline": "El único temporizador WOD que necesitas.",
+    "lede": "EMOM, intervalos y For Time, con números que puedes leer en plena serie. En tu iPhone y tu Apple Watch, con un solo pago.",
+    "loopAlt": "WODrounds en un Tabata de 20 segundos de trabajo y 10 de descanso: quedan cinco segundos de trabajo en la ronda 3 de 8 y luego empieza el descanso."
+  },
+  "pieces": {
+    "heading": "Hecho para el entrenamiento",
+    "items": [
+      {
+        "id": "ring",
+        "title": "Un anillo por intervalo",
+        "body": "El anillo se vacía en cada periodo de trabajo y de descanso, verde lima mientras trabajas y gris mientras descansas, así que lo lees desde el suelo.",
+        "link": "tabata",
+        "linkText": "Temporizador Tabata",
+        "alt": "Trabajo, quedan 14 segundos, dentro de un anillo verde lima. Ronda 3 de 8, quedan 2:44 del entrenamiento."
+      },
+      {
+        "id": "emom-round",
+        "title": "La ronda, siempre a la vista",
+        "body": "Cada minuto cuenta hacia atrás por su cuenta, con la ronda en la que estás justo debajo.",
+        "link": "emom",
+        "linkText": "Temporizador EMOM",
+        "alt": "Quedan 38 segundos de la ronda 4 de 12."
+      },
+      {
+        "id": "finished",
+        "title": "Tu tiempo, al parar",
+        "body": "For Time cuenta desde cero. Pulsa Detener y la pantalla final guarda tu tiempo, con un límite opcional de 30 segundos a 60 minutos.",
+        "link": "fortime",
+        "linkText": "Temporizador For Time",
+        "alt": "Listo. Terminado en 12:47."
+      },
+      {
+        "id": "countin",
+        "title": "Diez segundos para prepararte",
+        "body": "Cada entrenamiento empieza con una cuenta atrás de 10 segundos, suficiente para dejar el teléfono y llegar a la barra.",
+        "link": "interval",
+        "linkText": "Temporizador de intervalos",
+        "alt": "Prepárate, 8."
+      }
+    ]
+  },
+  "tour": {
+    "heading": "Tres temporizadores. Nada más.",
+    "steps": [
+      {
+        "id": "emom",
+        "title": "EMOM en dos números",
+        "body": "Cuántas rondas, de 1 a 120, y cuánto dura cada una, de 30 segundos a 9:30. Pulsa Iniciar.",
+        "alt": "Configuración de EMOM: 12 rondas de 1:00."
+      },
+      {
+        "id": "intervals",
+        "title": "Trabajo, descanso, rondas",
+        "body": "Trabajo de 5 segundos a 5 minutos, descanso de hasta 3 minutos, hasta 60 rondas. El número grande es el tiempo que queda de este intervalo, y el entrenamiento completo cuenta hacia atrás debajo.",
+        "alt": "Un Tabata en marcha: trabajo, quedan 14 segundos, ronda 3 de 8."
+      },
+      {
+        "id": "fortime",
+        "title": "Cuenta hacia arriba y para",
+        "body": "For Time corre hasta que pulsas Detener o llegas a tu límite. La pantalla final guarda tu tiempo hasta que reinicias.",
+        "alt": "Listo. Terminado en 12:47."
+      }
+    ]
+  },
+  "where": {
+    "numeral": "5",
+    "numeralLabel": "plataformas Apple. Un solo pago.",
+    "lede": "iPhone, iPad, Apple Watch, Mac y Apple TV. Compra WODrounds una vez y funciona en todos.",
+    "traits": [
+      {
+        "id": "tv",
+        "title": "Desde el otro lado de la sala",
+        "body": "En Apple TV el temporizador ocupa la pantalla, así que en un gimnasio en casa se lee desde el remo.",
+        "alt": "WODrounds en Apple TV: un Tabata en la ronda 3 de 8, quedan 12 segundos de trabajo."
+      },
+      {
+        "id": "watch",
+        "title": "En tu muñeca",
+        "body": "El reloj sigue en vivo un entrenamiento que empiezas en el iPhone. También corre EMOM e intervalos por su cuenta. For Time empieza en el iPhone.",
+        "alt": "WODrounds en Apple Watch: trabajo, quedan 12 segundos, ronda 3 de 8."
+      },
+      {
+        "id": "offline",
+        "title": "Sin conexión, sin cuenta",
+        "body": "Nada que registrar y nada que sincronizar. Funciona en un gimnasio de sótano sin señal."
+      },
+      {
+        "id": "sound",
+        "title": "Sonido y vibración",
+        "body": "Voz y pitidos en iPhone, iPad y Apple TV. Vibración en iPhone y Apple Watch. El Mac y el reloj no suenan."
+      },
+      {
+        "id": "mac-ipad",
+        "title": "Mac y iPad",
+        "body": "Los mismos tres temporizadores en una ventana pequeña en el Mac y a pantalla completa en el iPad."
+      }
+    ]
+  },
+  "assurances": {
+    "noAccount": {
+      "title": "Sin cuenta",
+      "body": "Ábrela y pulsa Iniciar. No hay nada en lo que iniciar sesión."
+    },
+    "paidOnce": {
+      "title": "Un solo pago",
+      "body": "Sin suscripción, sin compras dentro de la app, sin anuncios. Todo viene con la única compra."
+    },
+    "privacyLabel": {
+      "heading": "Privacidad de la app",
+      "category": "Datos no asociados con tu identidad",
+      "sentence": "Los siguientes datos pueden recopilarse, pero no están asociados con tu identidad:",
+      "types": ["Salud y fitness", "Diagnóstico"],
+      "note": "Salud es el entrenamiento que eliges guardar en Apple Salud en el iPhone o el iPad. Diagnóstico son los informes de fallos, para que pueda corregir errores.",
+      "source": "Tal como aparece en el App Store, 12/10/2026."
+    }
+  },
+  "maker": {
+    "quote": "Hice WODrounds porque cada app de temporizador que probé quería que creara una cuenta, viera anuncios o me suscribiera a un plan. Solo necesitaba un temporizador. Así que hice uno.",
+    "signature": "Jarl"
+  },
+  "faq": [
+    {
+      "q": "¿Qué es un temporizador EMOM?",
+      "a": "EMOM significa Every Minute on the Minute, cada minuto en el minuto. Haces una serie al empezar cada minuto y descansas lo que queda de él. En WODrounds eliges de 1 a 120 rondas, cada una de 30 segundos a 9 minutos y 30 segundos."
+    },
+    {
+      "q": "¿Puedo usar WODrounds para Tabata?",
+      "a": "Sí. Tabata son 20 segundos de trabajo y 10 de descanso, 8 veces. Elige Intervalos y pon trabajo en 20, descanso en 10 y rondas en 8. El temporizador dura 3:50, porque no hay descanso después de la última ronda."
+    },
+    {
+      "q": "¿Puedo cronometrar un WOD For Time?",
+      "a": "Sí. Elige For Time y el reloj cuenta desde cero. Pulsa Detener al terminar y la pantalla final muestra tu tiempo. Puedes poner un límite de 0:30 a 60:00 o no ponerlo."
+    },
+    {
+      "q": "¿Funciona en Apple TV?",
+      "a": "Sí. WODrounds funciona en Apple TV con el Siri Remote, con los mismos tres temporizadores y los mismos avisos de sonido que en el iPhone. Ahí funciona por su cuenta y no se sincroniza con el iPhone."
+    },
+    {
+      "q": "¿Necesito un iPhone para la app del Apple Watch?",
+      "a": "No para EMOM e intervalos, que el reloj configura y corre por su cuenta. Un entrenamiento que empiezas en el iPhone aparece en vivo en el reloj, con el mismo tiempo y la misma ronda, y así llega For Time al reloj. El reloj vibra, no suena."
+    },
+    {
+      "q": "¿WODrounds guarda un registro de mis entrenamientos?",
+      "a": "No. Es un temporizador, no un registro. En iPhone y iPad puede guardar un entrenamiento terminado en Apple Salud como sesión HIIT, si lo permites."
+    },
+    {
+      "q": "¿Cuánto cuesta?",
+      "a": "Una compra cubre iPhone, iPad, Apple Watch, Mac y Apple TV. Sin suscripción, sin compras dentro de la app, sin anuncios. El App Store muestra el precio en tu moneda."
+    },
+    {
+      "q": "¿La app o este sitio me rastrean?",
+      "a": "La app no tiene analítica ni rastreo publicitario. En iPhone y iPad puede enviar informes de fallos para que pueda corregir errores, y eso es el Diagnóstico de la etiqueta de privacidad del App Store. Este sitio cuenta visitas con Umami, sin cookies. Ninguno ve tus entrenamientos."
+    },
+    {
+      "q": "¿En qué idiomas está la app?",
+      "a": "Inglés, danés y español. Los avisos de voz están en inglés."
+    }
+  ],
+  "closing": {
+    "wordmark": "WODrounds"
+  },
+  "links": {
+    "emom": "emom-timer.html",
+    "interval": "interval-timer.html",
+    "tabata": "tabata-timer.html",
+    "fortime": "for-time-timer.html"
+  }
+}

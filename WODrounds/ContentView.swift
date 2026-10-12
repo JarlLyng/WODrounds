@@ -76,12 +76,61 @@ let lastTimerModeKey = "lastTimerMode"
 /// appear to rebuild the engine from the restored values. Without that, the screen would
 /// show your numbers while Start ran these.
 func initialEngine() -> WODTimerEngine {
+    #if DEBUG
+    if let engine = SiteCapture.engine(mode: initialTimerMode()) { return engine }
+    #endif
     switch initialTimerMode() {
     case .emom: return WODTimerEngine(emomRounds: 10, secondsPerRound: 60)
     case .intervals: return WODTimerEngine(workSeconds: 30, restSeconds: 15, rounds: 8)
     case .forTime: return WODTimerEngine(forTimeCapSeconds: nil)
     }
 }
+
+#if DEBUG
+/// Site and App Store captures (#182). `-siteElapsed N` opens the app N seconds into a
+/// workout, past the count-in, so a capture shows a real moment, such as round 4 of 12
+/// or seven seconds of rest, without timing it live. `-siteFinished` then ends it, for
+/// the Done screen. The workout uses the stored setup values, which a launch argument can
+/// set too (`-intervalsWorkSeconds 20`). DEBUG only, like `-screen`.
+enum SiteCapture {
+    static var elapsed: TimeInterval? {
+        UserDefaults.standard.object(forKey: "siteElapsed") == nil
+            ? nil : UserDefaults.standard.double(forKey: "siteElapsed")
+    }
+    static var isActive: Bool { elapsed != nil }
+
+    /// `-siteCountIn N` opens the setup screen inside the 10-second count-in, N seconds
+    /// before it ends, so the count-in can be captured without tapping Start.
+    static var countInEnd: Date? {
+        UserDefaults.standard.object(forKey: "siteCountIn") == nil
+            ? nil : Date().addingTimeInterval(UserDefaults.standard.double(forKey: "siteCountIn"))
+    }
+
+    static func engine(mode: TimerUIMode) -> WODTimerEngine? {
+        guard let elapsed else { return nil }
+        let d = UserDefaults.standard
+        func value(_ key: String, _ fallback: Int) -> Int {
+            d.object(forKey: key) == nil ? fallback : d.integer(forKey: key)
+        }
+        var e: WODTimerEngine
+        switch mode {
+        case .emom:
+            e = WODTimerEngine(emomRounds: value("emomRounds", 10),
+                               secondsPerRound: value("emomRoundLengthSeconds", 60))
+        case .intervals:
+            e = WODTimerEngine(workSeconds: value("intervalsWorkSeconds", 30),
+                               restSeconds: value("intervalsRestSeconds", 15),
+                               rounds: value("intervalsRounds", 8))
+        case .forTime:
+            e = WODTimerEngine(forTimeCapSeconds: forTimeEngineCap(value("forTimeCapSeconds", 0)))
+        }
+        let now = Date()
+        e.start(now: now.addingTimeInterval(-elapsed))
+        if d.bool(forKey: "siteFinished") { e.finish(now: now) }
+        return e
+    }
+}
+#endif
 
 /// When to ask for an App Store review, shared by every platform so the cadence
 /// is decided in one place.
