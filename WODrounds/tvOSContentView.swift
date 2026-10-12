@@ -392,6 +392,11 @@ struct ContentView: View {
     }
 
     private func triggerFlash() {
+        #if DEBUG
+        // Site captures: the hero loop repeats every few seconds, and a full-screen
+        // flash on every repeat would blink at the visitor.
+        if SiteCapture.isActive { return }
+        #endif
         flashScreen = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
             flashScreen = false
@@ -501,6 +506,9 @@ struct ContentView: View {
 
     private func syncEngineIfIdle(_ state: WODTimerEngineState) {
         guard state == .idle || state == .finished else { return }
+        #if DEBUG
+        if SiteCapture.isActive { return } // keep the captured moment, Done screen included
+        #endif
         switch timerMode {
         case .emom:
             engine = WODTimerEngine(emomRounds: rounds, secondsPerRound: emomRoundLengthSeconds)

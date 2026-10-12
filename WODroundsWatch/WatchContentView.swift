@@ -231,6 +231,13 @@ struct WatchContentView: View {
             }
             .onAppear {
                 rebuildEngine()
+                #if DEBUG
+                // Site captures (#182): `-siteElapsed N` opens N seconds into the
+                // stored workout, past the count-in, as on the phone.
+                if UserDefaults.standard.object(forKey: "siteElapsed") != nil {
+                    engine.start(now: Date().addingTimeInterval(-UserDefaults.standard.double(forKey: "siteElapsed")))
+                }
+                #endif
             }
         }
     }

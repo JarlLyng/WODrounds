@@ -1,0 +1,176 @@
+{
+  "lang": "en",
+  "appLanguage": "en",
+  "meta": {
+    "title": "WODrounds | EMOM, interval and For Time timer for iPhone and Apple Watch",
+    "description": "EMOM, intervals and For Time, with digits you can read mid-set. On iPhone, Apple Watch, iPad, Mac and Apple TV, paid for once. No account, no ads, no subscription."
+  },
+  "hero": {
+    "headline": "The only WOD timer you need.",
+    "lede": "EMOM, intervals and For Time, with digits you can read mid-set. On your iPhone and your Apple Watch, paid for once.",
+    "loopAlt": "WODrounds running a Tabata, 20 seconds of work and 10 of rest: five seconds of work left in round 3 of 8, then rest begins."
+  },
+  "pieces": {
+    "heading": "Built for the workout",
+    "items": [
+      {
+        "id": "ring",
+        "title": "Every interval, one ring",
+        "body": "The ring drains over each work and rest period, lime while you work and grey while you rest, so you can read it from the floor.",
+        "link": "tabata",
+        "linkText": "Tabata timer",
+        "alt": "Work, 14 seconds left, inside a lime ring. Round 3 of 8, 2:44 left in the workout."
+      },
+      {
+        "id": "emom-round",
+        "title": "The round, always on screen",
+        "body": "Each minute counts down on its own, with the round you are in right under it.",
+        "link": "emom",
+        "linkText": "EMOM timer",
+        "alt": "39 seconds left in round 4 of 12."
+      },
+      {
+        "id": "finished",
+        "title": "Your time, when you stop",
+        "body": "For Time counts up from zero. Press Stop and the Done screen keeps your time, with an optional cap from 30 seconds to 60 minutes.",
+        "link": "fortime",
+        "linkText": "For Time timer",
+        "alt": "Done. Finished in 12:47."
+      },
+      {
+        "id": "countin",
+        "title": "Ten seconds to set up",
+        "body": "Every workout starts with a 10-second count-in, enough to put the phone down and get to the bar.",
+        "link": "interval",
+        "linkText": "Interval timer",
+        "alt": "Get ready, 8."
+      }
+    ]
+  },
+  "tour": {
+    "heading": "Three timers. Nothing else.",
+    "steps": [
+      {
+        "id": "emom",
+        "title": "EMOM in two numbers",
+        "body": "How many rounds, from 1 to 120, and how long each one is, from 30 seconds to 9:30. Press Start.",
+        "alt": "EMOM setup: 12 rounds of 1:00."
+      },
+      {
+        "id": "intervals",
+        "title": "Work, rest, rounds",
+        "body": "Work from 5 seconds to 5 minutes, rest up to 3 minutes, up to 60 rounds. The big number is the time left in this interval, and the whole workout counts down under it.",
+        "alt": "A Tabata running: work, 14 seconds left, round 3 of 8."
+      },
+      {
+        "id": "fortime",
+        "title": "Count up, then stop",
+        "body": "For Time runs until you press Stop or reach your cap. The Done screen keeps your finished time until you reset.",
+        "alt": "Done. Finished in 12:47."
+      }
+    ]
+  },
+  "where": {
+    "numeral": "5",
+    "numeralLabel": "Apple platforms. One payment.",
+    "lede": "iPhone, iPad, Apple Watch, Mac and Apple TV. Buy WODrounds once and it runs on all of them.",
+    "traits": [
+      {
+        "id": "tv",
+        "title": "Across the room",
+        "body": "On Apple TV the timer fills the screen, so a home gym can read it from the rower.",
+        "alt": "WODrounds on Apple TV: a Tabata in round 3 of 8, 12 seconds of work left."
+      },
+      {
+        "id": "watch",
+        "title": "On your wrist",
+        "body": "The Watch follows a workout you start on the iPhone, live. It also runs EMOM and Intervals on its own. For Time starts on the iPhone.",
+        "alt": "WODrounds on Apple Watch: work, 11 seconds left, round 3 of 8."
+      },
+      {
+        "id": "offline",
+        "title": "Offline, no account",
+        "body": "Nothing to sign up for and nothing to sync. It works in a basement gym with no signal."
+      },
+      {
+        "id": "sound",
+        "title": "Sound and haptics",
+        "body": "Voice cues and beeps on iPhone, iPad and Apple TV. Haptics on iPhone and Apple Watch. The Mac and the Watch stay silent."
+      },
+      {
+        "id": "mac-ipad",
+        "title": "Mac and iPad",
+        "body": "The same three timers in a small window on the Mac and full screen on the iPad."
+      }
+    ]
+  },
+  "assurances": {
+    "noAccount": {
+      "title": "No account",
+      "body": "Open it and press Start. There is nothing to sign in to."
+    },
+    "paidOnce": {
+      "title": "Paid for once",
+      "body": "No subscription, no in-app purchases, no ads. Every feature comes with the one purchase."
+    },
+    "privacyLabel": {
+      "heading": "App Privacy",
+      "category": "Data Not Linked to You",
+      "sentence": "The following data may be collected but it is not linked to your identity:",
+      "types": ["Health & Fitness", "Diagnostics"],
+      "note": "Health is the workout you choose to save to Apple Health on iPhone or iPad. Diagnostics are crash reports, so I can fix bugs.",
+      "source": "As shown on the App Store, 2026-10-12."
+    }
+  },
+  "maker": {
+    "quote": "I built WODrounds because every timer app I tried wanted me to create an account, watch ads, or subscribe to a plan. I just needed a timer. So I made one.",
+    "signature": "Jarl"
+  },
+  "faq": [
+    {
+      "q": "What is an EMOM timer?",
+      "a": "EMOM stands for Every Minute on the Minute. You do a set at the start of each minute and rest for what is left of it. In WODrounds you choose 1 to 120 rounds, each from 30 seconds to 9 minutes 30 seconds long."
+    },
+    {
+      "q": "Can I use WODrounds for Tabata?",
+      "a": "Yes. Tabata is 20 seconds of work and 10 seconds of rest, 8 times. Choose Intervals and set work to 20, rest to 10 and rounds to 8. The timer runs 3:50, because there is no rest after the last round."
+    },
+    {
+      "q": "Can I time a For Time WOD?",
+      "a": "Yes. Choose For Time and the clock counts up from zero. Press Stop when you finish and the Done screen shows your time. You can set a time cap from 0:30 to 60:00, or leave it uncapped."
+    },
+    {
+      "q": "Does it work on Apple TV?",
+      "a": "Yes. WODrounds runs on Apple TV, controlled with the Siri Remote, with the same three timers and the same sound cues as on the iPhone. It runs on its own there and does not sync with the iPhone."
+    },
+    {
+      "q": "Do I need an iPhone for the Apple Watch app?",
+      "a": "Not for EMOM and Intervals, which the Watch sets up and runs on its own. A workout you start on the iPhone shows on the Watch live, with the same time and round, and that is how For Time reaches the Watch. The Watch gives haptics, not sound."
+    },
+    {
+      "q": "Does WODrounds keep a log of my workouts?",
+      "a": "No. It is a timer, not a log. On iPhone and iPad it can save a finished workout to Apple Health as a HIIT session, if you allow it."
+    },
+    {
+      "q": "What does it cost?",
+      "a": "One purchase covers iPhone, iPad, Apple Watch, Mac and Apple TV. No subscription, no in-app purchases, no ads. The App Store shows the price in your currency."
+    },
+    {
+      "q": "Does the app or this site track me?",
+      "a": "The app has no analytics and no ad tracking. On iPhone and iPad it can send crash reports so I can fix bugs, which is the Diagnostics on the App Store's privacy label. This site counts page views with Umami, without cookies. Neither sees your workouts."
+    },
+    {
+      "q": "Which languages is the app in?",
+      "a": "English, Danish and Spanish. The spoken cues are in English."
+    }
+  ],
+  "closing": {
+    "wordmark": "WODrounds"
+  },
+  "links": {
+    "emom": "emom-timer.html",
+    "interval": "interval-timer.html",
+    "tabata": "tabata-timer.html",
+    "fortime": "for-time-timer.html"
+  }
+}
