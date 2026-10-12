@@ -24,16 +24,16 @@ COPY = ROOT / "site" / "copy"
 SITE = "https://wodrounds.iamjarl.com"
 APP_ID = "6759229877"
 
-DESIGN_VERSION = "1.25.0"
+DESIGN_VERSION = "1.26.0"
 CDN = f"https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v{DESIGN_VERSION}"
 SRI = {
-    "dist/css/tokens.css": "sha384-7mIi/daEMnWFSVRRBcuRlED7KMkAyFh6kUkXg8KD70ih8iPrrwXoe/ZEJuVOFK7R",
-    "dist/identity/wodrounds.css": "sha384-+qiDMXymuOcArs4hrA5Eok54hY/iuwXWcq64au62d/bQXSx1/Uh8AmuetXELCovd",
-    "dist/fonts/jetbrains-mono.css": "sha384-K9dCvR5cEupe+OP9ORKSXf0GVpmuwIFY76WZcV5fgNWqo0eEjo4JFIAmUTwfdpQ8",
-    "dist/kit/kit.css": "sha384-tHt/CJKtfPbMO/nEgPZHLw34WarZUcpabnkjbyzxqT84bldYvc2WLMqrwVTNKVro",
-    "dist/kit/kit.js": "sha384-rGama9fiL3OtukRCrj0alAP9yZwtWeLT5AOewtHWaCgwV2jjgrWuplf1t4M8vlIH",
-    "dist/components/ij-nav.js": "sha384-eqJtCXuLp8enZ2tpIOAuBB9GlMbX2qCH1UoKA0Lobtd4mABWsq98hVCfbToQRIi+",
-    "dist/components/ij-footer.js": "sha384-WYNy1mUQL32Xlo8ci/uUJVm522N+0MvZ/8X+Ij0kwa8Kwl5eeLoyjIpc6AWah2mG",
+    "dist/css/tokens.css": "sha384-PKlt/RFEr/PqV2mjuOAm2tovN6l9sR3RwM+JgU1GP9vJisydnvt6l3h//+ythhEH",
+    "dist/identity/wodrounds.css": "sha384-T1dD/e0Jqjg5pYNAiVz7SZOqaPLDUw3CA8IYr5MoFUggVbiruvaU+GijwsUH2DXm",
+    "dist/fonts/jetbrains-mono.css": "sha384-4EDegyjW32y0mhvqLdn7Bma8HM6U1AjeQpPGTbtkRE14gKBdlhBJspuOu6qhyBmq",
+    "dist/kit/kit.css": "sha384-GbcA6lh/Swuy7rKjPm6Jgnq8nA+uvGv/ItuzZC60OpmgW7hWm7oJb4YR4OOfXLwT",
+    "dist/kit/kit.js": "sha384-nz0b4UX8YLqGvm2cAmyEGIvyKslXkjL5bjao3+ItF76Inx4yYbKGW6XpTzVMKunU",
+    "dist/components/ij-nav.js": "sha384-WVM/rurI3KnRJKOiwseL9jwHJtTQ5lNwC9JfFlzXqKlUo6a2dkeV5hJvqRV+sLUQ",
+    "dist/components/ij-footer.js": "sha384-PerBKUYbLWOcIY2bcVsIp53pRh4d0gpDmMrTPzU5c/dy/Uo/zIqK3A0MKM51tkKU",
 }
 
 # Language, its folder under docs/, and its Open Graph locale.
@@ -99,6 +99,14 @@ def build(lang: str, folder: str, og_locale: str) -> str:
 
     def link(rel: str) -> str:
         return f'<link rel="stylesheet" href="{CDN}/{rel}"\n  integrity="{SRI[rel]}" crossorigin="anonymous">'
+
+    def scene(photo: str, extra: str = "") -> str:
+        # The kit makes it black and white, dims it and holds the words at AA over it,
+        # so the page adds no filter, overlay or colour of its own.
+        src = f"/images/unsplash/{photo}"
+        return (f'<img class="ij-scene__photo" src="{src}-960.jpg" '
+                f'srcset="{src}-960.jpg 960w, {src}-1920.jpg 1920w" sizes="100vw" '
+                f'width="1920" height="1280" alt="" loading="lazy" decoding="async"{extra}>')
 
     def script(rel: str) -> str:
         return f'<script type="module" src="{CDN}/{rel}"\n  integrity="{SRI[rel]}" crossorigin="anonymous"></script>'
@@ -293,6 +301,11 @@ def build(lang: str, folder: str, og_locale: str) -> str:
     </div>
   </section>
 
+  <!-- The gym, for the mood, with nothing written on it. Never in the hero. -->
+  <div class="ij-scene" aria-hidden="true">
+    {scene("victor-freitas-qZ-U9z4TQ6A", ' style="object-position: 50% 35%"')}
+  </div>
+
   <!-- 3. The phone that stays -->
   <section class="ij-section" aria-labelledby="tour-h">
     <div class="ij-container ij-stack">
@@ -351,7 +364,8 @@ def build(lang: str, folder: str, og_locale: str) -> str:
   </section>
 
   <!-- 8. Closing -->
-  <section class="ij-section ij-section--band" aria-label="{e(c["closing"]["label"])}">
+  <section class="ij-scene" aria-label="{e(c["closing"]["label"])}">
+    {scene("ambitious-studio-rick-barrett-0tQLfwcr5-M")}
     <div class="ij-container ij-closing">
       <p class="ij-wordmark" style="--ij-wordmark-em: 5.2">{e(c["closing"]["wordmark"])}</p>
 {indent(fragment(f"dist/store/wodrounds.{lang}.footer.white.html"), 6)}

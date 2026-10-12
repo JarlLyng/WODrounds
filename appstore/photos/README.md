@@ -17,3 +17,12 @@ claim with context the UI cannot show itself. On the portrait iPhone and iPad
 canvases the photo is reduced to slivers at the edges and reads as noise, so those
 keep the plain brand ground. The category backs that up: the two nearest
 competitors both ship plain dark grounds.
+
+## On the site
+
+The home page (#182) uses two more from the same set, in `docs/images/unsplash/`: the barbell
+on a chalked floor (`victor-freitas-qZ-U9z4TQ6A`) as a band between the frameless pieces and
+the tour, and the kettlebell (`ambitious-studio-rick-barrett-0tQLfwcr5-M`) behind the closing
+wordmark. The same licence reasoning holds: cropped body shots, no faces. The design system's
+`.ij-scene` makes them black and white and dims them, never in the hero, lazy-loaded with an
+empty `alt`. The plank is left out because the rower's brand shows.
