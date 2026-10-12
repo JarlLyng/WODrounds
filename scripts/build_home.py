@@ -24,16 +24,16 @@ COPY = ROOT / "site" / "copy"
 SITE = "https://wodrounds.iamjarl.com"
 APP_ID = "6759229877"
 
-DESIGN_VERSION = "1.29.0"
+DESIGN_VERSION = "1.29.1"
 CDN = f"https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v{DESIGN_VERSION}"
 SRI = {
-    "dist/css/tokens.css": "sha384-PjJvOjBQ0JFKQk+XkQpRor6o7qw/Fs5mDKKoTQ3rwuBLuj5GtXpd6FDUOeE402G6",
-    "dist/identity/wodrounds.css": "sha384-6w1MrYZ71b1HtogTiD93uzkKm5TRzVHXJw6Hiid3h5w0bd9L22Wy7jHsawMF3Izw",
-    "dist/fonts/jetbrains-mono.css": "sha384-fQdr07pAKQAcvHFeI72U4Wx8CiK2q9ilPU7zKXdf6wpFEzYdC8YAZjZ7xvCZ91vd",
-    "dist/kit/kit.css": "sha384-DRCPoqgHnzFfJOvB6CoPkQnl2eFwdzv0qjtEw6nDNB+OCzv/W0uvL4LBu+uyQiGQ",
-    "dist/kit/kit.js": "sha384-m94hbQajjK02lEyfLgweaxJMKImF99h2/acBZ7I40RvyNN+fMlAWAtCfY39eLs6W",
-    "dist/components/ij-nav.js": "sha384-XecJFMR93u4krdBam99rEdklN0rvMJmbYP41OX02IZbs9wlp6hjdEBgXczMg3jiE",
-    "dist/components/ij-footer.js": "sha384-QEFi85RQoD6M+uZCO28j7rQKSTfQo7OJ0g7l0uenR8ftNJPqHrCRzM0+6v+Tb95/",
+    "dist/css/tokens.css": "sha384-vobrBahZ7qeJ74LCQ/Q0e7jif8UTO/CGtv7PYdmZNRYk8A75O0IdZOyqtkfN/Yd6",
+    "dist/identity/wodrounds.css": "sha384-hQaDJU/WGZ8kljrHy/IYd8fRt+zq4/+TNsaEqIZjTM2yfTE84+RuR7GHgn1aaJjF",
+    "dist/fonts/jetbrains-mono.css": "sha384-m5sTKiuLZVfgpzHrSArCLwS65xSR08vq68rr5sMbaXu7rLvz6swXTfxup+l9hQN4",
+    "dist/kit/kit.css": "sha384-yQPt3mv7QSPG7IrfOYoxTrymnkZ8Ume5VDKVeBfBBYiHPTy1tDjneOG8WrwZW3hz",
+    "dist/kit/kit.js": "sha384-DVe0JLP1yfdjEC1q2BeZUoHjr+SJw7NcbOGh+pRq//rVCJMNN3wAvzB0PU3NHsqQ",
+    "dist/components/ij-nav.js": "sha384-x9Fn+y7Ku1i8bH8paRIcRE9kTRIkbDLhnD1WBw3YBMsYEpuqaTwwaUAfxUK/guk4",
+    "dist/components/ij-footer.js": "sha384-AgojJpwfV8Vqm/RF8oRImW+9cKnbde+z+aP1Hq2KgThJ6fJz9h2FMwPs5s0tR/hK",
 }
 
 # Language, its folder under docs/, and its Open Graph locale.
