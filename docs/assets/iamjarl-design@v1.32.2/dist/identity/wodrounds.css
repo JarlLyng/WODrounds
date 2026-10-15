@@ -1,0 +1,100 @@
+/* IAMJARL identity for WODrounds: generated, do not edit */
+/* design system v1.32.2. Dark only: this sheet holds the site in that mode whatever the visitor's setting. */
+/* Display face: JetBrains Mono (OFL-1.1). Self-host it; see design.md. */
+
+:root {
+  color-scheme: dark;
+  --ij-color-bg-app: #0B0C0D;
+  --ij-color-bg-card: #17191B;
+  --ij-color-surface-default: #17191B;
+  --ij-color-text-primary: #F2F3EF;
+  --ij-color-text-secondary: #C4C5C2;
+  --ij-color-text-tertiary: #ADAEAB;
+  --ij-color-accent: #D0FF00;
+  --ij-color-accent-rgb: 208, 255, 0;
+  --ij-color-on-accent: #000000;
+  --ij-color-accent-text: #D0FF00;
+  --ij-color-accent-family: #D0FF00;
+  --ij-color-accent-family-rgb: 208, 255, 0;
+  --ij-font-display: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --ij-color-primary-rgb: 208, 255, 0; /* deprecated, use color-mix() */
+    --ij-gradient-primary: linear-gradient(135deg, #D0FF00, #5DE0A6, #37B6E9); /* text-safe: black */
+    --ij-gradient-brand: linear-gradient(135deg, #A435D2, #D0FF00); /* decorative only, no text colour clears AA */
+    --ij-color-primary: #D0FF00;
+    --ij-color-on-primary: #000000;
+    --ij-color-primary-hover: #B8E000;
+    --ij-color-primary-pressed: #A0C400;
+    --ij-color-primary-subtle: rgba(208, 255, 0, 0.15);
+    --ij-color-text-primary: #FFFFFF;
+    --ij-color-text-secondary: rgba(255, 255, 255, 0.75);
+    --ij-color-text-tertiary: rgba(255, 255, 255, 0.60);
+    --ij-color-text-disabled: rgba(255, 255, 255, 0.35);
+    --ij-color-text-inverse: #000000;
+    --ij-color-bg-app: #000000;
+    --ij-color-bg-muted: rgba(255, 255, 255, 0.05);
+    --ij-color-bg-card: rgba(255, 255, 255, 0.05);
+    --ij-color-bg-disabled: rgba(255, 255, 255, 0.07);
+    --ij-color-surface-default: #000000;
+    --ij-color-surface-raised: rgba(255, 255, 255, 0.03);
+    --ij-color-border-subtle: rgba(255, 255, 255, 0.12);
+    --ij-color-border-default: rgba(255, 255, 255, 0.18);
+    --ij-color-state-success: #4CAF50;
+    --ij-color-state-warning: #FF6B35;
+    --ij-color-state-error: #FF453A;
+    --ij-color-bg-app: #0B0C0D;
+    --ij-color-bg-card: #17191B;
+    --ij-color-surface-default: #17191B;
+    --ij-color-text-primary: #F2F3EF;
+    --ij-color-text-secondary: #C4C5C2;
+    --ij-color-text-tertiary: #ADAEAB;
+    --ij-color-accent: #D0FF00;
+    --ij-color-accent-rgb: 208, 255, 0;
+    --ij-color-on-accent: #000000;
+    --ij-color-accent-text: #D0FF00;
+    --ij-color-accent-family: #D0FF00;
+    --ij-color-accent-family-rgb: 208, 255, 0;
+  }
+}
+
+.light {
+  --ij-color-primary-rgb: 208, 255, 0; /* deprecated, use color-mix() */
+  --ij-gradient-primary: linear-gradient(135deg, #D0FF00, #5DE0A6, #37B6E9); /* text-safe: black */
+  --ij-gradient-brand: linear-gradient(135deg, #A435D2, #D0FF00); /* decorative only, no text colour clears AA */
+  --ij-color-primary: #D0FF00;
+  --ij-color-on-primary: #000000;
+  --ij-color-primary-hover: #B8E000;
+  --ij-color-primary-pressed: #A0C400;
+  --ij-color-primary-subtle: rgba(208, 255, 0, 0.15);
+  --ij-color-text-primary: #FFFFFF;
+  --ij-color-text-secondary: rgba(255, 255, 255, 0.75);
+  --ij-color-text-tertiary: rgba(255, 255, 255, 0.60);
+  --ij-color-text-disabled: rgba(255, 255, 255, 0.35);
+  --ij-color-text-inverse: #000000;
+  --ij-color-bg-app: #000000;
+  --ij-color-bg-muted: rgba(255, 255, 255, 0.05);
+  --ij-color-bg-card: rgba(255, 255, 255, 0.05);
+  --ij-color-bg-disabled: rgba(255, 255, 255, 0.07);
+  --ij-color-surface-default: #000000;
+  --ij-color-surface-raised: rgba(255, 255, 255, 0.03);
+  --ij-color-border-subtle: rgba(255, 255, 255, 0.12);
+  --ij-color-border-default: rgba(255, 255, 255, 0.18);
+  --ij-color-state-success: #4CAF50;
+  --ij-color-state-warning: #FF6B35;
+  --ij-color-state-error: #FF453A;
+  --ij-color-bg-app: #0B0C0D;
+  --ij-color-bg-card: #17191B;
+  --ij-color-surface-default: #17191B;
+  --ij-color-text-primary: #F2F3EF;
+  --ij-color-text-secondary: #C4C5C2;
+  --ij-color-text-tertiary: #ADAEAB;
+  --ij-color-accent: #D0FF00;
+  --ij-color-accent-rgb: 208, 255, 0;
+  --ij-color-on-accent: #000000;
+  --ij-color-accent-text: #D0FF00;
+  --ij-color-accent-family: #D0FF00;
+  --ij-color-accent-family-rgb: 208, 255, 0;
+}

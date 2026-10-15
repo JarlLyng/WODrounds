@@ -7,13 +7,18 @@
 The words come from site/copy/<lang>.json, the captures from docs/assets/site/, and
 the store buttons, the footer's cross-links and the offer from the design system's
 generated fragments at DESIGN_VERSION, which this script inlines so the page needs no
-script to show them. To move to a new release: bump DESIGN_VERSION and the hashes from
-its release notes, run, commit.
+script to show them. The design system's files load from the site's own copy in
+docs/assets/iamjarl-design@v<version>/ (#197). To move to a new release: run
+scripts/vendor_design.sh <version>, bump DESIGN_VERSION, run this and build_pages.py,
+delete the old folder, commit.
 """
 from __future__ import annotations
 
+import base64
+import hashlib
 import html
 import json
+import re
 import sys
 import urllib.request
 from pathlib import Path
@@ -24,17 +29,26 @@ COPY = ROOT / "site" / "copy"
 SITE = "https://wodrounds.iamjarl.com"
 APP_ID = "6759229877"
 
-DESIGN_VERSION = "1.29.1"
-CDN = f"https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v{DESIGN_VERSION}"
-SRI = {
-    "dist/css/tokens.css": "sha384-vobrBahZ7qeJ74LCQ/Q0e7jif8UTO/CGtv7PYdmZNRYk8A75O0IdZOyqtkfN/Yd6",
-    "dist/identity/wodrounds.css": "sha384-hQaDJU/WGZ8kljrHy/IYd8fRt+zq4/+TNsaEqIZjTM2yfTE84+RuR7GHgn1aaJjF",
-    "dist/fonts/jetbrains-mono.css": "sha384-m5sTKiuLZVfgpzHrSArCLwS65xSR08vq68rr5sMbaXu7rLvz6swXTfxup+l9hQN4",
-    "dist/kit/kit.css": "sha384-yQPt3mv7QSPG7IrfOYoxTrymnkZ8Ume5VDKVeBfBBYiHPTy1tDjneOG8WrwZW3hz",
-    "dist/kit/kit.js": "sha384-DVe0JLP1yfdjEC1q2BeZUoHjr+SJw7NcbOGh+pRq//rVCJMNN3wAvzB0PU3NHsqQ",
-    "dist/components/ij-nav.js": "sha384-x9Fn+y7Ku1i8bH8paRIcRE9kTRIkbDLhnD1WBw3YBMsYEpuqaTwwaUAfxUK/guk4",
-    "dist/components/ij-footer.js": "sha384-AgojJpwfV8Vqm/RF8oRImW+9cKnbde+z+aP1Hq2KgThJ6fJz9h2FMwPs5s0tR/hK",
-}
+DESIGN_VERSION = "1.32.2"
+# The live pages load the design system from the site's own copy, not from a CDN (#197,
+# iamjarl-design#100). scripts/vendor_design.sh puts it in docs/assets/ and checks every
+# file against the tag's dist/sri.json; the integrity values here are those files' hashes.
+ASSETS = f"/assets/iamjarl-design@v{DESIGN_VERSION}"
+LOCAL = DOCS / "assets" / f"iamjarl-design@v{DESIGN_VERSION}"
+# Build time only: the generated fragments (store buttons, footer cross-links, offer)
+# are read from the tag on GitHub and inlined, so nothing loads them when the page is shown.
+SOURCE = f"https://raw.githubusercontent.com/JarlLyng/iamjarl-design/v{DESIGN_VERSION}"
+CDN_PREFIX = re.compile(r"https://cdn\.jsdelivr\.net/gh/jarllyng/iamjarl-design@v[0-9.]+", re.I)
+
+
+def _sri(rel: str) -> str:
+    digest = hashlib.sha384((LOCAL / rel).read_bytes()).digest()
+    return "sha384-" + base64.b64encode(digest).decode()
+
+
+SRI = {rel: _sri(rel) for rel in (
+    "dist/css/tokens.css", "dist/identity/wodrounds.css", "dist/fonts/jetbrains-mono.css",
+    "dist/kit/kit.css", "dist/kit/kit.js", "dist/components/ij-nav.js", "dist/components/ij-footer.js")}
 
 # Language, its folder under docs/, and its Open Graph locale.
 LANGS = [
@@ -61,8 +75,9 @@ _cache: dict[str, str] = {}
 
 def fetch(path: str) -> str:
     if path not in _cache:
-        with urllib.request.urlopen(f"{CDN}/{path}", timeout=30) as r:
-            _cache[path] = r.read().decode()
+        with urllib.request.urlopen(f"{SOURCE}/{path}", timeout=30) as r:
+            # The badges in the store fragments point at the site's copy too.
+            _cache[path] = CDN_PREFIX.sub(ASSETS, r.read().decode())
     return _cache[path]
 
 
@@ -106,7 +121,7 @@ def build(lang: str, folder: str, og_locale: str) -> str:
     a = f"/assets/site"  # served from the domain root
 
     def link(rel: str) -> str:
-        return f'<link rel="stylesheet" href="{CDN}/{rel}"\n  integrity="{SRI[rel]}" crossorigin="anonymous">'
+        return f'<link rel="stylesheet" href="{ASSETS}/{rel}" integrity="{SRI[rel]}">'
 
     def scene(photo: str, height: int, extra: str = "") -> str:
         # The kit makes it black and white, dims it and holds the words at AA over it,
@@ -120,7 +135,7 @@ def build(lang: str, folder: str, og_locale: str) -> str:
                 f'width="1920" height="{height}" alt="" loading="lazy" decoding="async"{extra}>')
 
     def script(rel: str) -> str:
-        return f'<script type="module" src="{CDN}/{rel}"\n  integrity="{SRI[rel]}" crossorigin="anonymous"></script>'
+        return f'<script type="module" src="{ASSETS}/{rel}" integrity="{SRI[rel]}"></script>'
 
     hreflangs = "\n".join(
         f'<link rel="alternate" hreflang="{l}" href="{url_for(f)}">' for l, f, _ in LANGS

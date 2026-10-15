@@ -23,7 +23,7 @@ import re
 import sys
 from pathlib import Path
 
-from build_home import (CDN, COPY, DESIGN_VERSION, DOCS, LANG_NAMES, LANGS, ROOT, SRI, cross_links,
+from build_home import (ASSETS, COPY, DESIGN_VERSION, DOCS, LANG_NAMES, LANGS, ROOT, SRI, cross_links,
                         e, fetch, fragment, home_href)
 
 # <html lang> on the pages, to the copy file and the folder it lives in.
@@ -54,9 +54,9 @@ def copy_for(lang: str) -> dict:
 
 
 def head_block() -> str:
-    links = "\n".join(f'<link rel="stylesheet" href="{CDN}/{r}" integrity="{SRI[r]}" crossorigin="anonymous">'
+    links = "\n".join(f'<link rel="stylesheet" href="{ASSETS}/{r}" integrity="{SRI[r]}">'
                       for r in HEAD_FILES)
-    scripts = "\n".join(f'<script type="module" src="{CDN}/{r}" integrity="{SRI[r]}" crossorigin="anonymous"></script>'
+    scripts = "\n".join(f'<script type="module" src="{ASSETS}/{r}" integrity="{SRI[r]}"></script>'
                         for r in HEAD_SCRIPTS)
     return (f"<!-- frame:head -->\n<!-- The homes' design system files, v{DESIGN_VERSION}, without the kit's "
             f"marketing sections (#189). Built by scripts/build_pages.py. -->\n{links}\n{scripts}\n<!-- /frame:head -->\n")
