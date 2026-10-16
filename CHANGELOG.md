@@ -2,7 +2,9 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
-## Unreleased
+## 1.10 (build 21)
+
+The iPhone Duo release, built with Xcode 27.1. The App Store text is in `appstore/1.10/store-text.md` (#199).
 
 - **Fixed:** during Intervals on a 6.3-inch iPhone, the line about following the workout on Apple Watch was cut off mid-sentence. It now always gets its two lines.
 - **Changed (Apple Watch):** setting up a workout on the Watch fits on one screen, down to the 40 mm watch, with no scrolling. EMOM or Intervals is now a button beside the clock, Start sits at the bottom, and the − and + buttons are smaller, so three Intervals rows fit. Only the largest text sizes still scroll.
