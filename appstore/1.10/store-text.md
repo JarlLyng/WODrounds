@@ -19,10 +19,14 @@ What changes from the live 1.9 listing, and why:
 - **"The only WOD timer you need" is gone** from all promotional text (owner, 2026-10-16). It was
   on all seven live versions.
 - **`puls` is gone** from the Danish keywords. The app has no heart-rate feature.
-- **`wod` reaches an indexed field** for the first time, through the name or the keyword field.
+- **`wod` and `tabata` move into the name** (A), so the keyword fields carry other words.
 - **The missing localizations** are written out: iPhone es-ES, Mac da and es-MX, Apple TV da and
   es-MX. Until now those storefronts showed the English description and indexed no keywords.
 - **The descriptions gain one paragraph** about the new two-column layout on iPhone and iPad.
+- **The sound is described as it is:** a voice for get ready, halfway, ten seconds and rounds
+  remaining, and a 3-2-1 beep before every change. "Recorded in English" becomes "in English",
+  since halfway and ten seconds are the system voice. The Apple TV promotional text no longer says
+  the whole room can hear the cues, which the German review contradicts (#200).
 
 Unchanged and not repeated here: the subtitles (en-US `EMOM & Intervals Timer`, da `EMOM og
 intervaltimer`, es-ES and es-MX `Temporizador EMOM e intervalos`), support and marketing URLs,
@@ -34,7 +38,7 @@ finds a problem, those lines change with the fix.
 
 ---
 
-## 1. The name: the owner picks one by Monday 2026-10-19
+## 1. The name: A, chosen by the owner on 2026-10-16
 
 The name is set once per language for the app, so it shows on iPhone, Mac and Apple TV alike. Today
 it is `WODrounds`, 9 of 30 characters, and `wod` is in no indexed field. Each proposal keeps the
@@ -57,8 +61,9 @@ field has today. B reads most naturally but adds only `wod`. C relies on Apple m
 `wod`, which Apple doesn't document. Danish keeps the English name, because Danes search the
 English words (`tabata`, `wod`) and the Danish keywords already carry the Danish ones.
 
-If no name is picked by Monday, the release goes out as `WODrounds`, with the keyword sets marked
-"no name change" below.
+**Chosen: A** (owner, 2026-10-16): `WODrounds: Tabata WOD Clock` on en-US and da, and
+`WODrounds: Reloj WOD y Tabata` on es-ES and es-MX. The name under the icon on the home screen
+stays `WODrounds`.
 
 ---
 
@@ -66,7 +71,7 @@ If no name is picked by Monday, the release goes out as `WODrounds`, with the ke
 
 Comma-separated with no spaces. No word repeats the name or subtitle.
 
-### With name A (recommended)
+### For name A
 
 #### iOS · en-US · keywords
 ```text
@@ -128,29 +133,7 @@ hiit,for time,træning,nedtælling,fitness,cirkeltræning,holdtræning,gym,tv,st
 hiit,for time,gimnasio,cronómetro,cuenta regresiva,entrenamiento,ejercicio,clase,grupo,tv
 ```
 
-### With no name change (iPhone; Mac and Apple TV add `wod,tabata,` in front of the sets above and drop words from the end until they fit)
 
-#### iOS · en-US · keywords (no name change)
-```text
-wod,tabata,hiit,for time,countdown,apple watch,stopwatch,gym,workout,functional,fitness,circuit
-```
-
-#### iOS · da · keywords (no name change)
-```text
-wod,tabata,hiit,for time,træning,nedtælling,stopur,fitness,cirkeltræning,styrketræning,gym
-```
-
-#### iOS · es-MX · keywords (no name change)
-```text
-wod,tabata,hiit,for time,gimnasio,cronómetro,cuenta regresiva,entrenamiento,ejercicio,fuerza
-```
-
-#### iOS · es-ES · keywords (no name change)
-```text
-wod,tabata,hiit,for time,gimnasio,cronómetro,cuenta atrás,entrenamiento,ejercicio,fuerza
-```
-
-If B or C is picked, the keyword sets change. Tell the repo, and it rewrites them in a few minutes.
 
 ---
 
@@ -201,22 +184,22 @@ EMOM, intervalos y For Time en una ventana compacta con números que se leen des
 
 #### tvOS · en-US · promotional text
 ```text
-EMOM, intervals and For Time on the big screen, with voice cues the whole room can hear. One purchase for iPhone, iPad, Watch, Mac and Apple TV.
+EMOM, intervals and For Time on the big screen, with voice cues and a 3-2-1 beep. One purchase for iPhone, iPad, Watch, Mac and Apple TV.
 ```
 
 #### tvOS · es-ES · promotional text
 ```text
-EMOM, intervalos y For Time en la pantalla grande, con señales de voz que oye toda la sala. Una compra para iPhone, iPad, Watch, Mac y Apple TV.
+EMOM, intervalos y For Time en la pantalla grande, con avisos de voz y un pitido 3-2-1. Una compra para iPhone, iPad, Watch, Mac y Apple TV.
 ```
 
 #### tvOS · da · promotional text
 ```text
-EMOM, intervaller og For Time på den store skærm, med stemmecues hele rummet kan høre. Ét køb til iPhone, iPad, Watch, Mac og Apple TV.
+EMOM, intervaller og For Time på den store skærm, med stemmecues og et 3-2-1-bip. Ét køb til iPhone, iPad, Watch, Mac og Apple TV.
 ```
 
 #### tvOS · es-MX · promotional text
 ```text
-EMOM, intervalos y For Time en la pantalla grande, con señales de voz que escucha todo el salón. Una compra para iPhone, iPad, Watch, Mac y Apple TV.
+EMOM, intervalos y For Time en la pantalla grande, con avisos de voz y un pitido 3-2-1. Una compra para iPhone, iPad, Watch, Mac y Apple TV.
 ```
 
 ---
@@ -236,7 +219,7 @@ Start on your iPhone and the watch shows the same time and the same round. You c
 
 On iPhone Duo's inner display, on an iPad on its side and on an iPhone in landscape, the timer takes two columns, with the digits on one side, as large as the column allows, and the buttons on the other.
 
-Audio cues carry you through: get ready, halfway, ten seconds, 3-2-1 and rounds remaining at ten, five and two. The numbers are big enough to read at a distance, everything works one-handed, and the timer keeps running when the screen goes dark.
+A voice calls get ready, halfway, ten seconds and rounds remaining at ten, five and two, and a 3-2-1 beep comes before every change. The numbers are big enough to read at a distance, everything works one-handed, and the timer keeps running when the screen goes dark.
 
 One purchase covers iPhone, iPad, Apple Watch, Mac and Apple TV. No subscription, no ads and nothing to buy inside the app.
 
@@ -253,7 +236,7 @@ Start på din iPhone, og uret viser samme tid og samme runde. Du kan også sætt
 
 På iPhone Duos indre skærm, på en iPad i liggende format og på en iPhone i liggende format deler timeren sig i to kolonner, med tallene i den ene, så store som kolonnen tillader, og knapperne i den anden.
 
-Undervejs får du lydcues: gør dig klar, halvvejs, ti sekunder, 3-2-1 og runder tilbage ved ti, fem og to. De er indtalt på engelsk. Tallene er store nok til at læse på afstand, alt kan betjenes med én hånd, og timeren kører videre når skærmen slukker.
+Undervejs siger en stemme gør dig klar, halvvejs, ti sekunder og runder tilbage ved ti, fem og to, og et 3-2-1-bip kommer før hvert skift. Stemmen er på engelsk. Tallene er store nok til at læse på afstand, alt kan betjenes med én hånd, og timeren kører videre når skærmen slukker.
 
 Ét køb dækker iPhone, iPad, Apple Watch, Mac og Apple TV. Intet abonnement, ingen reklamer og intet at købe inde i appen.
 
@@ -270,7 +253,7 @@ Empieza en tu iPhone y el reloj muestra el mismo tiempo y la misma ronda. Tambi�
 
 En la pantalla interior del iPhone Duo, en un iPad en horizontal y en un iPhone en horizontal, el temporizador se divide en dos columnas, con los números en una, tan grandes como la columna lo permite, y los botones en la otra.
 
-Las señales de audio te llevan: prepárate, a la mitad, diez segundos, 3-2-1 y rondas restantes en diez, cinco y dos. Están grabadas en inglés. Los números se leen a distancia, todo funciona con una mano, y el temporizador sigue corriendo con la pantalla apagada.
+Una voz anuncia prepárate, a la mitad, diez segundos y las rondas restantes en diez, cinco y dos, y un pitido 3-2-1 suena antes de cada cambio. La voz está en inglés. Los números se leen a distancia, todo funciona con una mano, y el temporizador sigue corriendo con la pantalla apagada.
 
 Una compra cubre iPhone, iPad, Apple Watch, Mac y Apple TV. Sin suscripción, sin anuncios y nada que comprar dentro de la app.
 
@@ -287,7 +270,7 @@ Empieza en tu iPhone y el reloj muestra el mismo tiempo y la misma ronda. Tambi�
 
 En la pantalla interior del iPhone Duo, en un iPad en horizontal y en un iPhone en horizontal, el temporizador se divide en dos columnas, con los números en una, tan grandes como la columna lo permite, y los botones en la otra.
 
-Las señales de audio te acompañan: prepárate, a la mitad, diez segundos, 3-2-1 y rondas restantes en diez, cinco y dos. Están grabadas en inglés. Los números se leen a distancia, todo funciona con una mano, y el temporizador sigue contando con la pantalla apagada. La app está en español de México.
+Una voz anuncia prepárate, a la mitad, diez segundos y las rondas restantes en diez, cinco y dos, y un pitido 3-2-1 suena antes de cada cambio. La voz está en inglés. Los números se leen a distancia, todo funciona con una mano, y el temporizador sigue contando con la pantalla apagada. La app está en español de México.
 
 Una compra cubre iPhone, iPad, Apple Watch, Mac y Apple TV. Sin suscripción, sin anuncios y nada que comprar dentro de la app.
 
@@ -352,7 +335,7 @@ Interval timer for EMOM, For Time, Tabata and HIIT, on the TV everyone in the ro
 
 EMOM runs 1 to 120 rounds with a round length between 0:30 and 9:30. Intervals is work, rest and rounds that you set yourself, so Tabata is 20/10 times 8 whenever you want it. For Time counts up from zero, you press Stop when you finish, and you can set a time cap if you want one.
 
-The numbers fill the screen, so nobody has to walk over and check the clock. Voice cues carry the room through it: get ready, halfway, ten seconds, 3-2-1 and rounds remaining at ten, five and two. You can mute them from the remote. The screensaver stays out of the way for as long as the workout is running.
+The numbers fill the screen, so nobody has to walk over and check the clock. A voice calls get ready, halfway, ten seconds and rounds remaining at ten, five and two, and a 3-2-1 beep comes before every change. You can mute the sound from the remote. The screensaver stays out of the way for as long as the workout is running.
 
 One purchase covers iPhone, iPad, Apple Watch, Mac and Apple TV. No subscription, no ads and nothing to buy inside the app.
 
@@ -365,7 +348,7 @@ Temporizador de intervalos para EMOM, For Time, Tabata y HIIT, en la tele que ve
 
 EMOM va de 1 a 120 rondas con una duración de ronda entre 0:30 y 9:30. Intervalos son trabajo, descanso y rondas que tú defines, así que Tabata es 20/10 por 8 cuando quieras. For Time cuenta desde cero, pulsas Detener al terminar, y puedes poner un límite de tiempo si lo quieres.
 
-Los números llenan la pantalla, así que nadie tiene que acercarse a mirar el reloj. Las señales de voz llevan a todo el grupo: prepárate, a la mitad, diez segundos, 3-2-1 y rondas restantes en diez, cinco y dos. Están grabadas en inglés y puedes silenciarlas desde el mando. El salvapantallas no aparece mientras el entrenamiento está en marcha.
+Los números llenan la pantalla, así que nadie tiene que acercarse a mirar el reloj. Una voz anuncia prepárate, a la mitad, diez segundos y las rondas restantes en diez, cinco y dos, y un pitido 3-2-1 suena antes de cada cambio. La voz está en inglés, y puedes silenciar el sonido desde el mando. El salvapantallas no aparece mientras el entrenamiento está en marcha.
 
 Una compra cubre iPhone, iPad, Apple Watch, Mac y Apple TV. Sin suscripción, sin anuncios y nada que comprar dentro de la app.
 
@@ -378,7 +361,7 @@ Intervaltimer til EMOM, For Time, Tabata og HIIT, på det tv hele rummet kan se.
 
 EMOM kører 1 til 120 runder med en rundelængde mellem 0:30 og 9:30. Intervaller er arbejde, hvile og runder som du selv sætter, så Tabata er bare 20/10 gange 8. For Time tæller op fra nul, du trykker Stop når du er færdig, og du kan sætte en tidsgrænse hvis du vil have en.
 
-Tallene fylder skærmen, så ingen behøver at gå hen og kigge på uret. Stemmecues fører holdet igennem: gør dig klar, halvvejs, ti sekunder, 3-2-1 og runder tilbage ved ti, fem og to. De er indtalt på engelsk, og du kan slå dem fra med fjernbetjeningen. Pauseskærmen holder sig væk, så længe træningen kører.
+Tallene fylder skærmen, så ingen behøver at gå hen og kigge på uret. En stemme siger gør dig klar, halvvejs, ti sekunder og runder tilbage ved ti, fem og to, og et 3-2-1-bip kommer før hvert skift. Stemmen er på engelsk, og du kan slå lyden fra med fjernbetjeningen. Pauseskærmen holder sig væk, så længe træningen kører.
 
 Ét køb dækker iPhone, iPad, Apple Watch, Mac og Apple TV. Intet abonnement, ingen reklamer og intet at købe inde i appen.
 
@@ -391,7 +374,7 @@ Temporizador de intervalos para EMOM, For Time, Tabata y HIIT, en la tele que ve
 
 EMOM corre de 1 a 120 rondas con una duración de ronda entre 0:30 y 9:30. Intervalos son trabajo, descanso y rondas que tú defines, así que Tabata es 20/10 por 8 cuando quieras. For Time cuenta desde cero, presionas Detener al terminar, y puedes poner un límite de tiempo si lo quieres.
 
-Los números llenan la pantalla, así que nadie tiene que acercarse a ver el reloj. Las señales de voz llevan a todo el grupo: prepárate, a la mitad, diez segundos, 3-2-1 y rondas restantes en diez, cinco y dos. Están grabadas en inglés y puedes silenciarlas desde el control remoto. El protector de pantalla no aparece mientras el entrenamiento está en marcha.
+Los números llenan la pantalla, así que nadie tiene que acercarse a ver el reloj. Una voz anuncia prepárate, a la mitad, diez segundos y las rondas restantes en diez, cinco y dos, y un pitido 3-2-1 suena antes de cada cambio. La voz está en inglés, y puedes silenciar el sonido desde el control remoto. El protector de pantalla no aparece mientras el entrenamiento está en marcha.
 
 Una compra cubre iPhone, iPad, Apple Watch, Mac y Apple TV. Sin suscripción, sin anuncios y nada que comprar dentro de la app.
 
