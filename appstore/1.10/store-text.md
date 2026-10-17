@@ -509,9 +509,15 @@ Badge **Major Update**, submitted with the build, published on 2026-10-23 and ru
 event opens the app's front page. **If App Review finds that support for a new iPhone doesn't
 meet the event criteria, drop the event.** The release doesn't wait for it.
 
-The event card (1920 × 1080) and details image (1080 × 1920) follow the dark poster standard in the
-hub's `DESIGN.md`, made from the iPhone Duo capture once the simulator is installed. Until then
-the event has text only.
+The event card and the details image are in `appstore/1.10/event/`:
+- `event-card-1920x1080.png`, for the card. It has no caption, because Apple sets the event's name
+  and short description over it.
+- `event-details-1080x1920.png`, for the details page. Its caption reads "Two columns on iPhone Duo".
+
+Both follow the dark poster standard (the hub's `appstore_screenshots.py compose`) and are made from
+`raw-inner-landscape-intervals-en.png`. That is iPhone Duo's inner display on its side, as it opens
+when unfolded, running a Tabata in round 3 of 8, with #205 in. The status column on the right edge
+is painted black, because it showed another app's Live Activity.
 
 #### event · en-US · name
 ```text
