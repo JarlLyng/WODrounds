@@ -9,6 +9,15 @@ import XCTest
 
 final class WODroundsUITests: XCTestCase {
 
+    /// The app in English, whatever the simulator's language. The tests look elements up by
+    /// their English text, and a simulator on a Danish Mac runs in Danish, where "Time cap"
+    /// reads "Tidsgrænse" and the tests fail without the app being wrong.
+    private func englishApp() -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        return app
+    }
+
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
@@ -25,7 +34,7 @@ final class WODroundsUITests: XCTestCase {
     @MainActor
     func testExample() throws {
         // UI tests must launch the application that they test.
-        let app = XCUIApplication()
+        let app = englishApp()
         app.launch()
 
         // Use XCTAssert and related functions to verify your tests produce the correct results.
@@ -35,7 +44,7 @@ final class WODroundsUITests: XCTestCase {
     /// count-in shows a Cancel button → tapping it returns to setup.
     @MainActor
     func testCountInCancelReturnsToSetup() throws {
-        let app = XCUIApplication()
+        let app = englishApp()
         app.launch()
 
         let start = app.buttons["Start"]
@@ -57,7 +66,7 @@ final class WODroundsUITests: XCTestCase {
     /// to setup.
     @MainActor
     func testForTimeStartStopShowsFinishedTime() throws {
-        let app = XCUIApplication()
+        let app = englishApp()
         app.launch()
 
         // Switch to For Time; its setup shows the Time cap stepper.
@@ -133,7 +142,7 @@ final class WODroundsUITests: XCTestCase {
     func testLaunchPerformance() throws {
         // This measures how long it takes to launch your application.
         measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
+            englishApp().launch()
         }
     }
 }
