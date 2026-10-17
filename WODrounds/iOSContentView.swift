@@ -446,6 +446,10 @@ private struct iOSContent: View {
         }
     }
 
+    /// The round line and its context. Each stays on one line and shrinks to fit
+    /// instead: in two columns the right-hand column is narrower than "Round 3 / 8
+    /// Rounds" at full size on a phone on its side, which wrapped it on iPhone Duo's
+    /// inner display and truncated it on the outer one (#157).
     @ViewBuilder
     private func progressLabels(snapshot: WODTimerEngineSnapshot, totalRounds: Int) -> some View {
         if timerMode == .forTime {
@@ -454,16 +458,22 @@ private struct iOSContent: View {
                 Text("Cap \(sharedFormatEmomLength(cap))")
                     .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                     .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
             }
         } else {
             Text(sharedRoundLabel(snapshot: snapshot, totalRounds: totalRounds))
                 .font(.system(size: DesignTokens.Typography.Size.lg * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                 .foregroundStyle(DesignTokens.Common.Text.secondary(scheme))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
 
             if timerMode == .intervals {
                 Text(sharedTotalRemainingLabel(snapshot: snapshot))
                     .font(.system(size: DesignTokens.Typography.Size.sm * fontScale, weight: DesignTokens.Typography.Weight.semibold, design: .monospaced))
                     .foregroundStyle(DesignTokens.Common.Text.tertiary(scheme))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
             }
         }
     }
