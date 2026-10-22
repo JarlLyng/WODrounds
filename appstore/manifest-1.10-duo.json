@@ -1,0 +1,116 @@
+{
+ "app": "WODrounds",
+ "mode": "dark",
+ "accent": "#D0FF00",
+ "out_dir": "1.10/duo",
+ "shots": [
+  {
+   "raw": "raw/duo-inner-landscape-intervals-running-en.png",
+   "slot": "iphone-duo-inner-landscape",
+   "caption": "Unfold it, and the timer\ntakes *two columns*\n ",
+   "out": "en/duo-inner-1.png"
+  },
+  {
+   "raw": "raw/duo-inner-landscape-emom-running-en.png",
+   "slot": "iphone-duo-inner-landscape",
+   "caption": "Time your WOD without\ntouching your phone\n ",
+   "out": "en/duo-inner-2.png"
+  },
+  {
+   "raw": "raw/duo-outer-intervals-running-en.png",
+   "slot": "iphone-duo-outer",
+   "caption": "Time your WOD\nwithout touching\nyour phone",
+   "out": "en/duo-outer-1.png"
+  },
+  {
+   "raw": "raw/duo-outer-setup-en.png",
+   "slot": "iphone-duo-outer",
+   "caption": "EMOM, intervals\nand For Time.\nNothing else.",
+   "out": "en/duo-outer-2.png"
+  },
+  {
+   "raw": "raw/duo-outer-intervals-en.png",
+   "slot": "iphone-duo-outer",
+   "caption": "Work, rest,\nrounds. Tabata,\nor your own\nnumbers.",
+   "out": "en/duo-outer-3.png"
+  },
+  {
+   "raw": "raw/duo-outer-fortime-en.png",
+   "slot": "iphone-duo-outer",
+   "caption": "Count up for\ntime, with an\noptional cap",
+   "out": "en/duo-outer-4.png"
+  },
+  {
+   "raw": "raw/duo-inner-landscape-intervals-running-da.png",
+   "slot": "iphone-duo-inner-landscape",
+   "caption": "Fold den ud, og timeren\nfår *to kolonner*\n ",
+   "out": "da/duo-inner-1.png"
+  },
+  {
+   "raw": "raw/duo-inner-landscape-emom-running-da.png",
+   "slot": "iphone-duo-inner-landscape",
+   "caption": "Tag tid på din WOD uden\nat røre telefonen\n ",
+   "out": "da/duo-inner-2.png"
+  },
+  {
+   "raw": "raw/duo-outer-intervals-running-da.png",
+   "slot": "iphone-duo-outer",
+   "caption": "Tag tid på din\nWOD uden at\nrøre telefonen",
+   "out": "da/duo-outer-1.png"
+  },
+  {
+   "raw": "raw/duo-outer-setup-da.png",
+   "slot": "iphone-duo-outer",
+   "caption": "EMOM,\nintervaller\nog For Time.\nIkke andet.",
+   "out": "da/duo-outer-2.png"
+  },
+  {
+   "raw": "raw/duo-outer-intervals-da.png",
+   "slot": "iphone-duo-outer",
+   "caption": "Arbejde, hvile,\nrunder. Tabata,\neller egne tal.",
+   "out": "da/duo-outer-3.png"
+  },
+  {
+   "raw": "raw/duo-outer-fortime-da.png",
+   "slot": "iphone-duo-outer",
+   "caption": "Tæl op på tid,\nmed en valgfri\ngrænse",
+   "out": "da/duo-outer-4.png"
+  },
+  {
+   "raw": "raw/duo-inner-landscape-intervals-running-es.png",
+   "slot": "iphone-duo-inner-landscape",
+   "caption": "Despliégalo y el temporizador\nusa *dos columnas*\n ",
+   "out": "es/duo-inner-1.png"
+  },
+  {
+   "raw": "raw/duo-inner-landscape-emom-running-es.png",
+   "slot": "iphone-duo-inner-landscape",
+   "caption": "Cronometra tu WOD sin\ntocar el teléfono\n ",
+   "out": "es/duo-inner-2.png"
+  },
+  {
+   "raw": "raw/duo-outer-intervals-running-es.png",
+   "slot": "iphone-duo-outer",
+   "caption": "Cronometra tu\nWOD sin tocar\nel teléfono",
+   "out": "es/duo-outer-1.png"
+  },
+  {
+   "raw": "raw/duo-outer-setup-es.png",
+   "slot": "iphone-duo-outer",
+   "caption": "EMOM, intervalos\ny For Time.\nNada más.",
+   "out": "es/duo-outer-2.png"
+  },
+  {
+   "raw": "raw/duo-outer-intervals-es.png",
+   "slot": "iphone-duo-outer",
+   "caption": "Trabajo,\ndescanso,\nrondas. Tabata o\ntus números.",
+   "out": "es/duo-outer-3.png"
+  },
+  {
+   "raw": "raw/duo-outer-fortime-es.png",
+   "slot": "iphone-duo-outer",
+   "caption": "Cuenta hacia\narriba, con un\nlímite opcional",
+   "out": "es/duo-outer-4.png"
+  }
+ ]
+}
