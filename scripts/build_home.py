@@ -29,7 +29,7 @@ COPY = ROOT / "site" / "copy"
 SITE = "https://wodrounds.iamjarl.com"
 APP_ID = "6759229877"
 
-DESIGN_VERSION = "1.32.2"
+DESIGN_VERSION = "1.35.1"
 # The live pages load the design system from the site's own copy, not from a CDN (#197,
 # iamjarl-design#100). scripts/vendor_design.sh puts it in docs/assets/ and checks every
 # file against the tag's dist/sri.json; the integrity values here are those files' hashes.

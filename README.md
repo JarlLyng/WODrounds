@@ -4,14 +4,14 @@
 
 EMOM & Intervals Timer
 
-<!-- IAMJARL README store block for WODrounds (en). Generated from apps.json, v1.34.0. Do not edit. -->
+<!-- IAMJARL README store block for WODrounds (en). Generated from apps.json, v1.35.1. Do not edit. -->
 <p>
   <a href="https://apps.apple.com/app/id6759229877?pt=128512007&amp;ct=github&amp;mt=8"><picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/JarlLyng/iamjarl-design/v1.34.0/badges/app-store-white-en-us.svg">
-    <img src="https://raw.githubusercontent.com/JarlLyng/iamjarl-design/v1.34.0/badges/app-store-black-en-us.svg" alt="Download on the App Store" width="120" height="40">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/JarlLyng/iamjarl-design/v1.35.1/badges/app-store-white-en-us.svg">
+    <img src="https://raw.githubusercontent.com/JarlLyng/iamjarl-design/v1.35.1/badges/app-store-black-en-us.svg" alt="Download on the App Store" width="120" height="40">
   </picture></a>
   <br>
-  $2.99 once · iOS 16 or later · <a href="https://wodrounds.iamjarl.com">wodrounds.iamjarl.com</a>
+  $2.99 once · iOS 17 or later · <a href="https://wodrounds.iamjarl.com">wodrounds.iamjarl.com</a>
 </p>
 
 <p>
