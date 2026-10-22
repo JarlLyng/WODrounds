@@ -63,8 +63,8 @@ LANGS = [
 LANG_NAMES = {"en": "English", "da": "Dansk", "de": "Deutsch", "es": "Español",
               "fr": "Français", "nb": "Norsk", "sv": "Svenska"}
 
-# What the live app runs on. Changes with the iPhone Duo release (#146, #160).
-OPERATING_SYSTEM = "iOS 16, iPadOS 16, watchOS 9, macOS 13, tvOS 17"
+# What the live app runs on, since the iPhone Duo release, 1.10 (#146, #160).
+OPERATING_SYSTEM = "iOS 17, iPadOS 17, watchOS 10, macOS 13, tvOS 17"
 
 UMAMI = ('<script defer src="https://umami-iamjarl.vercel.app/script.js" '
          'data-website-id="7a65d61a-b231-4611-b514-3c6cd0a5b7b3" data-do-not-track="true" '
