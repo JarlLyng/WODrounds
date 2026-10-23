@@ -9,7 +9,10 @@ seven files, and rebuild, rather than editing a page by hand.
 
 ## What each section holds
 
-- `meta`: the page title and description.
+- `meta`: the page title and description. The title stays within about 60 characters, so
+  Google shows all of it (#210): the three modes first, then the app's name as that language's
+  storefront shows it. That is `WODrounds: Reloj WOD y Tabata` for `es`, where the store has a
+  Spanish name, and `WODrounds: Tabata WOD Clock` everywhere else.
 - `hero`: the headline (the owner's choice, kept on purpose), the line under it, and the loop's
   alt text.
 - `pieces`: the four frameless pieces, each with a short headline, one sentence and a link to

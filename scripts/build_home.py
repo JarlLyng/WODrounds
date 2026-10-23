@@ -9,8 +9,8 @@ the store buttons, the footer's cross-links and the offer from the design system
 generated fragments at DESIGN_VERSION, which this script inlines so the page needs no
 script to show them. The design system's files load from the site's own copy in
 docs/assets/iamjarl-design@v<version>/ (#197). To move to a new release: run
-scripts/vendor_design.sh <version>, bump DESIGN_VERSION, run this and build_pages.py,
-delete the old folder, commit.
+scripts/vendor_design.sh <version>, bump DESIGN_VERSION, run this, build_pages.py and
+build_sitemap.py, delete the old folder, commit.
 """
 from __future__ import annotations
 

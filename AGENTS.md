@@ -66,6 +66,7 @@ All public copy (App Store text, site copy, community posts, replies, release no
 - Tests: `WODroundsTests` uses Swift Testing (**Product → Test** / ⌘U).
 - Releasing: Xcode Cloud builds/uploads all platforms when the `release` branch moves (`git push origin main:release`); `main` pushes never build. Do not archive manually. Runbook: `docs/RELEASING.md`.
 - Docs: run `python3 scripts/validate_docs.py` before committing docs changes (also enforced by `.github/workflows/docs.yml`).
+- Sitemap: after changing any page, run `python3 scripts/build_sitemap.py`, which writes each `lastmod` from git. Never write a date by hand.
 
 ## Conventions
 - Uses `iamjarl-design` tokens via SPM; `DesignTokens.swift` re-exports the package and adds app-specific font sizes; no hardcoded colors.
