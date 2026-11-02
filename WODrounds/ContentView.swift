@@ -67,6 +67,21 @@ func initialTimerMode() -> TimerUIMode {
 /// Key for the last mode used, shared by the three non-Watch views.
 let lastTimerModeKey = "lastTimerMode"
 
+/// Deep links (#208), which an In-App Event needs. `wodrounds://` just opens the app;
+/// `wodrounds://emom`, `wodrounds://intervals` and `wodrounds://fortime` also open that
+/// mode's setup. Returns the mode a link asks for, or nil for the bare link or anything
+/// unknown. A link only ever picks a mode: it never starts, stops or changes a workout,
+/// so each view applies it only while idle.
+func deepLinkTimerMode(_ url: URL) -> TimerUIMode? {
+    guard url.scheme?.lowercased() == "wodrounds" else { return nil }
+    switch url.host?.lowercased() {
+    case "emom": return .emom
+    case "intervals": return .intervals
+    case "fortime": return .forTime
+    default: return nil
+    }
+}
+
 /// Companion to `initialTimerMode()`: the engine has to start in the same mode, or a
 /// screenshot launched with `-screen intervals` shows the Intervals UI while the engine
 /// is still the default EMOM (wrong round count, wrong total).

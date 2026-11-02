@@ -79,6 +79,7 @@ All public copy (App Store text, site copy, community posts, replies, release no
 - **Remembered setup (new in 1.9):** iPhone, iPad, Mac and Apple TV reopen in the last mode used, with its values (EMOM rounds and round length, Intervals work, rest and rounds, For Time cap).
 - **Date-based timing:** reliable when backgrounded; deterministic engine (`Shared/WODTimerEngine.swift`), no UI/sound in the engine.
 - Sound cues (count-in, halfway, 10s, 3-2-1, rounds-remaining) on iPhone, iPad and Apple TV only; **the Mac and the Watch have no sound**. Haptics on iPhone and Watch. HealthKit save as HIIT on iPhone and iPad only, and only with permission granted; nothing else saves to Health.
+- **Deep links (next release, #208):** `wodrounds://` opens the app; `wodrounds://emom`, `wodrounds://intervals` and `wodrounds://fortime` open that mode's setup (iPhone, iPad, Mac, Apple TV; not the Watch). Applied only on the idle setup screen. No link starts, stops or changes a workout. No universal links.
 - **Localization (new in 1.7):** UI in English, Danish and Spanish (es-MX). Spoken audio cues are recorded English voice files and stay English in every language; do not claim localized audio.
 
 ### Features that do NOT exist (common hallucination targets)

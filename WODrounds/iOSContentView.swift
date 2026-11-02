@@ -261,6 +261,14 @@ private struct iOSContent: View {
             // only guesses, and Start would otherwise run numbers the screen never showed.
             syncEngineIfIdle(engine.state)
         }
+        .onOpenURL { url in
+            // A link picks a mode on the setup screen and nothing else (#208). During the
+            // count-in, a workout or the Done screen it only brings the app forward.
+            guard let mode = deepLinkTimerMode(url), engine.state == .idle, countdownEndTime == nil else { return }
+            timerMode = mode
+            UserDefaults.standard.set(mode.rawValue, forKey: lastTimerModeKey)
+            syncEngineIfIdle(engine.state)
+        }
         .sheet(isPresented: $showAbout) { AboutView() }
         .confirmationDialog("Cancel workout?", isPresented: $showCancelConfirmation, titleVisibility: .visible) {
             cancelConfirmationContent

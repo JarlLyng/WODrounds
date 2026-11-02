@@ -428,9 +428,10 @@ struct SharedModeSwitch: View {
     private func modeButton(mode: TimerUIMode, fixed: Bool) -> some View {
         let button = Button {
             timerMode = mode
-            // Persisted here rather than in each view: this is the only place the mode
-            // changes, so iPhone, Mac and Apple TV all reopen where you left off. The
-            // Watch has always done this with its own key.
+            // Persisted here rather than in each view, so iPhone, Mac and Apple TV all
+            // reopen where you left off. The only other place the mode changes is a deep
+            // link (#208), which persists it the same way. The Watch has always done this
+            // with its own key.
             UserDefaults.standard.set(mode.rawValue, forKey: lastTimerModeKey)
             onModeChange()
         } label: {

@@ -2,6 +2,10 @@
 
 All notable user-facing changes to WODrounds. Newest first.
 
+## Unreleased
+
+- **Added:** links that open the app, for App Store In-App Events (#208). `wodrounds://` opens WODrounds, and `wodrounds://emom`, `wodrounds://intervals` and `wodrounds://fortime` open that mode's setup, on iPhone, iPad, Mac and Apple TV. A link only picks the mode: during the count-in, a workout or the Done screen it just brings the app forward, and no link starts a timer.
+
 ## 1.10 (build 21)
 
 The iPhone Duo release, built with Xcode 27.1. The App Store text is in `appstore/1.10/store-text.md` (#199).

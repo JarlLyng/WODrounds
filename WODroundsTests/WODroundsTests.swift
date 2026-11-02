@@ -793,4 +793,19 @@ struct WODroundsTests {
         #expect(decoded.state == "finished")
         #expect(decoded.finishedAt != nil)
     }
+
+    // MARK: - Deep links (#208)
+
+    @Test func deepLinksOpenEachModesSetup() {
+        #expect(deepLinkTimerMode(URL(string: "wodrounds://emom")!) == .emom)
+        #expect(deepLinkTimerMode(URL(string: "wodrounds://intervals")!) == .intervals)
+        #expect(deepLinkTimerMode(URL(string: "wodrounds://fortime")!) == .forTime)
+        #expect(deepLinkTimerMode(URL(string: "WODrounds://Intervals/")!) == .intervals)
+    }
+
+    @Test func bareOrUnknownDeepLinksPickNoMode() {
+        #expect(deepLinkTimerMode(URL(string: "wodrounds://")!) == nil)
+        #expect(deepLinkTimerMode(URL(string: "wodrounds://start")!) == nil)
+        #expect(deepLinkTimerMode(URL(string: "https://emom")!) == nil)
+    }
 }
