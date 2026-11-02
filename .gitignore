@@ -58,9 +58,10 @@ Sentry.xcconfig
 .venv/
 __pycache__/
 
-# Editor / AI-tool local config (keep .vscode/extensions.json shared)
+# Editor / AI-tool local config
 .claude/
 .cursor/
+.vscode/
 
 # Marketing source assets (brand book, video). Large binaries, not needed to build.
 marketing/

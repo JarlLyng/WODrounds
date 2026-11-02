@@ -60,7 +60,7 @@ What each mode does, with its ranges and the in-app flow, is in [docs/MODES.md](
 - **DesignTokens.swift:** re-exports the IAMJARL design tokens from the SPM package and adds app-specific font sizes.
 - **ContentView.swift:** shared types (ranges, the `TimerUIMode` enum) used by every platform view.
 - **iOSContentView.swift:** the iOS and iPadOS UI: HealthKit, haptics, sounds, the count-in, the idle timer.
-- **macOSContentView.swift:** the macOS UI: a compact window (340×560) and a flash overlay.
+- **macOSContentView.swift:** the macOS UI: a compact window that opens at 360×740, with a minimum of 320×360, and a flash overlay.
 - **tvOSContentView.swift:** the tvOS UI: focus-based navigation, `.buttonStyle(.card)`, large type, sounds.
 - **SharedTimerViews.swift:** shared UI components (stepper, primary button, done view and so on).
 - **WorkoutSoundManager.swift:** sound cues on iOS and tvOS: the count-in start, the halfway and ten-seconds voice cues, a 3-2-1 countdown, rounds-remaining announcements (10, 5, 2) and a randomized completion line. The lines are in [docs/VOICE_CUES.md](docs/VOICE_CUES.md).

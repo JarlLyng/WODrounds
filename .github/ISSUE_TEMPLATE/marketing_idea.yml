@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         For **public-safe** marketing work only: a blog post, a community thread, a screenshot to redo, an ASO copy tweak.
-        **Anything competitive-sensitive** (positioning, pricing reasoning, channel plans that reveal an edge, competitor analysis) does **not** belong in a public issue; put it in the private strategy hub instead.
+        **Anything competitive-sensitive** (positioning, pricing reasoning, channel plans that reveal an edge, competitor analysis) does **not** belong in a public issue, so please leave it out.
 
   - type: textarea
     id: idea
@@ -37,5 +37,5 @@ body:
     attributes:
       label: Public-safe check
       options:
-        - label: This contains nothing a competitor reading it could use against us (else it goes in the private strategy hub)
+        - label: This contains nothing a competitor reading it could use against us (else it doesn't belong in a public issue)
           required: true
