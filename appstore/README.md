@@ -15,8 +15,10 @@ appstore/
   <version>/        one folder per release, the uploaded set
 ```
 
-Current: **`1.7/`** (flat, one file per slot: `iphone-*`, `ipad-1`, `mac-*`, `tvos-*`, `watch-*`).
-Archive: **`1.2/`** (the older hand-made set, kept per platform subfolder as it was produced).
+Current: **`1.8/`**, one folder per language (`en/`, `da/`, `es/`), with one file per slot:
+`iphone-*`, `ipad-1`, `mac-*`, `tvos-*`, `watch-*`. **`1.10/`** adds what the iPhone Duo release
+needed: the store text, the iPhone Duo set (`duo/`) and the In-App Event images (`event/`). The
+App Store header is in [`header/`](header/).
 
 Superseded sets are deleted rather than kept forever; git history has them if ever needed.
 This folder replaced a separate top-level "App store screens" directory (consolidated 2026-07-29).
@@ -25,19 +27,19 @@ This folder replaced a separate top-level "App store screens" directory (consoli
 
 Captioned posters on the brand ground: dark `#0d0d0d`, lime `#D0FF00` accent tick, a short
 bold headline, the app screen with rounded corners below. Apple Watch shots are raw (the
-screen is too small for a caption band). Captions follow the voice rules in the private
-strategy repo (concrete, no em-dashes, pay-once framing) and lead with the wedge: Apple
+screen is too small for a caption band). Captions follow the portfolio's voice rules (concrete, no
+em-dashes, pay-once framing) and lead with the wedge: Apple
 Watch, multi-device, pay-once.
 
 ## Regenerating
 
-**As of 1.7 this uses the portfolio tool**, `tools/appstore_screenshots.py` in the private
-`iamjarl-strategy` repo, driven by [`manifest.json`](manifest.json). The standard it implements
-(slot sizes, dark/light mode, per-app accent, device bezels, caption rules, ordering) lives in
-that repo's `DESIGN.md`. The older local `scripts/compose_screenshots.py` predates it.
+**As of 1.7 this uses the portfolio's screenshot tool**, `appstore_screenshots.py`, which is
+shared across the IAMJARL apps and isn't part of this repo. It is driven by
+[`manifest.json`](manifest.json) and implements the slot sizes, dark and light mode, the per-app
+accent, device bezels, caption rules and ordering. The older local `scripts/compose_screenshots.py` predates it.
 
 ```sh
-python3 <hub>/tools/appstore_screenshots.py batch appstore/manifest.json
+python3 <tools>/appstore_screenshots.py batch appstore/manifest.json
 ```
 
 Raw captures live in [`raw/`](raw/) so a set can be re-composed without re-shooting. Capture in

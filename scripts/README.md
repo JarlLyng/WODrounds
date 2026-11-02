@@ -29,10 +29,7 @@ python3 scripts/build_sitemap.py
 
 Generates the app icon assets for all platforms. See `docs/APP_ICONS.md` for the checklist.
 
-## App Store Connect analytics / downloads (moved)
+## App Store Connect
 
-The App Store Connect tooling (`asc_downloads.py`, `asc_analytics.py`) has **moved to the
-private `iamjarl-strategy` repo** under `tools/`, because it is a portfolio-wide,
-vendor-account tool (one Apple key serves every app, isolated with `--app`), and the
-numbers it pulls are strategy material. See `DATA_ACCESS.md` in that repo. No App Store
-credentials live in this public repo anymore.
+No App Store Connect tooling or credentials live in this repo. The analytics and download
+scripts that used to be here are shared across the IAMJARL apps and kept outside it.

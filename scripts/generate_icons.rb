@@ -4,7 +4,7 @@ require 'fileutils'
 
 # Paths
 BASE_DIR = File.expand_path("..", __dir__)
-SOURCE_DIR = File.join(BASE_DIR, "ikoner")
+SOURCE_DIR = File.join(BASE_DIR, "icons")
 LIGHT_SRC = File.join(SOURCE_DIR, "lightmode.png")
 DARK_SRC = File.join(SOURCE_DIR, "darkmode.png")
 TINTED_SRC = File.join(SOURCE_DIR, "tinted.png")

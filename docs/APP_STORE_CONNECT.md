@@ -256,7 +256,7 @@ Current sizes (Apple retired the old 5.5"/6.5" slots as the primary requirement)
 
 The rendered set lives in [`appstore/1.8/`](../appstore/1.8/), versioned per release and driven by [`appstore/manifest.json`](../appstore/manifest.json). Regenerate with the portfolio compositor in the private strategy repo (`tools/appstore_screenshots.py batch appstore/manifest.json`); see [`appstore/README.md`](../appstore/README.md). Superseded sets are deleted rather than kept, per the hub's `DESIGN.md`; git history has them.
 
-**Apple TV got three screenshots in 1.6.1** (was one), because the device x territory cross-tab showed Apple TV is the #2 platform at 32% of product page views: running timer (hero), the three-mode setup, and For Time with the time cap. The tvOS canvas uses a larger screen scale (0.82) so the timer stays readable at thumbnail size.
+**Apple TV got three screenshots in 1.6.1** (was one), because Apple TV draws a real share of product page views: running timer (hero), the three-mode setup, and For Time with the time cap. The tvOS canvas uses a larger screen scale (0.82) so the timer stays readable at thumbnail size.
 
 **Current set (`appstore/1.8/`), 21 images.** Dark #0d0d0d ground, lime #D0FF00 accent, the app screen below a short headline. Each language sits in its own folder (`en/`, `da/`, `es/`), so no set is the implicit default. English covers all five platforms: four iPhone (running timer, three-mode setup, Intervals, For Time), one iPad, one Mac, two Apple TV, one Apple Watch. Danish (`da/`) and Spanish (`es/`) repeat the four iPhone shots plus iPad and Watch, which is what the iOS app record needs for a localized listing. Mac and Apple TV are separate app records and stay English only.
 
@@ -439,9 +439,8 @@ the handful of Latin American words in `es.lproj` so one bundle reads acceptably
 Recommendation is the first: it is a metadata change rather than a code change, and the strategy
 repo's territory data shows the Spanish traffic that actually exists is Mexican.
 
-Note also that the strategy repo argues **against** a localized tvOS listing at all: Apple TV traffic
-is 78% English-speaking and Mexico is 9 page views over four months, against a per-release metadata
-cost that recurs forever. That analysis predates the 1.7 decision to add one; revisit it rather than
+Note also that the strategy repo argues **against** a localized tvOS listing at all, given a
+per-release metadata cost that recurs forever. That analysis predates the 1.7 decision to add one; revisit it rather than
 treating it as settled.
 
 ## iOS (es-MX)
@@ -488,9 +487,7 @@ description and the Danish release notes. An earlier note here claimed the local
 exist; that was a bad query, not a bad listing, and the trap is described in the Description section
 above.
 
-Danish is the **second-largest language area** at 16% of page views, Denmark is the strongest sales
-territory, and it leads the storefronts on ratings, so this is the localization that earns its
-keep. iPhone is 54% of page views, so iOS is where it belongs. Danish screenshots exist for
+Danish is the localization that earns its keep, and iOS is where it belongs. Danish screenshots exist for
 iPhone, iPad and Apple Watch (`appstore/1.8/da/`); Mac and Apple TV have none, so those records stay
 English.
 

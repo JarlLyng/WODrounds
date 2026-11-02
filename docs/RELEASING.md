@@ -45,10 +45,11 @@ trusting memory:
 - [ ] Re-paste Promotional Text on every platform and language.
 - [ ] Check any description or subtitle rewrite that was written for an earlier release and parked.
 
-To verify what is actually live afterwards, use `tools/appstore_listing.py` in the strategy repo.
+To verify what is actually live afterwards, look the listing up per storefront with Apple's
+public lookup (`https://itunes.apple.com/lookup?id=6759229877&country=dk&lang=da`).
 **Pass the storefront's own language**, or the lookup endpoint answers in English for every
-storefront and a healthy localization reads as missing. The tool now defaults this correctly; the
-trap cost a wrong conclusion once already.
+storefront and a healthy localization reads as missing. The trap cost a wrong conclusion once
+already.
 
 ## Xcode Cloud configuration (reference)
 
