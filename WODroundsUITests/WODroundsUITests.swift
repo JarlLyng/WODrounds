@@ -101,6 +101,35 @@ final class WODroundsUITests: XCTestCase {
         XCTAssertTrue(start.waitForExistence(timeout: 5), "Reset should return to the setup screen")
     }
 
+    /// Deep links (#208): each mode's link opens that mode's setup, and a link the app
+    /// doesn't know leaves the setup screen as it was, with nothing started. The help text
+    /// under the mode switch says which mode is open; the other modes' steppers stay in the
+    /// accessibility tree, so they can't.
+    @MainActor
+    func testDeepLinksOpenEachModesSetup() throws {
+        let app = englishApp()
+        app.launch()
+        XCTAssertTrue(app.buttons["Start"].waitForExistence(timeout: 5))
+        let emomHelp = app.staticTexts["Select the number of rounds, and length of each round."]
+        let intervalsHelp = app.staticTexts["Set work time, rest time, and number of rounds."]
+        let forTimeHelp = app.staticTexts["The clock counts up. Press Stop when you finish, or set an optional time cap."]
+
+        app.open(URL(string: "wodrounds://intervals")!)
+        XCTAssertTrue(intervalsHelp.waitForExistence(timeout: 3), "wodrounds://intervals should open the Intervals setup")
+
+        app.open(URL(string: "wodrounds://fortime")!)
+        XCTAssertTrue(forTimeHelp.waitForExistence(timeout: 3), "wodrounds://fortime should open the For Time setup")
+
+        app.open(URL(string: "wodrounds://emom")!)
+        XCTAssertTrue(emomHelp.waitForExistence(timeout: 3), "wodrounds://emom should open the EMOM setup")
+
+        app.open(URL(string: "wodrounds://start")!)
+        sleep(1)
+        XCTAssertTrue(emomHelp.exists, "An unknown link should leave the mode as it was")
+        XCTAssertTrue(app.buttons["Start"].exists, "A link must never start a workout")
+        XCTAssertFalse(app.buttons["Cancel countdown"].exists, "A link must never start the count-in")
+    }
+
     /// Waits for `element`, dismissing the HealthKit authorization sheet whenever
     /// it shows up along the way. The sheet is hosted by a remote process and its
     /// appearance time varies wildly (slow on a freshly-booted simulator), and
