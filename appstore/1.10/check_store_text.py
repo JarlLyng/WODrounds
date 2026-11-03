@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Count every field in store-text.md against App Store Connect's limits (#199).
+"""Count every field in a store-text.md against App Store Connect's limits (#199).
 
-    python3 appstore/1.10/check_store_text.py
+    python3 appstore/1.10/check_store_text.py                            # 1.10's own file
+    python3 appstore/1.10/check_store_text.py appstore/1.11/store-text.md
 
 Each field is a `#### platform · locale · field` heading with a ```text block under it.
 The keyword field is counted in UTF-8 bytes, since Apple's limit is 100 bytes and æ, ø, å
@@ -14,7 +15,7 @@ import re
 import sys
 from pathlib import Path
 
-TEXT = Path(__file__).with_name("store-text.md").read_text()
+TEXT = Path(sys.argv[1] if len(sys.argv) > 1 else Path(__file__).with_name("store-text.md")).read_text()
 
 # field name -> (limit, unit)
 LIMITS = {

@@ -1,6 +1,6 @@
 # App Store Connect – Text for "Prepare for Submission"
 
-**For 1.10 (the iPhone Duo release), paste from [`appstore/1.10/store-text.md`](../appstore/1.10/store-text.md) (#199).** It supersedes the keywords, promotional text, descriptions and What's New below, and adds the missing localizations (iPhone es-ES, Mac and Apple TV da and es-MX). This file is folded into it after the release.
+**For 1.11, paste What's New from [`appstore/1.11/store-text.md`](../appstore/1.11/store-text.md) (#208), and everything else from [`appstore/1.10/store-text.md`](../appstore/1.10/store-text.md) (#199).** Those two supersede the keywords, promotional text, descriptions and What's New below. This file is still to be folded into them (#214).
 
 Copy into the corresponding fields in App Store Connect. Under **Distribution** you typically have **iOS App**, **Mac App**, and **Apple TV App** (tvOS) — each with its own version and metadata. The descriptions here match the app: EMOM + Intervals timer only, no accounts.
 
