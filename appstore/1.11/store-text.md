@@ -103,8 +103,10 @@ Ahora WODrounds se puede abrir desde un enlace, como el de un evento del App Sto
 The event from 1.10's §7 is still a draft in App Store Connect, with its four localizations and
 the images in `appstore/1.10/event/`. Its texts don't change. What changes:
 
-- **Event deep link:** `wodrounds://`. It opens the app where the user left it. A mode link would
-  pick a mode for them, and the event is about the layout, not a mode.
+- **Event deep link:** `wodrounds://open`. It opens the app where the user left it. App Store
+  Connect turns down a bare `wodrounds://` as not a valid URL, and the app ignores a host it doesn't
+  know, so `open` behaves exactly like the bare link. A mode link would pick a mode for them, and
+  the event is about the layout, not a mode.
 - **Submit it with 1.11.** The link only works once 1.11 is live, so the event goes in with the
   build, not before.
 - **New dates.** The 1.10 window (2026-10-23 to 2026-11-22) has mostly passed. Pick a start on or
