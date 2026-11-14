@@ -808,4 +808,35 @@ struct WODroundsTests {
         #expect(deepLinkTimerMode(URL(string: "wodrounds://start")!) == nil)
         #expect(deepLinkTimerMode(URL(string: "https://emom")!) == nil)
     }
+
+    // MARK: - Anonymous telemetry (#225, #226)
+
+    #if os(iOS)
+    @Test func featureCountsCarryOnlyFixedModeValues() {
+        #expect(TimerUIMode.allCases.map(Telemetry.modeAttribute) == ["emom", "intervals", "fortime"])
+    }
+
+    @Test func metricAttributesAllowNoUserOrIDs() {
+        let allowed = Telemetry.allowedMetricAttributes
+        #expect(allowed.contains("mode"))
+        #expect(!allowed.contains { $0.hasPrefix("user.") })
+        #expect(!allowed.contains { $0.contains("id") && !$0.hasPrefix("sentry.") })
+    }
+
+    @Test func installationIDIsPinnedToTheSharedUser() throws {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let file = dir.appendingPathComponent("INSTALLATION")
+
+        // A fresh install: no file yet.
+        Telemetry.pinInstallationID(cacheDirectoryPath: dir.path)
+        #expect(try String(contentsOf: file, encoding: .utf8) == "anonymous")
+
+        // An existing install: the SDK's random ID is replaced.
+        try Data(UUID().uuidString.utf8).write(to: file)
+        Telemetry.pinInstallationID(cacheDirectoryPath: dir.path)
+        #expect(try String(contentsOf: file, encoding: .utf8) == "anonymous")
+    }
+    #endif
 }

@@ -13,7 +13,7 @@ Thanks for your interest. WODrounds is a solo indie project — I (Jarl) build i
 
 - **Large feature PRs without a prior issue discussion.** Please open an issue first so we can talk about whether it fits the wedge.
 - **Refactors that don't fix a concrete bug or unblock a feature.** The codebase is intentionally small. I'd rather it stay that way.
-- **New third-party dependencies.** The app uses zero third-party deps in the timer code. Sentry is opt-in for crash reporting on iOS only. Adding deps requires a strong case.
+- **New third-party dependencies.** The app uses zero third-party deps in the timer code. Sentry is used for anonymous crash reports and usage counts on iOS only (see [docs/SENTRY.md](docs/SENTRY.md)). Adding deps requires a strong case.
 
 ## Design philosophy
 

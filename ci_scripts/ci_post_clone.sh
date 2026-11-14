@@ -7,9 +7,9 @@
 # (secret) environment variable on the Xcode Cloud workflow.
 #
 # If SENTRY_DSN is not set, we still write the file with an empty value: the app
-# treats an empty DSN as "crash reporting disabled" (see WODroundsApp.swift), so
-# the archive still succeeds. That makes the script safe for test-only workflows
-# too. The DSN is a public client credential (it ships in the app binary), so a
+# treats an empty DSN as "crash reporting disabled" (see Telemetry.swift), so
+# builds and tests still run. An archive without it is stopped by
+# ci_pre_xcodebuild.sh, so a release can't ship without crash reports unnoticed. The DSN is a public client credential (it ships in the app binary), so a
 # workflow env var is an appropriate place for it.
 
 set -e

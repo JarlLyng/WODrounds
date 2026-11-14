@@ -1,6 +1,23 @@
 # Sentry (iOS)
 
-Crash and error reporting uses **Sentry on iOS only** (not macOS, tvOS, or Watch). How the target links `Sentry-Dynamic` and platform filters are documented in [ARCHIVE.md](ARCHIVE.md).
+Crash reports, crash-free sessions, MetricKit diagnostics and two anonymous feature counts go to **Sentry on iOS only** (not macOS, tvOS, or Watch). The code is `WODrounds/Telemetry.swift`. How the target links `Sentry-Dynamic` and platform filters are documented in [ARCHIVE.md](ARCHIVE.md).
+
+## What is sent, and what isn't
+
+Anonymous is a recipe, not Sentry's default (#225, #226). Out of the box sentry-cocoa sends a random installation ID as the user, as every session's `did` and on every metric, plus `device_app_hash` (a hash of the vendor ID) on every event. `Telemetry.swift` stops all of it:
+
+- **One shared user, `anonymous`,** set right after `SentrySDK.start` and again on every event in `beforeSend`, which in sentry-cocoa 9 also covers MetricKit diagnostics and transactions.
+- **No device IDs:** `beforeSend` drops `contexts.app.device_app_hash` and `contexts.device.id`.
+- **Sessions without an ID:** sentry-cocoa sets a session's `did` from the `INSTALLATION` file in its cache directory and has no option to change it. The app writes `anonymous` into that file before the SDK starts, so every install reports the same `did`. This relies on SDK internals, so **check it after every sentry-cocoa upgrade** (below).
+- **Feature counts:** `workout.started` (after the count-in) and `workout.finished` (the Done screen), each with one attribute, `mode` (`emom`, `intervals` or `fortime`). `beforeSendMetric` keeps only the SDK's coarse facts (SDK, release, environment, OS, device model) and `mode`, and drops everything else, `user.id` included.
+- **Off:** `sendDefaultPii`, screenshots, view hierarchy, session replay, and performance tracing in release builds (`tracesSampleRate` 0).
+- **Environment:** `simulator`, `debug`, `testflight` (a sandbox receipt) or `production` (App Store builds only).
+
+The `iamjarl` Sentry organisation also strips `user.id`, `contexts.device.id` and `contexts.app.device_app_hash` server-side and stores no IP addresses, as a safety net.
+
+### Checking the envelopes (after every sentry-cocoa upgrade)
+
+Point a Debug build at a local stand-in for Sentry and read what it sends. Run a tiny HTTP server on `127.0.0.1:8969` that saves each POST body (gunzip it if `Content-Encoding: gzip`), then launch with `SIMCTL_CHILD_SENTRY_DSN="http://0123456789abcdef0123456789abcdef@127.0.0.1:8969/1" xcrun simctl launch <sim> com.iamjarl.WODrounds`. Seed `Library/Caches/INSTALLATION` with a fake ID first to stand in for an existing install. Pass when the `session` item's `did` is `anonymous`, the `event` item's `user` is `{"id": "anonymous"}` with no `device_app_hash`, `trace_metric` items carry no `user.*` attribute, and the fake ID appears nowhere. Last checked with sentry-cocoa 9.32.0 on 2026-11-15: passed.
 
 ## DSN – Where to Set It
 
@@ -27,7 +44,11 @@ The app reads the DSN in this order: **1)** environment variable `SENTRY_DSN` (e
 
 `Sentry.xcconfig` is gitignored, so a fresh Xcode Cloud clone has no config file and the build fails at the xcconfig reference. `ci_scripts/ci_post_clone.sh` recreates it after clone from the `SENTRY_DSN` environment variable.
 
-To set it up: in the Xcode Cloud workflow, add an environment variable named `SENTRY_DSN` (mark it secret) with your real DSN. If it is left unset, the script writes an empty DSN and crash reporting is simply off for that build (the archive still succeeds). Same for GitHub Actions, which copies `Sentry.xcconfig.example` instead (see `.github/workflows/`).
+To set it up: in the Xcode Cloud workflow, add an environment variable named `SENTRY_DSN` (mark it secret) with your real DSN. Builds and tests run without it, but **an archive without it fails**: `ci_scripts/ci_pre_xcodebuild.sh` stops the archive with an error, so a release can't ship with crash reporting silently off. GitHub Actions copies `Sentry.xcconfig.example` instead (see `.github/workflows/`) and never archives.
+
+### D) dSYM upload (readable crashes)
+
+`ci_scripts/ci_post_xcodebuild.sh` uploads the iOS archive's dSYMs to Sentry with a pinned, checksum-checked `sentry-cli`. It needs a second secret on the workflow, `SENTRY_AUTH_TOKEN` (an organisation token from Sentry → Settings → Auth Tokens, with `project:releases` / debug-file upload rights). `SENTRY_ORG` and `SENTRY_PROJECT` default to `iamjarl` and `wodrounds`; set them on the workflow if the slugs differ. Without the token, or if the upload fails, the build still goes on with a warning: the release is fine, only its stack traces are unreadable.
 
 ## Adding the Sentry Package (Swift Package)
 
@@ -35,7 +56,7 @@ If you haven't added the package yet:
 
 1. In Xcode: **File → Add Package Dependencies…**
 2. Enter URL: `https://github.com/getsentry/sentry-cocoa.git`
-3. Select version (e.g. **Up to Next Major** with 9.0.0 or newer).
+3. Select version (**Up to Next Major** from 9.32.0; Application Metrics need 9.12 or newer).
 4. Select the product **Sentry-Dynamic** and link it to the target **WODrounds**. (The project uses Sentry-Dynamic to avoid the "Upload Symbols Failed" warning on archive.)
 5. Click **Add Package**.
 
@@ -51,4 +72,4 @@ When uploading an archive to App Store Connect, Xcode may show: **Upload Symbols
 
 ## Privacy
 
-The app's **Privacy Policy** and App Store **Privacy Labels** declare that crash and performance data is sent to Sentry (third party). See [Sentry privacy](https://docs.sentry.io/product/security/). The privacy manifest (`PrivacyInfo.xcprivacy`) also declares this data collection.
+The privacy policy, `PrivacyInfo.xcprivacy` and the App Store label name every kind of data, all not linked to the user and not used for tracking: Crash Data and Performance Data (diagnostics), and Product Interaction (the two feature counts). See [Sentry privacy](https://docs.sentry.io/product/security/).

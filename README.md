@@ -117,7 +117,7 @@ English, Danish and Spanish (es-MX). The UI is localized. The spoken cues stay E
 
 A static site lives in `docs/` and is served by GitHub Pages at **[wodrounds.iamjarl.com](https://wodrounds.iamjarl.com)** (Settings → Pages → Deploy from branch → `main`, `/docs`). It has the home page, a page per timer, the Apple Watch page, workout examples, a guide, privacy and support, with translated pages in their own folders.
 
-The site counts aggregate page views with [Umami](https://umami.is/). The app has no marketing analytics; iOS uses Sentry for crashes only, as [PrivacyPolicy.md](PrivacyPolicy.md) says. For search, the pages carry canonical URLs, Open Graph, Twitter Cards, JSON-LD and a sitemap.
+The site counts aggregate page views with [Umami](https://umami.is/). The app has no ads and no tracking; on iOS it sends anonymous crash reports and two anonymous usage counts to Sentry, with no ID of any kind, as [PrivacyPolicy.md](PrivacyPolicy.md) and [docs/SENTRY.md](docs/SENTRY.md) say. For search, the pages carry canonical URLs, Open Graph, Twitter Cards, JSON-LD and a sitemap.
 
 ### Contributing
 

@@ -9,7 +9,7 @@
 
 ## What we see when you report an issue
 
-- **App:** We do not receive your timer settings or workout content. On **iOS**, crash reports may be sent automatically to **Sentry** so we can diagnose failures — see [PrivacyPolicy.md](PrivacyPolicy.md).
+- **App:** We do not receive your timer settings or workout content. On **iOS**, anonymous crash reports and usage counts are sent to **Sentry** so we can diagnose failures. See [PrivacyPolicy.md](PrivacyPolicy.md).
 - **Website:** We may see **aggregate** page statistics via **Umami** (no personal workout data).
 
 When you contact us, please mention your device (e.g. iPhone 15, iOS 18) and what you were doing when the problem occurred.
