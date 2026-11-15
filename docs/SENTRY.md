@@ -8,6 +8,7 @@ Anonymous is a recipe, not Sentry's default (#225, #226). Out of the box sentry-
 
 - **One shared user, `anonymous`,** set right after `SentrySDK.start` and again on every event in `beforeSend`, which in sentry-cocoa 9 also covers MetricKit diagnostics and transactions.
 - **No device IDs:** `beforeSend` drops `contexts.app.device_app_hash` and `contexts.device.id`.
+- **No container path ID:** stack frames' `package`, debug images' `code_file` and exception values carry the app's bundle path, `/var/containers/Bundle/Application/<UUID>/…`, a UUID new on every install and update. `beforeSend` replaces it with `00000000-0000-0000-0000-000000000000` and keeps the rest of the path, so Sentry still marks the app's frames `in_app`.
 - **Sessions without an ID:** sentry-cocoa sets a session's `did` from the `INSTALLATION` file in its cache directory and has no option to change it. The app writes `anonymous` into that file before the SDK starts, so every install reports the same `did`. This relies on SDK internals, so **check it after every sentry-cocoa upgrade** (below).
 - **Feature counts:** `workout.started` (after the count-in) and `workout.finished` (the Done screen), each with one attribute, `mode` (`emom`, `intervals` or `fortime`). `beforeSendMetric` keeps only the SDK's coarse facts (SDK, release, environment, OS, device model) and `mode`, and drops everything else, `user.id` included.
 - **Off:** `sendDefaultPii`, screenshots, view hierarchy, session replay, and performance tracing in release builds (`tracesSampleRate` 0).
@@ -17,7 +18,7 @@ The `iamjarl` Sentry organisation also strips `user.id`, `contexts.device.id` an
 
 ### Checking the envelopes (after every sentry-cocoa upgrade)
 
-Point a Debug build at a local stand-in for Sentry and read what it sends. Run a tiny HTTP server on `127.0.0.1:8969` that saves each POST body (gunzip it if `Content-Encoding: gzip`), then launch with `SIMCTL_CHILD_SENTRY_DSN="http://0123456789abcdef0123456789abcdef@127.0.0.1:8969/1" xcrun simctl launch <sim> com.iamjarl.WODrounds`. Seed `Library/Caches/INSTALLATION` with a fake ID first to stand in for an existing install. Pass when the `session` item's `did` is `anonymous`, the `event` item's `user` is `{"id": "anonymous"}` with no `device_app_hash`, `trace_metric` items carry no `user.*` attribute, and the fake ID appears nowhere. Last checked with sentry-cocoa 9.32.0 on 2026-11-15: passed.
+Point a Debug build at a local stand-in for Sentry and read what it sends. Run a tiny HTTP server on `127.0.0.1:8969` that saves each POST body (gunzip it if `Content-Encoding: gzip`), then launch with `SIMCTL_CHILD_SENTRY_DSN="http://0123456789abcdef0123456789abcdef@127.0.0.1:8969/1" xcrun simctl launch <sim> com.iamjarl.WODrounds`. Seed `Library/Caches/INSTALLATION` with a fake ID first to stand in for an existing install. Pass when the `session` item's `did` is `anonymous`, the `event` item's `user` is `{"id": "anonymous"}` with no `device_app_hash`, `trace_metric` items carry no `user.*` attribute, the fake ID appears nowhere, and the app's real container UUID (`xcrun simctl get_app_container <sim> com.iamjarl.WODrounds app`) appears nowhere while the app's frames are still `in_app`. Last checked with sentry-cocoa 9.32.0 on 2026-11-15: passed, container paths included.
 
 ## DSN – Where to Set It
 
