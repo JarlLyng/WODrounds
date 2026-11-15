@@ -72,4 +72,4 @@ When uploading an archive to App Store Connect, Xcode may show: **Upload Symbols
 
 ## Privacy
 
-The privacy policy, `PrivacyInfo.xcprivacy` and the App Store label name every kind of data, all not linked to the user and not used for tracking: Crash Data and Performance Data (diagnostics), and Product Interaction (the two feature counts). See [Sentry privacy](https://docs.sentry.io/product/security/).
+The privacy policy, `PrivacyInfo.xcprivacy` and the App Store label name every kind of data, all not linked to the user and not used for tracking: Crash Data, Performance Data and Other Diagnostic Data (crashes, MetricKit, app hangs), and Product Interaction (the two feature counts). The App Store label reads: Data Not Linked to You, Diagnostics (Crash Data, Performance Data, Other Diagnostic Data), Usage Data (Product Interaction). See [Sentry privacy](https://docs.sentry.io/product/security/).
