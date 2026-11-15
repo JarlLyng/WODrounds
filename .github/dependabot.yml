@@ -1,0 +1,28 @@
+# Dependabot version updates for WODrounds.
+#
+# Only GitHub Actions is watched. The app's Swift packages (sentry-cocoa,
+# iamjarl-design) are managed by the Xcode project's Package.resolved, which
+# Dependabot's swift ecosystem doesn't read (it needs a Package.swift), so they
+# are bumped by hand, with the same week's wait.
+#
+# Every entry waits 7 days before proposing a new version (`cooldown`, #179,
+# #222). Malicious versions are usually found and pulled within days, so a week
+# keeps most of them out. Security updates are not delayed. Third-party actions
+# are pinned to a commit SHA with the version in a comment; Dependabot updates
+# both.
+
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+      time: '07:00'
+      timezone: Europe/Copenhagen
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns:
+          - '*'
