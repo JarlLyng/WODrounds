@@ -21,7 +21,7 @@ Point a Debug build at a local stand-in for Sentry and read what it sends. Run a
 
 ## DSN – Where to Set It
 
-The app reads the DSN in this order: **1)** environment variable `SENTRY_DSN` (e.g. from Scheme), **2)** Info.plist key `SentryDSN` (from `Sentry.xcconfig` at build time).
+The app reads the DSN in this order: **1)** environment variable `SENTRY_DSN` (e.g. from Scheme), **2)** the `SentryDSN` key in `Info.plist`, which is `$(SENTRY_DSN)` from `Sentry.xcconfig` at build time. (A build setting named `INFOPLIST_KEY_SentryDSN` does nothing: Xcode only turns `INFOPLIST_KEY_` settings into keys for Apple's own keys. Until 2026-11-15 that's how the project tried it, so no build ever carried a DSN.) The app skips Sentry when the DSN is empty or isn't a whole `…://…@…` URL.
 
 ### A) Environment Variable (recommended for local testing)
 
@@ -35,16 +35,16 @@ The app reads the DSN in this order: **1)** environment variable `SENTRY_DSN` (e
 ### B) Sentry.xcconfig (for builds/archives)
 
 1. **Open `Sentry.xcconfig`** in the project root.
-2. Set `SENTRY_DSN = https://your-key@o0.ingest.sentry.io/your-project-id` (with a space after `=`).
-3. At build time, Xcode inserts the value into Info.plist as `SentryDSN`, so archives and runs without scheme-env also get the DSN.
+2. Set `SENTRY_DSN = https:/$()/your-key@o0.ingest.sentry.io/your-project-id` (with a space after `=`). **Write the `//` as `/$()/`:** an xcconfig reads `//` as the start of a comment, so a plain URL is cut to `https:`. `$()` expands to nothing, so the app gets the whole URL.
+3. At build time, Xcode puts the value into `Info.plist` as `SentryDSN`, so archives and runs without scheme-env also get the DSN. Check it with `xcodebuild -project WODrounds.xcodeproj -target WODrounds -configuration Release -showBuildSettings | grep SENTRY_DSN`.
 
 **If Sentry still doesn't receive events:** In Debug, the Xcode console will show `[Sentry] No DSN: ...` if no DSN was found. Verify that the environment variable is set under Run, or that `Sentry.xcconfig` is used as base config for the WODrounds target.
 
 ### C) Xcode Cloud (archives in CI)
 
-`Sentry.xcconfig` is gitignored, so a fresh Xcode Cloud clone has no config file and the build fails at the xcconfig reference. `ci_scripts/ci_post_clone.sh` recreates it after clone from the `SENTRY_DSN` environment variable.
+`Sentry.xcconfig` is gitignored, so a fresh Xcode Cloud clone has no config file and the build fails at the xcconfig reference. `ci_scripts/ci_post_clone.sh` recreates it after clone from the `SENTRY_DSN` environment variable, writing each `//` as `/$()/`.
 
-To set it up: in the Xcode Cloud workflow, add an environment variable named `SENTRY_DSN` (mark it secret) with your real DSN. Builds and tests run without it, but **an archive without it fails**: `ci_scripts/ci_pre_xcodebuild.sh` stops the archive with an error, so a release can't ship with crash reporting silently off. GitHub Actions copies `Sentry.xcconfig.example` instead (see `.github/workflows/`) and never archives.
+To set it up: in the Xcode Cloud workflow, add an environment variable named `SENTRY_DSN` (mark it secret) with your real DSN. Builds and tests run without it, but **an archive without it fails**: `ci_scripts/ci_pre_xcodebuild.sh` stops the archive when the variable is empty, and `ci_scripts/ci_post_xcodebuild.sh` stops it when the archived app's `SentryDSN` isn't a whole DSN, so a release can't ship with crash reporting silently off. GitHub Actions copies `Sentry.xcconfig.example` instead (see `.github/workflows/`) and never archives.
 
 ### D) dSYM upload (readable crashes)
 

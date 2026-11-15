@@ -43,6 +43,14 @@ enum Telemetry {
             #endif
             return
         }
+        // A DSN cut short (an unescaped "//" in Sentry.xcconfig leaves "https:")
+        // would start the SDK with nothing to send to.
+        guard dsnTrimmed.contains("://"), dsnTrimmed.contains("@") else {
+            #if DEBUG
+            print("[Sentry] DSN is not a whole URL (\(dsnTrimmed.prefix(8))…): write // as /$()/ in Sentry.xcconfig")
+            #endif
+            return
+        }
 
         let options = Options()
         options.dsn = dsnTrimmed

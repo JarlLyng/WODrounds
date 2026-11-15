@@ -15,7 +15,11 @@
 set -e
 
 CONFIG="${CI_PRIMARY_REPOSITORY_PATH:-..}/Sentry.xcconfig"
-printf 'SENTRY_DSN = %s\n' "${SENTRY_DSN}" > "$CONFIG"
+# An xcconfig reads "//" as the start of a comment, which would cut the DSN to
+# "https:". Write each "//" as "/$()/": $() expands to nothing, so the build
+# setting, and the SentryDSN key in Info.plist, get the whole URL.
+ESCAPED_DSN=$(printf '%s' "${SENTRY_DSN}" | sed 's#//#/$()/#g')
+printf 'SENTRY_DSN = %s\n' "${ESCAPED_DSN}" > "$CONFIG"
 
 if [ -n "${SENTRY_DSN}" ]; then
   echo "ci_post_clone: wrote Sentry.xcconfig with a DSN"
