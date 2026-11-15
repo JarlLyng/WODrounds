@@ -5,7 +5,7 @@ All notable user-facing changes to WODrounds. Newest first.
 ## Unreleased
 
 - **Changed:** crash reports are anonymous for real (#225). Every install reports as the same user, `anonymous`, with no installation ID, device ID or vendor-ID hash, and crash-free sessions carry no ID either. Crashes arrive symbolicated (dSYM upload from Xcode Cloud).
-- **Added:** two anonymous usage counts on iPhone and iPad (#226): a workout started and a workout finished, with the mode as the only detail. Declared as Product Interaction in the privacy manifest and the privacy policy.
+- **Added:** two anonymous usage counts on iPhone and iPad (#226): a workout started and a workout finished, with the mode as the only detail. Declared as Product Interaction and Fitness in the privacy manifest and the privacy policy.
 - **Fixed:** release builds never carried a Sentry DSN, so no crash report was ever sent. `INFOPLIST_KEY_SentryDSN` is ignored for a custom key, and an xcconfig cuts a URL at `//`. The DSN is now in `Info.plist`, written `/$()/` in the xcconfig, and an archive whose app lacks a whole DSN fails.
 - **Internal:** sentry-cocoa 8.58 to 9.32; TestFlight builds report as `testflight`, not `production`; an Xcode Cloud archive without `SENTRY_DSN` now fails instead of shipping without crash reports.
 
