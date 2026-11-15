@@ -80,6 +80,7 @@ All public copy (App Store text, site copy, community posts, replies, release no
 - **Date-based timing:** reliable when backgrounded; deterministic engine (`Shared/WODTimerEngine.swift`), no UI/sound in the engine.
 - Sound cues (count-in, halfway, 10s, 3-2-1, rounds-remaining) on iPhone, iPad and Apple TV only; **the Mac and the Watch have no sound**. Haptics on iPhone and Watch. HealthKit save as HIIT on iPhone and iPad only, and only with permission granted; nothing else saves to Health.
 - **Deep links (new in 1.11, #208):** `wodrounds://` opens the app; `wodrounds://emom`, `wodrounds://intervals` and `wodrounds://fortime` open that mode's setup (iPhone, iPad, Mac, Apple TV; not the Watch). Applied only on the idle setup screen. No link starts, stops or changes a workout. No universal links.
+- **Anonymous telemetry (iOS only, #225, #226):** Sentry crash reports, crash-free sessions, MetricKit and two counts (`workout.started`, `workout.finished`, attribute `mode` only), all as one shared user `anonymous`, with no installation, device or vendor-ID hash. `WODrounds/Telemetry.swift`; rules and the envelope check in `docs/SENTRY.md`. Never add an ID, user text or a new attribute without updating the privacy manifest, the policy and the store label.
 - **Localization (new in 1.7):** UI in English, Danish and Spanish (es-MX). Spoken audio cues are recorded English voice files and stay English in every language; do not claim localized audio.
 
 ### Features that do NOT exist (common hallucination targets)
@@ -98,4 +99,4 @@ All public copy (App Store text, site copy, community posts, replies, release no
 
 ## Conventions
 - Uses `iamjarl-design` tokens via SPM; `DesignTokens.swift` re-exports the package and adds app-specific font sizes; no hardcoded colors.
-- Privacy-first: no tracking; HealthKit writes stay on-device.
+- Privacy-first: no tracking; HealthKit writes stay on-device; telemetry is anonymous or it isn't sent (`docs/SENTRY.md`).

@@ -221,6 +221,7 @@ private struct iOSContent: View {
             }
             if newState == .finished {
                 Haptics.strong()
+                Telemetry.workoutFinished(timerMode)
                 HealthKitWorkoutController.shared.endWorkout(endDate: engine.effectiveWorkoutEndDate(now: Date()) ?? Date())
                 WorkoutSoundManager.playYouDidIt()
                 completedWorkoutCount += 1
@@ -622,6 +623,7 @@ private struct iOSContent: View {
             WODTimerSync.write(engine.syncPayload(now: end))
             HealthKitWorkoutController.shared.startWorkout(startDate: end)
             WorkoutSoundManager.playGetReadyStart()
+            Telemetry.workoutStarted(timerMode)
         }
     }
 

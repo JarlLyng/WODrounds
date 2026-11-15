@@ -121,7 +121,7 @@
         <ul>
           <li><strong>SwiftUI only.</strong> One target serves iOS, iPadOS, macOS, and tvOS. A separate target serves watchOS. The timer engine is shared code.</li>
           <li><strong>Date-based timing.</strong> No frame timers: the timer computes from <code>Date()</code> on every tick, so it stays accurate when the app is backgrounded.</li>
-          <li><strong>No third-party dependencies in the timer code.</strong> The only external library is Sentry, used optionally for crash reporting on iOS. Workout state, sync, audio, HealthKit: all Apple frameworks.</li>
+          <li><strong>No third-party dependencies in the timer code.</strong> The only external library is Sentry, used for anonymous crash reports and usage counts on iOS. Workout state, sync, audio, HealthKit: all Apple frameworks.</li>
           <li><strong>HKWorkoutSession on Watch.</strong> Keeps the Watch app alive throughout a workout. No suspension mid-WOD.</li>
           <li><strong>iPhone → Watch sync via WatchConnectivity.</strong> Start on iPhone, follow on Watch. State is delivered immediately when the Watch is reachable.</li>
         </ul>

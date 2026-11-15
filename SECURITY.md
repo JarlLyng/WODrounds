@@ -32,7 +32,7 @@ WODrounds is a single-purpose timer app with a deliberately small attack surface
 
 - **No backend.** No server, no database, no API endpoints. All workout state is local.
 - **No accounts.** No sign-up, no authentication, no password storage.
-- **No user data uploaded.** Workouts save to Apple Health on device only. Optional Sentry crash reports on iOS contain stack traces, no personal data.
+- **No user data uploaded.** Workouts save to Apple Health on device only. Sentry reports on iOS (crash reports and two usage counts) are anonymous: one shared user, no installation or device ID, no personal data. See [docs/SENTRY.md](docs/SENTRY.md).
 - **No third-party tracking.** No marketing analytics in the app. The marketing website uses Umami for aggregate page views (no cookies, no fingerprinting).
 - **HealthKit write-only.** The app requests write permission for workouts and active energy. No read permissions.
 
