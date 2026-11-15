@@ -823,6 +823,18 @@ struct WODroundsTests {
         #expect(!allowed.contains { $0.contains("id") && !$0.hasPrefix("sentry.") })
     }
 
+    @Test func containerUUIDsAreRedactedFromPaths() {
+        let bundle = "/private/var/containers/Bundle/Application/3F2A9C1E-7B4D-4E8A-9F21-0C6D5B8E4A17/WODrounds.app/WODrounds"
+        #expect(Telemetry.redactContainerPaths(bundle)
+            == "/private/var/containers/Bundle/Application/00000000-0000-0000-0000-000000000000/WODrounds.app/WODrounds")
+        let data = "file:///var/mobile/Containers/Data/Application/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d/Library/Caches/x"
+        #expect(Telemetry.redactContainerPaths(data)
+            == "file:///var/mobile/Containers/Data/Application/00000000-0000-0000-0000-000000000000/Library/Caches/x")
+        // System frameworks and paths without a container are left as they are.
+        let system = "/System/Library/Frameworks/SwiftUI.framework/SwiftUI"
+        #expect(Telemetry.redactContainerPaths(system) == system)
+    }
+
     @Test func installationIDIsPinnedToTheSharedUser() throws {
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)

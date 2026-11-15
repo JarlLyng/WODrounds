@@ -5,6 +5,10 @@
 // credential (it ships embedded in the app binary), but we don't
 // commit it to keep the .example flow clean for forks.
 //
-// If Sentry isn't set up, the build still succeeds — crash reporting
-// is gracefully no-op when SENTRY_DSN is empty.
-SENTRY_DSN = https://examplePublicKey@o0.ingest.sentry.io/0
+// Write the DSN's "//" as "/$()/": an xcconfig reads "//" as the start of a
+// comment, so a plain URL is cut to "https:". $() expands to nothing, so the
+// app still gets https://... (Xcode Cloud: ci_scripts/ci_post_clone.sh does it).
+//
+// If Sentry isn't set up, the build still succeeds: crash reporting is off
+// when SENTRY_DSN is empty.
+SENTRY_DSN = https:/$()/examplePublicKey@o0.ingest.sentry.io/0

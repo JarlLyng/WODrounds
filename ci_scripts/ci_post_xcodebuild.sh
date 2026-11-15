@@ -1,9 +1,10 @@
 #!/bin/sh
 # Xcode Cloud runs this after every xcodebuild action.
 #
-# After the iOS archive, upload its dSYMs to Sentry so crash reports arrive
-# symbolicated. Needs SENTRY_AUTH_TOKEN (secret) on the workflow; the token never
-# goes in the repo. Without it, or if the upload fails, the build still goes on
+# After the iOS archive, check that the app really carries a Sentry DSN, then
+# upload its dSYMs to Sentry so crash reports arrive symbolicated. The upload
+# needs SENTRY_AUTH_TOKEN (secret) on the workflow; the token never goes in the
+# repo. Without it, or if the upload fails, the build still goes on
 # (the archive is fine, only the stack traces are unreadable), with a warning.
 # Sentry runs on iOS only, so macOS and tvOS archives are skipped.
 
@@ -11,6 +12,18 @@ set -e
 
 [ "${CI_XCODEBUILD_ACTION}" = "archive" ] || exit 0
 [ "${CI_PRODUCT_PLATFORM}" = "iOS" ] || exit 0
+
+# The DSN the archived app will read. ci_pre_xcodebuild.sh only knows the
+# variable isn't empty; this catches a value that got lost on the way (an
+# unescaped "//" in Sentry.xcconfig cut it to "https:" before). Failing here
+# stops the build before it reaches App Store Connect.
+PLIST="${CI_ARCHIVE_PATH}/Products/Applications/WODrounds.app/Info.plist"
+ARCHIVED_DSN=$(/usr/libexec/PlistBuddy -c "Print :SentryDSN" "$PLIST" 2>/dev/null || true)
+if ! printf '%s' "$ARCHIVED_DSN" | grep -Eq '^https://[^/@]+@[^/]+/[0-9]+$'; then
+  echo "error: the archived app's SentryDSN is not a whole DSN (it starts '${ARCHIVED_DSN%%/*}'), so it would ship without crash reports. See docs/SENTRY.md."
+  exit 1
+fi
+echo "ci_post_xcodebuild: the archive carries a whole Sentry DSN"
 
 if [ -z "${SENTRY_AUTH_TOKEN}" ]; then
   echo "warning: SENTRY_AUTH_TOKEN is not set, so the dSYMs were not uploaded to Sentry. See docs/SENTRY.md."

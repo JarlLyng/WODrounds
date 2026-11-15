@@ -43,6 +43,14 @@ enum Telemetry {
             #endif
             return
         }
+        // A DSN cut short (an unescaped "//" in Sentry.xcconfig leaves "https:")
+        // would start the SDK with nothing to send to.
+        guard dsnTrimmed.contains("://"), dsnTrimmed.contains("@") else {
+            #if DEBUG
+            print("[Sentry] DSN is not a whole URL (\(dsnTrimmed.prefix(8))…): write // as /$()/ in Sentry.xcconfig")
+            #endif
+            return
+        }
 
         let options = Options()
         options.dsn = dsnTrimmed
@@ -128,7 +136,8 @@ enum Telemetry {
     }
 
     /// Covers errors, crashes, MetricKit diagnostics and (in sentry-cocoa 9)
-    /// transactions: one shared user, and no device or vendor-ID hash.
+    /// transactions: one shared user, no device or vendor-ID hash, and no
+    /// per-install container path.
     static func anonymize(_ event: Event) -> Event {
         event.user = User(userId: anonymousUser)
         if var context = event.context {
@@ -136,7 +145,36 @@ enum Telemetry {
             context["device"]?.removeValue(forKey: "id")
             event.context = context
         }
+
+        let stacktraces = (event.threads ?? []).map(\.stacktrace)
+            + (event.exceptions ?? []).map(\.stacktrace)
+            + [event.stacktrace]
+        for frame in stacktraces.compactMap({ $0 }).flatMap(\.frames) {
+            if let package = frame.package { frame.package = redactContainerPaths(package) }
+        }
+        for image in event.debugMeta ?? [] {
+            if let codeFile = image.codeFile { image.codeFile = redactContainerPaths(codeFile) }
+        }
+        for exception in event.exceptions ?? [] {
+            if let value = exception.value { exception.value = redactContainerPaths(value) }
+        }
         return event
+    }
+
+    /// The UUID that replaces the container's own in every path.
+    static let fixedContainerID = "00000000-0000-0000-0000-000000000000"
+
+    /// The app's containers sit at `/var/containers/Bundle/Application/<UUID>/`
+    /// and `/Data/Application/<UUID>/`, a UUID that differs on every install and
+    /// changes with each update. Stack frames and debug images carry the bundle
+    /// path, so the UUID is replaced with a fixed one. The rest of the path stays,
+    /// so Sentry still recognises the app's own frames (Anvil-Workout#131).
+    static func redactContainerPaths(_ text: String) -> String {
+        text.replacingOccurrences(
+            of: "/Application/[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/",
+            with: "/Application/\(fixedContainerID)/",
+            options: .regularExpression
+        )
     }
 
     static func anonymize(_ metric: SentryMetric) -> SentryMetric {

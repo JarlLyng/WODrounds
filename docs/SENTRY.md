@@ -8,6 +8,7 @@ Anonymous is a recipe, not Sentry's default (#225, #226). Out of the box sentry-
 
 - **One shared user, `anonymous`,** set right after `SentrySDK.start` and again on every event in `beforeSend`, which in sentry-cocoa 9 also covers MetricKit diagnostics and transactions.
 - **No device IDs:** `beforeSend` drops `contexts.app.device_app_hash` and `contexts.device.id`.
+- **No container path ID:** stack frames' `package`, debug images' `code_file` and exception values carry the app's bundle path, `/var/containers/Bundle/Application/<UUID>/…`, a UUID new on every install and update. `beforeSend` replaces it with `00000000-0000-0000-0000-000000000000` and keeps the rest of the path, so Sentry still marks the app's frames `in_app`.
 - **Sessions without an ID:** sentry-cocoa sets a session's `did` from the `INSTALLATION` file in its cache directory and has no option to change it. The app writes `anonymous` into that file before the SDK starts, so every install reports the same `did`. This relies on SDK internals, so **check it after every sentry-cocoa upgrade** (below).
 - **Feature counts:** `workout.started` (after the count-in) and `workout.finished` (the Done screen), each with one attribute, `mode` (`emom`, `intervals` or `fortime`). `beforeSendMetric` keeps only the SDK's coarse facts (SDK, release, environment, OS, device model) and `mode`, and drops everything else, `user.id` included.
 - **Off:** `sendDefaultPii`, screenshots, view hierarchy, session replay, and performance tracing in release builds (`tracesSampleRate` 0).
@@ -17,11 +18,11 @@ The `iamjarl` Sentry organisation also strips `user.id`, `contexts.device.id` an
 
 ### Checking the envelopes (after every sentry-cocoa upgrade)
 
-Point a Debug build at a local stand-in for Sentry and read what it sends. Run a tiny HTTP server on `127.0.0.1:8969` that saves each POST body (gunzip it if `Content-Encoding: gzip`), then launch with `SIMCTL_CHILD_SENTRY_DSN="http://0123456789abcdef0123456789abcdef@127.0.0.1:8969/1" xcrun simctl launch <sim> com.iamjarl.WODrounds`. Seed `Library/Caches/INSTALLATION` with a fake ID first to stand in for an existing install. Pass when the `session` item's `did` is `anonymous`, the `event` item's `user` is `{"id": "anonymous"}` with no `device_app_hash`, `trace_metric` items carry no `user.*` attribute, and the fake ID appears nowhere. Last checked with sentry-cocoa 9.32.0 on 2026-11-15: passed.
+Point a Debug build at a local stand-in for Sentry and read what it sends. Run a tiny HTTP server on `127.0.0.1:8969` that saves each POST body (gunzip it if `Content-Encoding: gzip`), then launch with `SIMCTL_CHILD_SENTRY_DSN="http://0123456789abcdef0123456789abcdef@127.0.0.1:8969/1" xcrun simctl launch <sim> com.iamjarl.WODrounds`. Seed `Library/Caches/INSTALLATION` with a fake ID first to stand in for an existing install. Pass when the `session` item's `did` is `anonymous`, the `event` item's `user` is `{"id": "anonymous"}` with no `device_app_hash`, `trace_metric` items carry no `user.*` attribute, the fake ID appears nowhere, and the app's real container UUID (`xcrun simctl get_app_container <sim> com.iamjarl.WODrounds app`) appears nowhere while the app's frames are still `in_app`. Last checked with sentry-cocoa 9.32.0 on 2026-11-15: passed, container paths included.
 
 ## DSN – Where to Set It
 
-The app reads the DSN in this order: **1)** environment variable `SENTRY_DSN` (e.g. from Scheme), **2)** Info.plist key `SentryDSN` (from `Sentry.xcconfig` at build time).
+The app reads the DSN in this order: **1)** environment variable `SENTRY_DSN` (e.g. from Scheme), **2)** the `SentryDSN` key in `Info.plist`, which is `$(SENTRY_DSN)` from `Sentry.xcconfig` at build time. (A build setting named `INFOPLIST_KEY_SentryDSN` does nothing: Xcode only turns `INFOPLIST_KEY_` settings into keys for Apple's own keys. Until 2026-11-15 that's how the project tried it, so no build ever carried a DSN.) The app skips Sentry when the DSN is empty or isn't a whole `…://…@…` URL.
 
 ### A) Environment Variable (recommended for local testing)
 
@@ -35,16 +36,16 @@ The app reads the DSN in this order: **1)** environment variable `SENTRY_DSN` (e
 ### B) Sentry.xcconfig (for builds/archives)
 
 1. **Open `Sentry.xcconfig`** in the project root.
-2. Set `SENTRY_DSN = https://your-key@o0.ingest.sentry.io/your-project-id` (with a space after `=`).
-3. At build time, Xcode inserts the value into Info.plist as `SentryDSN`, so archives and runs without scheme-env also get the DSN.
+2. Set `SENTRY_DSN = https:/$()/your-key@o0.ingest.sentry.io/your-project-id` (with a space after `=`). **Write the `//` as `/$()/`:** an xcconfig reads `//` as the start of a comment, so a plain URL is cut to `https:`. `$()` expands to nothing, so the app gets the whole URL.
+3. At build time, Xcode puts the value into `Info.plist` as `SentryDSN`, so archives and runs without scheme-env also get the DSN. Check it with `xcodebuild -project WODrounds.xcodeproj -target WODrounds -configuration Release -showBuildSettings | grep SENTRY_DSN`.
 
 **If Sentry still doesn't receive events:** In Debug, the Xcode console will show `[Sentry] No DSN: ...` if no DSN was found. Verify that the environment variable is set under Run, or that `Sentry.xcconfig` is used as base config for the WODrounds target.
 
 ### C) Xcode Cloud (archives in CI)
 
-`Sentry.xcconfig` is gitignored, so a fresh Xcode Cloud clone has no config file and the build fails at the xcconfig reference. `ci_scripts/ci_post_clone.sh` recreates it after clone from the `SENTRY_DSN` environment variable.
+`Sentry.xcconfig` is gitignored, so a fresh Xcode Cloud clone has no config file and the build fails at the xcconfig reference. `ci_scripts/ci_post_clone.sh` recreates it after clone from the `SENTRY_DSN` environment variable, writing each `//` as `/$()/`.
 
-To set it up: in the Xcode Cloud workflow, add an environment variable named `SENTRY_DSN` (mark it secret) with your real DSN. Builds and tests run without it, but **an archive without it fails**: `ci_scripts/ci_pre_xcodebuild.sh` stops the archive with an error, so a release can't ship with crash reporting silently off. GitHub Actions copies `Sentry.xcconfig.example` instead (see `.github/workflows/`) and never archives.
+To set it up: in the Xcode Cloud workflow, add an environment variable named `SENTRY_DSN` (mark it secret) with your real DSN. Builds and tests run without it, but **an archive without it fails**: `ci_scripts/ci_pre_xcodebuild.sh` stops the archive when the variable is empty, and `ci_scripts/ci_post_xcodebuild.sh` stops it when the archived app's `SentryDSN` isn't a whole DSN, so a release can't ship with crash reporting silently off. GitHub Actions copies `Sentry.xcconfig.example` instead (see `.github/workflows/`) and never archives.
 
 ### D) dSYM upload (readable crashes)
 
@@ -72,4 +73,4 @@ When uploading an archive to App Store Connect, Xcode may show: **Upload Symbols
 
 ## Privacy
 
-The privacy policy, `PrivacyInfo.xcprivacy` and the App Store label name every kind of data, all not linked to the user and not used for tracking: Crash Data and Performance Data (diagnostics), and Product Interaction (the two feature counts). See [Sentry privacy](https://docs.sentry.io/product/security/).
+The privacy policy, `PrivacyInfo.xcprivacy` and the App Store label name every kind of data, all not linked to the user and not used for tracking: Crash Data, Performance Data and Other Diagnostic Data (crashes, MetricKit, app hangs), and Product Interaction and Fitness (the two feature counts: a workout starting or finishing is Product Interaction, and its mode is Fitness). The App Store label reads: Data Not Linked to You, Diagnostics (Crash Data, Performance Data, Other Diagnostic Data), Usage Data (Product Interaction), Health & Fitness (Fitness). Health is not on the label: the workout saved to Apple Health stays on the device, and Apple counts data processed only on the device as not collected. See [Sentry privacy](https://docs.sentry.io/product/security/).

@@ -13,6 +13,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>SentryDSN</key>
+	<string>$(SENTRY_DSN)</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>WODrounds does not read your health data. This permission is shown by the system for HealthKit access.</string>
 	<key>NSHealthUpdateUsageDescription</key>
