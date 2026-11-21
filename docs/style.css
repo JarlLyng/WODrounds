@@ -356,6 +356,13 @@ html:not([lang="en"]) a[hreflang="en"]:not([lang])::after {
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
 }
 
+/* A capture inside the kit's TV frame (apple-tv-timer.html) fills the frame's screen. */
+.app-shot .ij-tv__screen img {
+  max-width: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .app-shot--watch img {
   max-width: 300px;
   border-radius: 16px;

@@ -202,9 +202,12 @@ def build(lang: str, folder: str, og_locale: str) -> str:
     order = ["sound", "mac-ipad", "watch", "tv"]
     for t in sorted(w["traits"], key=lambda t: order.index(t["id"])):
         if t["id"] == "tv":
+            # The Apple TV page is English only for now (#221), so only a copy file
+            # that names it links there.
+            tv_link = f' <a href="{t["link"]}">{e(t["linkText"])}</a>' if t.get("link") else ""
             traits.append(f'''<div class="ij-trait ij-trait--wide">
   <div class="ij-tv" style="--ij-tv-width: 420px"><div class="ij-tv__screen"><img src="{a}/tv-intervals-{app}.jpg" alt="{e(t["alt"])}" width="1920" height="1080" loading="lazy" decoding="async"></div></div>
-  <h3 class="ij-title">{e(t["title"])}</h3><p>{e(t["body"])}</p>
+  <h3 class="ij-title">{e(t["title"])}</h3><p>{e(t["body"])}{tv_link}</p>
 </div>''')
         elif t["id"] == "watch":
             traits.append(f'''<div class="ij-trait">
