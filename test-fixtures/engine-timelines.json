@@ -1,0 +1,6396 @@
+{
+  "about" : "Shared timelines for WODTimerEngine (Swift, Shared\/WODTimerEngine.swift) and its Kotlin port (android\/). Each case builds an engine from `mode`, then runs `events` in order: `do` applies an action at `t` seconds, and `expect` is what the engine must report at `t`. The expectations are written by scripts\/engine-fixtures\/main.swift from the Swift engine; edit the cases, then run `scripts\/engine-fixtures\/generate.sh`. Both test suites read this file, so the two engines count the same.",
+  "cases" : [
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 1,
+        "totalDurationMinutes" : 1,
+        "totalDurationSeconds" : 60,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 0,
+            "effectiveEnd" : null,
+            "elapsedTime" : 0,
+            "engineState" : "idle",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "idle"
+          },
+          "t" : 0
+        },
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 0,
+            "elapsedTime" : 0,
+            "engineState" : "running",
+            "remainingTime" : 60,
+            "remainingTimeInPhase" : 60,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 59.5,
+            "elapsedTime" : 59.5,
+            "engineState" : "running",
+            "remainingTime" : 0.5,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 59,
+            "state" : "running"
+          },
+          "t" : 59.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 60,
+            "elapsedTime" : 60,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 60
+        }
+      ],
+      "mode" : {
+        "type" : "emom"
+      },
+      "name" : "EMOM with the default init"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 1,
+        "totalDurationMinutes" : 1,
+        "totalDurationSeconds" : 30,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 10,
+            "elapsedTime" : 10,
+            "engineState" : "running",
+            "remainingTime" : 20,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 10,
+            "state" : "running"
+          },
+          "t" : 10
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 29.899999999999999,
+            "elapsedTime" : 29.899999999999999,
+            "engineState" : "running",
+            "remainingTime" : 0.10000000000000001,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 29,
+            "state" : "running"
+          },
+          "t" : 29.899999999999999
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 30,
+            "elapsedTime" : 30,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 30
+        }
+      ],
+      "mode" : {
+        "rounds" : 0,
+        "secondsPerRound" : 10,
+        "type" : "emom"
+      },
+      "name" : "EMOM clamps rounds to 1 and round length to 30 s"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 1,
+        "totalDurationMinutes" : 0,
+        "totalDurationSeconds" : 1,
+        "workSeconds" : 1
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 0.5,
+            "elapsedTime" : 0.5,
+            "engineState" : "running",
+            "remainingTime" : 0.5,
+            "remainingTimeInPhase" : 0.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 0.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 1,
+            "elapsedTime" : 1,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 1
+        }
+      ],
+      "mode" : {
+        "restSeconds" : -5,
+        "rounds" : 0,
+        "type" : "intervals",
+        "workSeconds" : 0
+      },
+      "name" : "Intervals clamps work to 1 s, rest to 0 and rounds to 1"
+    },
+    {
+      "engine" : {
+        "capSeconds" : 1,
+        "restSeconds" : 0,
+        "rounds" : 0,
+        "totalDurationMinutes" : 0,
+        "totalDurationSeconds" : 1,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 0.5,
+            "elapsedTime" : 0.5,
+            "engineState" : "running",
+            "remainingTime" : 0.5,
+            "remainingTimeInPhase" : 0.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 0.5
+        },
+        {
+          "do" : "tick",
+          "t" : 1
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 1,
+            "elapsedTime" : 1,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 1
+        }
+      ],
+      "mode" : {
+        "capSeconds" : 0,
+        "type" : "forTime"
+      },
+      "name" : "For Time clamps a cap of 0 to 1 s"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 10,
+        "totalDurationMinutes" : 10,
+        "totalDurationSeconds" : 600,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 0,
+            "effectiveEnd" : null,
+            "elapsedTime" : 0,
+            "engineState" : "idle",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "idle"
+          },
+          "t" : 0
+        },
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 0,
+            "elapsedTime" : 0,
+            "engineState" : "running",
+            "remainingTime" : 600,
+            "remainingTimeInPhase" : 60,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 0.5,
+            "elapsedTime" : 0.5,
+            "engineState" : "running",
+            "remainingTime" : 599.5,
+            "remainingTimeInPhase" : 60,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 0.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 30,
+            "elapsedTime" : 30,
+            "engineState" : "running",
+            "remainingTime" : 570,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 30,
+            "state" : "running"
+          },
+          "t" : 30
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 59.899999999999999,
+            "elapsedTime" : 59.899999999999999,
+            "engineState" : "running",
+            "remainingTime" : 540.10000000000002,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 59,
+            "state" : "running"
+          },
+          "t" : 59.899999999999999
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 60,
+            "elapsedTime" : 60,
+            "engineState" : "running",
+            "remainingTime" : 540,
+            "remainingTimeInPhase" : 60,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 60
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 61,
+            "elapsedTime" : 61,
+            "engineState" : "running",
+            "remainingTime" : 539,
+            "remainingTimeInPhase" : 59,
+            "secondsIntoCurrentMinute" : 1,
+            "state" : "running"
+          },
+          "t" : 61
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 125.3,
+            "elapsedTime" : 125.3,
+            "engineState" : "running",
+            "remainingTime" : 474.69999999999999,
+            "remainingTimeInPhase" : 55,
+            "secondsIntoCurrentMinute" : 5,
+            "state" : "running"
+          },
+          "t" : 125.3
+        },
+        {
+          "do" : "pause",
+          "t" : 125.3
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 125.3,
+            "elapsedTime" : 125.3,
+            "engineState" : "paused",
+            "remainingTime" : 474.69999999999999,
+            "remainingTimeInPhase" : 55,
+            "secondsIntoCurrentMinute" : 5,
+            "state" : "paused"
+          },
+          "t" : 200
+        },
+        {
+          "do" : "resume",
+          "t" : 300
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 125.3,
+            "elapsedTime" : 125.3,
+            "engineState" : "running",
+            "remainingTime" : 474.69999999999999,
+            "remainingTimeInPhase" : 55,
+            "secondsIntoCurrentMinute" : 5,
+            "state" : "running"
+          },
+          "t" : 300
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 135.30000000000001,
+            "elapsedTime" : 135.30000000000001,
+            "engineState" : "running",
+            "remainingTime" : 464.69999999999999,
+            "remainingTimeInPhase" : 45,
+            "secondsIntoCurrentMinute" : 15,
+            "state" : "running"
+          },
+          "t" : 310
+        },
+        {
+          "do" : "tick",
+          "t" : 500
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 425.19999999999999,
+            "elapsedTime" : 425.19999999999999,
+            "engineState" : "running",
+            "remainingTime" : 174.80000000000001,
+            "remainingTimeInPhase" : 55,
+            "secondsIntoCurrentMinute" : 5,
+            "state" : "running"
+          },
+          "t" : 599.89999999999998
+        },
+        {
+          "do" : "tick",
+          "t" : 774.89999999999998
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 10,
+            "effectiveEnd" : 600.20000000000005,
+            "elapsedTime" : 600,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 774.89999999999998
+        },
+        {
+          "do" : "tick",
+          "t" : 775.29999999999995
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 10,
+            "effectiveEnd" : 600.60000000000002,
+            "elapsedTime" : 600,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 775.29999999999995
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 10,
+            "effectiveEnd" : 725.29999999999995,
+            "elapsedTime" : 600,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 900
+        }
+      ],
+      "mode" : {
+        "rounds" : 10,
+        "secondsPerRound" : 60,
+        "type" : "emom"
+      },
+      "name" : "EMOM 10 x 1:00, pause and resume, then the end"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 3,
+        "totalDurationMinutes" : 3,
+        "totalDurationSeconds" : 90,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 0,
+            "elapsedTime" : 0,
+            "engineState" : "running",
+            "remainingTime" : 90,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 0.5,
+            "elapsedTime" : 0.5,
+            "engineState" : "running",
+            "remainingTime" : 89.5,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 0.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 1,
+            "elapsedTime" : 1,
+            "engineState" : "running",
+            "remainingTime" : 89,
+            "remainingTimeInPhase" : 29,
+            "secondsIntoCurrentMinute" : 1,
+            "state" : "running"
+          },
+          "t" : 1
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 1.5,
+            "elapsedTime" : 1.5,
+            "engineState" : "running",
+            "remainingTime" : 88.5,
+            "remainingTimeInPhase" : 29,
+            "secondsIntoCurrentMinute" : 1,
+            "state" : "running"
+          },
+          "t" : 1.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 2,
+            "elapsedTime" : 2,
+            "engineState" : "running",
+            "remainingTime" : 88,
+            "remainingTimeInPhase" : 28,
+            "secondsIntoCurrentMinute" : 2,
+            "state" : "running"
+          },
+          "t" : 2
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 2.5,
+            "elapsedTime" : 2.5,
+            "engineState" : "running",
+            "remainingTime" : 87.5,
+            "remainingTimeInPhase" : 28,
+            "secondsIntoCurrentMinute" : 2,
+            "state" : "running"
+          },
+          "t" : 2.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 3,
+            "elapsedTime" : 3,
+            "engineState" : "running",
+            "remainingTime" : 87,
+            "remainingTimeInPhase" : 27,
+            "secondsIntoCurrentMinute" : 3,
+            "state" : "running"
+          },
+          "t" : 3
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 3.5,
+            "elapsedTime" : 3.5,
+            "engineState" : "running",
+            "remainingTime" : 86.5,
+            "remainingTimeInPhase" : 27,
+            "secondsIntoCurrentMinute" : 3,
+            "state" : "running"
+          },
+          "t" : 3.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 4,
+            "elapsedTime" : 4,
+            "engineState" : "running",
+            "remainingTime" : 86,
+            "remainingTimeInPhase" : 26,
+            "secondsIntoCurrentMinute" : 4,
+            "state" : "running"
+          },
+          "t" : 4
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 4.5,
+            "elapsedTime" : 4.5,
+            "engineState" : "running",
+            "remainingTime" : 85.5,
+            "remainingTimeInPhase" : 26,
+            "secondsIntoCurrentMinute" : 4,
+            "state" : "running"
+          },
+          "t" : 4.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 5,
+            "elapsedTime" : 5,
+            "engineState" : "running",
+            "remainingTime" : 85,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 5,
+            "state" : "running"
+          },
+          "t" : 5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 5.5,
+            "elapsedTime" : 5.5,
+            "engineState" : "running",
+            "remainingTime" : 84.5,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 5,
+            "state" : "running"
+          },
+          "t" : 5.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 6,
+            "elapsedTime" : 6,
+            "engineState" : "running",
+            "remainingTime" : 84,
+            "remainingTimeInPhase" : 24,
+            "secondsIntoCurrentMinute" : 6,
+            "state" : "running"
+          },
+          "t" : 6
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 6.5,
+            "elapsedTime" : 6.5,
+            "engineState" : "running",
+            "remainingTime" : 83.5,
+            "remainingTimeInPhase" : 24,
+            "secondsIntoCurrentMinute" : 6,
+            "state" : "running"
+          },
+          "t" : 6.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 7,
+            "elapsedTime" : 7,
+            "engineState" : "running",
+            "remainingTime" : 83,
+            "remainingTimeInPhase" : 23,
+            "secondsIntoCurrentMinute" : 7,
+            "state" : "running"
+          },
+          "t" : 7
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 7.5,
+            "elapsedTime" : 7.5,
+            "engineState" : "running",
+            "remainingTime" : 82.5,
+            "remainingTimeInPhase" : 23,
+            "secondsIntoCurrentMinute" : 7,
+            "state" : "running"
+          },
+          "t" : 7.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 8,
+            "elapsedTime" : 8,
+            "engineState" : "running",
+            "remainingTime" : 82,
+            "remainingTimeInPhase" : 22,
+            "secondsIntoCurrentMinute" : 8,
+            "state" : "running"
+          },
+          "t" : 8
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 8.5,
+            "elapsedTime" : 8.5,
+            "engineState" : "running",
+            "remainingTime" : 81.5,
+            "remainingTimeInPhase" : 22,
+            "secondsIntoCurrentMinute" : 8,
+            "state" : "running"
+          },
+          "t" : 8.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 9,
+            "elapsedTime" : 9,
+            "engineState" : "running",
+            "remainingTime" : 81,
+            "remainingTimeInPhase" : 21,
+            "secondsIntoCurrentMinute" : 9,
+            "state" : "running"
+          },
+          "t" : 9
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 9.5,
+            "elapsedTime" : 9.5,
+            "engineState" : "running",
+            "remainingTime" : 80.5,
+            "remainingTimeInPhase" : 21,
+            "secondsIntoCurrentMinute" : 9,
+            "state" : "running"
+          },
+          "t" : 9.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 10,
+            "elapsedTime" : 10,
+            "engineState" : "running",
+            "remainingTime" : 80,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 10,
+            "state" : "running"
+          },
+          "t" : 10
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 10.5,
+            "elapsedTime" : 10.5,
+            "engineState" : "running",
+            "remainingTime" : 79.5,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 10,
+            "state" : "running"
+          },
+          "t" : 10.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 11,
+            "elapsedTime" : 11,
+            "engineState" : "running",
+            "remainingTime" : 79,
+            "remainingTimeInPhase" : 19,
+            "secondsIntoCurrentMinute" : 11,
+            "state" : "running"
+          },
+          "t" : 11
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 11.5,
+            "elapsedTime" : 11.5,
+            "engineState" : "running",
+            "remainingTime" : 78.5,
+            "remainingTimeInPhase" : 19,
+            "secondsIntoCurrentMinute" : 11,
+            "state" : "running"
+          },
+          "t" : 11.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 12,
+            "elapsedTime" : 12,
+            "engineState" : "running",
+            "remainingTime" : 78,
+            "remainingTimeInPhase" : 18,
+            "secondsIntoCurrentMinute" : 12,
+            "state" : "running"
+          },
+          "t" : 12
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 12.5,
+            "elapsedTime" : 12.5,
+            "engineState" : "running",
+            "remainingTime" : 77.5,
+            "remainingTimeInPhase" : 18,
+            "secondsIntoCurrentMinute" : 12,
+            "state" : "running"
+          },
+          "t" : 12.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 13,
+            "elapsedTime" : 13,
+            "engineState" : "running",
+            "remainingTime" : 77,
+            "remainingTimeInPhase" : 17,
+            "secondsIntoCurrentMinute" : 13,
+            "state" : "running"
+          },
+          "t" : 13
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 13.5,
+            "elapsedTime" : 13.5,
+            "engineState" : "running",
+            "remainingTime" : 76.5,
+            "remainingTimeInPhase" : 17,
+            "secondsIntoCurrentMinute" : 13,
+            "state" : "running"
+          },
+          "t" : 13.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 14,
+            "elapsedTime" : 14,
+            "engineState" : "running",
+            "remainingTime" : 76,
+            "remainingTimeInPhase" : 16,
+            "secondsIntoCurrentMinute" : 14,
+            "state" : "running"
+          },
+          "t" : 14
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 14.5,
+            "elapsedTime" : 14.5,
+            "engineState" : "running",
+            "remainingTime" : 75.5,
+            "remainingTimeInPhase" : 16,
+            "secondsIntoCurrentMinute" : 14,
+            "state" : "running"
+          },
+          "t" : 14.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 15,
+            "elapsedTime" : 15,
+            "engineState" : "running",
+            "remainingTime" : 75,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 15,
+            "state" : "running"
+          },
+          "t" : 15
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 15.5,
+            "elapsedTime" : 15.5,
+            "engineState" : "running",
+            "remainingTime" : 74.5,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 15,
+            "state" : "running"
+          },
+          "t" : 15.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 16,
+            "elapsedTime" : 16,
+            "engineState" : "running",
+            "remainingTime" : 74,
+            "remainingTimeInPhase" : 14,
+            "secondsIntoCurrentMinute" : 16,
+            "state" : "running"
+          },
+          "t" : 16
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 16.5,
+            "elapsedTime" : 16.5,
+            "engineState" : "running",
+            "remainingTime" : 73.5,
+            "remainingTimeInPhase" : 14,
+            "secondsIntoCurrentMinute" : 16,
+            "state" : "running"
+          },
+          "t" : 16.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 17,
+            "elapsedTime" : 17,
+            "engineState" : "running",
+            "remainingTime" : 73,
+            "remainingTimeInPhase" : 13,
+            "secondsIntoCurrentMinute" : 17,
+            "state" : "running"
+          },
+          "t" : 17
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 17.5,
+            "elapsedTime" : 17.5,
+            "engineState" : "running",
+            "remainingTime" : 72.5,
+            "remainingTimeInPhase" : 13,
+            "secondsIntoCurrentMinute" : 17,
+            "state" : "running"
+          },
+          "t" : 17.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 18,
+            "elapsedTime" : 18,
+            "engineState" : "running",
+            "remainingTime" : 72,
+            "remainingTimeInPhase" : 12,
+            "secondsIntoCurrentMinute" : 18,
+            "state" : "running"
+          },
+          "t" : 18
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 18.5,
+            "elapsedTime" : 18.5,
+            "engineState" : "running",
+            "remainingTime" : 71.5,
+            "remainingTimeInPhase" : 12,
+            "secondsIntoCurrentMinute" : 18,
+            "state" : "running"
+          },
+          "t" : 18.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 19,
+            "elapsedTime" : 19,
+            "engineState" : "running",
+            "remainingTime" : 71,
+            "remainingTimeInPhase" : 11,
+            "secondsIntoCurrentMinute" : 19,
+            "state" : "running"
+          },
+          "t" : 19
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 19.5,
+            "elapsedTime" : 19.5,
+            "engineState" : "running",
+            "remainingTime" : 70.5,
+            "remainingTimeInPhase" : 11,
+            "secondsIntoCurrentMinute" : 19,
+            "state" : "running"
+          },
+          "t" : 19.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 20,
+            "elapsedTime" : 20,
+            "engineState" : "running",
+            "remainingTime" : 70,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 20,
+            "state" : "running"
+          },
+          "t" : 20
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 20.5,
+            "elapsedTime" : 20.5,
+            "engineState" : "running",
+            "remainingTime" : 69.5,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 20,
+            "state" : "running"
+          },
+          "t" : 20.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 21,
+            "elapsedTime" : 21,
+            "engineState" : "running",
+            "remainingTime" : 69,
+            "remainingTimeInPhase" : 9,
+            "secondsIntoCurrentMinute" : 21,
+            "state" : "running"
+          },
+          "t" : 21
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 21.5,
+            "elapsedTime" : 21.5,
+            "engineState" : "running",
+            "remainingTime" : 68.5,
+            "remainingTimeInPhase" : 9,
+            "secondsIntoCurrentMinute" : 21,
+            "state" : "running"
+          },
+          "t" : 21.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 22,
+            "elapsedTime" : 22,
+            "engineState" : "running",
+            "remainingTime" : 68,
+            "remainingTimeInPhase" : 8,
+            "secondsIntoCurrentMinute" : 22,
+            "state" : "running"
+          },
+          "t" : 22
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 22.5,
+            "elapsedTime" : 22.5,
+            "engineState" : "running",
+            "remainingTime" : 67.5,
+            "remainingTimeInPhase" : 8,
+            "secondsIntoCurrentMinute" : 22,
+            "state" : "running"
+          },
+          "t" : 22.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 23,
+            "elapsedTime" : 23,
+            "engineState" : "running",
+            "remainingTime" : 67,
+            "remainingTimeInPhase" : 7,
+            "secondsIntoCurrentMinute" : 23,
+            "state" : "running"
+          },
+          "t" : 23
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 23.5,
+            "elapsedTime" : 23.5,
+            "engineState" : "running",
+            "remainingTime" : 66.5,
+            "remainingTimeInPhase" : 7,
+            "secondsIntoCurrentMinute" : 23,
+            "state" : "running"
+          },
+          "t" : 23.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 24,
+            "elapsedTime" : 24,
+            "engineState" : "running",
+            "remainingTime" : 66,
+            "remainingTimeInPhase" : 6,
+            "secondsIntoCurrentMinute" : 24,
+            "state" : "running"
+          },
+          "t" : 24
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 24.5,
+            "elapsedTime" : 24.5,
+            "engineState" : "running",
+            "remainingTime" : 65.5,
+            "remainingTimeInPhase" : 6,
+            "secondsIntoCurrentMinute" : 24,
+            "state" : "running"
+          },
+          "t" : 24.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 25,
+            "elapsedTime" : 25,
+            "engineState" : "running",
+            "remainingTime" : 65,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 25,
+            "state" : "running"
+          },
+          "t" : 25
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 25.5,
+            "elapsedTime" : 25.5,
+            "engineState" : "running",
+            "remainingTime" : 64.5,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 25,
+            "state" : "running"
+          },
+          "t" : 25.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 26,
+            "elapsedTime" : 26,
+            "engineState" : "running",
+            "remainingTime" : 64,
+            "remainingTimeInPhase" : 4,
+            "secondsIntoCurrentMinute" : 26,
+            "state" : "running"
+          },
+          "t" : 26
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 26.5,
+            "elapsedTime" : 26.5,
+            "engineState" : "running",
+            "remainingTime" : 63.5,
+            "remainingTimeInPhase" : 4,
+            "secondsIntoCurrentMinute" : 26,
+            "state" : "running"
+          },
+          "t" : 26.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 27,
+            "elapsedTime" : 27,
+            "engineState" : "running",
+            "remainingTime" : 63,
+            "remainingTimeInPhase" : 3,
+            "secondsIntoCurrentMinute" : 27,
+            "state" : "running"
+          },
+          "t" : 27
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 27.5,
+            "elapsedTime" : 27.5,
+            "engineState" : "running",
+            "remainingTime" : 62.5,
+            "remainingTimeInPhase" : 3,
+            "secondsIntoCurrentMinute" : 27,
+            "state" : "running"
+          },
+          "t" : 27.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 28,
+            "elapsedTime" : 28,
+            "engineState" : "running",
+            "remainingTime" : 62,
+            "remainingTimeInPhase" : 2,
+            "secondsIntoCurrentMinute" : 28,
+            "state" : "running"
+          },
+          "t" : 28
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 28.5,
+            "elapsedTime" : 28.5,
+            "engineState" : "running",
+            "remainingTime" : 61.5,
+            "remainingTimeInPhase" : 2,
+            "secondsIntoCurrentMinute" : 28,
+            "state" : "running"
+          },
+          "t" : 28.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 29,
+            "elapsedTime" : 29,
+            "engineState" : "running",
+            "remainingTime" : 61,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 29,
+            "state" : "running"
+          },
+          "t" : 29
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 29.5,
+            "elapsedTime" : 29.5,
+            "engineState" : "running",
+            "remainingTime" : 60.5,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 29,
+            "state" : "running"
+          },
+          "t" : 29.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 30,
+            "elapsedTime" : 30,
+            "engineState" : "running",
+            "remainingTime" : 60,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 30
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 30.5,
+            "elapsedTime" : 30.5,
+            "engineState" : "running",
+            "remainingTime" : 59.5,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 30.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 31,
+            "elapsedTime" : 31,
+            "engineState" : "running",
+            "remainingTime" : 59,
+            "remainingTimeInPhase" : 29,
+            "secondsIntoCurrentMinute" : 1,
+            "state" : "running"
+          },
+          "t" : 31
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 31.5,
+            "elapsedTime" : 31.5,
+            "engineState" : "running",
+            "remainingTime" : 58.5,
+            "remainingTimeInPhase" : 29,
+            "secondsIntoCurrentMinute" : 1,
+            "state" : "running"
+          },
+          "t" : 31.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 32,
+            "elapsedTime" : 32,
+            "engineState" : "running",
+            "remainingTime" : 58,
+            "remainingTimeInPhase" : 28,
+            "secondsIntoCurrentMinute" : 2,
+            "state" : "running"
+          },
+          "t" : 32
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 32.5,
+            "elapsedTime" : 32.5,
+            "engineState" : "running",
+            "remainingTime" : 57.5,
+            "remainingTimeInPhase" : 28,
+            "secondsIntoCurrentMinute" : 2,
+            "state" : "running"
+          },
+          "t" : 32.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 33,
+            "elapsedTime" : 33,
+            "engineState" : "running",
+            "remainingTime" : 57,
+            "remainingTimeInPhase" : 27,
+            "secondsIntoCurrentMinute" : 3,
+            "state" : "running"
+          },
+          "t" : 33
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 33.5,
+            "elapsedTime" : 33.5,
+            "engineState" : "running",
+            "remainingTime" : 56.5,
+            "remainingTimeInPhase" : 27,
+            "secondsIntoCurrentMinute" : 3,
+            "state" : "running"
+          },
+          "t" : 33.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 34,
+            "elapsedTime" : 34,
+            "engineState" : "running",
+            "remainingTime" : 56,
+            "remainingTimeInPhase" : 26,
+            "secondsIntoCurrentMinute" : 4,
+            "state" : "running"
+          },
+          "t" : 34
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 34.5,
+            "elapsedTime" : 34.5,
+            "engineState" : "running",
+            "remainingTime" : 55.5,
+            "remainingTimeInPhase" : 26,
+            "secondsIntoCurrentMinute" : 4,
+            "state" : "running"
+          },
+          "t" : 34.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 35,
+            "elapsedTime" : 35,
+            "engineState" : "running",
+            "remainingTime" : 55,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 5,
+            "state" : "running"
+          },
+          "t" : 35
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 35.5,
+            "elapsedTime" : 35.5,
+            "engineState" : "running",
+            "remainingTime" : 54.5,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 5,
+            "state" : "running"
+          },
+          "t" : 35.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 36,
+            "elapsedTime" : 36,
+            "engineState" : "running",
+            "remainingTime" : 54,
+            "remainingTimeInPhase" : 24,
+            "secondsIntoCurrentMinute" : 6,
+            "state" : "running"
+          },
+          "t" : 36
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 36.5,
+            "elapsedTime" : 36.5,
+            "engineState" : "running",
+            "remainingTime" : 53.5,
+            "remainingTimeInPhase" : 24,
+            "secondsIntoCurrentMinute" : 6,
+            "state" : "running"
+          },
+          "t" : 36.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 37,
+            "elapsedTime" : 37,
+            "engineState" : "running",
+            "remainingTime" : 53,
+            "remainingTimeInPhase" : 23,
+            "secondsIntoCurrentMinute" : 7,
+            "state" : "running"
+          },
+          "t" : 37
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 37.5,
+            "elapsedTime" : 37.5,
+            "engineState" : "running",
+            "remainingTime" : 52.5,
+            "remainingTimeInPhase" : 23,
+            "secondsIntoCurrentMinute" : 7,
+            "state" : "running"
+          },
+          "t" : 37.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 38,
+            "elapsedTime" : 38,
+            "engineState" : "running",
+            "remainingTime" : 52,
+            "remainingTimeInPhase" : 22,
+            "secondsIntoCurrentMinute" : 8,
+            "state" : "running"
+          },
+          "t" : 38
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 38.5,
+            "elapsedTime" : 38.5,
+            "engineState" : "running",
+            "remainingTime" : 51.5,
+            "remainingTimeInPhase" : 22,
+            "secondsIntoCurrentMinute" : 8,
+            "state" : "running"
+          },
+          "t" : 38.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 39,
+            "elapsedTime" : 39,
+            "engineState" : "running",
+            "remainingTime" : 51,
+            "remainingTimeInPhase" : 21,
+            "secondsIntoCurrentMinute" : 9,
+            "state" : "running"
+          },
+          "t" : 39
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 39.5,
+            "elapsedTime" : 39.5,
+            "engineState" : "running",
+            "remainingTime" : 50.5,
+            "remainingTimeInPhase" : 21,
+            "secondsIntoCurrentMinute" : 9,
+            "state" : "running"
+          },
+          "t" : 39.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 40,
+            "elapsedTime" : 40,
+            "engineState" : "running",
+            "remainingTime" : 50,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 10,
+            "state" : "running"
+          },
+          "t" : 40
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 40.5,
+            "elapsedTime" : 40.5,
+            "engineState" : "running",
+            "remainingTime" : 49.5,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 10,
+            "state" : "running"
+          },
+          "t" : 40.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 41,
+            "elapsedTime" : 41,
+            "engineState" : "running",
+            "remainingTime" : 49,
+            "remainingTimeInPhase" : 19,
+            "secondsIntoCurrentMinute" : 11,
+            "state" : "running"
+          },
+          "t" : 41
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 41.5,
+            "elapsedTime" : 41.5,
+            "engineState" : "running",
+            "remainingTime" : 48.5,
+            "remainingTimeInPhase" : 19,
+            "secondsIntoCurrentMinute" : 11,
+            "state" : "running"
+          },
+          "t" : 41.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 42,
+            "elapsedTime" : 42,
+            "engineState" : "running",
+            "remainingTime" : 48,
+            "remainingTimeInPhase" : 18,
+            "secondsIntoCurrentMinute" : 12,
+            "state" : "running"
+          },
+          "t" : 42
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 42.5,
+            "elapsedTime" : 42.5,
+            "engineState" : "running",
+            "remainingTime" : 47.5,
+            "remainingTimeInPhase" : 18,
+            "secondsIntoCurrentMinute" : 12,
+            "state" : "running"
+          },
+          "t" : 42.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 43,
+            "elapsedTime" : 43,
+            "engineState" : "running",
+            "remainingTime" : 47,
+            "remainingTimeInPhase" : 17,
+            "secondsIntoCurrentMinute" : 13,
+            "state" : "running"
+          },
+          "t" : 43
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 43.5,
+            "elapsedTime" : 43.5,
+            "engineState" : "running",
+            "remainingTime" : 46.5,
+            "remainingTimeInPhase" : 17,
+            "secondsIntoCurrentMinute" : 13,
+            "state" : "running"
+          },
+          "t" : 43.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 44,
+            "elapsedTime" : 44,
+            "engineState" : "running",
+            "remainingTime" : 46,
+            "remainingTimeInPhase" : 16,
+            "secondsIntoCurrentMinute" : 14,
+            "state" : "running"
+          },
+          "t" : 44
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 44.5,
+            "elapsedTime" : 44.5,
+            "engineState" : "running",
+            "remainingTime" : 45.5,
+            "remainingTimeInPhase" : 16,
+            "secondsIntoCurrentMinute" : 14,
+            "state" : "running"
+          },
+          "t" : 44.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 45,
+            "elapsedTime" : 45,
+            "engineState" : "running",
+            "remainingTime" : 45,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 15,
+            "state" : "running"
+          },
+          "t" : 45
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 45.5,
+            "elapsedTime" : 45.5,
+            "engineState" : "running",
+            "remainingTime" : 44.5,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 15,
+            "state" : "running"
+          },
+          "t" : 45.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 46,
+            "elapsedTime" : 46,
+            "engineState" : "running",
+            "remainingTime" : 44,
+            "remainingTimeInPhase" : 14,
+            "secondsIntoCurrentMinute" : 16,
+            "state" : "running"
+          },
+          "t" : 46
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 46.5,
+            "elapsedTime" : 46.5,
+            "engineState" : "running",
+            "remainingTime" : 43.5,
+            "remainingTimeInPhase" : 14,
+            "secondsIntoCurrentMinute" : 16,
+            "state" : "running"
+          },
+          "t" : 46.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 47,
+            "elapsedTime" : 47,
+            "engineState" : "running",
+            "remainingTime" : 43,
+            "remainingTimeInPhase" : 13,
+            "secondsIntoCurrentMinute" : 17,
+            "state" : "running"
+          },
+          "t" : 47
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 47.5,
+            "elapsedTime" : 47.5,
+            "engineState" : "running",
+            "remainingTime" : 42.5,
+            "remainingTimeInPhase" : 13,
+            "secondsIntoCurrentMinute" : 17,
+            "state" : "running"
+          },
+          "t" : 47.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 48,
+            "elapsedTime" : 48,
+            "engineState" : "running",
+            "remainingTime" : 42,
+            "remainingTimeInPhase" : 12,
+            "secondsIntoCurrentMinute" : 18,
+            "state" : "running"
+          },
+          "t" : 48
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 48.5,
+            "elapsedTime" : 48.5,
+            "engineState" : "running",
+            "remainingTime" : 41.5,
+            "remainingTimeInPhase" : 12,
+            "secondsIntoCurrentMinute" : 18,
+            "state" : "running"
+          },
+          "t" : 48.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 49,
+            "elapsedTime" : 49,
+            "engineState" : "running",
+            "remainingTime" : 41,
+            "remainingTimeInPhase" : 11,
+            "secondsIntoCurrentMinute" : 19,
+            "state" : "running"
+          },
+          "t" : 49
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 49.5,
+            "elapsedTime" : 49.5,
+            "engineState" : "running",
+            "remainingTime" : 40.5,
+            "remainingTimeInPhase" : 11,
+            "secondsIntoCurrentMinute" : 19,
+            "state" : "running"
+          },
+          "t" : 49.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 50,
+            "elapsedTime" : 50,
+            "engineState" : "running",
+            "remainingTime" : 40,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 20,
+            "state" : "running"
+          },
+          "t" : 50
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 50.5,
+            "elapsedTime" : 50.5,
+            "engineState" : "running",
+            "remainingTime" : 39.5,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 20,
+            "state" : "running"
+          },
+          "t" : 50.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 51,
+            "elapsedTime" : 51,
+            "engineState" : "running",
+            "remainingTime" : 39,
+            "remainingTimeInPhase" : 9,
+            "secondsIntoCurrentMinute" : 21,
+            "state" : "running"
+          },
+          "t" : 51
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 51.5,
+            "elapsedTime" : 51.5,
+            "engineState" : "running",
+            "remainingTime" : 38.5,
+            "remainingTimeInPhase" : 9,
+            "secondsIntoCurrentMinute" : 21,
+            "state" : "running"
+          },
+          "t" : 51.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 52,
+            "elapsedTime" : 52,
+            "engineState" : "running",
+            "remainingTime" : 38,
+            "remainingTimeInPhase" : 8,
+            "secondsIntoCurrentMinute" : 22,
+            "state" : "running"
+          },
+          "t" : 52
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 52.5,
+            "elapsedTime" : 52.5,
+            "engineState" : "running",
+            "remainingTime" : 37.5,
+            "remainingTimeInPhase" : 8,
+            "secondsIntoCurrentMinute" : 22,
+            "state" : "running"
+          },
+          "t" : 52.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 53,
+            "elapsedTime" : 53,
+            "engineState" : "running",
+            "remainingTime" : 37,
+            "remainingTimeInPhase" : 7,
+            "secondsIntoCurrentMinute" : 23,
+            "state" : "running"
+          },
+          "t" : 53
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 53.5,
+            "elapsedTime" : 53.5,
+            "engineState" : "running",
+            "remainingTime" : 36.5,
+            "remainingTimeInPhase" : 7,
+            "secondsIntoCurrentMinute" : 23,
+            "state" : "running"
+          },
+          "t" : 53.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 54,
+            "elapsedTime" : 54,
+            "engineState" : "running",
+            "remainingTime" : 36,
+            "remainingTimeInPhase" : 6,
+            "secondsIntoCurrentMinute" : 24,
+            "state" : "running"
+          },
+          "t" : 54
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 54.5,
+            "elapsedTime" : 54.5,
+            "engineState" : "running",
+            "remainingTime" : 35.5,
+            "remainingTimeInPhase" : 6,
+            "secondsIntoCurrentMinute" : 24,
+            "state" : "running"
+          },
+          "t" : 54.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 55,
+            "elapsedTime" : 55,
+            "engineState" : "running",
+            "remainingTime" : 35,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 25,
+            "state" : "running"
+          },
+          "t" : 55
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 55.5,
+            "elapsedTime" : 55.5,
+            "engineState" : "running",
+            "remainingTime" : 34.5,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 25,
+            "state" : "running"
+          },
+          "t" : 55.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 56,
+            "elapsedTime" : 56,
+            "engineState" : "running",
+            "remainingTime" : 34,
+            "remainingTimeInPhase" : 4,
+            "secondsIntoCurrentMinute" : 26,
+            "state" : "running"
+          },
+          "t" : 56
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 56.5,
+            "elapsedTime" : 56.5,
+            "engineState" : "running",
+            "remainingTime" : 33.5,
+            "remainingTimeInPhase" : 4,
+            "secondsIntoCurrentMinute" : 26,
+            "state" : "running"
+          },
+          "t" : 56.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 57,
+            "elapsedTime" : 57,
+            "engineState" : "running",
+            "remainingTime" : 33,
+            "remainingTimeInPhase" : 3,
+            "secondsIntoCurrentMinute" : 27,
+            "state" : "running"
+          },
+          "t" : 57
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 57.5,
+            "elapsedTime" : 57.5,
+            "engineState" : "running",
+            "remainingTime" : 32.5,
+            "remainingTimeInPhase" : 3,
+            "secondsIntoCurrentMinute" : 27,
+            "state" : "running"
+          },
+          "t" : 57.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 58,
+            "elapsedTime" : 58,
+            "engineState" : "running",
+            "remainingTime" : 32,
+            "remainingTimeInPhase" : 2,
+            "secondsIntoCurrentMinute" : 28,
+            "state" : "running"
+          },
+          "t" : 58
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 58.5,
+            "elapsedTime" : 58.5,
+            "engineState" : "running",
+            "remainingTime" : 31.5,
+            "remainingTimeInPhase" : 2,
+            "secondsIntoCurrentMinute" : 28,
+            "state" : "running"
+          },
+          "t" : 58.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 59,
+            "elapsedTime" : 59,
+            "engineState" : "running",
+            "remainingTime" : 31,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 29,
+            "state" : "running"
+          },
+          "t" : 59
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 59.5,
+            "elapsedTime" : 59.5,
+            "engineState" : "running",
+            "remainingTime" : 30.5,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 29,
+            "state" : "running"
+          },
+          "t" : 59.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 60,
+            "elapsedTime" : 60,
+            "engineState" : "running",
+            "remainingTime" : 30,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 60
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 60.5,
+            "elapsedTime" : 60.5,
+            "engineState" : "running",
+            "remainingTime" : 29.5,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 60.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 61,
+            "elapsedTime" : 61,
+            "engineState" : "running",
+            "remainingTime" : 29,
+            "remainingTimeInPhase" : 29,
+            "secondsIntoCurrentMinute" : 1,
+            "state" : "running"
+          },
+          "t" : 61
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 61.5,
+            "elapsedTime" : 61.5,
+            "engineState" : "running",
+            "remainingTime" : 28.5,
+            "remainingTimeInPhase" : 29,
+            "secondsIntoCurrentMinute" : 1,
+            "state" : "running"
+          },
+          "t" : 61.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 62,
+            "elapsedTime" : 62,
+            "engineState" : "running",
+            "remainingTime" : 28,
+            "remainingTimeInPhase" : 28,
+            "secondsIntoCurrentMinute" : 2,
+            "state" : "running"
+          },
+          "t" : 62
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 62.5,
+            "elapsedTime" : 62.5,
+            "engineState" : "running",
+            "remainingTime" : 27.5,
+            "remainingTimeInPhase" : 28,
+            "secondsIntoCurrentMinute" : 2,
+            "state" : "running"
+          },
+          "t" : 62.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 63,
+            "elapsedTime" : 63,
+            "engineState" : "running",
+            "remainingTime" : 27,
+            "remainingTimeInPhase" : 27,
+            "secondsIntoCurrentMinute" : 3,
+            "state" : "running"
+          },
+          "t" : 63
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 63.5,
+            "elapsedTime" : 63.5,
+            "engineState" : "running",
+            "remainingTime" : 26.5,
+            "remainingTimeInPhase" : 27,
+            "secondsIntoCurrentMinute" : 3,
+            "state" : "running"
+          },
+          "t" : 63.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 64,
+            "elapsedTime" : 64,
+            "engineState" : "running",
+            "remainingTime" : 26,
+            "remainingTimeInPhase" : 26,
+            "secondsIntoCurrentMinute" : 4,
+            "state" : "running"
+          },
+          "t" : 64
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 64.5,
+            "elapsedTime" : 64.5,
+            "engineState" : "running",
+            "remainingTime" : 25.5,
+            "remainingTimeInPhase" : 26,
+            "secondsIntoCurrentMinute" : 4,
+            "state" : "running"
+          },
+          "t" : 64.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 65,
+            "elapsedTime" : 65,
+            "engineState" : "running",
+            "remainingTime" : 25,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 5,
+            "state" : "running"
+          },
+          "t" : 65
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 65.5,
+            "elapsedTime" : 65.5,
+            "engineState" : "running",
+            "remainingTime" : 24.5,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 5,
+            "state" : "running"
+          },
+          "t" : 65.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 66,
+            "elapsedTime" : 66,
+            "engineState" : "running",
+            "remainingTime" : 24,
+            "remainingTimeInPhase" : 24,
+            "secondsIntoCurrentMinute" : 6,
+            "state" : "running"
+          },
+          "t" : 66
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 66.5,
+            "elapsedTime" : 66.5,
+            "engineState" : "running",
+            "remainingTime" : 23.5,
+            "remainingTimeInPhase" : 24,
+            "secondsIntoCurrentMinute" : 6,
+            "state" : "running"
+          },
+          "t" : 66.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 67,
+            "elapsedTime" : 67,
+            "engineState" : "running",
+            "remainingTime" : 23,
+            "remainingTimeInPhase" : 23,
+            "secondsIntoCurrentMinute" : 7,
+            "state" : "running"
+          },
+          "t" : 67
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 67.5,
+            "elapsedTime" : 67.5,
+            "engineState" : "running",
+            "remainingTime" : 22.5,
+            "remainingTimeInPhase" : 23,
+            "secondsIntoCurrentMinute" : 7,
+            "state" : "running"
+          },
+          "t" : 67.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 68,
+            "elapsedTime" : 68,
+            "engineState" : "running",
+            "remainingTime" : 22,
+            "remainingTimeInPhase" : 22,
+            "secondsIntoCurrentMinute" : 8,
+            "state" : "running"
+          },
+          "t" : 68
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 68.5,
+            "elapsedTime" : 68.5,
+            "engineState" : "running",
+            "remainingTime" : 21.5,
+            "remainingTimeInPhase" : 22,
+            "secondsIntoCurrentMinute" : 8,
+            "state" : "running"
+          },
+          "t" : 68.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 69,
+            "elapsedTime" : 69,
+            "engineState" : "running",
+            "remainingTime" : 21,
+            "remainingTimeInPhase" : 21,
+            "secondsIntoCurrentMinute" : 9,
+            "state" : "running"
+          },
+          "t" : 69
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 69.5,
+            "elapsedTime" : 69.5,
+            "engineState" : "running",
+            "remainingTime" : 20.5,
+            "remainingTimeInPhase" : 21,
+            "secondsIntoCurrentMinute" : 9,
+            "state" : "running"
+          },
+          "t" : 69.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 70,
+            "elapsedTime" : 70,
+            "engineState" : "running",
+            "remainingTime" : 20,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 10,
+            "state" : "running"
+          },
+          "t" : 70
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 70.5,
+            "elapsedTime" : 70.5,
+            "engineState" : "running",
+            "remainingTime" : 19.5,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 10,
+            "state" : "running"
+          },
+          "t" : 70.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 71,
+            "elapsedTime" : 71,
+            "engineState" : "running",
+            "remainingTime" : 19,
+            "remainingTimeInPhase" : 19,
+            "secondsIntoCurrentMinute" : 11,
+            "state" : "running"
+          },
+          "t" : 71
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 71.5,
+            "elapsedTime" : 71.5,
+            "engineState" : "running",
+            "remainingTime" : 18.5,
+            "remainingTimeInPhase" : 19,
+            "secondsIntoCurrentMinute" : 11,
+            "state" : "running"
+          },
+          "t" : 71.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 72,
+            "elapsedTime" : 72,
+            "engineState" : "running",
+            "remainingTime" : 18,
+            "remainingTimeInPhase" : 18,
+            "secondsIntoCurrentMinute" : 12,
+            "state" : "running"
+          },
+          "t" : 72
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 72.5,
+            "elapsedTime" : 72.5,
+            "engineState" : "running",
+            "remainingTime" : 17.5,
+            "remainingTimeInPhase" : 18,
+            "secondsIntoCurrentMinute" : 12,
+            "state" : "running"
+          },
+          "t" : 72.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 73,
+            "elapsedTime" : 73,
+            "engineState" : "running",
+            "remainingTime" : 17,
+            "remainingTimeInPhase" : 17,
+            "secondsIntoCurrentMinute" : 13,
+            "state" : "running"
+          },
+          "t" : 73
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 73.5,
+            "elapsedTime" : 73.5,
+            "engineState" : "running",
+            "remainingTime" : 16.5,
+            "remainingTimeInPhase" : 17,
+            "secondsIntoCurrentMinute" : 13,
+            "state" : "running"
+          },
+          "t" : 73.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 74,
+            "elapsedTime" : 74,
+            "engineState" : "running",
+            "remainingTime" : 16,
+            "remainingTimeInPhase" : 16,
+            "secondsIntoCurrentMinute" : 14,
+            "state" : "running"
+          },
+          "t" : 74
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 74.5,
+            "elapsedTime" : 74.5,
+            "engineState" : "running",
+            "remainingTime" : 15.5,
+            "remainingTimeInPhase" : 16,
+            "secondsIntoCurrentMinute" : 14,
+            "state" : "running"
+          },
+          "t" : 74.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 75,
+            "elapsedTime" : 75,
+            "engineState" : "running",
+            "remainingTime" : 15,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 15,
+            "state" : "running"
+          },
+          "t" : 75
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 75.5,
+            "elapsedTime" : 75.5,
+            "engineState" : "running",
+            "remainingTime" : 14.5,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 15,
+            "state" : "running"
+          },
+          "t" : 75.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 76,
+            "elapsedTime" : 76,
+            "engineState" : "running",
+            "remainingTime" : 14,
+            "remainingTimeInPhase" : 14,
+            "secondsIntoCurrentMinute" : 16,
+            "state" : "running"
+          },
+          "t" : 76
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 76.5,
+            "elapsedTime" : 76.5,
+            "engineState" : "running",
+            "remainingTime" : 13.5,
+            "remainingTimeInPhase" : 14,
+            "secondsIntoCurrentMinute" : 16,
+            "state" : "running"
+          },
+          "t" : 76.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 77,
+            "elapsedTime" : 77,
+            "engineState" : "running",
+            "remainingTime" : 13,
+            "remainingTimeInPhase" : 13,
+            "secondsIntoCurrentMinute" : 17,
+            "state" : "running"
+          },
+          "t" : 77
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 77.5,
+            "elapsedTime" : 77.5,
+            "engineState" : "running",
+            "remainingTime" : 12.5,
+            "remainingTimeInPhase" : 13,
+            "secondsIntoCurrentMinute" : 17,
+            "state" : "running"
+          },
+          "t" : 77.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 78,
+            "elapsedTime" : 78,
+            "engineState" : "running",
+            "remainingTime" : 12,
+            "remainingTimeInPhase" : 12,
+            "secondsIntoCurrentMinute" : 18,
+            "state" : "running"
+          },
+          "t" : 78
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 78.5,
+            "elapsedTime" : 78.5,
+            "engineState" : "running",
+            "remainingTime" : 11.5,
+            "remainingTimeInPhase" : 12,
+            "secondsIntoCurrentMinute" : 18,
+            "state" : "running"
+          },
+          "t" : 78.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 79,
+            "elapsedTime" : 79,
+            "engineState" : "running",
+            "remainingTime" : 11,
+            "remainingTimeInPhase" : 11,
+            "secondsIntoCurrentMinute" : 19,
+            "state" : "running"
+          },
+          "t" : 79
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 79.5,
+            "elapsedTime" : 79.5,
+            "engineState" : "running",
+            "remainingTime" : 10.5,
+            "remainingTimeInPhase" : 11,
+            "secondsIntoCurrentMinute" : 19,
+            "state" : "running"
+          },
+          "t" : 79.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 80,
+            "elapsedTime" : 80,
+            "engineState" : "running",
+            "remainingTime" : 10,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 20,
+            "state" : "running"
+          },
+          "t" : 80
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 80.5,
+            "elapsedTime" : 80.5,
+            "engineState" : "running",
+            "remainingTime" : 9.5,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 20,
+            "state" : "running"
+          },
+          "t" : 80.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 81,
+            "elapsedTime" : 81,
+            "engineState" : "running",
+            "remainingTime" : 9,
+            "remainingTimeInPhase" : 9,
+            "secondsIntoCurrentMinute" : 21,
+            "state" : "running"
+          },
+          "t" : 81
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 81.5,
+            "elapsedTime" : 81.5,
+            "engineState" : "running",
+            "remainingTime" : 8.5,
+            "remainingTimeInPhase" : 9,
+            "secondsIntoCurrentMinute" : 21,
+            "state" : "running"
+          },
+          "t" : 81.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 82,
+            "elapsedTime" : 82,
+            "engineState" : "running",
+            "remainingTime" : 8,
+            "remainingTimeInPhase" : 8,
+            "secondsIntoCurrentMinute" : 22,
+            "state" : "running"
+          },
+          "t" : 82
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 82.5,
+            "elapsedTime" : 82.5,
+            "engineState" : "running",
+            "remainingTime" : 7.5,
+            "remainingTimeInPhase" : 8,
+            "secondsIntoCurrentMinute" : 22,
+            "state" : "running"
+          },
+          "t" : 82.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 83,
+            "elapsedTime" : 83,
+            "engineState" : "running",
+            "remainingTime" : 7,
+            "remainingTimeInPhase" : 7,
+            "secondsIntoCurrentMinute" : 23,
+            "state" : "running"
+          },
+          "t" : 83
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 83.5,
+            "elapsedTime" : 83.5,
+            "engineState" : "running",
+            "remainingTime" : 6.5,
+            "remainingTimeInPhase" : 7,
+            "secondsIntoCurrentMinute" : 23,
+            "state" : "running"
+          },
+          "t" : 83.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 84,
+            "elapsedTime" : 84,
+            "engineState" : "running",
+            "remainingTime" : 6,
+            "remainingTimeInPhase" : 6,
+            "secondsIntoCurrentMinute" : 24,
+            "state" : "running"
+          },
+          "t" : 84
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 84.5,
+            "elapsedTime" : 84.5,
+            "engineState" : "running",
+            "remainingTime" : 5.5,
+            "remainingTimeInPhase" : 6,
+            "secondsIntoCurrentMinute" : 24,
+            "state" : "running"
+          },
+          "t" : 84.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 85,
+            "elapsedTime" : 85,
+            "engineState" : "running",
+            "remainingTime" : 5,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 25,
+            "state" : "running"
+          },
+          "t" : 85
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 85.5,
+            "elapsedTime" : 85.5,
+            "engineState" : "running",
+            "remainingTime" : 4.5,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 25,
+            "state" : "running"
+          },
+          "t" : 85.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 86,
+            "elapsedTime" : 86,
+            "engineState" : "running",
+            "remainingTime" : 4,
+            "remainingTimeInPhase" : 4,
+            "secondsIntoCurrentMinute" : 26,
+            "state" : "running"
+          },
+          "t" : 86
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 86.5,
+            "elapsedTime" : 86.5,
+            "engineState" : "running",
+            "remainingTime" : 3.5,
+            "remainingTimeInPhase" : 4,
+            "secondsIntoCurrentMinute" : 26,
+            "state" : "running"
+          },
+          "t" : 86.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 87,
+            "elapsedTime" : 87,
+            "engineState" : "running",
+            "remainingTime" : 3,
+            "remainingTimeInPhase" : 3,
+            "secondsIntoCurrentMinute" : 27,
+            "state" : "running"
+          },
+          "t" : 87
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 87.5,
+            "elapsedTime" : 87.5,
+            "engineState" : "running",
+            "remainingTime" : 2.5,
+            "remainingTimeInPhase" : 3,
+            "secondsIntoCurrentMinute" : 27,
+            "state" : "running"
+          },
+          "t" : 87.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 88,
+            "elapsedTime" : 88,
+            "engineState" : "running",
+            "remainingTime" : 2,
+            "remainingTimeInPhase" : 2,
+            "secondsIntoCurrentMinute" : 28,
+            "state" : "running"
+          },
+          "t" : 88
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 88.5,
+            "elapsedTime" : 88.5,
+            "engineState" : "running",
+            "remainingTime" : 1.5,
+            "remainingTimeInPhase" : 2,
+            "secondsIntoCurrentMinute" : 28,
+            "state" : "running"
+          },
+          "t" : 88.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 89,
+            "elapsedTime" : 89,
+            "engineState" : "running",
+            "remainingTime" : 1,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 29,
+            "state" : "running"
+          },
+          "t" : 89
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 89.5,
+            "elapsedTime" : 89.5,
+            "engineState" : "running",
+            "remainingTime" : 0.5,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 29,
+            "state" : "running"
+          },
+          "t" : 89.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 90,
+            "elapsedTime" : 90,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 90
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 90.5,
+            "elapsedTime" : 90,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 90.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 91,
+            "elapsedTime" : 90,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 91
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 91.5,
+            "elapsedTime" : 90,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 91.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 92,
+            "elapsedTime" : 90,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 92
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 92.5,
+            "elapsedTime" : 90,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 92.5
+        }
+      ],
+      "mode" : {
+        "rounds" : 3,
+        "secondsPerRound" : 30,
+        "type" : "emom"
+      },
+      "name" : "EMOM 3 x 0:30, every half second"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 5,
+        "totalDurationMinutes" : 5,
+        "totalDurationSeconds" : 450,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 89,
+            "elapsedTime" : 89,
+            "engineState" : "running",
+            "remainingTime" : 361,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 89,
+            "state" : "running"
+          },
+          "t" : 89
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 90,
+            "elapsedTime" : 90,
+            "engineState" : "running",
+            "remainingTime" : 360,
+            "remainingTimeInPhase" : 90,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 90
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 179.5,
+            "elapsedTime" : 179.5,
+            "engineState" : "running",
+            "remainingTime" : 270.5,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 89,
+            "state" : "running"
+          },
+          "t" : 179.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 180,
+            "elapsedTime" : 180,
+            "engineState" : "running",
+            "remainingTime" : 270,
+            "remainingTimeInPhase" : 90,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 180
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 449,
+            "elapsedTime" : 449,
+            "engineState" : "running",
+            "remainingTime" : 1,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 89,
+            "state" : "running"
+          },
+          "t" : 449
+        },
+        {
+          "do" : "tick",
+          "t" : 450
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 450,
+            "elapsedTime" : 450,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 450
+        }
+      ],
+      "mode" : {
+        "rounds" : 5,
+        "secondsPerRound" : 90,
+        "type" : "emom"
+      },
+      "name" : "EMOM 5 x 1:30"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 2,
+        "totalDurationMinutes" : 2,
+        "totalDurationSeconds" : 120,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "do" : "pause",
+          "t" : 120
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 120,
+            "elapsedTime" : 120,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 120
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 130,
+            "elapsedTime" : 120,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 130
+        }
+      ],
+      "mode" : {
+        "rounds" : 2,
+        "secondsPerRound" : 60,
+        "type" : "emom"
+      },
+      "name" : "EMOM pause at the end finishes it"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 2,
+        "totalDurationMinutes" : 2,
+        "totalDurationSeconds" : 120,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 150,
+            "elapsedTime" : 120,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 150
+        },
+        {
+          "do" : "tick",
+          "t" : 151
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 151,
+            "elapsedTime" : 120,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 151
+        }
+      ],
+      "mode" : {
+        "rounds" : 2,
+        "secondsPerRound" : 60,
+        "type" : "emom"
+      },
+      "name" : "EMOM snapshot past the end shows finished before any tick"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 15,
+        "rounds" : 8,
+        "totalDurationMinutes" : 0,
+        "totalDurationSeconds" : 345,
+        "workSeconds" : 30
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 0,
+            "elapsedTime" : 0,
+            "engineState" : "running",
+            "remainingTime" : 345,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 2.5,
+            "elapsedTime" : 2.5,
+            "engineState" : "running",
+            "remainingTime" : 342.5,
+            "remainingTimeInPhase" : 27.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 2.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 5,
+            "elapsedTime" : 5,
+            "engineState" : "running",
+            "remainingTime" : 340,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 7.5,
+            "elapsedTime" : 7.5,
+            "engineState" : "running",
+            "remainingTime" : 337.5,
+            "remainingTimeInPhase" : 22.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 7.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 10,
+            "elapsedTime" : 10,
+            "engineState" : "running",
+            "remainingTime" : 335,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 10
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 12.5,
+            "elapsedTime" : 12.5,
+            "engineState" : "running",
+            "remainingTime" : 332.5,
+            "remainingTimeInPhase" : 17.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 12.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 15,
+            "elapsedTime" : 15,
+            "engineState" : "running",
+            "remainingTime" : 330,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 15
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 17.5,
+            "elapsedTime" : 17.5,
+            "engineState" : "running",
+            "remainingTime" : 327.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 17.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 20,
+            "elapsedTime" : 20,
+            "engineState" : "running",
+            "remainingTime" : 325,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 20
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 22.5,
+            "elapsedTime" : 22.5,
+            "engineState" : "running",
+            "remainingTime" : 322.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 22.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 25,
+            "elapsedTime" : 25,
+            "engineState" : "running",
+            "remainingTime" : 320,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 25
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 27.5,
+            "elapsedTime" : 27.5,
+            "engineState" : "running",
+            "remainingTime" : 317.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 27.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 1,
+            "effectiveEnd" : 30,
+            "elapsedTime" : 30,
+            "engineState" : "running",
+            "remainingTime" : 315,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 30
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 1,
+            "effectiveEnd" : 32.5,
+            "elapsedTime" : 32.5,
+            "engineState" : "running",
+            "remainingTime" : 312.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 32.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 1,
+            "effectiveEnd" : 35,
+            "elapsedTime" : 35,
+            "engineState" : "running",
+            "remainingTime" : 310,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 35
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 1,
+            "effectiveEnd" : 37.5,
+            "elapsedTime" : 37.5,
+            "engineState" : "running",
+            "remainingTime" : 307.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 37.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 1,
+            "effectiveEnd" : 40,
+            "elapsedTime" : 40,
+            "engineState" : "running",
+            "remainingTime" : 305,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 40
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 1,
+            "effectiveEnd" : 42.5,
+            "elapsedTime" : 42.5,
+            "engineState" : "running",
+            "remainingTime" : 302.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 42.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 45,
+            "elapsedTime" : 45,
+            "engineState" : "running",
+            "remainingTime" : 300,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 45
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 47.5,
+            "elapsedTime" : 47.5,
+            "engineState" : "running",
+            "remainingTime" : 297.5,
+            "remainingTimeInPhase" : 27.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 47.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 50,
+            "elapsedTime" : 50,
+            "engineState" : "running",
+            "remainingTime" : 295,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 50
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 52.5,
+            "elapsedTime" : 52.5,
+            "engineState" : "running",
+            "remainingTime" : 292.5,
+            "remainingTimeInPhase" : 22.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 52.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 55,
+            "elapsedTime" : 55,
+            "engineState" : "running",
+            "remainingTime" : 290,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 55
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 57.5,
+            "elapsedTime" : 57.5,
+            "engineState" : "running",
+            "remainingTime" : 287.5,
+            "remainingTimeInPhase" : 17.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 57.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 60,
+            "elapsedTime" : 60,
+            "engineState" : "running",
+            "remainingTime" : 285,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 60
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 62.5,
+            "elapsedTime" : 62.5,
+            "engineState" : "running",
+            "remainingTime" : 282.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 62.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 65,
+            "elapsedTime" : 65,
+            "engineState" : "running",
+            "remainingTime" : 280,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 65
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 67.5,
+            "elapsedTime" : 67.5,
+            "engineState" : "running",
+            "remainingTime" : 277.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 67.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 70,
+            "elapsedTime" : 70,
+            "engineState" : "running",
+            "remainingTime" : 275,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 70
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 72.5,
+            "elapsedTime" : 72.5,
+            "engineState" : "running",
+            "remainingTime" : 272.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 72.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 2,
+            "effectiveEnd" : 75,
+            "elapsedTime" : 75,
+            "engineState" : "running",
+            "remainingTime" : 270,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 75
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 2,
+            "effectiveEnd" : 77.5,
+            "elapsedTime" : 77.5,
+            "engineState" : "running",
+            "remainingTime" : 267.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 77.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 2,
+            "effectiveEnd" : 80,
+            "elapsedTime" : 80,
+            "engineState" : "running",
+            "remainingTime" : 265,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 80
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 2,
+            "effectiveEnd" : 82.5,
+            "elapsedTime" : 82.5,
+            "engineState" : "running",
+            "remainingTime" : 262.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 82.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 2,
+            "effectiveEnd" : 85,
+            "elapsedTime" : 85,
+            "engineState" : "running",
+            "remainingTime" : 260,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 85
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 2,
+            "effectiveEnd" : 87.5,
+            "elapsedTime" : 87.5,
+            "engineState" : "running",
+            "remainingTime" : 257.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 87.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 90,
+            "elapsedTime" : 90,
+            "engineState" : "running",
+            "remainingTime" : 255,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 90
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 92.5,
+            "elapsedTime" : 92.5,
+            "engineState" : "running",
+            "remainingTime" : 252.5,
+            "remainingTimeInPhase" : 27.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 92.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 95,
+            "elapsedTime" : 95,
+            "engineState" : "running",
+            "remainingTime" : 250,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 95
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 97.5,
+            "elapsedTime" : 97.5,
+            "engineState" : "running",
+            "remainingTime" : 247.5,
+            "remainingTimeInPhase" : 22.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 97.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 100,
+            "elapsedTime" : 100,
+            "engineState" : "running",
+            "remainingTime" : 245,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 100
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 102.5,
+            "elapsedTime" : 102.5,
+            "engineState" : "running",
+            "remainingTime" : 242.5,
+            "remainingTimeInPhase" : 17.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 102.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 105,
+            "elapsedTime" : 105,
+            "engineState" : "running",
+            "remainingTime" : 240,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 105
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 107.5,
+            "elapsedTime" : 107.5,
+            "engineState" : "running",
+            "remainingTime" : 237.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 107.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 110,
+            "elapsedTime" : 110,
+            "engineState" : "running",
+            "remainingTime" : 235,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 110
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 112.5,
+            "elapsedTime" : 112.5,
+            "engineState" : "running",
+            "remainingTime" : 232.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 112.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 115,
+            "elapsedTime" : 115,
+            "engineState" : "running",
+            "remainingTime" : 230,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 115
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 117.5,
+            "elapsedTime" : 117.5,
+            "engineState" : "running",
+            "remainingTime" : 227.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 117.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 3,
+            "effectiveEnd" : 120,
+            "elapsedTime" : 120,
+            "engineState" : "running",
+            "remainingTime" : 225,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 120
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 3,
+            "effectiveEnd" : 122.5,
+            "elapsedTime" : 122.5,
+            "engineState" : "running",
+            "remainingTime" : 222.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 122.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 3,
+            "effectiveEnd" : 125,
+            "elapsedTime" : 125,
+            "engineState" : "running",
+            "remainingTime" : 220,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 125
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 3,
+            "effectiveEnd" : 127.5,
+            "elapsedTime" : 127.5,
+            "engineState" : "running",
+            "remainingTime" : 217.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 127.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 3,
+            "effectiveEnd" : 130,
+            "elapsedTime" : 130,
+            "engineState" : "running",
+            "remainingTime" : 215,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 130
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 3,
+            "effectiveEnd" : 132.5,
+            "elapsedTime" : 132.5,
+            "engineState" : "running",
+            "remainingTime" : 212.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 132.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 135,
+            "elapsedTime" : 135,
+            "engineState" : "running",
+            "remainingTime" : 210,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 135
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 137.5,
+            "elapsedTime" : 137.5,
+            "engineState" : "running",
+            "remainingTime" : 207.5,
+            "remainingTimeInPhase" : 27.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 137.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 140,
+            "elapsedTime" : 140,
+            "engineState" : "running",
+            "remainingTime" : 205,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 140
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 142.5,
+            "elapsedTime" : 142.5,
+            "engineState" : "running",
+            "remainingTime" : 202.5,
+            "remainingTimeInPhase" : 22.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 142.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 145,
+            "elapsedTime" : 145,
+            "engineState" : "running",
+            "remainingTime" : 200,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 145
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 147.5,
+            "elapsedTime" : 147.5,
+            "engineState" : "running",
+            "remainingTime" : 197.5,
+            "remainingTimeInPhase" : 17.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 147.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 150,
+            "elapsedTime" : 150,
+            "engineState" : "running",
+            "remainingTime" : 195,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 150
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 152.5,
+            "elapsedTime" : 152.5,
+            "engineState" : "running",
+            "remainingTime" : 192.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 152.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 155,
+            "elapsedTime" : 155,
+            "engineState" : "running",
+            "remainingTime" : 190,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 155
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 157.5,
+            "elapsedTime" : 157.5,
+            "engineState" : "running",
+            "remainingTime" : 187.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 157.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 160,
+            "elapsedTime" : 160,
+            "engineState" : "running",
+            "remainingTime" : 185,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 160
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 4,
+            "effectiveEnd" : 162.5,
+            "elapsedTime" : 162.5,
+            "engineState" : "running",
+            "remainingTime" : 182.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 162.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 4,
+            "effectiveEnd" : 165,
+            "elapsedTime" : 165,
+            "engineState" : "running",
+            "remainingTime" : 180,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 165
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 4,
+            "effectiveEnd" : 167.5,
+            "elapsedTime" : 167.5,
+            "engineState" : "running",
+            "remainingTime" : 177.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 167.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 4,
+            "effectiveEnd" : 170,
+            "elapsedTime" : 170,
+            "engineState" : "running",
+            "remainingTime" : 175,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 170
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 4,
+            "effectiveEnd" : 172.5,
+            "elapsedTime" : 172.5,
+            "engineState" : "running",
+            "remainingTime" : 172.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 172.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 4,
+            "effectiveEnd" : 175,
+            "elapsedTime" : 175,
+            "engineState" : "running",
+            "remainingTime" : 170,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 175
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 4,
+            "effectiveEnd" : 177.5,
+            "elapsedTime" : 177.5,
+            "engineState" : "running",
+            "remainingTime" : 167.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 177.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 180,
+            "elapsedTime" : 180,
+            "engineState" : "running",
+            "remainingTime" : 165,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 180
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 182.5,
+            "elapsedTime" : 182.5,
+            "engineState" : "running",
+            "remainingTime" : 162.5,
+            "remainingTimeInPhase" : 27.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 182.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 185,
+            "elapsedTime" : 185,
+            "engineState" : "running",
+            "remainingTime" : 160,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 185
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 187.5,
+            "elapsedTime" : 187.5,
+            "engineState" : "running",
+            "remainingTime" : 157.5,
+            "remainingTimeInPhase" : 22.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 187.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 190,
+            "elapsedTime" : 190,
+            "engineState" : "running",
+            "remainingTime" : 155,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 190
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 192.5,
+            "elapsedTime" : 192.5,
+            "engineState" : "running",
+            "remainingTime" : 152.5,
+            "remainingTimeInPhase" : 17.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 192.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 195,
+            "elapsedTime" : 195,
+            "engineState" : "running",
+            "remainingTime" : 150,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 195
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 197.5,
+            "elapsedTime" : 197.5,
+            "engineState" : "running",
+            "remainingTime" : 147.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 197.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 200,
+            "elapsedTime" : 200,
+            "engineState" : "running",
+            "remainingTime" : 145,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 200
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 202.5,
+            "elapsedTime" : 202.5,
+            "engineState" : "running",
+            "remainingTime" : 142.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 202.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 205,
+            "elapsedTime" : 205,
+            "engineState" : "running",
+            "remainingTime" : 140,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 205
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 5,
+            "effectiveEnd" : 207.5,
+            "elapsedTime" : 207.5,
+            "engineState" : "running",
+            "remainingTime" : 137.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 207.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 5,
+            "effectiveEnd" : 210,
+            "elapsedTime" : 210,
+            "engineState" : "running",
+            "remainingTime" : 135,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 210
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 5,
+            "effectiveEnd" : 212.5,
+            "elapsedTime" : 212.5,
+            "engineState" : "running",
+            "remainingTime" : 132.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 212.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 5,
+            "effectiveEnd" : 215,
+            "elapsedTime" : 215,
+            "engineState" : "running",
+            "remainingTime" : 130,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 215
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 5,
+            "effectiveEnd" : 217.5,
+            "elapsedTime" : 217.5,
+            "engineState" : "running",
+            "remainingTime" : 127.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 217.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 5,
+            "effectiveEnd" : 220,
+            "elapsedTime" : 220,
+            "engineState" : "running",
+            "remainingTime" : 125,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 220
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 5,
+            "effectiveEnd" : 222.5,
+            "elapsedTime" : 222.5,
+            "engineState" : "running",
+            "remainingTime" : 122.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 222.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 225,
+            "elapsedTime" : 225,
+            "engineState" : "running",
+            "remainingTime" : 120,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 225
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 227.5,
+            "elapsedTime" : 227.5,
+            "engineState" : "running",
+            "remainingTime" : 117.5,
+            "remainingTimeInPhase" : 27.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 227.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 230,
+            "elapsedTime" : 230,
+            "engineState" : "running",
+            "remainingTime" : 115,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 230
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 232.5,
+            "elapsedTime" : 232.5,
+            "engineState" : "running",
+            "remainingTime" : 112.5,
+            "remainingTimeInPhase" : 22.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 232.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 235,
+            "elapsedTime" : 235,
+            "engineState" : "running",
+            "remainingTime" : 110,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 235
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 237.5,
+            "elapsedTime" : 237.5,
+            "engineState" : "running",
+            "remainingTime" : 107.5,
+            "remainingTimeInPhase" : 17.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 237.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 240,
+            "elapsedTime" : 240,
+            "engineState" : "running",
+            "remainingTime" : 105,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 240
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 242.5,
+            "elapsedTime" : 242.5,
+            "engineState" : "running",
+            "remainingTime" : 102.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 242.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 245,
+            "elapsedTime" : 245,
+            "engineState" : "running",
+            "remainingTime" : 100,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 245
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 247.5,
+            "elapsedTime" : 247.5,
+            "engineState" : "running",
+            "remainingTime" : 97.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 247.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 250,
+            "elapsedTime" : 250,
+            "engineState" : "running",
+            "remainingTime" : 95,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 250
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 6,
+            "effectiveEnd" : 252.5,
+            "elapsedTime" : 252.5,
+            "engineState" : "running",
+            "remainingTime" : 92.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 252.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 6,
+            "effectiveEnd" : 255,
+            "elapsedTime" : 255,
+            "engineState" : "running",
+            "remainingTime" : 90,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 255
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 6,
+            "effectiveEnd" : 257.5,
+            "elapsedTime" : 257.5,
+            "engineState" : "running",
+            "remainingTime" : 87.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 257.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 6,
+            "effectiveEnd" : 260,
+            "elapsedTime" : 260,
+            "engineState" : "running",
+            "remainingTime" : 85,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 260
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 6,
+            "effectiveEnd" : 262.5,
+            "elapsedTime" : 262.5,
+            "engineState" : "running",
+            "remainingTime" : 82.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 262.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 6,
+            "effectiveEnd" : 265,
+            "elapsedTime" : 265,
+            "engineState" : "running",
+            "remainingTime" : 80,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 265
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 6,
+            "effectiveEnd" : 267.5,
+            "elapsedTime" : 267.5,
+            "engineState" : "running",
+            "remainingTime" : 77.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 267.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 270,
+            "elapsedTime" : 270,
+            "engineState" : "running",
+            "remainingTime" : 75,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 270
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 272.5,
+            "elapsedTime" : 272.5,
+            "engineState" : "running",
+            "remainingTime" : 72.5,
+            "remainingTimeInPhase" : 27.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 272.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 275,
+            "elapsedTime" : 275,
+            "engineState" : "running",
+            "remainingTime" : 70,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 275
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 277.5,
+            "elapsedTime" : 277.5,
+            "engineState" : "running",
+            "remainingTime" : 67.5,
+            "remainingTimeInPhase" : 22.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 277.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 280,
+            "elapsedTime" : 280,
+            "engineState" : "running",
+            "remainingTime" : 65,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 280
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 282.5,
+            "elapsedTime" : 282.5,
+            "engineState" : "running",
+            "remainingTime" : 62.5,
+            "remainingTimeInPhase" : 17.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 282.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 285,
+            "elapsedTime" : 285,
+            "engineState" : "running",
+            "remainingTime" : 60,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 285
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 287.5,
+            "elapsedTime" : 287.5,
+            "engineState" : "running",
+            "remainingTime" : 57.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 287.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 290,
+            "elapsedTime" : 290,
+            "engineState" : "running",
+            "remainingTime" : 55,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 290
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 292.5,
+            "elapsedTime" : 292.5,
+            "engineState" : "running",
+            "remainingTime" : 52.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 292.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 295,
+            "elapsedTime" : 295,
+            "engineState" : "running",
+            "remainingTime" : 50,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 295
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 7,
+            "effectiveEnd" : 297.5,
+            "elapsedTime" : 297.5,
+            "engineState" : "running",
+            "remainingTime" : 47.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 297.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 7,
+            "effectiveEnd" : 300,
+            "elapsedTime" : 300,
+            "engineState" : "running",
+            "remainingTime" : 45,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 300
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 7,
+            "effectiveEnd" : 302.5,
+            "elapsedTime" : 302.5,
+            "engineState" : "running",
+            "remainingTime" : 42.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 302.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 7,
+            "effectiveEnd" : 305,
+            "elapsedTime" : 305,
+            "engineState" : "running",
+            "remainingTime" : 40,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 305
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 7,
+            "effectiveEnd" : 307.5,
+            "elapsedTime" : 307.5,
+            "engineState" : "running",
+            "remainingTime" : 37.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 307.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 7,
+            "effectiveEnd" : 310,
+            "elapsedTime" : 310,
+            "engineState" : "running",
+            "remainingTime" : 35,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 310
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 7,
+            "effectiveEnd" : 312.5,
+            "elapsedTime" : 312.5,
+            "engineState" : "running",
+            "remainingTime" : 32.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 312.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 315,
+            "elapsedTime" : 315,
+            "engineState" : "running",
+            "remainingTime" : 30,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 315
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 317.5,
+            "elapsedTime" : 317.5,
+            "engineState" : "running",
+            "remainingTime" : 27.5,
+            "remainingTimeInPhase" : 27.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 317.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 320,
+            "elapsedTime" : 320,
+            "engineState" : "running",
+            "remainingTime" : 25,
+            "remainingTimeInPhase" : 25,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 320
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 322.5,
+            "elapsedTime" : 322.5,
+            "engineState" : "running",
+            "remainingTime" : 22.5,
+            "remainingTimeInPhase" : 22.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 322.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 325,
+            "elapsedTime" : 325,
+            "engineState" : "running",
+            "remainingTime" : 20,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 325
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 327.5,
+            "elapsedTime" : 327.5,
+            "engineState" : "running",
+            "remainingTime" : 17.5,
+            "remainingTimeInPhase" : 17.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 327.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 330,
+            "elapsedTime" : 330,
+            "engineState" : "running",
+            "remainingTime" : 15,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 330
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 332.5,
+            "elapsedTime" : 332.5,
+            "engineState" : "running",
+            "remainingTime" : 12.5,
+            "remainingTimeInPhase" : 12.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 332.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 335,
+            "elapsedTime" : 335,
+            "engineState" : "running",
+            "remainingTime" : 10,
+            "remainingTimeInPhase" : 10,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 335
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 337.5,
+            "elapsedTime" : 337.5,
+            "engineState" : "running",
+            "remainingTime" : 7.5,
+            "remainingTimeInPhase" : 7.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 337.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 340,
+            "elapsedTime" : 340,
+            "engineState" : "running",
+            "remainingTime" : 5,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 340
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 342.5,
+            "elapsedTime" : 342.5,
+            "engineState" : "running",
+            "remainingTime" : 2.5,
+            "remainingTimeInPhase" : 2.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 342.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 345,
+            "elapsedTime" : 345,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 345
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 347.5,
+            "elapsedTime" : 345,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 347.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 350,
+            "elapsedTime" : 345,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 350
+        },
+        {
+          "do" : "tick",
+          "t" : 345
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 345,
+            "elapsedTime" : 345,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 345
+        }
+      ],
+      "mode" : {
+        "restSeconds" : 15,
+        "rounds" : 8,
+        "type" : "intervals",
+        "workSeconds" : 30
+      },
+      "name" : "Intervals 30\/15 x 8, every 2.5 s"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 15,
+        "rounds" : 8,
+        "totalDurationMinutes" : 0,
+        "totalDurationSeconds" : 345,
+        "workSeconds" : 30
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 29.5,
+            "elapsedTime" : 29.5,
+            "engineState" : "running",
+            "remainingTime" : 315.5,
+            "remainingTimeInPhase" : 0.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 29.5
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 1,
+            "effectiveEnd" : 30,
+            "elapsedTime" : 30,
+            "engineState" : "running",
+            "remainingTime" : 315,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 30
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 1,
+            "effectiveEnd" : 44.899999999999999,
+            "elapsedTime" : 44.899999999999999,
+            "engineState" : "running",
+            "remainingTime" : 300.10000000000002,
+            "remainingTimeInPhase" : 0.10000000000000001,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 44.899999999999999
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 45,
+            "elapsedTime" : 45,
+            "engineState" : "running",
+            "remainingTime" : 300,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 45
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 7,
+            "effectiveEnd" : 314.89999999999998,
+            "elapsedTime" : 314.89999999999998,
+            "engineState" : "running",
+            "remainingTime" : 30.100000000000001,
+            "remainingTimeInPhase" : 0.10000000000000001,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 314.89999999999998
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 315,
+            "elapsedTime" : 315,
+            "engineState" : "running",
+            "remainingTime" : 30,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 315
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 344.5,
+            "elapsedTime" : 344.5,
+            "engineState" : "running",
+            "remainingTime" : 0.5,
+            "remainingTimeInPhase" : 0.5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 344.5
+        },
+        {
+          "do" : "tick",
+          "t" : 344.89999999999998
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 344.89999999999998,
+            "elapsedTime" : 344.89999999999998,
+            "engineState" : "running",
+            "remainingTime" : 0.10000000000000001,
+            "remainingTimeInPhase" : 0.10000000000000001,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 344.89999999999998
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 345,
+            "elapsedTime" : 345,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 345
+        },
+        {
+          "do" : "tick",
+          "t" : 346
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 346,
+            "elapsedTime" : 345,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 346
+        }
+      ],
+      "mode" : {
+        "restSeconds" : 15,
+        "rounds" : 8,
+        "type" : "intervals",
+        "workSeconds" : 30
+      },
+      "name" : "Intervals 30\/15 x 8 at its boundaries"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 3,
+        "totalDurationMinutes" : 0,
+        "totalDurationSeconds" : 60,
+        "workSeconds" : 20
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 19.899999999999999,
+            "elapsedTime" : 19.899999999999999,
+            "engineState" : "running",
+            "remainingTime" : 40.100000000000001,
+            "remainingTimeInPhase" : 0.10000000000000001,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 19.899999999999999
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 20,
+            "elapsedTime" : 20,
+            "engineState" : "running",
+            "remainingTime" : 40,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 20
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 40,
+            "elapsedTime" : 40,
+            "engineState" : "running",
+            "remainingTime" : 20,
+            "remainingTimeInPhase" : 20,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 40
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 59.899999999999999,
+            "elapsedTime" : 59.899999999999999,
+            "engineState" : "running",
+            "remainingTime" : 0.10000000000000001,
+            "remainingTimeInPhase" : 0.10000000000000001,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 59.899999999999999
+        },
+        {
+          "do" : "tick",
+          "t" : 60
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 60,
+            "elapsedTime" : 60,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 60
+        }
+      ],
+      "mode" : {
+        "restSeconds" : 0,
+        "rounds" : 3,
+        "type" : "intervals",
+        "workSeconds" : 20
+      },
+      "name" : "Intervals 20\/0 x 3, no rest"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 10,
+        "rounds" : 1,
+        "totalDurationMinutes" : 0,
+        "totalDurationSeconds" : 45,
+        "workSeconds" : 45
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 0,
+            "elapsedTime" : 0,
+            "engineState" : "running",
+            "remainingTime" : 45,
+            "remainingTimeInPhase" : 45,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 44.899999999999999,
+            "elapsedTime" : 44.899999999999999,
+            "engineState" : "running",
+            "remainingTime" : 0.10000000000000001,
+            "remainingTimeInPhase" : 0.10000000000000001,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 44.899999999999999
+        },
+        {
+          "do" : "tick",
+          "t" : 45
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 45,
+            "elapsedTime" : 45,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 45
+        }
+      ],
+      "mode" : {
+        "restSeconds" : 10,
+        "rounds" : 1,
+        "type" : "intervals",
+        "workSeconds" : 45
+      },
+      "name" : "Intervals 45\/10 x 1, one round"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 10,
+        "rounds" : 8,
+        "totalDurationMinutes" : 0,
+        "totalDurationSeconds" : 230,
+        "workSeconds" : 20
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "do" : "pause",
+          "t" : 15
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 15,
+            "elapsedTime" : 15,
+            "engineState" : "paused",
+            "remainingTime" : 215,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "paused"
+          },
+          "t" : 40
+        },
+        {
+          "do" : "resume",
+          "t" : 50
+        },
+        {
+          "expect" : {
+            "currentPhase" : "rest",
+            "currentRound" : 1,
+            "effectiveEnd" : 25,
+            "elapsedTime" : 25,
+            "engineState" : "running",
+            "remainingTime" : 205,
+            "remainingTimeInPhase" : 5,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 60
+        },
+        {
+          "do" : "pause",
+          "t" : 70
+        },
+        {
+          "do" : "resume",
+          "t" : 100
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 2,
+            "effectiveEnd" : 35,
+            "elapsedTime" : 35,
+            "engineState" : "running",
+            "remainingTime" : 195,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 100
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 3,
+            "effectiveEnd" : 65,
+            "elapsedTime" : 65,
+            "engineState" : "running",
+            "remainingTime" : 165,
+            "remainingTimeInPhase" : 15,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 130
+        },
+        {
+          "do" : "tick",
+          "t" : 400
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 8,
+            "effectiveEnd" : 335,
+            "elapsedTime" : 230,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 400
+        }
+      ],
+      "mode" : {
+        "restSeconds" : 10,
+        "rounds" : 8,
+        "type" : "intervals",
+        "workSeconds" : 20
+      },
+      "name" : "Intervals with several pauses"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 3,
+        "totalDurationMinutes" : 3,
+        "totalDurationSeconds" : 180,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "pause",
+          "t" : 0
+        },
+        {
+          "do" : "resume",
+          "t" : 0
+        },
+        {
+          "do" : "finish",
+          "t" : 0
+        },
+        {
+          "do" : "tick",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 0,
+            "effectiveEnd" : null,
+            "elapsedTime" : 0,
+            "engineState" : "idle",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "idle"
+          },
+          "t" : 0
+        },
+        {
+          "do" : "start",
+          "t" : 10
+        },
+        {
+          "do" : "resume",
+          "t" : 20
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 20,
+            "elapsedTime" : 10,
+            "engineState" : "running",
+            "remainingTime" : 170,
+            "remainingTimeInPhase" : 50,
+            "secondsIntoCurrentMinute" : 10,
+            "state" : "running"
+          },
+          "t" : 20
+        },
+        {
+          "do" : "pause",
+          "t" : 30
+        },
+        {
+          "do" : "tick",
+          "t" : 400
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 30,
+            "elapsedTime" : 20,
+            "engineState" : "paused",
+            "remainingTime" : 160,
+            "remainingTimeInPhase" : 40,
+            "secondsIntoCurrentMinute" : 20,
+            "state" : "paused"
+          },
+          "t" : 400
+        },
+        {
+          "do" : "pause",
+          "t" : 410
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 30,
+            "elapsedTime" : 20,
+            "engineState" : "paused",
+            "remainingTime" : 160,
+            "remainingTimeInPhase" : 40,
+            "secondsIntoCurrentMinute" : 20,
+            "state" : "paused"
+          },
+          "t" : 410
+        }
+      ],
+      "mode" : {
+        "rounds" : 3,
+        "secondsPerRound" : 60,
+        "type" : "emom"
+      },
+      "name" : "Actions that do nothing in the wrong state"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 3,
+        "totalDurationMinutes" : 3,
+        "totalDurationSeconds" : 180,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "do" : "pause",
+          "t" : 50
+        },
+        {
+          "do" : "start",
+          "t" : 70
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 75,
+            "elapsedTime" : 5,
+            "engineState" : "running",
+            "remainingTime" : 175,
+            "remainingTimeInPhase" : 55,
+            "secondsIntoCurrentMinute" : 5,
+            "state" : "running"
+          },
+          "t" : 75
+        },
+        {
+          "do" : "reset",
+          "t" : 80
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 0,
+            "effectiveEnd" : null,
+            "elapsedTime" : 0,
+            "engineState" : "idle",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "idle"
+          },
+          "t" : 80
+        }
+      ],
+      "mode" : {
+        "rounds" : 3,
+        "secondsPerRound" : 60,
+        "type" : "emom"
+      },
+      "name" : "Start again restarts from zero"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 0,
+        "totalDurationMinutes" : 0,
+        "totalDurationSeconds" : 0,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 0,
+            "elapsedTime" : 0,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 125.5,
+            "elapsedTime" : 125.5,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 125.5
+        },
+        {
+          "do" : "pause",
+          "t" : 130
+        },
+        {
+          "do" : "tick",
+          "t" : 140
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 130,
+            "elapsedTime" : 130,
+            "engineState" : "paused",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "paused"
+          },
+          "t" : 140
+        },
+        {
+          "do" : "resume",
+          "t" : 200
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 130,
+            "elapsedTime" : 130,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 200
+        },
+        {
+          "do" : "tick",
+          "t" : 10000
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 9930,
+            "elapsedTime" : 9930,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 10000
+        },
+        {
+          "do" : "finish",
+          "t" : 10060
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 9990,
+            "elapsedTime" : 9990,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 10060
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 19930,
+            "elapsedTime" : 9990,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 20000
+        },
+        {
+          "do" : "reset",
+          "t" : 20010
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 0,
+            "effectiveEnd" : null,
+            "elapsedTime" : 0,
+            "engineState" : "idle",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "idle"
+          },
+          "t" : 20010
+        }
+      ],
+      "mode" : {
+        "type" : "forTime"
+      },
+      "name" : "For Time without a cap: counts up, pauses, stops, resets"
+    },
+    {
+      "engine" : {
+        "capSeconds" : null,
+        "restSeconds" : 0,
+        "rounds" : 0,
+        "totalDurationMinutes" : 0,
+        "totalDurationSeconds" : 0,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "do" : "pause",
+          "t" : 90
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 90,
+            "elapsedTime" : 90,
+            "engineState" : "paused",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "paused"
+          },
+          "t" : 150
+        },
+        {
+          "do" : "finish",
+          "t" : 150
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 90,
+            "elapsedTime" : 90,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 150
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 240,
+            "elapsedTime" : 90,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 300
+        }
+      ],
+      "mode" : {
+        "type" : "forTime"
+      },
+      "name" : "For Time stopped while paused leaves out the open pause"
+    },
+    {
+      "engine" : {
+        "capSeconds" : 300,
+        "restSeconds" : 0,
+        "rounds" : 0,
+        "totalDurationMinutes" : 0,
+        "totalDurationSeconds" : 300,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 100,
+            "elapsedTime" : 100,
+            "engineState" : "running",
+            "remainingTime" : 200,
+            "remainingTimeInPhase" : 200,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 100
+        },
+        {
+          "do" : "tick",
+          "t" : 299.89999999999998
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 299.89999999999998,
+            "elapsedTime" : 299.89999999999998,
+            "engineState" : "running",
+            "remainingTime" : 0.10000000000000001,
+            "remainingTimeInPhase" : 0.10000000000000001,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 299.89999999999998
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 301,
+            "elapsedTime" : 300,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 301
+        },
+        {
+          "do" : "tick",
+          "t" : 300
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 300,
+            "elapsedTime" : 300,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 300
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 400,
+            "elapsedTime" : 300,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 400
+        }
+      ],
+      "mode" : {
+        "capSeconds" : 300,
+        "type" : "forTime"
+      },
+      "name" : "For Time with a 5:00 cap finishes at the cap"
+    },
+    {
+      "engine" : {
+        "capSeconds" : 60,
+        "restSeconds" : 0,
+        "rounds" : 0,
+        "totalDurationMinutes" : 0,
+        "totalDurationSeconds" : 60,
+        "workSeconds" : 0
+      },
+      "events" : [
+        {
+          "do" : "start",
+          "t" : 0
+        },
+        {
+          "do" : "pause",
+          "t" : 30
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 30,
+            "elapsedTime" : 30,
+            "engineState" : "paused",
+            "remainingTime" : 30,
+            "remainingTimeInPhase" : 30,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "paused"
+          },
+          "t" : 100
+        },
+        {
+          "do" : "resume",
+          "t" : 100
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 59,
+            "elapsedTime" : 59,
+            "engineState" : "running",
+            "remainingTime" : 1,
+            "remainingTimeInPhase" : 1,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "running"
+          },
+          "t" : 129
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 61,
+            "elapsedTime" : 60,
+            "engineState" : "running",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 131
+        },
+        {
+          "do" : "pause",
+          "t" : 131
+        },
+        {
+          "expect" : {
+            "currentPhase" : "work",
+            "currentRound" : 1,
+            "effectiveEnd" : 61,
+            "elapsedTime" : 60,
+            "engineState" : "finished",
+            "remainingTime" : 0,
+            "remainingTimeInPhase" : 0,
+            "secondsIntoCurrentMinute" : 0,
+            "state" : "finished"
+          },
+          "t" : 131
+        }
+      ],
+      "mode" : {
+        "capSeconds" : 60,
+        "type" : "forTime"
+      },
+      "name" : "For Time cap reached while paused"
+    }
+  ]
+}
