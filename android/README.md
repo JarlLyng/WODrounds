@@ -1,8 +1,9 @@
 # WODrounds on Android: a trial
 
 A bounded trial, not a release: is WODrounds on Android worth building? It runs **one mode
-end to end, EMOM**, so there's a working Android version to judge rather than a guess. Nothing
-here is on Google Play, and nothing here touches the iOS app.
+end to end, EMOM**, so there's a working Android version to judge rather than a guess. It
+reaches the owner's test phone through Google Play's internal testing only, and nothing here
+touches the iOS app.
 
 ## What's here
 
@@ -18,8 +19,9 @@ here is on Google Play, and nothing here touches the iOS app.
   timelines the Swift suite runs too (`WODroundsTests/EngineTimelineTests.swift`). If both pass,
   the two engines report the same state, round, phase and times at every step.
 
-The app ID is `com.iamjarl.wodrounds.trial`, so it never collides with a future app on Play.
-Target and compile SDK 36, min SDK 29 (Android 10).
+The app ID is `com.iamjarl.wodrounds` (owner, 2026-11-22), permanent from the first upload to
+Play; the Play app is created as paid, like iOS. Target and compile SDK 36, min SDK 29
+(Android 10).
 
 ## Build and run
 
@@ -32,8 +34,12 @@ cd android
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-On a phone, the debug APK installs once "Install unknown apps" is allowed for the app that
-opens it (Files, or the browser).
+For Google Play's internal track, `scripts/bundle-release.sh` builds a signed bundle
+(`app/build/outputs/bundle/release/app-release.aab`). The upload key is at
+`~/.android/keystores/wodrounds-upload.jks` on the owner's Mac, outside the repo, with its
+password in the macOS keychain (service `wodrounds-android-upload`). Play App Signing holds the
+app signing key, so a lost upload key can be reset in Play Console. Uploads go through the Play
+Developer API with the keyless `play-publisher` service account, as Wean's do.
 
 ## Changing the engine
 

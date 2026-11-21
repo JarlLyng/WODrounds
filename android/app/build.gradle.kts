@@ -8,13 +8,30 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        // A trial build (not for Google Play): its own ID, so it never collides with a
-        // future WODrounds on Play.
-        applicationId = "com.iamjarl.wodrounds.trial"
+        // The final ID (owner, 2026-11-22): permanent from the first upload to Play.
+        applicationId = "com.iamjarl.wodrounds"
         minSdk = 29
         targetSdk = 36
         versionCode = 1
         versionName = "0.1-trial"
+    }
+
+    // The upload key lives outside the repo. Release builds read its path and password from
+    // the environment (android/scripts/bundle-release.sh fills them from the macOS keychain);
+    // Play App Signing holds the app signing key. Debug builds need none of it.
+    signingConfigs {
+        create("upload") {
+            System.getenv("WODROUNDS_UPLOAD_STORE")?.let { storeFile = file(it) }
+            storePassword = System.getenv("WODROUNDS_UPLOAD_PASSWORD")
+            keyAlias = "upload"
+            keyPassword = System.getenv("WODROUNDS_UPLOAD_PASSWORD")
+        }
+    }
+
+    buildTypes {
+        release {
+            if (System.getenv("WODROUNDS_UPLOAD_STORE") != null) signingConfig = signingConfigs.getByName("upload")
+        }
     }
 
     buildFeatures {
