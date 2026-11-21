@@ -10,6 +10,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         val prefs = getSharedPreferences("setup", MODE_PRIVATE)
-        setContent { EmomScreen(prefs) }
+        setContent { TimerScreen(prefs) }
     }
 }

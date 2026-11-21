@@ -1,20 +1,25 @@
 # WODrounds on Android: a trial
 
-A bounded trial, not a release: is WODrounds on Android worth building? It runs **one mode
-end to end, EMOM**, so there's a working Android version to judge rather than a guess. It
-reaches the owner's test phone through Google Play's internal testing only, and nothing here
-touches the iOS app.
+WODrounds on Android. It began as a bounded trial with EMOM only; the owner decided on
+2026-11-22 that it goes to Google Play, and it now runs **all three modes**. It reaches the
+owner's test phone through Google Play's internal testing, and nothing here touches the iOS app.
 
 ## What's here
 
 - `app/src/main/java/com/iamjarl/wodrounds/engine/WODTimerEngine.kt`: a line-for-line Kotlin
   port of `Shared/WODTimerEngine.swift`, all three modes (EMOM, Intervals, For Time), with no
   UI, sound or clock of its own.
-- `app/src/main/java/com/iamjarl/wodrounds/EmomScreen.kt`: EMOM in Jetpack Compose. Rounds
-  (1–120) and round length (0:30–9:30), remembered between launches. Start, a 10-second Get
-  ready, the countdown of each round, Round x / n, Pause and Resume, Cancel (which asks first),
-  and Done. A 3-2-1 beep before each new round, as a short tone on the media stream. The screen
-  stays on during the count-in and the workout.
+- `app/src/main/java/com/iamjarl/wodrounds/TimerScreen.kt`: the three modes in Jetpack
+  Compose, with the iOS ranges and texts, remembered between launches under the iOS keys:
+  EMOM (rounds and round length), Intervals (work, rest and rounds, with Work or Rest, the ring
+  that drains over each phase, and the time left in the workout) and For Time (counts up, an
+  optional cap up to 60:00, Stop, "Finished in"). Start, a 10-second Get ready, Pause and
+  Resume, Cancel (which asks first) and Done. The steppers repeat while held. A 3-2-1 beep
+  before each new EMOM round and each switch between work and rest, as a short tone on the
+  media stream; For Time has none, as on iOS. The screen stays on during the count-in and the
+  workout.
+- `app/src/main/java/com/iamjarl/wodrounds/Telemetry.kt`: anonymous Sentry crash reports and
+  sessions (`docs/SENTRY.md` § Android).
 - `app/src/test/.../EngineTimelineTest.kt`: runs `../test-fixtures/engine-timelines.json`, the
   timelines the Swift suite runs too (`WODroundsTests/EngineTimelineTests.swift`). If both pass,
   the two engines report the same state, round, phase and times at every step.
