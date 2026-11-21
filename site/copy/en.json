@@ -90,7 +90,9 @@
         "id": "tv",
         "title": "Across the room",
         "body": "On Apple TV the timer fills the screen, so a home gym can read it from the rower.",
-        "alt": "WODrounds on Apple TV: a Tabata in round 3 of 8, 12 seconds of work left."
+        "alt": "WODrounds on Apple TV: a Tabata in round 3 of 8, 12 seconds of work left.",
+        "link": "apple-tv-timer.html",
+        "linkText": "Apple TV timer"
       },
       {
         "id": "mac-ipad",
