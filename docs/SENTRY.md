@@ -1,6 +1,6 @@
-# Sentry (iOS)
+# Sentry (iOS and Android)
 
-Crash reports, crash-free sessions, MetricKit diagnostics and two anonymous feature counts go to **Sentry on iOS only** (not macOS, tvOS, or Watch). The code is `WODrounds/Telemetry.swift`. How the target links `Sentry-Dynamic` and platform filters are documented in [ARCHIVE.md](ARCHIVE.md).
+Crash reports, crash-free sessions, MetricKit diagnostics and two anonymous feature counts go to **Sentry on iOS** (not macOS, tvOS, or Watch). The Android app (`android/`, #234) sends crash reports and crash-free sessions only; see [Android](#android) below. The code is `WODrounds/Telemetry.swift`. How the target links `Sentry-Dynamic` and platform filters are documented in [ARCHIVE.md](ARCHIVE.md).
 
 ## What is sent, and what isn't
 
@@ -70,6 +70,25 @@ The app will then build with Sentry, and when running on iOS with the DSN set in
 ## "Upload Symbols Failed" on Archive / TestFlight
 
 When uploading an archive to App Store Connect, Xcode may show: **Upload Symbols Failed – The archive did not include a dSYM for the Sentry.framework**. This is a **known warning** with Sentry via Swift Package Manager. The project uses **Sentry-Dynamic** (dynamic framework) instead of Sentry (static) — this can reduce or eliminate the warning because dynamic frameworks sometimes include dSYM. If the warning still appears: the upload completed ("Upload completed **with warnings**"). Click **Done**; the build should appear on TestFlight. Crashes from **your app code** can still be symbolicated by Sentry via your own app dSYM. See [ARCHIVE.md](ARCHIVE.md) for platform filtering (Sentry is iOS-only in this project).
+
+## Android
+
+`android/app/src/main/java/com/iamjarl/wodrounds/Telemetry.kt`, with `io.sentry:sentry-android-core` (no NDK, no replay, no Gradle plugin), into the same `wodrounds` project. Sentry's own auto-init is off in the manifest, so the SDK only ever starts with these options:
+
+- **One shared user, `anonymous`,** set right after `SentryAndroid.init` and on every event in `beforeSend`.
+- **Sessions without an ID:** sentry-android sets a session's `did` to its installation ID unless `distinctId` is set, so it's set to `anonymous`. Unlike iOS, this is a public option.
+- **No device IDs and no boot time:** `beforeSend` drops `contexts.device.id`, `contexts.app.device_app_hash` and `contexts.device.boot_time`. The exact boot time, with the model, would tell one phone's reports from another's.
+- **Off:** `sendDefaultPii`, screenshots, view hierarchy, user-interaction breadcrumbs and tracing, and performance tracing (`tracesSampleRate` 0). No feature counts yet.
+- **Environment:** `debug` for debug builds; release builds take `WODROUNDS_SENTRY_ENVIRONMENT`, `internal` unless set. A store build sets `production`.
+- **DSN:** the environment's `SENTRY_DSN`, else `sentry.dsn` in the gitignored `android/local.properties`. Empty means no Sentry. It is never in the repo.
+
+### Checking the envelopes on Android
+
+Debug builds may send cleartext to `10.0.2.2` only (the emulator's address for the Mac; `app/src/debug`). Run the same capture server on `127.0.0.1:8969`, build with `SENTRY_DSN="http://0123456789abcdef0123456789abcdef@10.0.2.2:8969/1" ./gradlew assembleDebug`, install, start the app, crash it with `adb shell am crash com.iamjarl.wodrounds` and start it again. Pass when every `session` has `did` `anonymous`, the `event` has `user` `{"id": "anonymous"}` and no `device.id`, `device_app_hash` or `boot_time`, and no UUID or `/data/app/` path appears anywhere. Last checked with sentry-android 8.63.0 on 2026-11-22 on the API 36 emulator: passed.
+
+### Google Play's Data safety
+
+With these reports on, Data safety can no longer say "no data": it lists Crash logs and Diagnostics, collected, not shared, not linked to an identity, required, encrypted in transit, purpose Analytics (Google's Analytics includes diagnosing and fixing crashes), as Wean's does. Google exempts apps that are only on the internal track, so the form must change before a build with Sentry goes past internal.
 
 ## Privacy
 
