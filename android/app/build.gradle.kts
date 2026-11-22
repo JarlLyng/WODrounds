@@ -24,8 +24,8 @@ android {
         applicationId = "com.iamjarl.wodrounds"
         minSdk = 29
         targetSdk = 36
-        versionCode = 3
-        versionName = "0.3-trial"
+        versionCode = 4
+        versionName = "0.4-trial"
         buildConfigField("String", "SENTRY_DSN", "\"$sentryDsn\"")
     }
 

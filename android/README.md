@@ -14,10 +14,19 @@ owner's test phone through Google Play's internal testing, and nothing here touc
   EMOM (rounds and round length), Intervals (work, rest and rounds, with Work or Rest, the ring
   that drains over each phase, and the time left in the workout) and For Time (counts up, an
   optional cap up to 60:00, Stop, "Finished in"). Start, a 10-second Get ready, Pause and
-  Resume, Cancel (which asks first) and Done. The steppers repeat while held. A 3-2-1 beep
-  before each new EMOM round and each switch between work and rest, as a short tone on the
-  media stream; For Time has none, as on iOS. The screen stays on during the count-in and the
-  workout.
+  Resume, Cancel (which asks first) and Done. The steppers repeat while held. A sound switch
+  silences the voice and beeps, as iOS's speaker button. The screen only shows the workout.
+- `Workout.kt` and `WorkoutService.kt`: the workout, and a foreground service of type
+  `mediaPlayback` that ticks it ten times a second, plays the cues and shows the time in an
+  ongoing notification, so it carries on with the screen off. A partial wake lock keeps the CPU
+  running for the workout only (capped at 3 hours), and the service stops itself on Done or
+  Cancel. On Android 13+ the app asks for notifications on the first Start; the workout runs
+  either way.
+- `Cues.kt`: every sound and haptic as iOS plays them. The recorded English voice files
+  (Get ready, 10, 5 and 2 rounds left, You did it) from `WODrounds/en.lproj`, "halfway" and
+  "ten seconds" in the system voice, the 3-2-1 beep, and haptics on each new round or phase
+  and on Done. Mixed with the user's music. Debug builds log each cue (`adb logcat -s
+  WODroundsCues`) for checking timing on a device.
 - `app/src/main/java/com/iamjarl/wodrounds/Telemetry.kt`: anonymous Sentry crash reports and
   sessions (`docs/SENTRY.md` § Android).
 - `app/src/test/.../EngineTimelineTest.kt`: runs `../test-fixtures/engine-timelines.json`, the

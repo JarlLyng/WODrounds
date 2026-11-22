@@ -1,10 +1,12 @@
 package com.iamjarl.wodrounds
 
+import android.Manifest
 import android.content.SharedPreferences
-import android.media.AudioAttributes
-import android.media.AudioFormat
-import android.media.AudioTrack
-import android.os.SystemClock
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -32,6 +34,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -47,6 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -69,7 +73,6 @@ import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.max
-import kotlin.math.roundToInt
 
 // The WODrounds identity from iamjarl-design (dist/identity/wodrounds.css), dark only here.
 private val Background = Color(0xFF000000)
@@ -97,10 +100,6 @@ private val WorkRange = 5..300
 private val RestRange = 0..180
 private val IntervalRoundsRange = 1..60
 private val CapRange = 0..3600 // 0 = no cap, then 0:30 to 60:00 in 30 s steps
-private const val CountInSeconds = 10.0
-
-/** One steady clock for the engine: it keeps counting when the screen is off. */
-private fun clock(): Double = SystemClock.elapsedRealtime() / 1000.0
 
 /** As sharedTimeString on iOS: whole seconds rounded up, mm:ss. */
 private fun timeString(seconds: Double): String {
@@ -120,6 +119,7 @@ private class Setup(private val prefs: SharedPreferences) {
     var rest by mutableIntStateOf(prefs.getInt("intervalsRestSeconds", 15).coerceIn(RestRange))
     var intervalRounds by mutableIntStateOf(prefs.getInt("intervalsRounds", 8).coerceIn(IntervalRoundsRange))
     var cap by mutableIntStateOf(prefs.getInt("forTimeCapSeconds", 0).coerceIn(CapRange))
+    var soundOn by mutableStateOf(prefs.getBoolean("soundEnabled", true))
 
     fun save() {
         prefs.edit()
@@ -127,6 +127,7 @@ private class Setup(private val prefs: SharedPreferences) {
             .putInt("emomRounds", emomRounds).putInt("emomRoundLengthSeconds", emomLength)
             .putInt("intervalsWorkSeconds", work).putInt("intervalsRestSeconds", rest).putInt("intervalsRounds", intervalRounds)
             .putInt("forTimeCapSeconds", cap)
+            .putBoolean("soundEnabled", soundOn)
             .apply()
     }
 
@@ -139,45 +140,49 @@ private class Setup(private val prefs: SharedPreferences) {
 
 @Composable
 fun TimerScreen(prefs: SharedPreferences) {
+    val context = LocalContext.current
     val setup = remember { Setup(prefs) }
-    var engine by remember { mutableStateOf(setup.engine()) }
-    var countInEnd by remember { mutableStateOf<Double?>(null) }
+    // The workout itself lives in Workout and is ticked by WorkoutService, which also plays
+    // the cues, so it carries on with the screen off. This screen only shows it.
+    val version by Workout.changes.collectAsState()
     var now by remember { mutableDoubleStateOf(clock()) }
-    var version by remember { mutableIntStateOf(0) } // bumps on every action, so the UI redraws
     var confirmCancel by remember { mutableStateOf(false) }
-    val beeper = remember { Beeper() }
-    DisposableEffect(Unit) { onDispose { beeper.release() } }
 
-    fun changed() {
-        setup.save()
-        engine = setup.engine()
-        version++
-    }
-
-    // The tick: ten times a second, so the readout, the ring and the 3-2-1 land on time.
     LaunchedEffect(Unit) {
+        Workout.soundOn = setup.soundOn
+        Workout.setUp(setup.engine())
         while (true) {
             now = clock()
-            countInEnd?.let { end ->
-                if (now >= end) {
-                    engine.start(end) // the workout starts when the count-in ends, not when we noticed
-                    countInEnd = null
-                    version++
-                }
-            }
-            if (engine.state == EngineState.RUNNING) {
-                engine.tick(now)
-                beeper.check(engine.snapshot(now), engine.mode)
-                if (engine.state == EngineState.FINISHED) version++
-            }
             delay(100)
         }
     }
 
+    fun changed() {
+        setup.save()
+        Workout.soundOn = setup.soundOn
+        Workout.setUp(setup.engine())
+    }
+
+    // Android 13+: the ongoing notification needs this. The workout runs either way.
+    val askNotifications = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { }
+    fun start() {
+        changed()
+        if (Build.VERSION.SDK_INT >= 33 &&
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED &&
+            !prefs.getBoolean("askedNotifications", false)
+        ) {
+            prefs.edit().putBoolean("askedNotifications", true).apply()
+            askNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+        Workout.start(context, setup.engine())
+    }
+
+    val engine = Workout.engine
+    val countInEnd = Workout.countInEnd
     val snapshot = remember(now, version) { engine.snapshot(now) }
     val active = countInEnd != null || snapshot.state == EngineState.RUNNING || snapshot.state == EngineState.PAUSED
 
-    // Keep the screen on through the count-in and the workout, as iOS does.
+    // Keep the screen on through the count-in and the workout while it's in front, as iOS does.
     val view = LocalView.current
     DisposableEffect(active) {
         view.keepScreenOn = active
@@ -187,34 +192,31 @@ fun TimerScreen(prefs: SharedPreferences) {
     Box(Modifier.fillMaxSize().background(Background).safeDrawingPadding().padding(24.dp)) {
         when {
             countInEnd != null -> CountIn(
-                remaining = max(0, ceil(countInEnd!! - now).toInt()),
-                onCancel = { countInEnd = null; version++ },
+                remaining = max(0, ceil(countInEnd - now).toInt()),
+                onCancel = { Workout.cancelCountIn() },
             )
             snapshot.state == EngineState.FINISHED -> Done(
                 line = if (engine.mode is TimerMode.ForTime) "Finished in ${timeString(floor(snapshot.elapsedTime))}"
                 else engine.rounds.let { "You completed $it round${if (it == 1) "" else "s"}" },
-                onReset = { engine.reset(); beeper.reset(); changed() },
+                onReset = { Workout.reset(setup.engine()) },
             )
             snapshot.state == EngineState.IDLE -> SetupView(
                 setup = setup,
                 onChange = { changed() },
-                onStart = { changed(); beeper.reset(); countInEnd = clock() + CountInSeconds },
+                onStart = { start() },
             )
             else -> Running(
                 engine = engine,
                 snapshot = snapshot,
-                onPrimary = {
-                    val t = clock()
-                    when {
-                        engine.mode is TimerMode.ForTime -> engine.finish(t) // Stop freezes the time
-                        engine.state == EngineState.PAUSED -> engine.resume(t)
-                        else -> engine.pause(t)
-                    }
-                    version++
-                },
+                onPrimary = { if (engine.mode is TimerMode.ForTime) Workout.stop() else Workout.pauseOrResume() },
                 onCancel = { confirmCancel = true },
             )
         }
+        SoundToggle(
+            on = setup.soundOn,
+            onToggle = { setup.soundOn = !setup.soundOn; setup.save(); Workout.soundOn = setup.soundOn },
+            modifier = Modifier.align(Alignment.TopEnd),
+        )
     }
 
     if (confirmCancel) {
@@ -225,9 +227,7 @@ fun TimerScreen(prefs: SharedPreferences) {
             confirmButton = {
                 TextButton(onClick = {
                     confirmCancel = false
-                    engine.reset()
-                    beeper.reset()
-                    version++
+                    Workout.cancel()
                 }) { Text("Cancel workout", color = Danger) }
             },
             dismissButton = { TextButton(onClick = { confirmCancel = false }) { Text("Keep going", color = TextPrimary) } },
@@ -238,9 +238,18 @@ fun TimerScreen(prefs: SharedPreferences) {
     }
 }
 
+/** As iOS's speaker button: silences the voice and the beeps, not the haptics. */
+@Composable
+private fun SoundToggle(on: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifier) {
+    TextButton(onClick = onToggle, modifier = modifier.semantics { contentDescription = if (on) "Mute sound" else "Unmute sound" }) {
+        Text(if (on) "Sound on" else "Sound off", color = TextTertiary, fontFamily = Mono, fontSize = 13.sp)
+    }
+}
+
 @Composable
 private fun SetupView(setup: Setup, onChange: () -> Unit, onStart: () -> Unit) {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(Modifier.height(40.dp)) // room for the sound switch above
         ModeSwitch(setup.mode) { setup.mode = it; onChange() }
         Spacer(Modifier.height(12.dp))
         Label(setup.mode.help, TextTertiary, 14.sp)
@@ -460,73 +469,4 @@ private fun Label(
     modifier: Modifier = Modifier,
 ) {
     Text(text, color = color, fontSize = size, fontWeight = weight, fontFamily = Mono, textAlign = TextAlign.Center, modifier = modifier)
-}
-
-/**
- * The 3-2-1 before each change, as iOS's checkInRoundCues: one beep at 3, 2 and 1 seconds
- * left in the EMOM round or the work or rest phase, each once. For Time has no cues. The
- * beep is a short 880 Hz tone made here and played as media, so it follows the media volume
- * and the speaker or headphones in use. Sound never stops the timer: if the audio can't
- * start, the beep is skipped.
- */
-private class Beeper {
-    private val sampleRate = 44_100
-    private val pcm: ShortArray = ShortArray(sampleRate * 150 / 1000).also { buf ->
-        val fade = sampleRate / 200 // 5 ms in and out, so the tone doesn't click
-        for (i in buf.indices) {
-            val env = minOf(1.0, i / fade.toDouble(), (buf.size - i) / fade.toDouble())
-            buf[i] = (Math.sin(2 * Math.PI * 880 * i / sampleRate) * env * 0.8 * Short.MAX_VALUE).toInt().toShort()
-        }
-    }
-    private var track: AudioTrack? = null
-    private var last: Triple<Int, Int, Phase>? = null
-
-    private fun track(): AudioTrack? = track ?: runCatching {
-        AudioTrack.Builder()
-            .setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .build()
-            )
-            .setAudioFormat(
-                AudioFormat.Builder()
-                    .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                    .setSampleRate(sampleRate)
-                    .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
-                    .build()
-            )
-            .setTransferMode(AudioTrack.MODE_STATIC)
-            .setBufferSizeInBytes(pcm.size * 2)
-            .build()
-            .also { it.write(pcm, 0, pcm.size) }
-    }.getOrNull().also { track = it }
-
-    private fun beep() {
-        runCatching {
-            val t = track() ?: return
-            t.stop()
-            t.reloadStaticData()
-            t.play()
-        }
-    }
-
-    fun check(s: Snapshot, mode: TimerMode) {
-        if (mode is TimerMode.ForTime) return
-        val sec = s.remainingTimeInPhase.roundToInt()
-        if (sec !in 1..3) return
-        val key = Triple(sec, s.currentRound, s.currentPhase)
-        if (key == last) return
-        last = key
-        beep()
-    }
-
-    fun reset() {
-        last = null
-    }
-
-    fun release() {
-        runCatching { track?.release() }
-        track = null
-    }
 }
