@@ -37,7 +37,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: Initialize CodeQL
         uses: github/codeql-action/init@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
@@ -52,7 +52,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # Sentry.xcconfig is gitignored (it holds the DSN); the project's base
       # configuration references it, so the build (and thus CodeQL analysis)
@@ -72,7 +72,7 @@ jobs:
       # DerivedData would skip compilation and starve CodeQL's tracer). Speeds up
       # dependency resolution while still compiling everything under CodeQL.
       - name: Cache SwiftPM packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .spm-cache
           key: spm-${{ runner.os }}-${{ hashFiles('WODrounds.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
