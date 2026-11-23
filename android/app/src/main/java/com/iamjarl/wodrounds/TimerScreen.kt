@@ -4,19 +4,26 @@ import android.Manifest
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,45 +31,69 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import com.iamjarl.wodrounds.engine.EngineState
 import com.iamjarl.wodrounds.engine.Phase
 import com.iamjarl.wodrounds.engine.Snapshot
@@ -73,35 +104,97 @@ import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.max
+import kotlin.math.min
 
-// The WODrounds identity from iamjarl-design (dist/identity/wodrounds.css), dark only here.
-private val Background = Color(0xFF000000)
-private val TextPrimary = Color(0xFFFFFFFF)
-private val TextSecondary = Color(0xBFFFFFFF)
-private val TextTertiary = Color(0x99FFFFFF)
-private val Card = Color(0x0DFFFFFF)
-private val Surface = Color(0xFF17191B)
-private val Lime = Color(0xFFD0FF00)
-private val OnLime = Color(0xFF000000)
-private val Danger = Color(0xFFD70015)
-private val Mono = FontFamily.Monospace
+/*
+ * The one screen, laid out as iOS lays it out (iOSContentView.swift, SharedTimerViews.swift),
+ * which is the reference. Every size follows from the space the app has, never from the
+ * device: width earns a larger scale (a tablet, a foldable's inner screen), height caps it so
+ * a short screen shrinks the layout instead of pushing Start or Pause off it, and a screen
+ * about as wide as it is tall gets two columns. Labels that could still run out of room
+ * shrink to fit, as iOS's minimumScaleFactor. Sizes are the iamjarl-design tokens in points,
+ * used here as dp, and the user's font size setting doesn't change them (iOS uses fixed
+ * sizes too): the layout is measured to fit, and a larger font would break that.
+ */
 
-/** The modes, keyed as iOS stores them (`lastTimerMode`). */
-private enum class Mode(val label: String, val key: String, val help: String) {
-    EMOM("EMOM", "EMOM", "Select the number of rounds, and length of each round."),
-    INTERVALS("Intervals", "Intervals", "Set work time, rest time, and number of rounds."),
-    FOR_TIME("For Time", "For Time", "The clock counts up. Press Stop when you finish, or set an optional time cap."),
+// The iamjarl-design colours (DesignTokens.Common), light and dark, as iOS follows the system.
+class Palette(
+    val background: Color,
+    val text: Color,
+    val textSecondary: Color,
+    val textTertiary: Color,
+    val card: Color,
+    val primary: Color,
+    val onPrimary: Color,
+    val surface: Color,
+)
+
+private val Dark = Palette(
+    background = Color(0xFF000000),
+    text = Color(0xFFFFFFFF),
+    textSecondary = Color(0xBFFFFFFF), // 0.75
+    textTertiary = Color(0x99FFFFFF), // 0.60
+    card = Color(0x0DFFFFFF), // 0.05
+    primary = Color(0xFFD0FF00),
+    onPrimary = Color(0xFF000000),
+    surface = Color(0xFF1C1C1E),
+)
+private val Light = Palette(
+    background = Color(0xFFFFFFFF),
+    text = Color(0xFF000000),
+    textSecondary = Color(0xB3000000), // 0.70
+    textTertiary = Color(0x8C000000), // 0.55
+    card = Color(0x0A000000), // 0.04
+    primary = Color(0xFFA435D2),
+    onPrimary = Color(0xFFFFFFFF),
+    surface = Color(0xFFFFFFFF),
+)
+private val Error = Color(0xFFD70015) // State.error, the same in both
+private val OnError = Color(0xFFFFFFFF)
+// JetBrains Mono, the WODrounds display face in iamjarl-design (OFL-1.1, licence in assets),
+// from its variable font. Android's own monospace has no bold, and the bold digits are the app.
+@OptIn(ExperimentalTextApi::class)
+private val Mono = FontFamily(
+    listOf(FontWeight.Normal, FontWeight.SemiBold, FontWeight.Bold).map { w ->
+        Font(R.font.jetbrains_mono, weight = w, variationSettings = FontVariation.Settings(FontVariation.weight(w.weight)))
+    }
+)
+
+private val LocalPalette = staticCompositionLocalOf { Dark }
+private val LocalLayout = staticCompositionLocalOf { Layout(400f, 800f) }
+
+// iamjarl-design sizes (DesignTokens.Typography.Size, Numeral, Spacing, Radius), in points.
+private object T {
+    const val XS = 12f; const val SM = 14f; const val BASE = 16f; const val LG = 18f; const val XL = 24f; const val XXL = 36f
+    const val NUMERAL_MD = 56f; const val NUMERAL_LG = 80f
+}
+private object S {
+    val SM = 8.dp; val MD = 12.dp; val LG = 16.dp; val XL = 20.dp; val XXL = 24.dp; val XXXL = 32.dp
 }
 
-// The iOS ranges (ContentView.swift).
-private val RoundsRange = 1..120
-private val LengthRange = 30..570
-private val WorkRange = 5..300
-private val RestRange = 0..180
-private val IntervalRoundsRange = 1..60
-private val CapRange = 0..3600 // 0 = no cap, then 0:30 to 60:00 in 30 s steps
+/**
+ * The scale of everything, from the space the app has: iOS's fontScale, spacingScale,
+ * isTwoColumn and LayoutFit, with the same numbers.
+ */
+class Layout(val width: Float, val height: Float, fontOverride: Float? = null) {
+    /** Two columns when the space is about as wide as it is tall, or wider. */
+    val twoColumn = width >= 560 && width > height * 0.9f
+    val font: Float = fontOverride ?: run {
+        val byWidth = min(1.5f, max(1f, 1f + (width - 500) / 400))
+        // Two columns: the three Intervals steppers set the height (iOS's LayoutFit). Their
+        // column also fits itself to the space it gets (StepperColumn), as type renders
+        // a little taller here than on iOS.
+        val byHeight = if (twoColumn) (height - 60) / 330
+        else if (height >= 748) 1f + (height - 748) / 404 else (height - 180) / 568
+        max(0.7f, min(byWidth, byHeight))
+    }
+    /** Spacing grows more slowly than type on a large display, and shrinks with it on a short one. */
+    val spacing: Float = if (font < 1) font else 1f + (font - 1f) * 0.6f
+    /** Keeps the steppers within reach on a wide single column. */
+    val maxContentWidth: Dp? = if (twoColumn) null else if (font > 1f) 600.dp else null
+    val controlsColumnWidth: Dp = min(300 * font, width * 0.35f).dp
+}
 
-/** As sharedTimeString on iOS: whole seconds rounded up, mm:ss. */
 private fun timeString(seconds: Double): String {
     val total = max(0, ceil(seconds).toInt())
     return "%02d:%02d".format(total / 60, total % 60)
@@ -109,34 +202,6 @@ private fun timeString(seconds: Double): String {
 
 private fun lengthString(seconds: Int) = "%02d:%02d".format(seconds / 60, seconds % 60)
 private fun capString(seconds: Int) = if (seconds == 0) "No cap" else lengthString(seconds)
-
-/** The setup values, remembered between launches under the iOS @AppStorage keys. */
-private class Setup(private val prefs: SharedPreferences) {
-    var mode by mutableStateOf(Mode.entries.firstOrNull { it.key == prefs.getString("lastTimerMode", null) } ?: Mode.EMOM)
-    var emomRounds by mutableIntStateOf(prefs.getInt("emomRounds", 10).coerceIn(RoundsRange))
-    var emomLength by mutableIntStateOf(prefs.getInt("emomRoundLengthSeconds", 60).coerceIn(LengthRange))
-    var work by mutableIntStateOf(prefs.getInt("intervalsWorkSeconds", 30).coerceIn(WorkRange))
-    var rest by mutableIntStateOf(prefs.getInt("intervalsRestSeconds", 15).coerceIn(RestRange))
-    var intervalRounds by mutableIntStateOf(prefs.getInt("intervalsRounds", 8).coerceIn(IntervalRoundsRange))
-    var cap by mutableIntStateOf(prefs.getInt("forTimeCapSeconds", 0).coerceIn(CapRange))
-    var soundOn by mutableStateOf(prefs.getBoolean("soundEnabled", true))
-
-    fun save() {
-        prefs.edit()
-            .putString("lastTimerMode", mode.key)
-            .putInt("emomRounds", emomRounds).putInt("emomRoundLengthSeconds", emomLength)
-            .putInt("intervalsWorkSeconds", work).putInt("intervalsRestSeconds", rest).putInt("intervalsRounds", intervalRounds)
-            .putInt("forTimeCapSeconds", cap)
-            .putBoolean("soundEnabled", soundOn)
-            .apply()
-    }
-
-    fun engine(): WODTimerEngine = when (mode) {
-        Mode.EMOM -> WODTimerEngine.emom(emomRounds, emomLength)
-        Mode.INTERVALS -> WODTimerEngine.intervals(work, rest, intervalRounds)
-        Mode.FOR_TIME -> WODTimerEngine.forTime(if (cap == 0) null else cap)
-    }
-}
 
 @Composable
 fun TimerScreen(prefs: SharedPreferences) {
@@ -146,7 +211,8 @@ fun TimerScreen(prefs: SharedPreferences) {
     // the cues, so it carries on with the screen off. This screen only shows it.
     val version by Workout.changes.collectAsState()
     var now by remember { mutableDoubleStateOf(clock()) }
-    var confirmCancel by remember { mutableStateOf(false) }
+    var confirmCancel by rememberSaveable { mutableStateOf(false) }
+    var showAbout by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         Workout.soundOn = setup.soundOn
@@ -168,7 +234,7 @@ fun TimerScreen(prefs: SharedPreferences) {
     fun start() {
         changed()
         if (Build.VERSION.SDK_INT >= 33 &&
-            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED &&
+            context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED &&
             !prefs.getBoolean("askedNotifications", false)
         ) {
             prefs.edit().putBoolean("askedNotifications", true).apply()
@@ -180,7 +246,8 @@ fun TimerScreen(prefs: SharedPreferences) {
     val engine = Workout.engine
     val countInEnd = Workout.countInEnd
     val snapshot = remember(now, version) { engine.snapshot(now) }
-    val active = countInEnd != null || snapshot.state == EngineState.RUNNING || snapshot.state == EngineState.PAUSED
+    val running = snapshot.state == EngineState.RUNNING || snapshot.state == EngineState.PAUSED
+    val active = countInEnd != null || running
 
     // Keep the screen on through the count-in and the workout while it's in front, as iOS does.
     val view = LocalView.current
@@ -189,247 +256,375 @@ fun TimerScreen(prefs: SharedPreferences) {
         onDispose { view.keepScreenOn = false }
     }
 
-    Box(Modifier.fillMaxSize().background(Background).safeDrawingPadding().padding(24.dp)) {
-        when {
-            countInEnd != null -> CountIn(
-                remaining = max(0, ceil(countInEnd - now).toInt()),
-                onCancel = { Workout.cancelCountIn() },
-            )
-            snapshot.state == EngineState.FINISHED -> Done(
-                line = if (engine.mode is TimerMode.ForTime) "Finished in ${timeString(floor(snapshot.elapsedTime))}"
-                else engine.rounds.let { "You completed $it round${if (it == 1) "" else "s"}" },
-                onReset = { Workout.reset(setup.engine()) },
-            )
-            snapshot.state == EngineState.IDLE -> SetupView(
-                setup = setup,
-                onChange = { changed() },
-                onStart = { start() },
-            )
-            else -> Running(
-                engine = engine,
-                snapshot = snapshot,
-                onPrimary = { if (engine.mode is TimerMode.ForTime) Workout.stop() else Workout.pauseOrResume() },
-                onCancel = { confirmCancel = true },
-            )
-        }
-        SoundToggle(
-            on = setup.soundOn,
-            onToggle = { setup.soundOn = !setup.soundOn; setup.save(); Workout.soundOn = setup.soundOn },
-            modifier = Modifier.align(Alignment.TopEnd),
-        )
-    }
-
-    if (confirmCancel) {
-        AlertDialog(
-            onDismissRequest = { confirmCancel = false },
-            title = { Text("Cancel workout?") },
-            text = { Text("You'll return to setup. Current progress will be lost.") },
-            confirmButton = {
-                TextButton(onClick = {
-                    confirmCancel = false
-                    Workout.cancel()
-                }) { Text("Cancel workout", color = Danger) }
-            },
-            dismissButton = { TextButton(onClick = { confirmCancel = false }) { Text("Keep going", color = TextPrimary) } },
-            containerColor = Surface,
-            titleContentColor = TextPrimary,
-            textContentColor = TextSecondary,
-        )
-    }
-}
-
-/** As iOS's speaker button: silences the voice and the beeps, not the haptics. */
-@Composable
-private fun SoundToggle(on: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifier) {
-    TextButton(onClick = onToggle, modifier = modifier.semantics { contentDescription = if (on) "Mute sound" else "Unmute sound" }) {
-        Text(if (on) "Sound on" else "Sound off", color = TextTertiary, fontFamily = Mono, fontSize = 13.sp)
-    }
-}
-
-@Composable
-private fun SetupView(setup: Setup, onChange: () -> Unit, onStart: () -> Unit) {
-    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(Modifier.height(40.dp)) // room for the sound switch above
-        ModeSwitch(setup.mode) { setup.mode = it; onChange() }
-        Spacer(Modifier.height(12.dp))
-        Label(setup.mode.help, TextTertiary, 14.sp)
-        Spacer(Modifier.weight(1f))
-        when (setup.mode) {
-            Mode.EMOM -> {
-                Stepper("Rounds", setup.emomRounds.toString(),
-                    onMinus = { setup.emomRounds = (setup.emomRounds - 1).coerceIn(RoundsRange); onChange() },
-                    onPlus = { setup.emomRounds = (setup.emomRounds + 1).coerceIn(RoundsRange); onChange() })
-                Spacer(Modifier.height(32.dp))
-                Stepper("Round length", lengthString(setup.emomLength),
-                    onMinus = { setup.emomLength = (setup.emomLength - 30).coerceIn(LengthRange); onChange() },
-                    onPlus = { setup.emomLength = (setup.emomLength + 30).coerceIn(LengthRange); onChange() })
-            }
-            Mode.INTERVALS -> {
-                Stepper("Work (sec)", setup.work.toString(),
-                    onMinus = { setup.work = (setup.work - 1).coerceIn(WorkRange); onChange() },
-                    onPlus = { setup.work = (setup.work + 1).coerceIn(WorkRange); onChange() })
-                Spacer(Modifier.height(24.dp))
-                Stepper("Rest (sec)", setup.rest.toString(),
-                    onMinus = { setup.rest = (setup.rest - 1).coerceIn(RestRange); onChange() },
-                    onPlus = { setup.rest = (setup.rest + 1).coerceIn(RestRange); onChange() })
-                Spacer(Modifier.height(24.dp))
-                Stepper("Rounds", setup.intervalRounds.toString(),
-                    onMinus = { setup.intervalRounds = (setup.intervalRounds - 1).coerceIn(IntervalRoundsRange); onChange() },
-                    onPlus = { setup.intervalRounds = (setup.intervalRounds + 1).coerceIn(IntervalRoundsRange); onChange() })
-            }
-            Mode.FOR_TIME -> {
-                Stepper("Time cap", capString(setup.cap),
-                    onMinus = { setup.cap = (setup.cap - 30).coerceIn(CapRange); onChange() },
-                    onPlus = { setup.cap = (setup.cap + 30).coerceIn(CapRange); onChange() })
-            }
-        }
-        Spacer(Modifier.weight(1f))
-        Primary("Start", onStart)
-    }
-}
-
-@Composable
-private fun ModeSwitch(selected: Mode, onSelect: (Mode) -> Unit) {
-    Row(
-        Modifier.clip(RoundedCornerShape(10.dp)).background(Card).padding(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Mode.entries.forEach { m ->
-            val on = m == selected
-            Button(
-                onClick = { if (!on) onSelect(m) },
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (on) Lime else Color.Transparent,
-                    contentColor = if (on) OnLime else TextSecondary,
-                ),
-                modifier = Modifier.height(40.dp),
-            ) { Text(m.label, fontFamily = Mono, fontWeight = if (on) FontWeight.Bold else FontWeight.Normal, fontSize = 15.sp) }
+    // A white flash on each new EMOM round and each Intervals work/rest change, as iOS.
+    var flash by remember { mutableStateOf(false) }
+    var lastRound by remember { mutableStateOf(snapshot.currentRound) }
+    var lastPhase by remember { mutableStateOf(snapshot.currentPhase) }
+    LaunchedEffect(snapshot.currentRound, snapshot.currentPhase, running) {
+        val changedRound = engine.mode is TimerMode.Emom && snapshot.currentRound > lastRound
+        val changedPhase = engine.mode is TimerMode.Intervals && snapshot.currentPhase != lastPhase
+        lastRound = snapshot.currentRound
+        lastPhase = snapshot.currentPhase
+        if (running && (changedRound || changedPhase)) {
+            flash = true
+            delay(350)
+            flash = false
         }
     }
-}
 
-@Composable
-private fun CountIn(remaining: Int, onCancel: () -> Unit) {
-    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Label("Get ready", TextSecondary, 22.sp, FontWeight.SemiBold)
-        Label(remaining.toString(), TextPrimary, 120.sp, FontWeight.Bold)
-        Spacer(Modifier.height(32.dp))
-        Secondary("Cancel", onCancel)
-    }
-}
-
-@Composable
-private fun Running(engine: WODTimerEngine, snapshot: Snapshot, onPrimary: () -> Unit, onCancel: () -> Unit) {
-    val mode = engine.mode
-    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(Modifier.weight(1f))
-        when (mode) {
-            is TimerMode.Emom -> {
-                Label(timeString(snapshot.remainingTimeInPhase), TextPrimary, 88.sp, FontWeight.Bold)
-                Label("Round ${snapshot.currentRound} / ${engine.rounds} Rounds", TextSecondary, 20.sp, FontWeight.SemiBold)
-            }
-            is TimerMode.Intervals -> {
-                val work = snapshot.currentPhase == Phase.WORK
-                Label(if (work) "Work" else "Rest", TextSecondary, 22.sp, FontWeight.Bold)
-                Spacer(Modifier.height(8.dp))
-                Box(contentAlignment = Alignment.Center) {
-                    PhaseRing(
-                        remaining = snapshot.remainingTimeInPhase,
-                        duration = (if (work) mode.workSeconds else mode.restSeconds).toDouble(),
-                        tint = if (work) Lime else TextSecondary,
+    val palette = if (isSystemInDarkTheme()) Dark else Light
+    val density = LocalDensity.current
+    CompositionLocalProvider(LocalPalette provides palette, LocalDensity provides Density(density.density, 1f)) {
+        BackHandler(enabled = showAbout) { showAbout = false }
+        if (showAbout) {
+            About(onDone = { showAbout = false })
+            return@CompositionLocalProvider
+        }
+        // iOS: the safe area, then 12 around the content view; the space left is what the
+        // layout is measured against, and the content is inset another 12 inside it.
+        Box(Modifier.fillMaxSize().background(palette.background)) {
+        BoxWithConstraints(Modifier.fillMaxSize().safeDrawingPadding().padding(S.MD)) {
+            val layout = Layout(maxWidth.value, maxHeight.value)
+            CompositionLocalProvider(LocalLayout provides layout) {
+                Box(Modifier.fillMaxSize().padding(S.MD)) {
+                    val content: @Composable () -> Unit = {
+                        Content(
+                            engine = engine,
+                            snapshot = snapshot,
+                            setup = setup,
+                            onChange = { changed() },
+                            onPrimary = {
+                                when {
+                                    snapshot.state == EngineState.IDLE -> start()
+                                    snapshot.state == EngineState.FINISHED -> Workout.reset(setup.engine())
+                                    engine.mode is TimerMode.ForTime -> Workout.stop()
+                                    else -> Workout.pauseOrResume()
+                                }
+                            },
+                            onCancel = { confirmCancel = true },
+                        )
+                    }
+                    if (layout.twoColumn) content()
+                    else Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+                        Box(Modifier.fillMaxHeight().let { m -> layout.maxContentWidth?.let { m.widthIn(max = it) } ?: m.fillMaxWidth() }) { content() }
+                    }
+                    TopRightControls(
+                        soundOn = setup.soundOn,
+                        onSound = { setup.soundOn = !setup.soundOn; setup.save(); Workout.soundOn = setup.soundOn },
+                        onAbout = { showAbout = true },
+                        modifier = Modifier.align(Alignment.TopEnd),
                     )
-                    Label(timeString(snapshot.remainingTimeInPhase), TextPrimary, 72.sp, FontWeight.Bold)
                 }
-                Spacer(Modifier.height(8.dp))
-                Label("Round ${snapshot.currentRound} / ${engine.rounds} Rounds", TextSecondary, 20.sp, FontWeight.SemiBold)
-                Label("${timeString(snapshot.remainingTime)} left", TextTertiary, 16.sp, FontWeight.SemiBold)
-            }
-            is TimerMode.ForTime -> {
-                // Counts up, floored so the shown time never runs ahead of the athlete.
-                Label(timeString(floor(snapshot.elapsedTime)), TextPrimary, 88.sp, FontWeight.Bold)
-                mode.capSeconds?.let { Label("Cap ${lengthString(it)}", TextSecondary, 20.sp, FontWeight.SemiBold) }
+                if (countInEnd != null) CountIn(max(0, ceil(countInEnd - now).toInt()), onCancel = { Workout.cancelCountIn() })
             }
         }
+        // Over the whole screen, the system bars' area included.
+        val flashAlpha by animateFloatAsState(if (flash) 0.85f else 0f, tween(350), label = "flash")
+        if (flashAlpha > 0f) Box(Modifier.fillMaxSize().alpha(flashAlpha).background(palette.text))
+        }
+
+        if (confirmCancel) {
+            AlertDialog(
+                onDismissRequest = { confirmCancel = false },
+                title = { Text("Cancel workout?") },
+                text = { Text("You'll return to setup. Current progress will be lost.") },
+                confirmButton = {
+                    TextButton(onClick = {
+                        confirmCancel = false
+                        Workout.cancel()
+                    }) { Text("Cancel workout", color = Error) }
+                },
+                dismissButton = { TextButton(onClick = { confirmCancel = false }) { Text("Keep going", color = palette.text) } },
+                containerColor = palette.surface,
+                titleContentColor = palette.text,
+                textContentColor = palette.textSecondary,
+            )
+        }
+    }
+}
+
+@Composable
+private fun Content(
+    engine: WODTimerEngine,
+    snapshot: Snapshot,
+    setup: Setup,
+    onChange: () -> Unit,
+    onPrimary: () -> Unit,
+    onCancel: () -> Unit,
+) {
+    val l = LocalLayout.current
+    val primaryTitle = when (snapshot.state) {
+        EngineState.IDLE -> "Start"
+        EngineState.RUNNING -> if (engine.mode is TimerMode.ForTime) "Stop" else "Pause"
+        EngineState.PAUSED -> "Resume"
+        EngineState.FINISHED -> "Reset"
+    }
+    val running = snapshot.state == EngineState.RUNNING || snapshot.state == EngineState.PAUSED
+    val controls: @Composable (Modifier) -> Unit = { modifier ->
+        Column(modifier, verticalArrangement = Arrangement.spacedBy(S.LG * l.spacing)) {
+            PrimaryButton(primaryTitle, onPrimary)
+            if (running) CancelButton(onCancel)
+        }
+    }
+
+    if (l.twoColumn) {
+        val gap = S.XXL * l.spacing
+        when (snapshot.state) {
+            // The header and Start on the left, the steppers on the right.
+            EngineState.IDLE -> Row(Modifier.fillMaxSize().padding(bottom = S.LG * l.spacing), horizontalArrangement = Arrangement.spacedBy(gap)) {
+                Column(Modifier.weight(1f).fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Header(setup, onChange, stacksWhenNarrow = true)
+                    Spacer(Modifier.weight(1f))
+                    controls(Modifier.fillMaxWidth())
+                }
+                StepperColumn(setup, onChange, Modifier.weight(1f).fillMaxHeight())
+            }
+            // The readout takes everything left of the buttons.
+            EngineState.RUNNING, EngineState.PAUSED -> Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(gap)) {
+                BoxWithConstraints(Modifier.weight(1f).fillMaxHeight(), contentAlignment = Alignment.Center) {
+                    Readout(engine, snapshot, diameter = min(maxWidth.value, maxHeight.value), fill = true)
+                }
+                Column(
+                    Modifier.width(l.controlsColumnWidth).fillMaxHeight()
+                        // The sound and info buttons sit over the top of this column.
+                        .padding(top = 44.dp, bottom = S.LG * l.spacing),
+                    verticalArrangement = Arrangement.spacedBy(S.LG * l.spacing),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Spacer(Modifier.weight(1f))
+                    PhaseLabel(engine, snapshot)
+                    ProgressLabels(engine, snapshot)
+                    Spacer(Modifier.weight(1f))
+                    controls(Modifier.fillMaxWidth())
+                }
+            }
+            EngineState.FINISHED -> Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(gap), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.weight(1f), contentAlignment = Alignment.Center) { DoneView(engine, snapshot) }
+                controls(Modifier.width(l.controlsColumnWidth))
+            }
+        }
+        return
+    }
+
+    // One column: iOS's mainVStack, its spacers and its spacing included.
+    Column(
+        Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(S.XXXL * l.spacing),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (snapshot.state == EngineState.IDLE) Header(setup, onChange, stacksWhenNarrow = false)
         Spacer(Modifier.weight(1f))
-        Primary(
-            when {
-                mode is TimerMode.ForTime -> "Stop"
-                snapshot.state == EngineState.PAUSED -> "Resume"
-                else -> "Pause"
-            },
-            onPrimary,
+        when (snapshot.state) {
+            EngineState.FINISHED -> DoneView(engine, snapshot)
+            EngineState.RUNNING, EngineState.PAUSED -> Column(
+                verticalArrangement = Arrangement.spacedBy(S.LG * l.spacing),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                PhaseLabel(engine, snapshot)
+                BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Readout(engine, snapshot, diameter = min(T.NUMERAL_LG * l.font * 4f, maxWidth.value - 24f))
+                }
+                ProgressLabels(engine, snapshot)
+            }
+            EngineState.IDLE -> {}
+        }
+        Spacer(Modifier.weight(1f))
+        if (snapshot.state == EngineState.IDLE) Steppers(setup, onChange)
+        Spacer(Modifier.weight(1f))
+        controls(Modifier.fillMaxWidth().padding(horizontal = S.LG).padding(bottom = S.XXL * l.spacing))
+    }
+}
+
+/** The mode switch and its help line. The top inset clears the sound and info buttons. */
+@Composable
+private fun Header(setup: Setup, onChange: () -> Unit, stacksWhenNarrow: Boolean) {
+    val l = LocalLayout.current
+    val p = LocalPalette.current
+    Column(
+        Modifier.fillMaxWidth().padding(top = 44.dp),
+        verticalArrangement = Arrangement.spacedBy(S.MD * l.spacing),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        ModeSwitch(setup.mode, stacksWhenNarrow) { setup.mode = it; onChange() }
+        Text(
+            setup.mode.help,
+            color = p.textTertiary,
+            fontSize = (T.SM * l.font).sp,
+            fontFamily = Mono,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = S.XL),
         )
-        Spacer(Modifier.height(12.dp))
-        Secondary("Cancel", onCancel)
     }
 }
 
-/** As SharedPhaseRing on iOS: drains clockwise from the top over the current phase. */
+/**
+ * Three buttons side by side. A name that doesn't fit shrinks with the others (to 0.7 of
+ * its size) rather than wrapping or being cut; in two columns they stack instead, as iOS.
+ */
 @Composable
-private fun PhaseRing(remaining: Double, duration: Double, tint: Color) {
-    val progress = if (duration > 0) (remaining / duration).coerceIn(0.0, 1.0).toFloat() else 0f
-    Canvas(Modifier.size(300.dp)) {
-        val stroke = 8.dp.toPx()
-        val inset = stroke / 2
-        val arcSize = androidx.compose.ui.geometry.Size(size.width - stroke, size.height - stroke)
-        val topLeft = androidx.compose.ui.geometry.Offset(inset, inset)
-        drawArc(TextTertiary.copy(alpha = 0.25f), 0f, 360f, false, topLeft, arcSize, style = Stroke(stroke))
-        drawArc(tint, -90f, 360f * progress, false, topLeft, arcSize, style = Stroke(stroke, cap = StrokeCap.Round))
-    }
-}
+private fun ModeSwitch(selected: Mode, stacksWhenNarrow: Boolean, onSelect: (Mode) -> Unit) {
+    val l = LocalLayout.current
+    val p = LocalPalette.current
+    val measurer = rememberTextMeasurer()
+    val hPad = S.MD * l.spacing
+    val gap = S.SM
+    BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        val style = TextStyle(fontFamily = Mono, fontWeight = FontWeight.SemiBold, fontSize = (T.BASE * l.font).sp)
+        val density = LocalDensity.current
+        val textWidth = Mode.entries.sumOf { with(density) { measurer.measure(it.label, style).size.width.toDp().value.toDouble() } }.toFloat()
+        val fixed = (hPad.value * 2 + 1) * Mode.entries.size + gap.value * (Mode.entries.size - 1)
+        val fits = textWidth + fixed <= maxWidth.value
+        val stack = stacksWhenNarrow && !fits
+        val scale = if (fits || stack) 1f else ((maxWidth.value - fixed) / textWidth).coerceIn(0.7f, 1f)
 
-@Composable
-private fun Done(line: String, onReset: () -> Unit) {
-    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(Modifier.weight(1f))
-        Box(Modifier.size(72.dp).background(Lime, CircleShape), contentAlignment = Alignment.Center) {
-            Label("✓", OnLime, 40.sp, FontWeight.Bold)
+        val button: @Composable (Mode) -> Unit = { m ->
+            val on = m == selected
+            Box(
+                Modifier
+                    .clip(RoundedCornerShape(S.SM))
+                    .background(if (on) p.primary else p.card)
+                    .clickable(role = Role.Tab) { if (!on) onSelect(m) }
+                    .semantics { if (on) contentDescription = "${m.label}, selected" }
+                    .padding(horizontal = hPad, vertical = S.SM),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    m.label,
+                    color = if (on) p.onPrimary else p.text,
+                    fontSize = (T.BASE * l.font * scale).sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = Mono,
+                    maxLines = 1,
+                    softWrap = false,
+                )
+            }
         }
-        Spacer(Modifier.height(16.dp))
-        Label("Done", TextPrimary, 36.sp, FontWeight.Bold)
-        Label(line, TextSecondary, 16.sp)
-        Spacer(Modifier.weight(1f))
-        Primary("Reset", onReset)
+        if (stack) Column(verticalArrangement = Arrangement.spacedBy(gap), horizontalAlignment = Alignment.CenterHorizontally) { Mode.entries.forEach { button(it) } }
+        else Row(horizontalArrangement = Arrangement.spacedBy(gap)) { Mode.entries.forEach { button(it) } }
     }
 }
 
+/**
+ * The steppers in the right-hand column of two columns, at the largest scale (up to the
+ * screen's) at which Intervals' three fit the column's height. Scrolls only if even the
+ * smallest scale doesn't fit, in a very short window.
+ */
 @Composable
-private fun Stepper(label: String, value: String, onMinus: () -> Unit, onPlus: () -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Label(label, TextSecondary, 14.sp)
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            RepeatButton("−", "Decrease $label", onMinus)
-            Label(value, TextPrimary, 52.sp, FontWeight.Bold, Modifier.width(200.dp))
-            RepeatButton("+", "Increase $label", onPlus)
+private fun StepperColumn(setup: Setup, onChange: () -> Unit, modifier: Modifier) {
+    val l = LocalLayout.current
+    BoxWithConstraints(modifier, contentAlignment = Alignment.Center) {
+        // One stepper: its label and the gap under it, a row of 64-point buttons (or the
+        // digits, 1.15 x 56 points) with 8 above and below, and the gap to the next.
+        fun height(font: Float): Float {
+            val spacing = if (font < 1) font else 1f + (font - 1f) * 0.6f
+            val row = max(64f * spacing, 56f * font * 1.15f) + 16f
+            return 3 * (14f * font * 1.15f + 16f * spacing + row) + 2 * 16f * spacing + 8f
+        }
+        var font = l.font
+        while (font > 0.5f && height(font) > maxHeight.value) font -= 0.02f
+        CompositionLocalProvider(LocalLayout provides Layout(l.width, l.height, fontOverride = font)) {
+            Box(Modifier.verticalScroll(rememberScrollState())) { Steppers(setup, onChange) }
+        }
+    }
+}
+
+/**
+ * All three modes' steppers, the hidden ones invisible: the block is as tall as Intervals'
+ * three steppers whichever mode is chosen, so the screen doesn't jump on a switch (iOS).
+ */
+@Composable
+private fun Steppers(setup: Setup, onChange: () -> Unit) {
+    val l = LocalLayout.current
+    Box(contentAlignment = Alignment.TopCenter) {
+        val group: @Composable (Mode, @Composable ColumnScope.(Boolean) -> Unit) -> Unit = { mode, body ->
+            val shown = setup.mode == mode
+            Column(
+                Modifier.alpha(if (shown) 1f else 0f).let { if (shown) it else it.clearAndSetSemantics { } },
+                verticalArrangement = Arrangement.spacedBy(S.LG * l.spacing),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) { body(shown) }
+        }
+        group(Mode.EMOM) { on ->
+            Stepper("Rounds", setup.emomRounds.toString(), wide = false, enabled = on,
+                onMinus = { setup.emomRounds = (setup.emomRounds - 1).coerceIn(RoundsRange); onChange() },
+                onPlus = { setup.emomRounds = (setup.emomRounds + 1).coerceIn(RoundsRange); onChange() })
+            Stepper("Round length", lengthString(setup.emomLength), wide = true, enabled = on,
+                onMinus = { setup.emomLength = (setup.emomLength - 30).coerceIn(LengthRange); onChange() },
+                onPlus = { setup.emomLength = (setup.emomLength + 30).coerceIn(LengthRange); onChange() })
+        }
+        group(Mode.INTERVALS) { on ->
+            Stepper("Work (sec)", setup.work.toString(), wide = false, enabled = on,
+                onMinus = { setup.work = (setup.work - 1).coerceIn(WorkRange); onChange() },
+                onPlus = { setup.work = (setup.work + 1).coerceIn(WorkRange); onChange() })
+            Stepper("Rest (sec)", setup.rest.toString(), wide = false, enabled = on,
+                onMinus = { setup.rest = (setup.rest - 1).coerceIn(RestRange); onChange() },
+                onPlus = { setup.rest = (setup.rest + 1).coerceIn(RestRange); onChange() })
+            Stepper("Rounds", setup.intervalRounds.toString(), wide = false, enabled = on,
+                onMinus = { setup.intervalRounds = (setup.intervalRounds - 1).coerceIn(IntervalRoundsRange); onChange() },
+                onPlus = { setup.intervalRounds = (setup.intervalRounds + 1).coerceIn(IntervalRoundsRange); onChange() })
+        }
+        group(Mode.FOR_TIME) { on ->
+            // One stepper for both "No cap" (0) and the cap: 0:30, 1:00 ... 60:00.
+            Stepper("Time cap", capString(setup.cap), wide = true, enabled = on,
+                onMinus = { setup.cap = (setup.cap - 30).coerceIn(CapRange); onChange() },
+                onPlus = { setup.cap = (setup.cap + 30).coerceIn(CapRange); onChange() })
+        }
+    }
+}
+
+/**
+ * As SharedStepperView: the label, then − value + with lime buttons. The value takes what's
+ * left between the buttons and shrinks to fit (to 0.4), so "No cap" never runs into them.
+ */
+@Composable
+private fun Stepper(label: String, value: String, wide: Boolean, enabled: Boolean, onMinus: () -> Unit, onPlus: () -> Unit) {
+    val l = LocalLayout.current
+    val p = LocalPalette.current
+    val gap = S.LG * l.spacing
+    val buttonSize = S.XXXL * 2 * l.spacing
+    val valueSize = T.NUMERAL_MD * l.font
+    val minValueWidth = if (wide) max(buttonSize.value * 2, valueSize * 1.9f).dp + S.LG * 2 else buttonSize * 2
+    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(gap)) {
+        Fit(label, T.SM * l.font, p.textSecondary, FontWeight.SemiBold)
+        Row(Modifier.padding(vertical = S.SM), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(gap)) {
+            RepeatButton("−", "Decrease $label", buttonSize, valueSize * 0.75f, enabled, onMinus)
+            Box(Modifier.weight(1f, fill = false).widthIn(min = minValueWidth), contentAlignment = Alignment.Center) {
+                Fit(value, valueSize, p.text, FontWeight.Bold, minScale = 0.4f,
+                    modifier = Modifier.padding(horizontal = if (wide) S.LG else 0.dp).semantics { contentDescription = "$label, $value" })
+            }
+            RepeatButton("+", "Increase $label", buttonSize, valueSize * 0.75f, enabled, onPlus)
         }
     }
 }
 
 /** A step button that repeats while held, as iOS's steppers do with a long press. */
 @Composable
-private fun RepeatButton(symbol: String, description: String, onStep: () -> Unit) {
+private fun RepeatButton(symbol: String, description: String, size: Dp, fontSize: Float, enabled: Boolean, onStep: () -> Unit) {
+    val p = LocalPalette.current
     val step by rememberUpdatedState(onStep)
     val scope = rememberCoroutineScope()
     Box(
         Modifier
-            .size(64.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(Card)
+            .size(size)
+            .clip(RoundedCornerShape(S.MD))
+            .background(p.primary)
             .semantics {
                 role = Role.Button
                 contentDescription = description
                 onClick { step(); true }
             }
-            .pointerInput(Unit) {
+            .pointerInput(enabled) {
+                if (!enabled) return@pointerInput
                 awaitEachGesture {
                     awaitFirstDown()
                     step()
+                    // iOS: after 0.35 s, a step every 0.35 s, and every 0.12 s once held 0.8 s.
                     val repeat = scope.launch {
-                        delay(400)
+                        val start = System.currentTimeMillis()
+                        delay(350)
                         while (true) {
                             step()
-                            delay(70)
+                            delay(if (System.currentTimeMillis() - start > 800) 120 else 350)
                         }
                     }
                     waitForUpOrCancellation()
@@ -437,36 +632,280 @@ private fun RepeatButton(symbol: String, description: String, onStep: () -> Unit
                 }
             },
         contentAlignment = Alignment.Center,
-    ) { Text(symbol, color = TextPrimary, fontFamily = Mono, fontSize = 28.sp) }
+    ) { Fit(symbol, fontSize, p.onPrimary, FontWeight.Bold) }
 }
 
 @Composable
-private fun Primary(title: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Lime, contentColor = OnLime),
-        modifier = Modifier.fillMaxWidth().height(64.dp),
-    ) { Text(title, fontFamily = Mono, fontWeight = FontWeight.Bold, fontSize = 24.sp) }
+private fun PhaseLabel(engine: WODTimerEngine, snapshot: Snapshot) {
+    if (engine.mode !is TimerMode.Intervals) return
+    val l = LocalLayout.current
+    Fit(if (snapshot.currentPhase == Phase.WORK) "Work" else "Rest", T.LG * l.font, LocalPalette.current.textSecondary, FontWeight.Bold)
+}
+
+/**
+ * The digits, and the Intervals ring around them. The digits are a quarter of the ring's
+ * diameter, so the two scale together. With `fill` (two columns), EMOM and For Time digits,
+ * with no ring to stay inside, take most of the width.
+ */
+@Composable
+private fun Readout(engine: WODTimerEngine, snapshot: Snapshot, diameter: Float, fill: Boolean = false) {
+    val p = LocalPalette.current
+    val intervals = engine.mode as? TimerMode.Intervals
+    // For Time counts up, floored so the shown time never runs ahead of the athlete.
+    val shown = if (engine.mode is TimerMode.ForTime) floor(snapshot.elapsedTime) else snapshot.remainingTimeInPhase
+    Box(contentAlignment = Alignment.Center) {
+        if (intervals != null) {
+            val work = snapshot.currentPhase == Phase.WORK
+            PhaseRing(
+                remaining = snapshot.remainingTimeInPhase,
+                duration = (if (work) intervals.workSeconds else intervals.restSeconds).toDouble(),
+                tint = if (work) p.primary else p.textSecondary,
+                track = p.textTertiary.copy(alpha = 0.25f),
+                diameter = diameter,
+            )
+        }
+        val size = if (fill && intervals == null) diameter / 3.2f else diameter / 4f
+        Fit(timeString(shown), size, p.text, FontWeight.Bold, minScale = 0.5f,
+            modifier = Modifier.widthIn(max = diameter.dp))
+    }
+}
+
+/** As SharedPhaseRing: drains clockwise from the top over the current phase. */
+@Composable
+private fun PhaseRing(remaining: Double, duration: Double, tint: Color, track: Color, diameter: Float) {
+    val progress = if (duration > 0) (remaining / duration).coerceIn(0.0, 1.0).toFloat() else 0f
+    val lineWidth = 6 * max(1f, diameter / 320)
+    Canvas(Modifier.size(diameter.dp).clearAndSetSemantics { }) {
+        val stroke = lineWidth.dp.toPx()
+        val inset = stroke / 2
+        val arcSize = Size(size.width - stroke, size.height - stroke)
+        val topLeft = Offset(inset, inset)
+        drawArc(track, 0f, 360f, false, topLeft, arcSize, style = Stroke(stroke))
+        drawArc(tint, -90f, 360f * progress, false, topLeft, arcSize, style = Stroke(stroke, cap = StrokeCap.Round))
+    }
+}
+
+/** The round line and its context, each on one line, shrinking to fit rather than wrapping. */
+@Composable
+private fun ProgressLabels(engine: WODTimerEngine, snapshot: Snapshot) {
+    val l = LocalLayout.current
+    val p = LocalPalette.current
+    when (val m = engine.mode) {
+        // No rounds in For Time: the cap as context when one is set.
+        is TimerMode.ForTime -> m.capSeconds?.let {
+            Fit("Cap ${lengthString(it)}", T.LG * l.font, p.textSecondary, FontWeight.SemiBold, minScale = 0.5f)
+        }
+        else -> {
+            Fit("Round ${snapshot.currentRound} / ${engine.rounds} Rounds", T.LG * l.font, p.textSecondary, FontWeight.SemiBold, minScale = 0.5f)
+            if (m is TimerMode.Intervals) {
+                Fit("${timeString(snapshot.remainingTime)} left", T.SM * l.font, p.textTertiary, FontWeight.SemiBold, minScale = 0.5f)
+            }
+        }
+    }
+}
+
+/** As SharedDoneView. */
+@Composable
+private fun DoneView(engine: WODTimerEngine, snapshot: Snapshot) {
+    val l = LocalLayout.current
+    val p = LocalPalette.current
+    val line = if (engine.mode is TimerMode.ForTime) "Finished in ${timeString(floor(snapshot.elapsedTime))}"
+    else engine.rounds.let { "You completed $it round${if (it == 1) "" else "s"}" }
+    Column(
+        Modifier.padding(vertical = S.XXL * l.spacing).semantics(mergeDescendants = true) { },
+        verticalArrangement = Arrangement.spacedBy(S.XXL * l.spacing),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        CheckmarkCircle(64 * l.font, p.primary, p.background)
+        Fit("Done", T.XXL * l.font, p.text, FontWeight.Bold)
+        Fit(line, T.BASE * l.font, p.textSecondary, minScale = 0.5f)
+    }
+}
+
+/** SF Symbols' checkmark.circle.fill: a filled circle with the check cut out of it. */
+@Composable
+private fun CheckmarkCircle(diameter: Float, fill: Color, check: Color) {
+    Canvas(Modifier.size(diameter.dp)) {
+        val d = size.width
+        drawCircle(fill, radius = d / 2)
+        val path = Path().apply {
+            moveTo(d * 0.29f, d * 0.52f)
+            lineTo(d * 0.44f, d * 0.67f)
+            lineTo(d * 0.71f, d * 0.34f)
+        }
+        drawPath(path, check, style = Stroke(d * 0.085f, cap = StrokeCap.Round, join = StrokeJoin.Round))
+    }
+}
+
+/** The 10-second count-in, over everything, as iOS's countdownOverlay. */
+@Composable
+private fun CountIn(remaining: Int, onCancel: () -> Unit) {
+    val l = LocalLayout.current
+    val p = LocalPalette.current
+    if (remaining <= 0) return
+    Column(
+        Modifier.fillMaxSize().background(p.background).semantics(mergeDescendants = true) { contentDescription = "Countdown, $remaining seconds" },
+        verticalArrangement = Arrangement.spacedBy(S.LG * l.spacing, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Fit("Get ready", T.LG * l.font, p.textSecondary, FontWeight.SemiBold)
+        Fit(remaining.toString(), T.NUMERAL_LG * l.font, p.text, FontWeight.Bold)
+        Box(
+            Modifier.padding(top = S.XL * l.spacing).padding(horizontal = S.XXXL)
+                .let { m -> l.maxContentWidth?.let { m.widthIn(max = it) } ?: m }
+        ) { CancelButton(onCancel) }
+    }
 }
 
 @Composable
-private fun Secondary(title: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Danger, contentColor = TextPrimary),
-        modifier = Modifier.fillMaxWidth().height(48.dp),
-    ) { Text(title, fontFamily = Mono, fontSize = 18.sp) }
+private fun PrimaryButton(title: String, onClick: () -> Unit) {
+    val l = LocalLayout.current
+    val p = LocalPalette.current
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(S.MD))
+            .background(p.primary)
+            .clickable(role = Role.Button, onClick = onClick)
+            .padding(vertical = S.MD * l.spacing, horizontal = S.XL),
+        contentAlignment = Alignment.Center,
+    ) { Fit(title, T.XXL * l.font, p.onPrimary, FontWeight.Bold, minScale = 0.5f) }
 }
 
 @Composable
-private fun Label(
+private fun CancelButton(onClick: () -> Unit) {
+    val l = LocalLayout.current
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(S.SM))
+            .background(Error)
+            .clickable(role = Role.Button, onClickLabel = "Stops workout and returns to setup", onClick = onClick)
+            .padding(vertical = S.SM * l.spacing, horizontal = S.XL),
+        contentAlignment = Alignment.Center,
+    ) { Fit("Cancel", T.LG * l.font, OnError, FontWeight.SemiBold, minScale = 0.5f) }
+}
+
+/** The sound switch and About, top right, as iOS: 44-point targets, tertiary icons. */
+@Composable
+private fun TopRightControls(soundOn: Boolean, onSound: () -> Unit, onAbout: () -> Unit, modifier: Modifier) {
+    val p = LocalPalette.current
+    val haptic = LocalHapticFeedback.current
+    Row(modifier, horizontalArrangement = Arrangement.spacedBy(S.MD)) {
+        IconButton(if (soundOn) "Mute sound" else "Unmute sound", {
+            onSound()
+            haptic.performHapticFeedback(if (soundOn) HapticFeedbackType.ToggleOff else HapticFeedbackType.ToggleOn)
+        }) { SpeakerIcon(soundOn, p.textTertiary) }
+        IconButton("About", onAbout) { InfoIcon(p.textTertiary) }
+    }
+}
+
+@Composable
+private fun IconButton(description: String, onClick: () -> Unit, icon: @Composable () -> Unit) {
+    Box(
+        Modifier.size(44.dp).clip(RoundedCornerShape(S.SM))
+            .clickable(role = Role.Button, onClick = onClick)
+            .semantics { contentDescription = description },
+        contentAlignment = Alignment.Center,
+    ) { icon() }
+}
+
+/** speaker.wave.2 and speaker.slash, drawn: no icon font in the app. */
+@Composable
+private fun SpeakerIcon(on: Boolean, color: Color) {
+    Canvas(Modifier.size(22.dp)) {
+        val w = size.width
+        val line = Stroke(w * 0.07f, cap = StrokeCap.Round, join = StrokeJoin.Round)
+        val body = Path().apply {
+            moveTo(w * 0.10f, w * 0.38f); lineTo(w * 0.26f, w * 0.38f); lineTo(w * 0.48f, w * 0.18f)
+            lineTo(w * 0.48f, w * 0.82f); lineTo(w * 0.26f, w * 0.62f); lineTo(w * 0.10f, w * 0.62f); close()
+        }
+        drawPath(body, color, style = line)
+        if (on) {
+            drawArc(color, -45f, 90f, false, Offset(w * 0.40f, w * 0.30f), Size(w * 0.40f, w * 0.40f), style = line)
+            drawArc(color, -50f, 100f, false, Offset(w * 0.34f, w * 0.14f), Size(w * 0.72f, w * 0.72f), style = line)
+        } else {
+            drawLine(color, Offset(w * 0.08f, w * 0.08f), Offset(w * 0.92f, w * 0.92f), w * 0.07f, StrokeCap.Round)
+        }
+    }
+}
+
+/** info.circle, drawn. */
+@Composable
+private fun InfoIcon(color: Color) {
+    Canvas(Modifier.size(22.dp)) {
+        val w = size.width
+        drawCircle(color, radius = w * 0.44f, style = Stroke(w * 0.07f))
+        drawCircle(color, radius = w * 0.055f, center = Offset(w / 2, w * 0.30f), style = Fill)
+        drawLine(color, Offset(w / 2, w * 0.45f), Offset(w / 2, w * 0.72f), w * 0.08f, StrokeCap.Round)
+    }
+}
+
+/** As iOS's About sheet, without the App Store links to the other apps. */
+@Composable
+private fun About(onDone: () -> Unit) {
+    val p = LocalPalette.current
+    val context = LocalContext.current
+    val uri = LocalUriHandler.current
+    val info = remember { context.packageManager.getPackageInfo(context.packageName, 0) }
+    val versionLine = "Version ${info.versionName} (${info.longVersionCode})"
+    val link: @Composable (String, String) -> Unit = { title, url ->
+        Text(title, color = p.textTertiary, fontSize = T.SM.sp, fontFamily = Mono,
+            modifier = Modifier.clickable(role = Role.Button) { runCatching { uri.openUri(url) } }.padding(4.dp))
+    }
+    Column(
+        Modifier.fillMaxSize().background(p.background).safeDrawingPadding().padding(horizontal = S.LG),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(S.XXL),
+    ) {
+        Column(Modifier.padding(top = S.XXL), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(S.LG)) {
+            Text("WODrounds", color = p.text, fontSize = T.XL.sp, fontWeight = FontWeight.Bold, fontFamily = Mono)
+            Text(versionLine, color = p.textSecondary, fontSize = T.SM.sp, fontFamily = Mono)
+        }
+        Text(
+            "No ads and no tracking. Only anonymous crash reports are sent, to help fix bugs.",
+            color = p.textSecondary, fontSize = T.BASE.sp, fontFamily = Mono, textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = S.LG),
+        )
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(S.SM)) {
+            // The user sees the whole mail before anything is sent, as on iOS.
+            val subject = android.net.Uri.encode("WODrounds ${info.versionName} feedback")
+            val body = android.net.Uri.encode("\n\n\n--\nWODrounds ${info.versionName} (${info.longVersionCode})\nAndroid ${Build.VERSION.RELEASE}")
+            link("Send feedback", "mailto:support@iamjarl.com?subject=$subject&body=$body")
+            link("Support", "https://wodrounds.iamjarl.com/support")
+            link("Privacy Policy", "https://wodrounds.iamjarl.com/privacy")
+        }
+        Spacer(Modifier.weight(1f))
+        Box(
+            Modifier.fillMaxWidth().padding(bottom = S.XXL).clip(RoundedCornerShape(S.MD)).background(p.primary)
+                .clickable(role = Role.Button, onClick = onDone).padding(vertical = S.MD),
+            contentAlignment = Alignment.Center,
+        ) { Text("Done", color = p.onPrimary, fontSize = T.BASE.sp, fontWeight = FontWeight.SemiBold, fontFamily = Mono) }
+    }
+}
+
+/** One line of mono text that shrinks to fit (to minScale) instead of wrapping, as iOS's minimumScaleFactor. */
+@Composable
+private fun Fit(
     text: String,
+    size: Float,
     color: Color,
-    size: TextUnit,
     weight: FontWeight = FontWeight.Normal,
+    minScale: Float = 0.7f,
     modifier: Modifier = Modifier,
 ) {
-    Text(text, color = color, fontSize = size, fontWeight = weight, fontFamily = Mono, textAlign = TextAlign.Center, modifier = modifier)
+    BasicText(
+        text = text,
+        modifier = modifier,
+        // A tight line, as SF Mono's: JetBrains Mono's own is 1.32 of the size, which made a
+        // stepper's digits taller than its buttons and the steppers taller than on iOS.
+        style = TextStyle(
+            color = color, fontSize = size.sp, fontWeight = weight, fontFamily = Mono, textAlign = TextAlign.Center,
+            lineHeight = 1.15.em, lineHeightStyle = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.Both),
+        ),
+        overflow = TextOverflow.Ellipsis,
+        softWrap = false,
+        maxLines = 1,
+        autoSize = TextAutoSize.StepBased(minFontSize = (size * minScale).sp, maxFontSize = size.sp, stepSize = 0.5.sp),
+    )
 }

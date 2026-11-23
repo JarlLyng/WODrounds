@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- A workout carries on with the screen off: a foreground service of type mediaPlayback
-         plays the cues, with the time in an ongoing notification. Haptics on round changes, and a
-         partial wake lock so the CPU keeps the tick going while the workout runs. -->
+    <!-- A workout carries on with the screen off: a foreground service of type specialUse (a
+         workout timer fits none of Android's named types) ticks the timer and plays the cues, with
+         the time in an ongoing notification. Haptics on round changes, and a partial wake lock so
+         the CPU keeps the tick going while the workout runs. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -21,8 +22,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,6 +31,11 @@
         <service
             android:name=".WorkoutService"
             android:exported="false"
-            android:foregroundServiceType="mediaPlayback" />
+            android:foregroundServiceType="specialUse">
+            <!-- Read by Play's review of the specialUse declaration. -->
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Workout interval timer: keeps a workout the user started counting with the screen off and plays its round-change audio cues" />
+        </service>
     </application>
 </manifest>

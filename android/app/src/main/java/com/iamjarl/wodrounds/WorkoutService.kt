@@ -24,9 +24,9 @@ import kotlin.math.max
 /**
  * Keeps a workout going with the screen off: ticks the engine ten times a second, plays the
  * cues, and shows the time in an ongoing notification. A foreground service of type
- * mediaPlayback, since what must go on in the background is the audio: the voice cues and
- * the 3-2-1 (Android's "Continue audio or video playback from the background"). It starts on
- * the user's Start and stops itself on Done or Cancel.
+ * specialUse: a workout timer is none of Android's named types (it plays short cues, not media,
+ * and reads no sensors, as the health type requires). The manifest gives Play the reason. It
+ * starts on the user's Start and stops itself on Done or Cancel.
  */
 class WorkoutService : Service() {
 
@@ -56,7 +56,7 @@ class WorkoutService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        ServiceCompat.startForeground(this, NOTIFICATION, notification(text()), ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
+        ServiceCompat.startForeground(this, NOTIFICATION, notification(text()), ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         cues.reset()
         if (wakeLock?.isHeld != true) {
             wakeLock = getSystemService(PowerManager::class.java)

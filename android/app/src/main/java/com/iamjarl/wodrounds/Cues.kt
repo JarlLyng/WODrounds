@@ -5,6 +5,7 @@ import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.media.SoundPool
+import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
@@ -54,8 +55,14 @@ class Cues(context: Context) {
     private var tts: TextToSpeech? = null
     private var ttsReady = false
     private val beeper = Beeper()
+    // VibratorManager is Android 12+; Android 10 and 11 have the Vibrator service itself.
     private val vibrator: Vibrator? = runCatching {
-        (app.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            (app.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            app.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        }
     }.getOrNull()
 
     // Which cues have fired, so each fires once, as the iOS state vars do.

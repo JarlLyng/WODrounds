@@ -15,10 +15,20 @@ owner's test phone through Google Play's internal testing, and nothing here touc
   that drains over each phase, and the time left in the workout) and For Time (counts up, an
   optional cap up to 60:00, Stop, "Finished in"). Start, a 10-second Get ready, Pause and
   Resume, Cancel (which asks first) and Done. The steppers repeat while held. A sound switch
-  silences the voice and beeps, as iOS's speaker button. The screen only shows the workout.
+  silences the voice and beeps, as iOS's speaker button, and an About screen as iOS's. The
+  screen only shows the workout.
+  The layout is iOS's (`iOSContentView.swift`), which is the reference: every size follows
+  from the space the app has, with iOS's scale rules, so it fits a small phone, the largest
+  display size and a tablet alike; two columns when the screen is about as wide as it is
+  tall (landscape, a tablet on its side, a foldable's inner screen); labels shrink to fit
+  rather than being cut. Light and dark follow the system, in the iamjarl-design colours.
+  The type is JetBrains Mono, the WODrounds display face (OFL-1.1, licence in `assets/`),
+  converted from iamjarl-design's `fonts/` because Android's own monospace has no bold.
+- `Setup.kt`: the setup values under the iOS keys, and `Capture`, which opens a debug build
+  on any screen for screenshots, as iOS's SiteCapture (the extras are in its comment).
 - `Workout.kt` and `WorkoutService.kt`: the workout, and a foreground service of type
-  `mediaPlayback` that ticks it ten times a second, plays the cues and shows the time in an
-  ongoing notification, so it carries on with the screen off. A partial wake lock keeps the CPU
+  `specialUse` (with the reason in the manifest, for Play's review) that ticks it ten times a
+  second, plays the cues and shows the time in an ongoing notification, so it carries on with the screen off. A partial wake lock keeps the CPU
   running for the workout only (capped at 3 hours), and the service stops itself on Done or
   Cancel. On Android 13+ the app asks for notifications on the first Start; the workout runs
   either way.

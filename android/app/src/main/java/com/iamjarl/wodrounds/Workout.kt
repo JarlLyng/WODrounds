@@ -34,9 +34,12 @@ object Workout {
 
     fun changed() { _changes.value++ }
 
-    /** A new setup on the idle screen. Ignored mid-workout. */
+    /**
+     * A new setup on the idle screen. Ignored mid-workout, and on the Done screen, which stays
+     * until Reset: the screen is rebuilt on a rotation and must not set the workout up again.
+     */
     fun setUp(e: WODTimerEngine) {
-        if (isActive) return
+        if (isActive || engine.state == EngineState.FINISHED) return
         engine = e
         changed()
     }
@@ -80,6 +83,18 @@ object Workout {
 
     fun reset(e: WODTimerEngine) {
         engine = e
+        changed()
+    }
+
+    /** Debug screenshots only (Capture): a workout part-way through, done, or counting in. */
+    fun capture(e: WODTimerEngine, elapsed: Double? = null, finished: Boolean = false, countIn: Double? = null) {
+        val now = clock()
+        engine = e
+        countInEnd = countIn?.let { now + it }
+        if (elapsed != null) {
+            engine.start(now - elapsed)
+            if (finished) engine.finish(now)
+        }
         changed()
     }
 
