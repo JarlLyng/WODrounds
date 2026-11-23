@@ -24,6 +24,11 @@ owner's test phone through Google Play's internal testing, and nothing here touc
   rather than being cut. Light and dark follow the system, in the iamjarl-design colours.
   The type is JetBrains Mono, the WODrounds display face (OFL-1.1, licence in `assets/`),
   converted from iamjarl-design's `fonts/` because Android's own monospace has no bold.
+- `res/values-da` and `res/values-es`: Danish and Spanish (es-MX), as on iOS, with iOS's own
+  translations word for word (`WODrounds/{da,es}.lproj/Localizable.strings`); Android's own
+  strings (the notification, the About line, "You completed N rounds") are translated here.
+  Android 13+ offers the language per app in the system settings (`res/xml/locales_config.xml`).
+  The recorded voice cues stay English in every language, as on iOS.
 - `Setup.kt`: the setup values under the iOS keys, and `Capture`, which opens a debug build
   on any screen for screenshots, as iOS's SiteCapture (the extras are in its comment).
 - `Workout.kt` and `WorkoutService.kt`: the workout, and a foreground service of type

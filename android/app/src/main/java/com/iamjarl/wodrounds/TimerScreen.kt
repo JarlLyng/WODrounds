@@ -71,7 +71,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onClick
@@ -201,7 +204,6 @@ private fun timeString(seconds: Double): String {
 }
 
 private fun lengthString(seconds: Int) = "%02d:%02d".format(seconds / 60, seconds % 60)
-private fun capString(seconds: Int) = if (seconds == 0) "No cap" else lengthString(seconds)
 
 @Composable
 fun TimerScreen(prefs: SharedPreferences) {
@@ -326,15 +328,15 @@ fun TimerScreen(prefs: SharedPreferences) {
         if (confirmCancel) {
             AlertDialog(
                 onDismissRequest = { confirmCancel = false },
-                title = { Text("Cancel workout?") },
-                text = { Text("You'll return to setup. Current progress will be lost.") },
+                title = { Text(stringResource(R.string.cancel_workout_question)) },
+                text = { Text(stringResource(R.string.cancel_workout_message)) },
                 confirmButton = {
                     TextButton(onClick = {
                         confirmCancel = false
                         Workout.cancel()
-                    }) { Text("Cancel workout", color = Error) }
+                    }) { Text(stringResource(R.string.cancel_workout), color = Error) }
                 },
-                dismissButton = { TextButton(onClick = { confirmCancel = false }) { Text("Keep going", color = palette.text) } },
+                dismissButton = { TextButton(onClick = { confirmCancel = false }) { Text(stringResource(R.string.keep_going), color = palette.text) } },
                 containerColor = palette.surface,
                 titleContentColor = palette.text,
                 textContentColor = palette.textSecondary,
@@ -354,10 +356,10 @@ private fun Content(
 ) {
     val l = LocalLayout.current
     val primaryTitle = when (snapshot.state) {
-        EngineState.IDLE -> "Start"
-        EngineState.RUNNING -> if (engine.mode is TimerMode.ForTime) "Stop" else "Pause"
-        EngineState.PAUSED -> "Resume"
-        EngineState.FINISHED -> "Reset"
+        EngineState.IDLE -> stringResource(R.string.start)
+        EngineState.RUNNING -> stringResource(if (engine.mode is TimerMode.ForTime) R.string.stop else R.string.pause)
+        EngineState.PAUSED -> stringResource(R.string.resume)
+        EngineState.FINISHED -> stringResource(R.string.reset)
     }
     val running = snapshot.state == EngineState.RUNNING || snapshot.state == EngineState.PAUSED
     val controls: @Composable (Modifier) -> Unit = { modifier ->
@@ -447,7 +449,7 @@ private fun Header(setup: Setup, onChange: () -> Unit, stacksWhenNarrow: Boolean
     ) {
         ModeSwitch(setup.mode, stacksWhenNarrow) { setup.mode = it; onChange() }
         Text(
-            setup.mode.help,
+            stringResource(setup.mode.help),
             color = p.textTertiary,
             fontSize = (T.SM * l.font).sp,
             fontFamily = Mono,
@@ -466,12 +468,13 @@ private fun ModeSwitch(selected: Mode, stacksWhenNarrow: Boolean, onSelect: (Mod
     val l = LocalLayout.current
     val p = LocalPalette.current
     val measurer = rememberTextMeasurer()
+    val labels = Mode.entries.associateWith { stringResource(it.label) }
     val hPad = S.MD * l.spacing
     val gap = S.SM
     BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         val style = TextStyle(fontFamily = Mono, fontWeight = FontWeight.SemiBold, fontSize = (T.BASE * l.font).sp)
         val density = LocalDensity.current
-        val textWidth = Mode.entries.sumOf { with(density) { measurer.measure(it.label, style).size.width.toDp().value.toDouble() } }.toFloat()
+        val textWidth = Mode.entries.sumOf { with(density) { measurer.measure(labels.getValue(it), style).size.width.toDp().value.toDouble() } }.toFloat()
         val fixed = (hPad.value * 2 + 1) * Mode.entries.size + gap.value * (Mode.entries.size - 1)
         val fits = textWidth + fixed <= maxWidth.value
         val stack = stacksWhenNarrow && !fits
@@ -484,12 +487,12 @@ private fun ModeSwitch(selected: Mode, stacksWhenNarrow: Boolean, onSelect: (Mod
                     .clip(RoundedCornerShape(S.SM))
                     .background(if (on) p.primary else p.card)
                     .clickable(role = Role.Tab) { if (!on) onSelect(m) }
-                    .semantics { if (on) contentDescription = "${m.label}, selected" }
+                    .semantics { this.selected = on }
                     .padding(horizontal = hPad, vertical = S.SM),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    m.label,
+                    labels.getValue(m),
                     color = if (on) p.onPrimary else p.text,
                     fontSize = (T.BASE * l.font * scale).sp,
                     fontWeight = FontWeight.SemiBold,
@@ -545,27 +548,27 @@ private fun Steppers(setup: Setup, onChange: () -> Unit) {
             ) { body(shown) }
         }
         group(Mode.EMOM) { on ->
-            Stepper("Rounds", setup.emomRounds.toString(), wide = false, enabled = on,
+            Stepper(stringResource(R.string.rounds), setup.emomRounds.toString(), wide = false, enabled = on,
                 onMinus = { setup.emomRounds = (setup.emomRounds - 1).coerceIn(RoundsRange); onChange() },
                 onPlus = { setup.emomRounds = (setup.emomRounds + 1).coerceIn(RoundsRange); onChange() })
-            Stepper("Round length", lengthString(setup.emomLength), wide = true, enabled = on,
+            Stepper(stringResource(R.string.round_length), lengthString(setup.emomLength), wide = true, enabled = on,
                 onMinus = { setup.emomLength = (setup.emomLength - 30).coerceIn(LengthRange); onChange() },
                 onPlus = { setup.emomLength = (setup.emomLength + 30).coerceIn(LengthRange); onChange() })
         }
         group(Mode.INTERVALS) { on ->
-            Stepper("Work (sec)", setup.work.toString(), wide = false, enabled = on,
+            Stepper(stringResource(R.string.work_sec), setup.work.toString(), wide = false, enabled = on,
                 onMinus = { setup.work = (setup.work - 1).coerceIn(WorkRange); onChange() },
                 onPlus = { setup.work = (setup.work + 1).coerceIn(WorkRange); onChange() })
-            Stepper("Rest (sec)", setup.rest.toString(), wide = false, enabled = on,
+            Stepper(stringResource(R.string.rest_sec), setup.rest.toString(), wide = false, enabled = on,
                 onMinus = { setup.rest = (setup.rest - 1).coerceIn(RestRange); onChange() },
                 onPlus = { setup.rest = (setup.rest + 1).coerceIn(RestRange); onChange() })
-            Stepper("Rounds", setup.intervalRounds.toString(), wide = false, enabled = on,
+            Stepper(stringResource(R.string.rounds), setup.intervalRounds.toString(), wide = false, enabled = on,
                 onMinus = { setup.intervalRounds = (setup.intervalRounds - 1).coerceIn(IntervalRoundsRange); onChange() },
                 onPlus = { setup.intervalRounds = (setup.intervalRounds + 1).coerceIn(IntervalRoundsRange); onChange() })
         }
         group(Mode.FOR_TIME) { on ->
             // One stepper for both "No cap" (0) and the cap: 0:30, 1:00 ... 60:00.
-            Stepper("Time cap", capString(setup.cap), wide = true, enabled = on,
+            Stepper(stringResource(R.string.time_cap), if (setup.cap == 0) stringResource(R.string.no_cap) else lengthString(setup.cap), wide = true, enabled = on,
                 onMinus = { setup.cap = (setup.cap - 30).coerceIn(CapRange); onChange() },
                 onPlus = { setup.cap = (setup.cap + 30).coerceIn(CapRange); onChange() })
         }
@@ -587,12 +590,12 @@ private fun Stepper(label: String, value: String, wide: Boolean, enabled: Boolea
     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(gap)) {
         Fit(label, T.SM * l.font, p.textSecondary, FontWeight.SemiBold)
         Row(Modifier.padding(vertical = S.SM), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(gap)) {
-            RepeatButton("−", "Decrease $label", buttonSize, valueSize * 0.75f, enabled, onMinus)
+            RepeatButton("−", stringResource(R.string.decrease, label), buttonSize, valueSize * 0.75f, enabled, onMinus)
             Box(Modifier.weight(1f, fill = false).widthIn(min = minValueWidth), contentAlignment = Alignment.Center) {
                 Fit(value, valueSize, p.text, FontWeight.Bold, minScale = 0.4f,
                     modifier = Modifier.padding(horizontal = if (wide) S.LG else 0.dp).semantics { contentDescription = "$label, $value" })
             }
-            RepeatButton("+", "Increase $label", buttonSize, valueSize * 0.75f, enabled, onPlus)
+            RepeatButton("+", stringResource(R.string.increase, label), buttonSize, valueSize * 0.75f, enabled, onPlus)
         }
     }
 }
@@ -639,7 +642,7 @@ private fun RepeatButton(symbol: String, description: String, size: Dp, fontSize
 private fun PhaseLabel(engine: WODTimerEngine, snapshot: Snapshot) {
     if (engine.mode !is TimerMode.Intervals) return
     val l = LocalLayout.current
-    Fit(if (snapshot.currentPhase == Phase.WORK) "Work" else "Rest", T.LG * l.font, LocalPalette.current.textSecondary, FontWeight.Bold)
+    Fit(stringResource(if (snapshot.currentPhase == Phase.WORK) R.string.work else R.string.rest), T.LG * l.font, LocalPalette.current.textSecondary, FontWeight.Bold)
 }
 
 /**
@@ -693,12 +696,12 @@ private fun ProgressLabels(engine: WODTimerEngine, snapshot: Snapshot) {
     when (val m = engine.mode) {
         // No rounds in For Time: the cap as context when one is set.
         is TimerMode.ForTime -> m.capSeconds?.let {
-            Fit("Cap ${lengthString(it)}", T.LG * l.font, p.textSecondary, FontWeight.SemiBold, minScale = 0.5f)
+            Fit(stringResource(R.string.cap, lengthString(it)), T.LG * l.font, p.textSecondary, FontWeight.SemiBold, minScale = 0.5f)
         }
         else -> {
-            Fit("Round ${snapshot.currentRound} / ${engine.rounds} Rounds", T.LG * l.font, p.textSecondary, FontWeight.SemiBold, minScale = 0.5f)
+            Fit(stringResource(R.string.round_of, snapshot.currentRound, engine.rounds), T.LG * l.font, p.textSecondary, FontWeight.SemiBold, minScale = 0.5f)
             if (m is TimerMode.Intervals) {
-                Fit("${timeString(snapshot.remainingTime)} left", T.SM * l.font, p.textTertiary, FontWeight.SemiBold, minScale = 0.5f)
+                Fit(stringResource(R.string.time_left, timeString(snapshot.remainingTime)), T.SM * l.font, p.textTertiary, FontWeight.SemiBold, minScale = 0.5f)
             }
         }
     }
@@ -709,15 +712,15 @@ private fun ProgressLabels(engine: WODTimerEngine, snapshot: Snapshot) {
 private fun DoneView(engine: WODTimerEngine, snapshot: Snapshot) {
     val l = LocalLayout.current
     val p = LocalPalette.current
-    val line = if (engine.mode is TimerMode.ForTime) "Finished in ${timeString(floor(snapshot.elapsedTime))}"
-    else engine.rounds.let { "You completed $it round${if (it == 1) "" else "s"}" }
+    val line = if (engine.mode is TimerMode.ForTime) stringResource(R.string.finished_in, timeString(floor(snapshot.elapsedTime)))
+    else pluralStringResource(R.plurals.completed_rounds, engine.rounds, engine.rounds)
     Column(
         Modifier.padding(vertical = S.XXL * l.spacing).semantics(mergeDescendants = true) { },
         verticalArrangement = Arrangement.spacedBy(S.XXL * l.spacing),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CheckmarkCircle(64 * l.font, p.primary, p.background)
-        Fit("Done", T.XXL * l.font, p.text, FontWeight.Bold)
+        Fit(stringResource(R.string.done), T.XXL * l.font, p.text, FontWeight.Bold)
         Fit(line, T.BASE * l.font, p.textSecondary, minScale = 0.5f)
     }
 }
@@ -741,14 +744,15 @@ private fun CheckmarkCircle(diameter: Float, fill: Color, check: Color) {
 @Composable
 private fun CountIn(remaining: Int, onCancel: () -> Unit) {
     val l = LocalLayout.current
+    val countdownLabel = stringResource(R.string.countdown_seconds, remaining)
     val p = LocalPalette.current
     if (remaining <= 0) return
     Column(
-        Modifier.fillMaxSize().background(p.background).semantics(mergeDescendants = true) { contentDescription = "Countdown, $remaining seconds" },
+        Modifier.fillMaxSize().background(p.background).semantics(mergeDescendants = true) { contentDescription = countdownLabel },
         verticalArrangement = Arrangement.spacedBy(S.LG * l.spacing, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Fit("Get ready", T.LG * l.font, p.textSecondary, FontWeight.SemiBold)
+        Fit(stringResource(R.string.get_ready), T.LG * l.font, p.textSecondary, FontWeight.SemiBold)
         Fit(remaining.toString(), T.NUMERAL_LG * l.font, p.text, FontWeight.Bold)
         Box(
             Modifier.padding(top = S.XL * l.spacing).padding(horizontal = S.XXXL)
@@ -780,10 +784,10 @@ private fun CancelButton(onClick: () -> Unit) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(S.SM))
             .background(Error)
-            .clickable(role = Role.Button, onClickLabel = "Stops workout and returns to setup", onClick = onClick)
+            .clickable(role = Role.Button, onClickLabel = stringResource(R.string.stops_workout), onClick = onClick)
             .padding(vertical = S.SM * l.spacing, horizontal = S.XL),
         contentAlignment = Alignment.Center,
-    ) { Fit("Cancel", T.LG * l.font, OnError, FontWeight.SemiBold, minScale = 0.5f) }
+    ) { Fit(stringResource(R.string.cancel), T.LG * l.font, OnError, FontWeight.SemiBold, minScale = 0.5f) }
 }
 
 /** The sound switch and About, top right, as iOS: 44-point targets, tertiary icons. */
@@ -792,11 +796,11 @@ private fun TopRightControls(soundOn: Boolean, onSound: () -> Unit, onAbout: () 
     val p = LocalPalette.current
     val haptic = LocalHapticFeedback.current
     Row(modifier, horizontalArrangement = Arrangement.spacedBy(S.MD)) {
-        IconButton(if (soundOn) "Mute sound" else "Unmute sound", {
+        IconButton(stringResource(if (soundOn) R.string.mute_sound else R.string.unmute_sound), {
             onSound()
             haptic.performHapticFeedback(if (soundOn) HapticFeedbackType.ToggleOff else HapticFeedbackType.ToggleOn)
         }) { SpeakerIcon(soundOn, p.textTertiary) }
-        IconButton("About", onAbout) { InfoIcon(p.textTertiary) }
+        IconButton(stringResource(R.string.about), onAbout) { InfoIcon(p.textTertiary) }
     }
 }
 
@@ -848,7 +852,7 @@ private fun About(onDone: () -> Unit) {
     val context = LocalContext.current
     val uri = LocalUriHandler.current
     val info = remember { context.packageManager.getPackageInfo(context.packageName, 0) }
-    val versionLine = "Version ${info.versionName} (${info.longVersionCode})"
+    val versionLine = stringResource(R.string.version, info.versionName ?: "", info.longVersionCode.toString())
     val link: @Composable (String, String) -> Unit = { title, url ->
         Text(title, color = p.textTertiary, fontSize = T.SM.sp, fontFamily = Mono,
             modifier = Modifier.clickable(role = Role.Button) { runCatching { uri.openUri(url) } }.padding(4.dp))
@@ -863,7 +867,7 @@ private fun About(onDone: () -> Unit) {
             Text(versionLine, color = p.textSecondary, fontSize = T.SM.sp, fontFamily = Mono)
         }
         Text(
-            "No ads and no tracking. Only anonymous crash reports are sent, to help fix bugs.",
+            stringResource(R.string.about_privacy),
             color = p.textSecondary, fontSize = T.BASE.sp, fontFamily = Mono, textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = S.LG),
         )
@@ -871,16 +875,16 @@ private fun About(onDone: () -> Unit) {
             // The user sees the whole mail before anything is sent, as on iOS.
             val subject = android.net.Uri.encode("WODrounds ${info.versionName} feedback")
             val body = android.net.Uri.encode("\n\n\n--\nWODrounds ${info.versionName} (${info.longVersionCode})\nAndroid ${Build.VERSION.RELEASE}")
-            link("Send feedback", "mailto:support@iamjarl.com?subject=$subject&body=$body")
-            link("Support", "https://wodrounds.iamjarl.com/support")
-            link("Privacy Policy", "https://wodrounds.iamjarl.com/privacy")
+            link(stringResource(R.string.send_feedback), "mailto:support@iamjarl.com?subject=$subject&body=$body")
+            link(stringResource(R.string.support), "https://wodrounds.iamjarl.com/support")
+            link(stringResource(R.string.privacy_policy), "https://wodrounds.iamjarl.com/privacy")
         }
         Spacer(Modifier.weight(1f))
         Box(
             Modifier.fillMaxWidth().padding(bottom = S.XXL).clip(RoundedCornerShape(S.MD)).background(p.primary)
                 .clickable(role = Role.Button, onClick = onDone).padding(vertical = S.MD),
             contentAlignment = Alignment.Center,
-        ) { Text("Done", color = p.onPrimary, fontSize = T.BASE.sp, fontWeight = FontWeight.SemiBold, fontFamily = Mono) }
+        ) { Text(stringResource(R.string.done), color = p.onPrimary, fontSize = T.BASE.sp, fontWeight = FontWeight.SemiBold, fontFamily = Mono) }
     }
 }
 

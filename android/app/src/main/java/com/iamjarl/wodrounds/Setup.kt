@@ -2,17 +2,18 @@ package com.iamjarl.wodrounds
 
 import android.content.Intent
 import android.content.SharedPreferences
+import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.iamjarl.wodrounds.engine.WODTimerEngine
 
-/** The modes, keyed as iOS stores them (`lastTimerMode`). */
-enum class Mode(val label: String, val key: String, val help: String) {
-    EMOM("EMOM", "EMOM", "Select the number of rounds, and length of each round."),
-    INTERVALS("Intervals", "Intervals", "Set work time, rest time, and number of rounds."),
-    FOR_TIME("For Time", "For Time", "The clock counts up. Press Stop when you finish, or set an optional time cap."),
+/** The modes, keyed as iOS stores them (`lastTimerMode`, always the English name). */
+enum class Mode(val key: String, @StringRes val label: Int, @StringRes val help: Int) {
+    EMOM("EMOM", R.string.mode_emom, R.string.help_emom),
+    INTERVALS("Intervals", R.string.mode_intervals, R.string.help_intervals),
+    FOR_TIME("For Time", R.string.mode_for_time, R.string.help_for_time),
 }
 
 // The iOS ranges (ContentView.swift).

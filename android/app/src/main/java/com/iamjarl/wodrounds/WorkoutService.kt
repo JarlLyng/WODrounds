@@ -48,8 +48,8 @@ class WorkoutService : Service() {
     override fun onCreate() {
         super.onCreate()
         cues = Cues(this)
-        val channel = NotificationChannel(CHANNEL, "Workout", NotificationManager.IMPORTANCE_LOW).apply {
-            description = "The time and round while a workout runs"
+        val channel = NotificationChannel(CHANNEL, getString(R.string.channel_name), NotificationManager.IMPORTANCE_LOW).apply {
+            description = getString(R.string.channel_description)
             setShowBadge(false)
         }
         getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
@@ -110,18 +110,26 @@ class WorkoutService : Service() {
         stopSelf()
     }
 
-    /** "EMOM · Round 3 / 10 · 00:42", as the screen shows it. */
+    /** "EMOM · Round 3 / 10 Rounds · 00:42", in the screen's words and language. */
     private fun text(): String {
         val now = clock()
-        Workout.countInEnd?.let { return "Get ready · ${max(0, ceil(it - now).toInt())}" }
+        Workout.countInEnd?.let { return "${getString(R.string.get_ready)} · ${max(0, ceil(it - now).toInt())}" }
         val e = Workout.engine
         val s = e.snapshot(now)
-        val paused = if (s.state == EngineState.PAUSED) " · Paused" else ""
-        return when (val m = e.mode) {
-            is TimerMode.Emom -> "EMOM · Round ${s.currentRound} / ${e.rounds} · ${time(s.remainingTimeInPhase)}$paused"
-            is TimerMode.Intervals -> "${if (s.currentPhase == com.iamjarl.wodrounds.engine.Phase.WORK) "Work" else "Rest"} · Round ${s.currentRound} / ${e.rounds} · ${time(s.remainingTimeInPhase)}$paused"
-            is TimerMode.ForTime -> "For Time · ${time(floor(s.elapsedTime))}${m.capSeconds?.let { " / cap " + time(it.toDouble()) } ?: ""}$paused"
+        val round = getString(R.string.round_of, s.currentRound, e.rounds)
+        val parts = when (val m = e.mode) {
+            is TimerMode.Emom -> listOf(getString(R.string.mode_emom), round, time(s.remainingTimeInPhase))
+            is TimerMode.Intervals -> listOf(
+                getString(if (s.currentPhase == com.iamjarl.wodrounds.engine.Phase.WORK) R.string.work else R.string.rest),
+                round, time(s.remainingTimeInPhase),
+            )
+            is TimerMode.ForTime -> listOfNotNull(
+                getString(R.string.mode_for_time), time(floor(s.elapsedTime)),
+                m.capSeconds?.let { getString(R.string.cap, time(it.toDouble())) },
+            )
         }
+        val paused = if (s.state == EngineState.PAUSED) listOf(getString(R.string.paused)) else emptyList()
+        return (parts + paused).joinToString(" · ")
     }
 
     private fun time(seconds: Double): String {

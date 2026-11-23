@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dansk, as WODrounds/da.lproj/Localizable.strings. -->
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Genoptag</string>
+    <string name="reset">Nulstil</string>
+    <string name="done">Færdig</string>
+    <string name="cancel">Annuller</string>
+    <string name="mode_intervals">Intervaller</string>
+    <string name="help_emom">Vælg antal runder og længden af hver runde.</string>
+    <string name="help_intervals">Vælg arbejdstid, hviletid og antal runder.</string>
+    <string name="help_for_time">Uret tæller op. Tryk Stop når du er færdig, eller sæt en valgfri tidsgrænse.</string>
+    <string name="work">Arbejd</string>
+    <string name="rest">Hvil</string>
+    <string name="rounds">Runder</string>
+    <string name="round_length">Rundelængde</string>
+    <string name="work_sec">Arbejde (sek)</string>
+    <string name="rest_sec">Hvile (sek)</string>
+    <string name="time_cap">Tidsgrænse</string>
+    <string name="no_cap">Ingen</string>
+    <string name="get_ready">Gør dig klar</string>
+    <string name="about">Om</string>
+    <string name="send_feedback">Send feedback</string>
+    <string name="support">Support</string>
+    <string name="privacy_policy">Privatlivspolitik</string>
+    <string name="cancel_workout_question">Annuller træning?</string>
+    <string name="cancel_workout">Annuller træning</string>
+    <string name="keep_going">Fortsæt</string>
+    <string name="cancel_workout_message">Du vender tilbage til opsætning. Din nuværende fremgang går tabt.</string>
+    <string name="round_of">Runde %1$d / %2$d runder</string>
+    <string name="finished_in">Fuldført på %1$s</string>
+    <string name="cap">Grænse %1$s</string>
+    <string name="version">Version %1$s (%2$s)</string>
+    <string name="countdown_seconds">Nedtælling, %1$d sekunder</string>
+    <string name="cancel_countdown">Annuller nedtælling</string>
+    <string name="stops_workout">Stopper træningen og vender tilbage til opsætning</string>
+    <string name="decrease">Formindsk %1$s</string>
+    <string name="increase">Forøg %1$s</string>
+    <string name="mute_sound">Slå lyd fra</string>
+    <string name="unmute_sound">Slå lyd til</string>
+    <string name="time_left">%1$s tilbage</string>
+    <string name="about_privacy">Ingen reklamer og ingen sporing. Kun anonyme nedbrudsrapporter sendes, så fejl kan rettes.</string>
+    <string name="channel_name">Træning</string>
+    <string name="channel_description">Tid og runde, mens en træning kører</string>
+    <string name="paused">På pause</string>
+    <plurals name="completed_rounds">
+        <item quantity="one">Du gennemførte %d runde</item>
+        <item quantity="other">Du gennemførte %d runder</item>
+    </plurals>
+</resources>
