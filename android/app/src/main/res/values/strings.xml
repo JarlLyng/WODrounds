@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- English, the source. Danish and Spanish (values-da, values-es) are iOS's
+         WODrounds/{da,es}.lproj/Localizable.strings word for word, where iOS has the string. -->
+    <string name="app_name" translatable="false">WODrounds</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="reset">Reset</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="mode_emom" translatable="false">EMOM</string>
+    <string name="mode_intervals">Intervals</string>
+    <string name="mode_for_time" translatable="false">For Time</string>
+    <string name="help_emom">Select the number of rounds, and length of each round.</string>
+    <string name="help_intervals">Set work time, rest time, and number of rounds.</string>
+    <string name="help_for_time">The clock counts up. Press Stop when you finish, or set an optional time cap.</string>
+    <string name="work">Work</string>
+    <string name="rest">Rest</string>
+    <string name="rounds">Rounds</string>
+    <string name="round_length">Round length</string>
+    <string name="work_sec">Work (sec)</string>
+    <string name="rest_sec">Rest (sec)</string>
+    <string name="time_cap">Time cap</string>
+    <string name="no_cap">No cap</string>
+    <string name="get_ready">Get ready</string>
+    <string name="about">About</string>
+    <string name="send_feedback">Send feedback</string>
+    <string name="support">Support</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="cancel_workout_question">Cancel workout?</string>
+    <string name="cancel_workout">Cancel workout</string>
+    <string name="keep_going">Keep going</string>
+    <string name="cancel_workout_message">You\'ll return to setup. Current progress will be lost.</string>
+    <string name="round_of">Round %1$d / %2$d Rounds</string>
+    <string name="finished_in">Finished in %1$s</string>
+    <string name="cap">Cap %1$s</string>
+    <string name="version">Version %1$s (%2$s)</string>
+    <string name="countdown_seconds">Countdown, %1$d seconds</string>
+    <string name="cancel_countdown">Cancel countdown</string>
+    <string name="stops_workout">Stops workout and returns to setup</string>
+    <string name="decrease">Decrease %1$s</string>
+    <string name="increase">Increase %1$s</string>
+    <string name="mute_sound">Mute sound</string>
+    <string name="unmute_sound">Unmute sound</string>
+    <string name="time_left">%1$s left</string>
+    <string name="about_privacy">No ads and no tracking. Only anonymous crash reports are sent, to help fix bugs.</string>
+    <string name="channel_name">Workout</string>
+    <string name="channel_description">The time and round while a workout runs</string>
+    <string name="paused">Paused</string>
+    <plurals name="completed_rounds">
+        <item quantity="one">You completed %d round</item>
+        <item quantity="other">You completed %d rounds</item>
+    </plurals>
+</resources>

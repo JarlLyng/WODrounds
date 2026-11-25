@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Español (es-MX), as WODrounds/es.lproj/Localizable.strings. -->
+    <string name="start">Iniciar</string>
+    <string name="stop">Detener</string>
+    <string name="pause">Pausar</string>
+    <string name="resume">Reanudar</string>
+    <string name="reset">Reiniciar</string>
+    <string name="done">Listo</string>
+    <string name="cancel">Cancelar</string>
+    <string name="mode_intervals">Intervalos</string>
+    <string name="help_emom">Elige el número de rondas y la duración de cada ronda.</string>
+    <string name="help_intervals">Define el tiempo de trabajo, el descanso y el número de rondas.</string>
+    <string name="help_for_time">El cronómetro cuenta hacia arriba. Presiona Detener al terminar, o define un límite de tiempo opcional.</string>
+    <string name="work">Trabajo</string>
+    <string name="rest">Descanso</string>
+    <string name="rounds">Rondas</string>
+    <string name="round_length">Duración de ronda</string>
+    <string name="work_sec">Trabajo (seg)</string>
+    <string name="rest_sec">Descanso (seg)</string>
+    <string name="time_cap">Límite de tiempo</string>
+    <string name="no_cap">Sin límite</string>
+    <string name="get_ready">Prepárate</string>
+    <string name="about">Acerca de</string>
+    <string name="send_feedback">Enviar comentarios</string>
+    <string name="support">Soporte</string>
+    <string name="privacy_policy">Política de privacidad</string>
+    <string name="cancel_workout_question">¿Cancelar entrenamiento?</string>
+    <string name="cancel_workout">Cancelar entrenamiento</string>
+    <string name="keep_going">Continuar</string>
+    <string name="cancel_workout_message">Volverás a la configuración. El progreso actual se perderá.</string>
+    <string name="round_of">Ronda %1$d / %2$d rondas</string>
+    <string name="finished_in">Terminado en %1$s</string>
+    <string name="cap">Límite %1$s</string>
+    <string name="version">Versión %1$s (%2$s)</string>
+    <string name="countdown_seconds">Cuenta regresiva, %1$d segundos</string>
+    <string name="cancel_countdown">Cancelar cuenta regresiva</string>
+    <string name="stops_workout">Detiene el entrenamiento y vuelve a la configuración</string>
+    <string name="decrease">Disminuir %1$s</string>
+    <string name="increase">Aumentar %1$s</string>
+    <string name="mute_sound">Silenciar sonido</string>
+    <string name="unmute_sound">Activar sonido</string>
+    <string name="time_left">%1$s restantes</string>
+    <string name="about_privacy">Sin anuncios ni rastreo. Solo se envían informes de fallos anónimos para corregir errores.</string>
+    <string name="channel_name">Entrenamiento</string>
+    <string name="channel_description">El tiempo y la ronda mientras corre un entrenamiento</string>
+    <string name="paused">En pausa</string>
+    <plurals name="completed_rounds">
+        <item quantity="one">Completaste %d ronda</item>
+        <item quantity="other">Completaste %d rondas</item>
+    </plurals>
+</resources>

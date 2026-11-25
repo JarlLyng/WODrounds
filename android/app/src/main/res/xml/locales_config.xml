@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The app's languages, as iOS: English, Danish and Spanish (es-MX). Lets Android 13+
+     offer a per-app language in the system settings. -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="da" />
+    <locale android:name="es-MX" />
+</locale-config>
