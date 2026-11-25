@@ -59,6 +59,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
+import com.iamjarl.design.DesignTokens
+import com.iamjarl.design.DesignTokens.ColorToken
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
@@ -120,7 +123,8 @@ import kotlin.math.min
  * sizes too): the layout is measured to fit, and a larger font would break that.
  */
 
-// The iamjarl-design colours (DesignTokens.Common), light and dark, as iOS follows the system.
+// The iamjarl-design colours, light and dark, as iOS follows the system. All of them come from
+// com.iamjarl.design.DesignTokens (dist/kotlin/DesignTokens.kt at the version it names).
 class Palette(
     val background: Color,
     val text: Color,
@@ -129,31 +133,35 @@ class Palette(
     val card: Color,
     val primary: Color,
     val onPrimary: Color,
-    val surface: Color,
+    /** The Cancel workout dialog's fill. */
+    val dialog: Color,
 )
 
 private val Dark = Palette(
-    background = Color(0xFF000000),
-    text = Color(0xFFFFFFFF),
-    textSecondary = Color(0xBFFFFFFF), // 0.75
-    textTertiary = Color(0x99FFFFFF), // 0.60
-    card = Color(0x0DFFFFFF), // 0.05
-    primary = Color(0xFFD0FF00),
-    onPrimary = Color(0xFF000000),
-    surface = Color(0xFF1C1C1E),
+    background = ColorToken.Dark.Background.app,
+    text = ColorToken.Dark.Text.primary,
+    textSecondary = ColorToken.Dark.Text.secondary,
+    textTertiary = ColorToken.Dark.Text.tertiary,
+    card = ColorToken.Dark.Background.card,
+    primary = ColorToken.Dark.primary,
+    onPrimary = ColorToken.Dark.onPrimary,
+    // No opaque raised surface in dark yet (Surface.default is the screen's black), so the
+    // dialog would vanish into it: built from tokens until iamjarl-design#130 adds one.
+    dialog = ColorToken.Dark.Border.subtle.compositeOver(ColorToken.Dark.Background.app),
 )
 private val Light = Palette(
-    background = Color(0xFFFFFFFF),
-    text = Color(0xFF000000),
-    textSecondary = Color(0xB3000000), // 0.70
-    textTertiary = Color(0x8C000000), // 0.55
-    card = Color(0x0A000000), // 0.04
-    primary = Color(0xFFA435D2),
-    onPrimary = Color(0xFFFFFFFF),
-    surface = Color(0xFFFFFFFF),
+    background = ColorToken.Light.Background.app,
+    text = ColorToken.Light.Text.primary,
+    textSecondary = ColorToken.Light.Text.secondary,
+    textTertiary = ColorToken.Light.Text.tertiary,
+    card = ColorToken.Light.Background.card,
+    primary = ColorToken.Light.primary,
+    onPrimary = ColorToken.Light.onPrimary,
+    dialog = ColorToken.Light.Surface.default,
 )
-private val Error = Color(0xFFD70015) // State.error, the same in both
-private val OnError = Color(0xFFFFFFFF)
+// The Cancel fill is the shared state colour, the same in both, as iOS (ColorToken.State).
+private val Error = ColorToken.State.error
+private val OnError = ColorToken.State.onError
 // JetBrains Mono, the WODrounds display face in iamjarl-design (OFL-1.1, licence in assets),
 // from its variable font. Android's own monospace has no bold, and the bold digits are the app.
 @OptIn(ExperimentalTextApi::class)
@@ -166,14 +174,20 @@ private val Mono = FontFamily(
 private val LocalPalette = staticCompositionLocalOf { Dark }
 private val LocalLayout = staticCompositionLocalOf { Layout(400f, 800f) }
 
-// iamjarl-design sizes (DesignTokens.Typography.Size, Numeral, Spacing, Radius), in points.
+// iamjarl-design sizes. The layout scales them itself, so type sizes are taken as plain numbers
+// (points, used as dp, the user's font size left out as on iOS: see the top of this file).
 private object T {
-    const val XS = 12f; const val SM = 14f; const val BASE = 16f; const val LG = 18f; const val XL = 24f; const val XXL = 36f
-    const val NUMERAL_MD = 56f; const val NUMERAL_LG = 80f
+    val XS = DesignTokens.Typography.Size.xs.value
+    val SM = DesignTokens.Typography.Size.sm.value
+    val BASE = DesignTokens.Typography.Size.base.value
+    val LG = DesignTokens.Typography.Size.lg.value
+    val XL = DesignTokens.Typography.Size.xl.value
+    val XXL = DesignTokens.Typography.Size.xxl.value
+    val NUMERAL_MD = DesignTokens.Typography.Numeral.md.size.value
+    val NUMERAL_LG = DesignTokens.Typography.Numeral.lg.size.value
 }
-private object S {
-    val SM = 8.dp; val MD = 12.dp; val LG = 16.dp; val XL = 20.dp; val XXL = 24.dp; val XXXL = 32.dp
-}
+private val S = DesignTokens.Spacing
+private val Radius = DesignTokens.Radius
 
 /**
  * The scale of everything, from the space the app has: iOS's fontScale, spacingScale,
@@ -285,10 +299,10 @@ fun TimerScreen(prefs: SharedPreferences) {
         // iOS: the safe area, then 12 around the content view; the space left is what the
         // layout is measured against, and the content is inset another 12 inside it.
         Box(Modifier.fillMaxSize().background(palette.background)) {
-        BoxWithConstraints(Modifier.fillMaxSize().safeDrawingPadding().padding(S.MD)) {
+        BoxWithConstraints(Modifier.fillMaxSize().safeDrawingPadding().padding(S.md)) {
             val layout = Layout(maxWidth.value, maxHeight.value)
             CompositionLocalProvider(LocalLayout provides layout) {
-                Box(Modifier.fillMaxSize().padding(S.MD)) {
+                Box(Modifier.fillMaxSize().padding(S.md)) {
                     val content: @Composable () -> Unit = {
                         Content(
                             engine = engine,
@@ -337,7 +351,7 @@ fun TimerScreen(prefs: SharedPreferences) {
                     }) { Text(stringResource(R.string.cancel_workout), color = Error) }
                 },
                 dismissButton = { TextButton(onClick = { confirmCancel = false }) { Text(stringResource(R.string.keep_going), color = palette.text) } },
-                containerColor = palette.surface,
+                containerColor = palette.dialog,
                 titleContentColor = palette.text,
                 textContentColor = palette.textSecondary,
             )
@@ -363,17 +377,17 @@ private fun Content(
     }
     val running = snapshot.state == EngineState.RUNNING || snapshot.state == EngineState.PAUSED
     val controls: @Composable (Modifier) -> Unit = { modifier ->
-        Column(modifier, verticalArrangement = Arrangement.spacedBy(S.LG * l.spacing)) {
+        Column(modifier, verticalArrangement = Arrangement.spacedBy(S.lg * l.spacing)) {
             PrimaryButton(primaryTitle, onPrimary)
             if (running) CancelButton(onCancel)
         }
     }
 
     if (l.twoColumn) {
-        val gap = S.XXL * l.spacing
+        val gap = S.xxl * l.spacing
         when (snapshot.state) {
             // The header and Start on the left, the steppers on the right.
-            EngineState.IDLE -> Row(Modifier.fillMaxSize().padding(bottom = S.LG * l.spacing), horizontalArrangement = Arrangement.spacedBy(gap)) {
+            EngineState.IDLE -> Row(Modifier.fillMaxSize().padding(bottom = S.lg * l.spacing), horizontalArrangement = Arrangement.spacedBy(gap)) {
                 Column(Modifier.weight(1f).fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Header(setup, onChange, stacksWhenNarrow = true)
                     Spacer(Modifier.weight(1f))
@@ -389,8 +403,8 @@ private fun Content(
                 Column(
                     Modifier.width(l.controlsColumnWidth).fillMaxHeight()
                         // The sound and info buttons sit over the top of this column.
-                        .padding(top = 44.dp, bottom = S.LG * l.spacing),
-                    verticalArrangement = Arrangement.spacedBy(S.LG * l.spacing),
+                        .padding(top = 44.dp, bottom = S.lg * l.spacing),
+                    verticalArrangement = Arrangement.spacedBy(S.lg * l.spacing),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(Modifier.weight(1f))
@@ -411,7 +425,7 @@ private fun Content(
     // One column: iOS's mainVStack, its spacers and its spacing included.
     Column(
         Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(S.XXXL * l.spacing),
+        verticalArrangement = Arrangement.spacedBy(S.xxxl * l.spacing),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (snapshot.state == EngineState.IDLE) Header(setup, onChange, stacksWhenNarrow = false)
@@ -419,7 +433,7 @@ private fun Content(
         when (snapshot.state) {
             EngineState.FINISHED -> DoneView(engine, snapshot)
             EngineState.RUNNING, EngineState.PAUSED -> Column(
-                verticalArrangement = Arrangement.spacedBy(S.LG * l.spacing),
+                verticalArrangement = Arrangement.spacedBy(S.lg * l.spacing),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 PhaseLabel(engine, snapshot)
@@ -433,7 +447,7 @@ private fun Content(
         Spacer(Modifier.weight(1f))
         if (snapshot.state == EngineState.IDLE) Steppers(setup, onChange)
         Spacer(Modifier.weight(1f))
-        controls(Modifier.fillMaxWidth().padding(horizontal = S.LG).padding(bottom = S.XXL * l.spacing))
+        controls(Modifier.fillMaxWidth().padding(horizontal = S.lg).padding(bottom = S.xxl * l.spacing))
     }
 }
 
@@ -444,7 +458,7 @@ private fun Header(setup: Setup, onChange: () -> Unit, stacksWhenNarrow: Boolean
     val p = LocalPalette.current
     Column(
         Modifier.fillMaxWidth().padding(top = 44.dp),
-        verticalArrangement = Arrangement.spacedBy(S.MD * l.spacing),
+        verticalArrangement = Arrangement.spacedBy(S.md * l.spacing),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ModeSwitch(setup.mode, stacksWhenNarrow) { setup.mode = it; onChange() }
@@ -454,7 +468,7 @@ private fun Header(setup: Setup, onChange: () -> Unit, stacksWhenNarrow: Boolean
             fontSize = (T.SM * l.font).sp,
             fontFamily = Mono,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = S.XL),
+            modifier = Modifier.padding(horizontal = S.xl),
         )
     }
 }
@@ -469,8 +483,8 @@ private fun ModeSwitch(selected: Mode, stacksWhenNarrow: Boolean, onSelect: (Mod
     val p = LocalPalette.current
     val measurer = rememberTextMeasurer()
     val labels = Mode.entries.associateWith { stringResource(it.label) }
-    val hPad = S.MD * l.spacing
-    val gap = S.SM
+    val hPad = S.md * l.spacing
+    val gap = S.sm
     BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         val style = TextStyle(fontFamily = Mono, fontWeight = FontWeight.SemiBold, fontSize = (T.BASE * l.font).sp)
         val density = LocalDensity.current
@@ -484,11 +498,11 @@ private fun ModeSwitch(selected: Mode, stacksWhenNarrow: Boolean, onSelect: (Mod
             val on = m == selected
             Box(
                 Modifier
-                    .clip(RoundedCornerShape(S.SM))
+                    .clip(RoundedCornerShape(Radius.sm))
                     .background(if (on) p.primary else p.card)
                     .clickable(role = Role.Tab) { if (!on) onSelect(m) }
                     .semantics { this.selected = on }
-                    .padding(horizontal = hPad, vertical = S.SM),
+                    .padding(horizontal = hPad, vertical = S.sm),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
@@ -543,7 +557,7 @@ private fun Steppers(setup: Setup, onChange: () -> Unit) {
             val shown = setup.mode == mode
             Column(
                 Modifier.alpha(if (shown) 1f else 0f).let { if (shown) it else it.clearAndSetSemantics { } },
-                verticalArrangement = Arrangement.spacedBy(S.LG * l.spacing),
+                verticalArrangement = Arrangement.spacedBy(S.lg * l.spacing),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) { body(shown) }
         }
@@ -583,17 +597,17 @@ private fun Steppers(setup: Setup, onChange: () -> Unit) {
 private fun Stepper(label: String, value: String, wide: Boolean, enabled: Boolean, onMinus: () -> Unit, onPlus: () -> Unit) {
     val l = LocalLayout.current
     val p = LocalPalette.current
-    val gap = S.LG * l.spacing
-    val buttonSize = S.XXXL * 2 * l.spacing
+    val gap = S.lg * l.spacing
+    val buttonSize = S.xxxl * 2 * l.spacing
     val valueSize = T.NUMERAL_MD * l.font
-    val minValueWidth = if (wide) max(buttonSize.value * 2, valueSize * 1.9f).dp + S.LG * 2 else buttonSize * 2
+    val minValueWidth = if (wide) max(buttonSize.value * 2, valueSize * 1.9f).dp + S.lg * 2 else buttonSize * 2
     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(gap)) {
         Fit(label, T.SM * l.font, p.textSecondary, FontWeight.SemiBold)
-        Row(Modifier.padding(vertical = S.SM), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(gap)) {
+        Row(Modifier.padding(vertical = S.sm), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(gap)) {
             RepeatButton("−", stringResource(R.string.decrease, label), buttonSize, valueSize * 0.75f, enabled, onMinus)
             Box(Modifier.weight(1f, fill = false).widthIn(min = minValueWidth), contentAlignment = Alignment.Center) {
                 Fit(value, valueSize, p.text, FontWeight.Bold, minScale = 0.4f,
-                    modifier = Modifier.padding(horizontal = if (wide) S.LG else 0.dp).semantics { contentDescription = "$label, $value" })
+                    modifier = Modifier.padding(horizontal = if (wide) S.lg else 0.dp).semantics { contentDescription = "$label, $value" })
             }
             RepeatButton("+", stringResource(R.string.increase, label), buttonSize, valueSize * 0.75f, enabled, onPlus)
         }
@@ -609,7 +623,7 @@ private fun RepeatButton(symbol: String, description: String, size: Dp, fontSize
     Box(
         Modifier
             .size(size)
-            .clip(RoundedCornerShape(S.MD))
+            .clip(RoundedCornerShape(Radius.md))
             .background(p.primary)
             .semantics {
                 role = Role.Button
@@ -715,8 +729,8 @@ private fun DoneView(engine: WODTimerEngine, snapshot: Snapshot) {
     val line = if (engine.mode is TimerMode.ForTime) stringResource(R.string.finished_in, timeString(floor(snapshot.elapsedTime)))
     else pluralStringResource(R.plurals.completed_rounds, engine.rounds, engine.rounds)
     Column(
-        Modifier.padding(vertical = S.XXL * l.spacing).semantics(mergeDescendants = true) { },
-        verticalArrangement = Arrangement.spacedBy(S.XXL * l.spacing),
+        Modifier.padding(vertical = S.xxl * l.spacing).semantics(mergeDescendants = true) { },
+        verticalArrangement = Arrangement.spacedBy(S.xxl * l.spacing),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CheckmarkCircle(64 * l.font, p.primary, p.background)
@@ -749,13 +763,13 @@ private fun CountIn(remaining: Int, onCancel: () -> Unit) {
     if (remaining <= 0) return
     Column(
         Modifier.fillMaxSize().background(p.background).semantics(mergeDescendants = true) { contentDescription = countdownLabel },
-        verticalArrangement = Arrangement.spacedBy(S.LG * l.spacing, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(S.lg * l.spacing, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Fit(stringResource(R.string.get_ready), T.LG * l.font, p.textSecondary, FontWeight.SemiBold)
         Fit(remaining.toString(), T.NUMERAL_LG * l.font, p.text, FontWeight.Bold)
         Box(
-            Modifier.padding(top = S.XL * l.spacing).padding(horizontal = S.XXXL)
+            Modifier.padding(top = S.xl * l.spacing).padding(horizontal = S.xxxl)
                 .let { m -> l.maxContentWidth?.let { m.widthIn(max = it) } ?: m }
         ) { CancelButton(onCancel) }
     }
@@ -768,10 +782,10 @@ private fun PrimaryButton(title: String, onClick: () -> Unit) {
     Box(
         Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(S.MD))
+            .clip(RoundedCornerShape(Radius.md))
             .background(p.primary)
             .clickable(role = Role.Button, onClick = onClick)
-            .padding(vertical = S.MD * l.spacing, horizontal = S.XL),
+            .padding(vertical = S.md * l.spacing, horizontal = S.xl),
         contentAlignment = Alignment.Center,
     ) { Fit(title, T.XXL * l.font, p.onPrimary, FontWeight.Bold, minScale = 0.5f) }
 }
@@ -782,10 +796,10 @@ private fun CancelButton(onClick: () -> Unit) {
     Box(
         Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(S.SM))
+            .clip(RoundedCornerShape(Radius.sm))
             .background(Error)
             .clickable(role = Role.Button, onClickLabel = stringResource(R.string.stops_workout), onClick = onClick)
-            .padding(vertical = S.SM * l.spacing, horizontal = S.XL),
+            .padding(vertical = S.sm * l.spacing, horizontal = S.xl),
         contentAlignment = Alignment.Center,
     ) { Fit(stringResource(R.string.cancel), T.LG * l.font, OnError, FontWeight.SemiBold, minScale = 0.5f) }
 }
@@ -795,7 +809,7 @@ private fun CancelButton(onClick: () -> Unit) {
 private fun TopRightControls(soundOn: Boolean, onSound: () -> Unit, onAbout: () -> Unit, modifier: Modifier) {
     val p = LocalPalette.current
     val haptic = LocalHapticFeedback.current
-    Row(modifier, horizontalArrangement = Arrangement.spacedBy(S.MD)) {
+    Row(modifier, horizontalArrangement = Arrangement.spacedBy(S.md)) {
         IconButton(stringResource(if (soundOn) R.string.mute_sound else R.string.unmute_sound), {
             onSound()
             haptic.performHapticFeedback(if (soundOn) HapticFeedbackType.ToggleOff else HapticFeedbackType.ToggleOn)
@@ -807,7 +821,7 @@ private fun TopRightControls(soundOn: Boolean, onSound: () -> Unit, onAbout: () 
 @Composable
 private fun IconButton(description: String, onClick: () -> Unit, icon: @Composable () -> Unit) {
     Box(
-        Modifier.size(44.dp).clip(RoundedCornerShape(S.SM))
+        Modifier.size(44.dp).clip(RoundedCornerShape(Radius.sm))
             .clickable(role = Role.Button, onClick = onClick)
             .semantics { contentDescription = description },
         contentAlignment = Alignment.Center,
@@ -858,20 +872,20 @@ private fun About(onDone: () -> Unit) {
             modifier = Modifier.clickable(role = Role.Button) { runCatching { uri.openUri(url) } }.padding(4.dp))
     }
     Column(
-        Modifier.fillMaxSize().background(p.background).safeDrawingPadding().padding(horizontal = S.LG),
+        Modifier.fillMaxSize().background(p.background).safeDrawingPadding().padding(horizontal = S.lg),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(S.XXL),
+        verticalArrangement = Arrangement.spacedBy(S.xxl),
     ) {
-        Column(Modifier.padding(top = S.XXL), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(S.LG)) {
+        Column(Modifier.padding(top = S.xxl), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(S.lg)) {
             Text("WODrounds", color = p.text, fontSize = T.XL.sp, fontWeight = FontWeight.Bold, fontFamily = Mono)
             Text(versionLine, color = p.textSecondary, fontSize = T.SM.sp, fontFamily = Mono)
         }
         Text(
             stringResource(R.string.about_privacy),
             color = p.textSecondary, fontSize = T.BASE.sp, fontFamily = Mono, textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = S.LG),
+            modifier = Modifier.padding(horizontal = S.lg),
         )
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(S.SM)) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(S.sm)) {
             // The user sees the whole mail before anything is sent, as on iOS.
             val subject = android.net.Uri.encode("WODrounds ${info.versionName} feedback")
             val body = android.net.Uri.encode("\n\n\n--\nWODrounds ${info.versionName} (${info.longVersionCode})\nAndroid ${Build.VERSION.RELEASE}")
@@ -881,8 +895,8 @@ private fun About(onDone: () -> Unit) {
         }
         Spacer(Modifier.weight(1f))
         Box(
-            Modifier.fillMaxWidth().padding(bottom = S.XXL).clip(RoundedCornerShape(S.MD)).background(p.primary)
-                .clickable(role = Role.Button, onClick = onDone).padding(vertical = S.MD),
+            Modifier.fillMaxWidth().padding(bottom = S.xxl).clip(RoundedCornerShape(Radius.md)).background(p.primary)
+                .clickable(role = Role.Button, onClick = onDone).padding(vertical = S.md),
             contentAlignment = Alignment.Center,
         ) { Text(stringResource(R.string.done), color = p.onPrimary, fontSize = T.BASE.sp, fontWeight = FontWeight.SemiBold, fontFamily = Mono) }
     }

@@ -29,6 +29,12 @@ owner's test phone through Google Play's internal testing, and nothing here touc
   strings (the notification, the About line, "You completed N rounds") are translated here.
   Android 13+ offers the language per app in the system settings (`res/xml/locales_config.xml`).
   The recorded voice cues stay English in every language, as on iOS.
+- `app/src/main/java/com/iamjarl/design/DesignTokens.kt`: the iamjarl-design tokens for
+  Compose, copied unchanged from `dist/kotlin/DesignTokens.kt` at the release the file names
+  (`DesignTokens.VERSION`), as that repo's README says. Every colour, spacing, radius and type
+  size on the screen comes from it. To update, copy the file from the new release tag.
+  One fill has no token yet, the dialog's in dark mode: it is built from tokens until
+  iamjarl-design#130 adds an opaque raised surface.
 - `Setup.kt`: the setup values under the iOS keys, and `Capture`, which opens a debug build
   on any screen for screenshots, as iOS's SiteCapture (the extras are in its comment).
 - `Workout.kt` and `WorkoutService.kt`: the workout, and a foreground service of type
