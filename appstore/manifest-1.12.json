@@ -1,0 +1,254 @@
+{
+  "app": "WODrounds",
+  "mode": "light",
+  "accent": "#D0FF00",
+  "ground": "#F7F7F3",
+  "glow": 0.16,
+  "align": "center",
+  "weight": "Heavy",
+  "cap_scale": 0.98,
+  "out_dir": "1.12",
+  "shots": [
+    {
+      "raw": "raw/tabata-running-en.png",
+      "slot": "iphone-6.9",
+      "caption": "Read it from\nacross the [gym]",
+      "subline": "EMOM, intervals and For Time",
+      "shot_scale": 0.72,
+      "stickers": [
+        {
+          "text": "Tabata 20/10",
+          "x": 0.13,
+          "y": 0.33,
+          "angle": -8,
+          "style": "accent"
+        },
+        {
+          "text": "For Time",
+          "x": 0.88,
+          "y": 0.66,
+          "angle": 7,
+          "style": "dark"
+        },
+        {
+          "text": "EMOM",
+          "x": 0.14,
+          "y": 0.9,
+          "angle": 6,
+          "style": "white"
+        }
+      ],
+      "out": "en/iphone-1.png"
+    },
+    {
+      "raw": "raw/emom-setup-en.png",
+      "slot": "iphone-6.9",
+      "caption": "Set it once,\n[start in a tap]",
+      "subline": "1 to 120 rounds, 0:30 to 9:30 each",
+      "shot_scale": 0.72,
+      "stickers": [
+        {
+          "text": "No subscription",
+          "x": 0.79,
+          "y": 0.745,
+          "angle": 7,
+          "style": "dark"
+        },
+        {
+          "text": "No account",
+          "x": 0.2,
+          "y": 0.42,
+          "angle": -7,
+          "style": "white"
+        }
+      ],
+      "out": "en/iphone-2.png"
+    },
+    {
+      "raw": "raw/watch-emom-running-en.png",
+      "slot": "iphone-6.9",
+      "caption": "Leave the phone\n[in your bag]",
+      "subline": "EMOM and intervals, no phone needed",
+      "shot_scale": 0.7,
+      "stickers": [
+        {
+          "text": "Apple Watch",
+          "x": 0.22,
+          "y": 0.36,
+          "angle": -8,
+          "style": "accent"
+        },
+        {
+          "text": "Haptics",
+          "x": 0.8,
+          "y": 0.78,
+          "angle": 7,
+          "style": "dark"
+        }
+      ],
+      "out": "en/iphone-3.png",
+      "frame": false
+    },
+    {
+      "raw": "raw/tabata-running-da.png",
+      "slot": "iphone-6.9",
+      "caption": "Kan ses fra\nhele [boxen]",
+      "subline": "EMOM, intervaller og For Time",
+      "shot_scale": 0.72,
+      "stickers": [
+        {
+          "text": "Tabata 20/10",
+          "x": 0.13,
+          "y": 0.33,
+          "angle": -8,
+          "style": "accent"
+        },
+        {
+          "text": "For Time",
+          "x": 0.88,
+          "y": 0.66,
+          "angle": 7,
+          "style": "dark"
+        },
+        {
+          "text": "EMOM",
+          "x": 0.14,
+          "y": 0.9,
+          "angle": 6,
+          "style": "white"
+        }
+      ],
+      "out": "da/iphone-1.png"
+    },
+    {
+      "raw": "raw/emom-setup-da.png",
+      "slot": "iphone-6.9",
+      "caption": "Sæt op én gang,\n[start med ét tryk]",
+      "subline": "1 til 120 runder, 0:30 til 9:30 hver",
+      "shot_scale": 0.72,
+      "stickers": [
+        {
+          "text": "Uden abonnement",
+          "x": 0.74,
+          "y": 0.745,
+          "angle": 7,
+          "style": "dark"
+        },
+        {
+          "text": "Ingen konto",
+          "x": 0.2,
+          "y": 0.42,
+          "angle": -7,
+          "style": "white"
+        }
+      ],
+      "out": "da/iphone-2.png"
+    },
+    {
+      "raw": "raw/watch-emom-running-da.png",
+      "slot": "iphone-6.9",
+      "caption": "Lad telefonen\n[blive i tasken]",
+      "subline": "EMOM og intervaller, uden telefonen",
+      "shot_scale": 0.7,
+      "stickers": [
+        {
+          "text": "Apple Watch",
+          "x": 0.22,
+          "y": 0.36,
+          "angle": -8,
+          "style": "accent"
+        },
+        {
+          "text": "Vibration",
+          "x": 0.8,
+          "y": 0.78,
+          "angle": 7,
+          "style": "dark"
+        }
+      ],
+      "out": "da/iphone-3.png",
+      "frame": false
+    },
+    {
+      "raw": "raw/tabata-running-es.png",
+      "slot": "iphone-6.9",
+      "caption": "Se lee desde\ntodo el [box]",
+      "subline": "EMOM, intervalos y For Time",
+      "shot_scale": 0.72,
+      "stickers": [
+        {
+          "text": "Tabata 20/10",
+          "x": 0.13,
+          "y": 0.33,
+          "angle": -8,
+          "style": "accent"
+        },
+        {
+          "text": "For Time",
+          "x": 0.88,
+          "y": 0.66,
+          "angle": 7,
+          "style": "dark"
+        },
+        {
+          "text": "EMOM",
+          "x": 0.14,
+          "y": 0.9,
+          "angle": 6,
+          "style": "white"
+        }
+      ],
+      "out": "es/iphone-1.png"
+    },
+    {
+      "raw": "raw/emom-setup-es.png",
+      "slot": "iphone-6.9",
+      "caption": "Ajústalo una vez,\n[inicia con un toque]",
+      "subline": "De 1 a 120 rondas, de 0:30 a 9:30 cada una",
+      "shot_scale": 0.72,
+      "stickers": [
+        {
+          "text": "Sin suscripción",
+          "x": 0.79,
+          "y": 0.745,
+          "angle": 7,
+          "style": "dark"
+        },
+        {
+          "text": "Sin cuenta",
+          "x": 0.2,
+          "y": 0.42,
+          "angle": -7,
+          "style": "white"
+        }
+      ],
+      "out": "es/iphone-2.png",
+      "cap_scale": 0.9
+    },
+    {
+      "raw": "raw/watch-emom-running-es.png",
+      "slot": "iphone-6.9",
+      "caption": "Deja el teléfono\n[en la mochila]",
+      "subline": "EMOM e intervalos, sin el teléfono",
+      "shot_scale": 0.7,
+      "stickers": [
+        {
+          "text": "Apple Watch",
+          "x": 0.22,
+          "y": 0.36,
+          "angle": -8,
+          "style": "accent"
+        },
+        {
+          "text": "Vibración",
+          "x": 0.8,
+          "y": 0.78,
+          "angle": 7,
+          "style": "dark"
+        }
+      ],
+      "out": "es/iphone-3.png",
+      "frame": false
+    }
+  ]
+}
