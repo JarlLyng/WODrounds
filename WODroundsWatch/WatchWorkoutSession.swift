@@ -21,9 +21,17 @@ final class WatchWorkoutSession: NSObject, ObservableObject, HKWorkoutSessionDel
         super.init()
     }
 
+    #if DEBUG
+    /// Site and App Store captures (`-siteElapsed N`) start no Health session and ask for no
+    /// Health access, so no system prompt covers the screen being captured. Debug builds only.
+    private var isCapture: Bool { UserDefaults.standard.object(forKey: "siteElapsed") != nil }
+    #else
+    private var isCapture: Bool { false }
+    #endif
+
     /// Request HealthKit authorization (call once, e.g. at app launch).
     func requestAuthorizationIfNeeded() {
-        guard HKHealthStore.isHealthDataAvailable() else { return }
+        guard HKHealthStore.isHealthDataAvailable(), !isCapture else { return }
         let typesToShare: Set<HKSampleType> = [HKObjectType.workoutType()]
         let typesToRead: Set<HKObjectType> = []
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { _, error in
@@ -35,7 +43,7 @@ final class WatchWorkoutSession: NSObject, ObservableObject, HKWorkoutSessionDel
 
     /// Start an HKWorkoutSession to keep the Watch app in the foreground.
     func startIfNeeded() {
-        guard session == nil, HKHealthStore.isHealthDataAvailable() else { return }
+        guard session == nil, HKHealthStore.isHealthDataAvailable(), !isCapture else { return }
         let config = HKWorkoutConfiguration()
         config.activityType = .highIntensityIntervalTraining
         config.locationType = .indoor

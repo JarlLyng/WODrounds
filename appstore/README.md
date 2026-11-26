@@ -20,6 +20,13 @@ Current: **`1.8/`**, one folder per language (`en/`, `da/`, `es/`), with one fil
 needed: the store text, the iPhone Duo set (`duo/`) and the In-App Event images (`event/`). The
 App Store header is in [`header/`](header/).
 
+**`1.12/`** is the first three iPhone screenshots in the light poster style the owner chose on
+2026-11-26 (#235): a light ground with a lime haze, a large centred headline with one phrase in a
+chip, a muted subline, the whole screen, and up to three tilted stickers, each a fact the build
+shows. Rendered from [`manifest-1.12.json`](manifest-1.12.json); `before-after-en.png` is the
+review image for the PR and is not uploaded. The other screenshots and platforms stay on `1.8/`
+until they are re-shot in the same style.
+
 Superseded sets are deleted rather than kept forever; git history has them if ever needed.
 This folder replaced a separate top-level "App store screens" directory (consolidated 2026-07-29).
 
@@ -44,7 +51,10 @@ python3 <tools>/appstore_screenshots.py batch appstore/manifest.json
 
 Raw captures live in [`raw/`](raw/) so a set can be re-composed without re-shooting. Capture in
 **dark mode** (the app's light mode uses a purple accent that clashes with the lime poster ground)
-and force the language with `-AppleLanguages '(da)' -AppleLocale da_DK` on launch.
+and force the language with `-AppleLanguages '(da)' -AppleLocale da_DK` on launch. Set the simulator's own
+region to en_US (`xcrun simctl spawn <device> defaults write -g AppleLocale en_US`) or the
+status bar reads "09.41". The Watch app opens mid-workout with `-siteElapsed N` and, in debug
+builds, asks for no Health access then, so no system prompt covers the capture.
 
 ### Older workflow (pre-1.7)
 
